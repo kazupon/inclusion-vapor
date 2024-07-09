@@ -1,0 +1,822 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compile 1`] = `
+{
+  "ast": {
+    "css": undefined,
+    "html": {
+      "children": [
+        {
+          "data": "
+",
+          "end": 1,
+          "raw": "
+",
+          "start": 0,
+          "type": "Text",
+        },
+        {
+          "data": "
+
+",
+          "end": 84,
+          "raw": "
+
+",
+          "start": 82,
+          "type": "Text",
+        },
+        {
+          "attributes": [
+            {
+              "end": 112,
+              "expression": {
+                "end": 111,
+                "loc": {
+                  "end": {
+                    "column": 27,
+                    "line": 9,
+                  },
+                  "start": {
+                    "column": 18,
+                    "line": 9,
+                  },
+                },
+                "name": "increment",
+                "start": 102,
+                "type": "Identifier",
+              },
+              "modifiers": [],
+              "name": "click",
+              "start": 92,
+              "type": "EventHandler",
+            },
+          ],
+          "children": [
+            {
+              "data": "
+  count is ",
+              "end": 125,
+              "raw": "
+  count is ",
+              "start": 113,
+              "type": "Text",
+            },
+            {
+              "end": 132,
+              "expression": {
+                "end": 131,
+                "loc": {
+                  "end": {
+                    "column": 17,
+                    "line": 10,
+                  },
+                  "start": {
+                    "column": 12,
+                    "line": 10,
+                  },
+                },
+                "name": "count",
+                "start": 126,
+                "type": "Identifier",
+              },
+              "start": 125,
+              "type": "MustacheTag",
+            },
+            {
+              "data": "
+",
+              "end": 133,
+              "raw": "
+",
+              "start": 132,
+              "type": "Text",
+            },
+          ],
+          "end": 142,
+          "name": "button",
+          "start": 84,
+          "type": "Element",
+        },
+      ],
+      "end": 142,
+      "start": 1,
+      "type": "Fragment",
+    },
+    "instance": {
+      "content": {
+        "body": [
+          {
+            "declarations": [
+              {
+                "end": 25,
+                "id": {
+                  "end": 21,
+                  "loc": {
+                    "end": {
+                      "column": 11,
+                      "line": 3,
+                    },
+                    "start": {
+                      "column": 6,
+                      "line": 3,
+                    },
+                  },
+                  "name": "count",
+                  "start": 16,
+                  "type": "Identifier",
+                },
+                "init": {
+                  "end": 25,
+                  "loc": {
+                    "end": {
+                      "column": 15,
+                      "line": 3,
+                    },
+                    "start": {
+                      "column": 14,
+                      "line": 3,
+                    },
+                  },
+                  "raw": "0",
+                  "start": 24,
+                  "type": "Literal",
+                  "value": 0,
+                },
+                "loc": {
+                  "end": {
+                    "column": 15,
+                    "line": 3,
+                  },
+                  "start": {
+                    "column": 6,
+                    "line": 3,
+                  },
+                },
+                "start": 16,
+                "type": "VariableDeclarator",
+              },
+            ],
+            "end": 25,
+            "kind": "let",
+            "loc": {
+              "end": {
+                "column": 15,
+                "line": 3,
+              },
+              "start": {
+                "column": 2,
+                "line": 3,
+              },
+            },
+            "start": 12,
+            "type": "VariableDeclaration",
+          },
+          {
+            "declarations": [
+              {
+                "end": 72,
+                "id": {
+                  "end": 43,
+                  "loc": {
+                    "end": {
+                      "column": 17,
+                      "line": 4,
+                    },
+                    "start": {
+                      "column": 8,
+                      "line": 4,
+                    },
+                  },
+                  "name": "increment",
+                  "start": 34,
+                  "type": "Identifier",
+                },
+                "init": {
+                  "async": false,
+                  "body": {
+                    "body": [
+                      {
+                        "end": 68,
+                        "expression": {
+                          "end": 68,
+                          "left": {
+                            "end": 63,
+                            "loc": {
+                              "end": {
+                                "column": 9,
+                                "line": 5,
+                              },
+                              "start": {
+                                "column": 4,
+                                "line": 5,
+                              },
+                            },
+                            "name": "count",
+                            "start": 58,
+                            "type": "Identifier",
+                          },
+                          "loc": {
+                            "end": {
+                              "column": 14,
+                              "line": 5,
+                            },
+                            "start": {
+                              "column": 4,
+                              "line": 5,
+                            },
+                          },
+                          "operator": "+=",
+                          "right": {
+                            "end": 68,
+                            "loc": {
+                              "end": {
+                                "column": 14,
+                                "line": 5,
+                              },
+                              "start": {
+                                "column": 13,
+                                "line": 5,
+                              },
+                            },
+                            "raw": "1",
+                            "start": 67,
+                            "type": "Literal",
+                            "value": 1,
+                          },
+                          "start": 58,
+                          "type": "AssignmentExpression",
+                        },
+                        "loc": {
+                          "end": {
+                            "column": 14,
+                            "line": 5,
+                          },
+                          "start": {
+                            "column": 4,
+                            "line": 5,
+                          },
+                        },
+                        "start": 58,
+                        "type": "ExpressionStatement",
+                      },
+                    ],
+                    "end": 72,
+                    "loc": {
+                      "end": {
+                        "column": 3,
+                        "line": 6,
+                      },
+                      "start": {
+                        "column": 26,
+                        "line": 4,
+                      },
+                    },
+                    "start": 52,
+                    "type": "BlockStatement",
+                  },
+                  "end": 72,
+                  "expression": false,
+                  "generator": false,
+                  "id": null,
+                  "loc": {
+                    "end": {
+                      "column": 3,
+                      "line": 6,
+                    },
+                    "start": {
+                      "column": 20,
+                      "line": 4,
+                    },
+                  },
+                  "params": [],
+                  "start": 46,
+                  "type": "ArrowFunctionExpression",
+                },
+                "loc": {
+                  "end": {
+                    "column": 3,
+                    "line": 6,
+                  },
+                  "start": {
+                    "column": 8,
+                    "line": 4,
+                  },
+                },
+                "start": 34,
+                "type": "VariableDeclarator",
+              },
+            ],
+            "end": 72,
+            "kind": "const",
+            "loc": {
+              "end": {
+                "column": 3,
+                "line": 6,
+              },
+              "start": {
+                "column": 2,
+                "line": 4,
+              },
+            },
+            "start": 28,
+            "type": "VariableDeclaration",
+          },
+        ],
+        "end": 73,
+        "loc": {
+          "end": {
+            "column": 0,
+            "line": 7,
+          },
+          "start": {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "sourceType": "module",
+        "start": 9,
+        "type": "Program",
+      },
+      "context": "default",
+      "end": 82,
+      "start": 1,
+      "type": "Script",
+    },
+    "module": undefined,
+  },
+  "css": {
+    "code": null,
+    "map": null,
+  },
+  "js": {
+    "code": "/* generated by Svelte v4.2.18 */
+import {
+	SvelteComponent,
+	append,
+	detach,
+	element,
+	init,
+	insert,
+	listen,
+	noop,
+	safe_not_equal,
+	set_data,
+	text
+} from "svelte/internal";
+
+import "svelte/internal/disclose-version";
+
+function create_fragment(ctx) {
+	let button;
+	let t0;
+	let t1;
+	let mounted;
+	let dispose;
+
+	return {
+		c() {
+			button = element("button");
+			t0 = text("count is ");
+			t1 = text(/*count*/ ctx[0]);
+		},
+		m(target, anchor) {
+			insert(target, button, anchor);
+			append(button, t0);
+			append(button, t1);
+
+			if (!mounted) {
+				dispose = listen(button, "click", /*increment*/ ctx[1]);
+				mounted = true;
+			}
+		},
+		p(ctx, [dirty]) {
+			if (dirty & /*count*/ 1) set_data(t1, /*count*/ ctx[0]);
+		},
+		i: noop,
+		o: noop,
+		d(detaching) {
+			if (detaching) {
+				detach(button);
+			}
+
+			mounted = false;
+			dispose();
+		}
+	};
+}
+
+function instance($$self, $$props, $$invalidate) {
+	let count = 0;
+
+	const increment = () => {
+		$$invalidate(0, count += 1);
+	};
+
+	return [count, increment];
+}
+
+class Component extends SvelteComponent {
+	constructor(options) {
+		super();
+		init(this, options, instance, create_fragment, safe_not_equal, {});
+	}
+}
+
+export default Component;",
+    "map": {
+      "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;aAQ6B,WAClB;uBAAC,GAAK;;;GADjB,MAES;;;;;oDAFS,GAAS;;;;;mDACf,GAAK;;;;;;;;;;;;;;;;KAPX,KAAK,GAAG,CAAC;;OACP,SAAS;kBACb,KAAK,IAAI,CAAC;;;;;;;;;;;;;",
+      "names": [],
+      "sources": [
+        null,
+      ],
+      "sourcesContent": [
+        "
+<script>
+  let count = 0
+  const increment = () => {
+    count += 1
+  }
+</script>
+
+<button on:click={increment}>
+  count is {count}
+</button>
+",
+      ],
+      "version": 3,
+    },
+  },
+  "vars": [
+    {
+      "export_name": null,
+      "injected": false,
+      "module": false,
+      "mutated": false,
+      "name": "count",
+      "reassigned": true,
+      "referenced": true,
+      "referenced_from_script": true,
+      "writable": true,
+    },
+    {
+      "export_name": null,
+      "injected": false,
+      "module": false,
+      "mutated": false,
+      "name": "increment",
+      "reassigned": false,
+      "referenced": true,
+      "referenced_from_script": false,
+      "writable": false,
+    },
+  ],
+  "warnings": [],
+}
+`;
+
+exports[`parser 1`] = `
+{
+  "css": undefined,
+  "html": {
+    "children": [
+      {
+        "data": "
+",
+        "end": 1,
+        "raw": "
+",
+        "start": 0,
+        "type": "Text",
+      },
+      {
+        "data": "
+
+",
+        "end": 84,
+        "raw": "
+
+",
+        "start": 82,
+        "type": "Text",
+      },
+      {
+        "attributes": [
+          {
+            "end": 112,
+            "expression": Node {
+              "end": 111,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 27,
+                  "line": 9,
+                },
+                "start": Position {
+                  "column": 18,
+                  "line": 9,
+                },
+              },
+              "name": "increment",
+              "start": 102,
+              "type": "Identifier",
+            },
+            "modifiers": [],
+            "name": "click",
+            "start": 92,
+            "type": "EventHandler",
+          },
+        ],
+        "children": [
+          {
+            "data": "
+  count is ",
+            "end": 125,
+            "raw": "
+  count is ",
+            "start": 113,
+            "type": "Text",
+          },
+          {
+            "end": 132,
+            "expression": Node {
+              "end": 131,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 17,
+                  "line": 10,
+                },
+                "start": Position {
+                  "column": 12,
+                  "line": 10,
+                },
+              },
+              "name": "count",
+              "start": 126,
+              "type": "Identifier",
+            },
+            "start": 125,
+            "type": "MustacheTag",
+          },
+          {
+            "data": "
+",
+            "end": 133,
+            "raw": "
+",
+            "start": 132,
+            "type": "Text",
+          },
+        ],
+        "end": 142,
+        "name": "button",
+        "start": 84,
+        "type": "Element",
+      },
+    ],
+    "end": 142,
+    "start": 1,
+    "type": "Fragment",
+  },
+  "instance": {
+    "content": Node {
+      "body": [
+        Node {
+          "declarations": [
+            Node {
+              "end": 25,
+              "id": Node {
+                "end": 21,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 11,
+                    "line": 3,
+                  },
+                  "start": Position {
+                    "column": 6,
+                    "line": 3,
+                  },
+                },
+                "name": "count",
+                "start": 16,
+                "type": "Identifier",
+              },
+              "init": Node {
+                "end": 25,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 15,
+                    "line": 3,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 3,
+                  },
+                },
+                "raw": "0",
+                "start": 24,
+                "type": "Literal",
+                "value": 0,
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 15,
+                  "line": 3,
+                },
+                "start": Position {
+                  "column": 6,
+                  "line": 3,
+                },
+              },
+              "start": 16,
+              "type": "VariableDeclarator",
+            },
+          ],
+          "end": 25,
+          "kind": "let",
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 15,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 2,
+              "line": 3,
+            },
+          },
+          "start": 12,
+          "type": "VariableDeclaration",
+        },
+        Node {
+          "declarations": [
+            Node {
+              "end": 72,
+              "id": Node {
+                "end": 43,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 17,
+                    "line": 4,
+                  },
+                  "start": Position {
+                    "column": 8,
+                    "line": 4,
+                  },
+                },
+                "name": "increment",
+                "start": 34,
+                "type": "Identifier",
+              },
+              "init": Node {
+                "async": false,
+                "body": Node {
+                  "body": [
+                    Node {
+                      "end": 68,
+                      "expression": Node {
+                        "end": 68,
+                        "left": Node {
+                          "end": 63,
+                          "loc": SourceLocation {
+                            "end": Position {
+                              "column": 9,
+                              "line": 5,
+                            },
+                            "start": Position {
+                              "column": 4,
+                              "line": 5,
+                            },
+                          },
+                          "name": "count",
+                          "start": 58,
+                          "type": "Identifier",
+                        },
+                        "loc": SourceLocation {
+                          "end": Position {
+                            "column": 14,
+                            "line": 5,
+                          },
+                          "start": Position {
+                            "column": 4,
+                            "line": 5,
+                          },
+                        },
+                        "operator": "+=",
+                        "right": Node {
+                          "end": 68,
+                          "loc": SourceLocation {
+                            "end": Position {
+                              "column": 14,
+                              "line": 5,
+                            },
+                            "start": Position {
+                              "column": 13,
+                              "line": 5,
+                            },
+                          },
+                          "raw": "1",
+                          "start": 67,
+                          "type": "Literal",
+                          "value": 1,
+                        },
+                        "start": 58,
+                        "type": "AssignmentExpression",
+                      },
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 14,
+                          "line": 5,
+                        },
+                        "start": Position {
+                          "column": 4,
+                          "line": 5,
+                        },
+                      },
+                      "start": 58,
+                      "type": "ExpressionStatement",
+                    },
+                  ],
+                  "end": 72,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 3,
+                      "line": 6,
+                    },
+                    "start": Position {
+                      "column": 26,
+                      "line": 4,
+                    },
+                  },
+                  "start": 52,
+                  "type": "BlockStatement",
+                },
+                "end": 72,
+                "expression": false,
+                "generator": false,
+                "id": null,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 3,
+                    "line": 6,
+                  },
+                  "start": Position {
+                    "column": 20,
+                    "line": 4,
+                  },
+                },
+                "params": [],
+                "start": 46,
+                "type": "ArrowFunctionExpression",
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 3,
+                  "line": 6,
+                },
+                "start": Position {
+                  "column": 8,
+                  "line": 4,
+                },
+              },
+              "start": 34,
+              "type": "VariableDeclarator",
+            },
+          ],
+          "end": 72,
+          "kind": "const",
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 3,
+              "line": 6,
+            },
+            "start": Position {
+              "column": 2,
+              "line": 4,
+            },
+          },
+          "start": 28,
+          "type": "VariableDeclaration",
+        },
+      ],
+      "end": 73,
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 0,
+          "line": 7,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "module",
+      "start": 9,
+      "type": "Program",
+    },
+    "context": "default",
+    "end": 82,
+    "start": 1,
+    "type": "Script",
+  },
+  "module": undefined,
+}
+`;

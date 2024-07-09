@@ -49,6 +49,9 @@
     "build": "tsdown",
     "typecheck": "tsc -p ."
   },
+  "dependencies": {
+    "svelte": "4.2.18"
+  },
   "devDependencies": {
     "@kazupon/eslint-config": "^0.5.0",
     "@kazupon/prettier-config": "^0.1.1",
