@@ -1,0 +1,81 @@
+{
+  "name": "svelte-vapor",
+  "version": "0.0.0",
+  "description": "Convert Svelte to Vapor",
+  "keywords": [
+    "svelte",
+    "vapor"
+  ],
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
+  "bugs": {
+    "url": "https://github.com/kazupon/svelte-vapor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazupon/svelte-vapor.git"
+  },
+  "homepage": "https://github.com/kazupon/svelte-vapor#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 18.18"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "prepare": "git config --local core.hooksPath .githooks",
+    "prepublishOnly": "pnpm build",
+    "lint": "run-p \"lint:* {@}\" --",
+    "lint:prettier": "prettier . --check",
+    "lint:eslint": "eslint .",
+    "fix": "run-p \"fix:* {@}\" --",
+    "fix:prettier": "prettier . --write",
+    "fix:eslint": "eslint . --fix",
+    "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
+    "test": "vitest",
+    "build": "tsdown",
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@kazupon/eslint-config": "^0.5.0",
+    "@kazupon/prettier-config": "^0.1.1",
+    "@types/node": "^20.14.10",
+    "eslint": "^9.6.0",
+    "eslint-plugin-regexp": "^2.6.0",
+    "lint-staged": "^15.2.7",
+    "npm-run-all2": "^6.2.2",
+    "prettier": "^3.3.2",
+    "tsdown": "^0.2.3",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.16.0",
+    "vitest": "^2.0.1"
+  },
+  "lint-staged": {
+    "*.{json,md,yml}": [
+      "prettier --write"
+    ],
+    "*.{js,mjs,cjs}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write",
+      "eslint --fix"
+    ]
+  },
+  "prettier": "@kazupon/prettier-config",
+  "packageManager": "pnpm@9.5.0"
+}
