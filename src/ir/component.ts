@@ -2,7 +2,7 @@ import { IRDynamicPropsKind, IRSlotType } from '@vue-vapor/compiler-vapor'
 
 import type { SimpleExpressionNode } from '@vue/compiler-dom'
 // import type { DirectiveTransformResult } from '../transform'
-import type { BlockIRNode, IRFor } from './ast'
+import type { BlockIRNode, IRFor } from './nodes'
 
 // TODO:
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
