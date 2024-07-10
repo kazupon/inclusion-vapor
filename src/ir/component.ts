@@ -9,7 +9,6 @@ import type { BlockIRNode, IRFor } from './ast'
 type DirectiveTransformResult = any
 
 // props
-
 export interface IRProp extends Omit<DirectiveTransformResult, 'value'> {
   values: SimpleExpressionNode[]
 }

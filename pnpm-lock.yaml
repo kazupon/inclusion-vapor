@@ -27,9 +27,6 @@ importers:
       '@types/node':
         specifier: ^20.14.10
         version: 20.14.10
-      '@vue/compiler-core':
-        specifier: ^3.4.31
-        version: 3.4.31
       '@vue/compiler-dom':
         specifier: ^3.4.31
         version: 3.4.31

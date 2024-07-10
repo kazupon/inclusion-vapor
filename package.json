@@ -58,7 +58,6 @@
     "@kazupon/eslint-config": "^0.7.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.14.10",
-    "@vue/compiler-core": "^3.4.31",
     "@vue/compiler-dom": "^3.4.31",
     "eslint": "^9.6.0",
     "eslint-plugin-regexp": "^2.6.0",
