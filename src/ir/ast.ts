@@ -7,7 +7,7 @@ import type {
   DirectiveNode,
   SimpleExpressionNode
 } from '@vue/compiler-dom'
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 import type { IRProp, IRProps, IRSlots } from './component'
 import type { CompileResult } from 'svelte/compiler'
 
@@ -78,14 +78,12 @@ export interface ForIRNode extends BaseIRNode, IRFor {
   once: boolean
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export interface SetPropIRNode extends BaseIRNode {
   type: IRNodeTypes.SET_PROP
   element: number
   prop: IRProp
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export interface SetDynamicPropsIRNode extends BaseIRNode {
   type: IRNodeTypes.SET_DYNAMIC_PROPS
   element: number
@@ -130,7 +128,6 @@ export interface SetHtmlIRNode extends BaseIRNode {
   value: SimpleExpressionNode
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export interface SetTemplateRefIRNode extends BaseIRNode {
   type: IRNodeTypes.SET_TEMPLATE_REF
   element: number
@@ -188,7 +185,6 @@ export interface CreateComponentIRNode extends BaseIRNode {
   once: boolean
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export interface DeclareOldRefIRNode extends BaseIRNode {
   type: IRNodeTypes.DECLARE_OLD_REF
   id: number

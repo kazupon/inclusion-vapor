@@ -11,7 +11,11 @@ export default defineConfig(
   javascript(),
   comments(),
   regexp(),
-  unicorn(),
+  unicorn({
+    rules: {
+      'unicorn/prevent-abbreviations': 'off'
+    }
+  }),
   typescript({
     parserOptions: {
       project: true

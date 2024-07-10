@@ -9,24 +9,23 @@ import type { BlockIRNode, IRFor } from './ast'
 type DirectiveTransformResult = any
 
 // props
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 export interface IRProp extends Omit<DirectiveTransformResult, 'value'> {
   values: SimpleExpressionNode[]
 }
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
 export type IRPropsStatic = IRProp[]
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 export interface IRPropsDynamicExpression {
   kind: IRDynamicPropsKind.EXPRESSION
   value: SimpleExpressionNode
   handler?: boolean
 }
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 export interface IRPropsDynamicAttribute extends IRProp {
   kind: IRDynamicPropsKind.ATTRIBUTE
 }
-// eslint-disable-next-line unicorn/prevent-abbreviations
+
 export type IRProps = IRPropsStatic | IRPropsDynamicAttribute | IRPropsDynamicExpression
 
 // slots
