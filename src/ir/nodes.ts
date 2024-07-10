@@ -8,11 +8,11 @@ import type {
   SimpleExpressionNode
 } from '@vue/compiler-dom'
 
+import type { Prettify } from '@vue/shared'
+import type { TemplateNode as SvelteTemplateNode } from 'svelte/types/compiler/interfaces'
 import type { IRProp, IRProps, IRSlots } from './component'
-import type { CompileResult } from 'svelte/compiler'
-
-export type SvelteAst = CompileResult['ast']
-export type SvelteFragment = CompileResult['ast']['html']
+// TODO: we should be moved to parent directory
+import type { DirectiveTransform, NodeTransform } from '../transform'
 
 export interface BaseIRNode {
   type: IRNodeTypes
@@ -21,7 +21,7 @@ export interface BaseIRNode {
 export interface RootNode /* extends Node */ {
   type: IRNodeTypes.ROOT
   source: string
-  children: SvelteFragment[]
+  children: SvelteTemplateNode[]
   helpers: Set<symbol>
   components: string[]
   directives: string[]
@@ -47,7 +47,7 @@ export interface RootIRNode {
 export interface BlockIRNode extends BaseIRNode {
   type: IRNodeTypes.BLOCK
   // node: RootNode | TemplateChildNode
-  node: RootNode | SvelteFragment
+  node: RootNode | SvelteTemplateNode
   dynamic: IRDynamicInfo
   effect: IREffect[]
   operation: OperationNode[]
@@ -231,17 +231,19 @@ export interface IREffect {
   operations: OperationNode[]
 }
 
+// TODO: we should be moved to `../types`
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & Pick<U, Extract<keyof U, keyof T>>
 
-// export type HackOptions<T> = Prettify<
-//   Overwrite<
-//     T,
-//     {
-//       nodeTransforms?: NodeTransform[]
-//       directiveTransforms?: Record<string, DirectiveTransform | undefined>
-//     }
-//   >
-// >
+// TODO: we should be moved to `../types`
+export type HackOptions<T> = Prettify<
+  Overwrite<
+    T,
+    {
+      nodeTransforms?: NodeTransform[]
+      directiveTransforms?: Record<string, DirectiveTransform | undefined>
+    }
+  >
+>
 
 export type VaporDirectiveNode = Overwrite<
   DirectiveNode,
@@ -250,3 +252,9 @@ export type VaporDirectiveNode = Overwrite<
     arg: Exclude<DirectiveNode['arg'], CompoundExpressionNode>
   }
 >
+
+export {
+  type Ast as SvelteAst,
+  type Element as SvelteElement,
+  type TemplateNode as SvelteTemplateNode
+} from 'svelte/types/compiler/interfaces'

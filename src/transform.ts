@@ -1,16 +1,57 @@
 import { IRNodeTypes } from '@vue-vapor/compiler-vapor'
-import { extend, isArray } from '@vue/shared'
+import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
+import { EMPTY_OBJ, NOOP, extend, isArray } from '@vue/shared'
 import { newBlock } from './transforms/utils'
 
-import type { CompilerCompatOptions } from '@vue-vapor/compiler-dom'
-import type { RootIRNode, RootNode } from './ir'
+import type {
+  CompilerCompatOptions,
+  SimpleExpressionNode,
+  TransformOptions as BaseTransformOptions
+} from '@vue-vapor/compiler-dom'
+import type {
+  RootIRNode,
+  RootNode,
+  BlockIRNode,
+  VaporDirectiveNode,
+  SvelteElement,
+  HackOptions
+} from './ir'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TransformOptions = any // TODO:
-const defaultOptions = {}
+export type NodeTransform = (
+  // node: RootNode | TemplateChildNode,
+  // context: TransformContext<RootNode | TemplateChildNode>,
+  node: BlockIRNode['node'],
+  context: TransformContext<BlockIRNode['node']>
+) => void | (() => void) | (() => void)[]
 
-// TODO:
-export class TransformContext<T = unknown> {
+export type DirectiveTransform = (
+  dir: VaporDirectiveNode,
+  node: SvelteElement, // TODO: maybe, we need to chagne other Svelet AST node
+  context: TransformContext<SvelteElement> // TODO: maybe, we need to chagne other Svelet AST node
+) => DirectiveTransformResult | void
+
+export interface DirectiveTransformResult {
+  key: SimpleExpressionNode
+  value: SimpleExpressionNode
+  modifier?: '.' | '^'
+  runtimeCamelize?: boolean
+  handler?: boolean
+  model?: boolean
+  modelModifiers?: string[]
+}
+
+// // A structural directive transform is technically also a NodeTransform;
+// // Only v-if and v-for fall into this category.
+// export type StructuralDirectiveTransform = (
+//   node: SvelteElement,
+//   dir: VaporDirectiveNode,
+//   context: TransformContext<SvelteElement>,
+// ) => void | (() => void)
+
+export type TransformOptions = HackOptions<BaseTransformOptions>
+
+// TODO: TransformContext implementation
+export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
   root: TransformContext<RootNode>
 
   options: Required<Omit<TransformOptions, 'filename' | keyof CompilerCompatOptions>>
@@ -24,7 +65,31 @@ export class TransformContext<T = unknown> {
   }
 }
 
-// svelte-AST -> IR
+const defaultOptions = {
+  filename: '',
+  prefixIdentifiers: false,
+  hoistStatic: false,
+  hmr: false,
+  cacheHandlers: false,
+  nodeTransforms: [],
+  directiveTransforms: {},
+  transformHoist: null, // eslint-disable-line unicorn/no-null
+  isBuiltInComponent: NOOP,
+  isCustomElement: NOOP,
+  expressionPlugins: [],
+  scopeId: null, // eslint-disable-line unicorn/no-null
+  slotted: true,
+  ssr: false,
+  inSSR: false,
+  ssrCssVars: ``,
+  bindingMetadata: EMPTY_OBJ,
+  inline: false,
+  isTS: false,
+  onError: defaultOnError,
+  onWarn: defaultOnWarn
+}
+
+// Svelte AST -> IR
 export function transform(node: RootNode, options: TransformOptions = {}): RootIRNode {
   const ir: RootIRNode = {
     type: IRNodeTypes.ROOT,
@@ -74,7 +139,6 @@ export function transformNode(context: TransformContext): void {
     exitFns[i]()
   }
 
-  // @ts-expect-error -- TODO
   if (context.node.type === IRNodeTypes.ROOT) {
     // context.registerTemplate()
   }
