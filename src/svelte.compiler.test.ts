@@ -15,13 +15,13 @@ const svelteCode = `
 `
 
 test('compile', () => {
-  const ret = compile(svelteCode)
+  const returnValue = compile(svelteCode)
   // @ts-expect-error -- ignore
-  delete ret['stats']
-  expect(ret).toMatchSnapshot()
+  delete returnValue['stats']
+  expect(returnValue).toMatchSnapshot()
 })
 
 test('parser', () => {
-  const ret = parse(svelteCode)
-  expect(ret).toMatchSnapshot()
+  const returnValue = parse(svelteCode)
+  expect(returnValue).toMatchSnapshot()
 })

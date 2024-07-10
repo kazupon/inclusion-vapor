@@ -1,9 +1,17 @@
-import { defineConfig, javascript, comments, typescript, regexp } from '@kazupon/eslint-config'
+import {
+  defineConfig,
+  javascript,
+  comments,
+  typescript,
+  unicorn,
+  regexp
+} from '@kazupon/eslint-config'
 
 export default defineConfig(
   javascript(),
   comments(),
   regexp(),
+  unicorn(),
   typescript({
     parserOptions: {
       project: true
@@ -11,6 +19,6 @@ export default defineConfig(
   }),
   {
     name: 'ignores',
-    ignores: ['tsdown.config.ts', '**/dist/*']
+    ignores: ['tsdown.config.ts', '**/dist/*', 'pnpm-lock.yaml']
   }
 )
