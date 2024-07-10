@@ -1,6 +1,6 @@
 import { IRNodeTypes } from '@vue-vapor/compiler-vapor'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
-import { EMPTY_OBJ, NOOP, extend, isArray } from '@vue/shared'
+import { EMPTY_OBJ, NOOP, extend, isArray } from '@vue-vapor/shared'
 import { newBlock } from './transforms/utils'
 
 import type {

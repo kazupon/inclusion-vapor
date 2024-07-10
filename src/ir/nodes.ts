@@ -6,9 +6,8 @@ import type {
   CompoundExpressionNode,
   DirectiveNode,
   SimpleExpressionNode
-} from '@vue/compiler-dom'
-
-import type { Prettify } from '@vue/shared'
+} from '@vue-vapor/compiler-dom'
+import type { Prettify } from '@vue-vapor/shared'
 import type { TemplateNode as SvelteTemplateNode } from 'svelte/types/compiler/interfaces'
 import type { IRProp, IRProps, IRSlots } from './component'
 // TODO: we should be moved to parent directory
