@@ -40,7 +40,7 @@ export function compile(
 
   // TODO: tweak options for svelte parser
   const svelteAst = isString(source) ? parse(source) : source
-  // TOOD: convert `instance` and `module` to the Vue API
+  // TODO: convert `instance` and `module` to the Vapor (Vue) runtime API
   // svelteAst.instance
   // svelteAst.module
 

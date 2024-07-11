@@ -26,8 +26,8 @@ export type NodeTransform = (
 
 export type DirectiveTransform = (
   dir: VaporDirectiveNode,
-  node: SvelteElement, // TODO: maybe, we need to chagne other Svelet AST node
-  context: TransformContext<SvelteElement> // TODO: maybe, we need to chagne other Svelet AST node
+  node: SvelteElement, // TODO: maybe, we need to change other Svelet AST node
+  context: TransformContext<SvelteElement> // TODO: maybe, we need to change other Svelet AST node
 ) => DirectiveTransformResult | void
 
 export interface DirectiveTransformResult {
@@ -113,7 +113,7 @@ export function transformNode(context: TransformContext): void {
 
   // apply transform plugins
   const { nodeTransforms } = context.options
-  const exitFns = []
+  const exitFns: ReturnType<NodeTransform> = []
   for (const nodeTransform of nodeTransforms) {
     const onExit = nodeTransform(node, context)
     if (onExit) {
