@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  estree-walker: ^2.0.2
+
 importers:
 
   .:
@@ -1098,9 +1101,6 @@ packages:
 
   estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
-
-  estree-walker@3.0.3:
-    resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
 
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -2483,7 +2483,7 @@ snapshots:
   '@vitest/utils@2.0.1':
     dependencies:
       diff-sequences: 29.6.3
-      estree-walker: 3.0.3
+      estree-walker: 2.0.2
       loupe: 3.1.1
       pretty-format: 29.7.0
 
@@ -2650,7 +2650,7 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.4.15
       '@types/estree': 1.0.5
       acorn: 8.12.1
-      estree-walker: 3.0.3
+      estree-walker: 2.0.2
       periscopic: 3.1.0
 
   color-convert@1.9.3:
@@ -2881,10 +2881,6 @@ snapshots:
   estraverse@5.3.0: {}
 
   estree-walker@2.0.2: {}
-
-  estree-walker@3.0.3:
-    dependencies:
-      '@types/estree': 1.0.5
 
   esutils@2.0.3: {}
 
@@ -3299,7 +3295,7 @@ snapshots:
   periscopic@3.1.0:
     dependencies:
       '@types/estree': 1.0.5
-      estree-walker: 3.0.3
+      estree-walker: 2.0.2
       is-reference: 3.0.2
 
   picocolors@1.0.1: {}
@@ -3539,7 +3535,7 @@ snapshots:
       axobject-query: 4.0.0
       code-red: 1.0.4
       css-tree: 2.3.1
-      estree-walker: 3.0.3
+      estree-walker: 2.0.2
       is-reference: 3.0.2
       locate-character: 3.0.0
       magic-string: 0.30.10

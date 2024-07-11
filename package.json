@@ -70,6 +70,11 @@
     "typescript-eslint": "^7.16.0",
     "vitest": "^2.0.1"
   },
+  "pnpm": {
+    "overrides": {
+      "estree-walker": "^2.0.2"
+    }
+  },
   "lint-staged": {
     "*.{json,md,yml}": [
       "prettier --write"

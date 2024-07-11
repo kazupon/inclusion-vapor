@@ -1,8 +1,9 @@
 import { parse } from 'svelte/compiler'
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
-import { IRNodeTypes, generate } from '@vue-vapor/compiler-vapor'
+import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
 import { transform } from './transform'
+import { IRNodeTypes } from './ir'
 
 import type {
   CompilerOptions,

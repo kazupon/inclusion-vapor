@@ -1,4 +1,4 @@
-import { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
+import { IRNodeTypes, DynamicFlag } from '../ir'
 
 import type { BlockIRNode, IRDynamicInfo } from '../ir'
 

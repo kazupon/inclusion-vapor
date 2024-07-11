@@ -257,3 +257,5 @@ export {
   type Element as SvelteElement,
   type TemplateNode as SvelteTemplateNode
 } from 'svelte/types/compiler/interfaces'
+
+export { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
