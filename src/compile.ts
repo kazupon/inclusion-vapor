@@ -11,7 +11,7 @@ import type {
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
 import type { SvelteAst, RootNode } from './ir'
-import type { NodeTransform, DirectiveTransform } from './transform'
+import type { NodeTransform, DirectiveTransform } from './transforms'
 
 // Svelte Code / Svelte AST -> IR (transform) -> JS (generate)
 export function compile(

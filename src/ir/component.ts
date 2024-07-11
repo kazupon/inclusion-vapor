@@ -1,12 +1,8 @@
 import { IRDynamicPropsKind, IRSlotType } from '@vue-vapor/compiler-vapor'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-// import type { DirectiveTransformResult } from '../transform'
 import type { BlockIRNode, IRFor } from './nodes'
-
-// TODO:
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DirectiveTransformResult = any
+import type { DirectiveTransformResult } from '../transforms'
 
 // props
 export interface IRProp extends Omit<DirectiveTransformResult, 'value'> {

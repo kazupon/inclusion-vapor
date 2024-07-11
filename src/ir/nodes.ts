@@ -7,11 +7,9 @@ import type {
   DirectiveNode,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
-import type { Prettify } from '@vue-vapor/shared'
 import type { TemplateNode as SvelteTemplateNode } from 'svelte/types/compiler/interfaces'
 import type { IRProp, IRProps, IRSlots } from './component'
-// TODO: we should be moved to parent directory
-import type { DirectiveTransform, NodeTransform } from '../transform'
+import type { Overwrite } from '../types'
 
 export interface BaseIRNode {
   type: IRNodeTypes
@@ -45,7 +43,6 @@ export interface RootIRNode {
 
 export interface BlockIRNode extends BaseIRNode {
   type: IRNodeTypes.BLOCK
-  // node: RootNode | TemplateChildNode
   node: RootNode | SvelteTemplateNode
   dynamic: IRDynamicInfo
   effect: IREffect[]
@@ -230,20 +227,6 @@ export interface IREffect {
   operations: OperationNode[]
 }
 
-// TODO: we should be moved to `../types`
-type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & Pick<U, Extract<keyof U, keyof T>>
-
-// TODO: we should be moved to `../types`
-export type HackOptions<T> = Prettify<
-  Overwrite<
-    T,
-    {
-      nodeTransforms?: NodeTransform[]
-      directiveTransforms?: Record<string, DirectiveTransform | undefined>
-    }
-  >
->
-
 export type VaporDirectiveNode = Overwrite<
   DirectiveNode,
   {
@@ -252,10 +235,11 @@ export type VaporDirectiveNode = Overwrite<
   }
 >
 
-export {
-  type Ast as SvelteAst,
-  type Element as SvelteElement,
-  type TemplateNode as SvelteTemplateNode
+export type {
+  Ast as SvelteAst,
+  Element as SvelteElement,
+  TemplateNode as SvelteTemplateNode,
+  Comment as SvelteComment
 } from 'svelte/types/compiler/interfaces'
 
 export { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'

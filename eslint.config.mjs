@@ -13,7 +13,15 @@ export default defineConfig(
   regexp(),
   unicorn({
     rules: {
-      'unicorn/prevent-abbreviations': 'off'
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/filename-case': [
+        'error',
+        {
+          cases: {
+            camelCase: true
+          }
+        }
+      ]
     }
   }),
   typescript({
