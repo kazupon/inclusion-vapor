@@ -30,7 +30,7 @@ Svelte based on v4 (v3)
 - [ ] Element directives
   - [ ] `on:eventname`
   - [ ] `bind:property`
-  - [ ] Binding <select> value
+  - [ ] Binding `<select>` value
   - [ ] Media element bindings
   - [ ] Image element bindings
   - [ ] Block-level element bindings
@@ -47,7 +47,7 @@ Svelte based on v4 (v3)
   - [ ] `animate:fn`
   - [ ] Animation Parameters
   - [ ] Custom animation functions
-- [ ]Component directives
+- [ ] Component directives
   - [ ] `on:eventname`
   - [ ] `--style-props`
   - [ ] `bind:property`
