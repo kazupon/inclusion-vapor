@@ -1,0 +1,613 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compiler: children transform > components 1`] = `
+"
+export function render(_ctx) {
+  return n0
+}"
+`;
+
+exports[`compiler: children transform > components 2`] = `
+{
+  "block": {
+    "dynamic": {
+      "children": [
+        {
+          "children": [],
+          "flags": 1,
+          "id": 0,
+        },
+      ],
+      "flags": 1,
+    },
+    "effect": [],
+    "node": {
+      "children": [
+        {
+          "attributes": [],
+          "children": [
+            {
+              "data": "
+        ",
+              "end": 14,
+              "raw": "
+        ",
+              "start": 5,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "end": 26,
+                  "expression": Node {
+                    "end": 24,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 18,
+                        "line": 2,
+                      },
+                      "start": Position {
+                        "column": 15,
+                        "line": 2,
+                      },
+                    },
+                    "name": "foo",
+                    "start": 21,
+                    "type": "Identifier",
+                  },
+                  "start": 19,
+                  "type": "MustacheTag",
+                },
+              ],
+              "end": 32,
+              "name": "Foo",
+              "start": 14,
+              "type": "InlineComponent",
+            },
+            {
+              "data": "
+        ",
+              "end": 41,
+              "raw": "
+        ",
+              "start": 32,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "attributes": [],
+                  "children": [],
+                  "end": 53,
+                  "name": "Baz",
+                  "start": 46,
+                  "type": "InlineComponent",
+                },
+              ],
+              "end": 59,
+              "name": "Bar",
+              "start": 41,
+              "type": "InlineComponent",
+            },
+            {
+              "data": "
+      ",
+              "end": 66,
+              "raw": "
+      ",
+              "start": 59,
+              "type": "Text",
+            },
+          ],
+          "end": 72,
+          "name": "div",
+          "start": 0,
+          "type": "Element",
+        },
+      ],
+      "components": [],
+      "directives": [],
+      "helpers": Set {},
+      "source": "<div>
+        <Foo>{ foo }</Foo>
+        <Bar><Baz /></Bar>
+      </div>",
+      "temps": 0,
+      "type": 0,
+    },
+    "operation": [],
+    "returns": [
+      0,
+    ],
+    "type": 1,
+  },
+  "component": Set {},
+  "directive": Set {},
+  "node": {
+    "children": [
+      {
+        "attributes": [],
+        "children": [
+          {
+            "data": "
+        ",
+            "end": 14,
+            "raw": "
+        ",
+            "start": 5,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "end": 26,
+                "expression": Node {
+                  "end": 24,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 18,
+                      "line": 2,
+                    },
+                    "start": Position {
+                      "column": 15,
+                      "line": 2,
+                    },
+                  },
+                  "name": "foo",
+                  "start": 21,
+                  "type": "Identifier",
+                },
+                "start": 19,
+                "type": "MustacheTag",
+              },
+            ],
+            "end": 32,
+            "name": "Foo",
+            "start": 14,
+            "type": "InlineComponent",
+          },
+          {
+            "data": "
+        ",
+            "end": 41,
+            "raw": "
+        ",
+            "start": 32,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "attributes": [],
+                "children": [],
+                "end": 53,
+                "name": "Baz",
+                "start": 46,
+                "type": "InlineComponent",
+              },
+            ],
+            "end": 59,
+            "name": "Bar",
+            "start": 41,
+            "type": "InlineComponent",
+          },
+          {
+            "data": "
+      ",
+            "end": 66,
+            "raw": "
+      ",
+            "start": 59,
+            "type": "Text",
+          },
+        ],
+        "end": 72,
+        "name": "div",
+        "start": 0,
+        "type": "Element",
+      },
+    ],
+    "components": [],
+    "directives": [],
+    "helpers": Set {},
+    "source": "<div>
+        <Foo>{ foo }</Foo>
+        <Bar><Baz /></Bar>
+      </div>",
+    "temps": 0,
+    "type": 0,
+  },
+  "source": "<div>
+        <Foo>{ foo }</Foo>
+        <Bar><Baz /></Bar>
+      </div>",
+  "template": [],
+  "type": 0,
+}
+`;
+
+exports[`compiler: children transform > sibling references 1`] = `
+"
+export function render(_ctx) {
+  return n0
+}"
+`;
+
+exports[`compiler: children transform > sibling references 2`] = `
+{
+  "block": {
+    "dynamic": {
+      "children": [
+        {
+          "children": [],
+          "flags": 1,
+          "id": 0,
+        },
+      ],
+      "flags": 1,
+    },
+    "effect": [],
+    "node": {
+      "children": [
+        {
+          "attributes": [],
+          "children": [
+            {
+              "data": "
+        ",
+              "end": 14,
+              "raw": "
+        ",
+              "start": 5,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "end": 26,
+                  "expression": Node {
+                    "end": 24,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 18,
+                        "line": 2,
+                      },
+                      "start": Position {
+                        "column": 13,
+                        "line": 2,
+                      },
+                    },
+                    "name": "first",
+                    "start": 19,
+                    "type": "Identifier",
+                  },
+                  "start": 17,
+                  "type": "MustacheTag",
+                },
+              ],
+              "end": 30,
+              "name": "p",
+              "start": 14,
+              "type": "Element",
+            },
+            {
+              "data": "
+        ",
+              "end": 39,
+              "raw": "
+        ",
+              "start": 30,
+              "type": "Text",
+            },
+            {
+              "end": 49,
+              "expression": Node {
+                "end": 47,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 16,
+                    "line": 3,
+                  },
+                  "start": Position {
+                    "column": 10,
+                    "line": 3,
+                  },
+                },
+                "name": "second",
+                "start": 41,
+                "type": "Identifier",
+              },
+              "start": 39,
+              "type": "MustacheTag",
+            },
+            {
+              "data": "
+        ",
+              "end": 58,
+              "raw": "
+        ",
+              "start": 49,
+              "type": "Text",
+            },
+            {
+              "end": 67,
+              "expression": Node {
+                "end": 65,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 15,
+                    "line": 4,
+                  },
+                  "start": Position {
+                    "column": 10,
+                    "line": 4,
+                  },
+                },
+                "name": "third",
+                "start": 60,
+                "type": "Identifier",
+              },
+              "start": 58,
+              "type": "MustacheTag",
+            },
+            {
+              "data": "
+        ",
+              "end": 76,
+              "raw": "
+        ",
+              "start": 67,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "end": 88,
+                  "expression": Node {
+                    "end": 86,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 18,
+                        "line": 5,
+                      },
+                      "start": Position {
+                        "column": 13,
+                        "line": 5,
+                      },
+                    },
+                    "name": "forth",
+                    "start": 81,
+                    "type": "Identifier",
+                  },
+                  "start": 79,
+                  "type": "MustacheTag",
+                },
+              ],
+              "end": 92,
+              "name": "p",
+              "start": 76,
+              "type": "Element",
+            },
+            {
+              "data": "
+      ",
+              "end": 99,
+              "raw": "
+      ",
+              "start": 92,
+              "type": "Text",
+            },
+          ],
+          "end": 105,
+          "name": "div",
+          "start": 0,
+          "type": "Element",
+        },
+      ],
+      "components": [],
+      "directives": [],
+      "helpers": Set {},
+      "source": "<div>
+        <p>{ first }</p>
+        { second }
+        { third }
+        <p>{ forth }</p>
+      </div>",
+      "temps": 0,
+      "type": 0,
+    },
+    "operation": [],
+    "returns": [
+      0,
+    ],
+    "type": 1,
+  },
+  "component": Set {},
+  "directive": Set {},
+  "node": {
+    "children": [
+      {
+        "attributes": [],
+        "children": [
+          {
+            "data": "
+        ",
+            "end": 14,
+            "raw": "
+        ",
+            "start": 5,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "end": 26,
+                "expression": Node {
+                  "end": 24,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 18,
+                      "line": 2,
+                    },
+                    "start": Position {
+                      "column": 13,
+                      "line": 2,
+                    },
+                  },
+                  "name": "first",
+                  "start": 19,
+                  "type": "Identifier",
+                },
+                "start": 17,
+                "type": "MustacheTag",
+              },
+            ],
+            "end": 30,
+            "name": "p",
+            "start": 14,
+            "type": "Element",
+          },
+          {
+            "data": "
+        ",
+            "end": 39,
+            "raw": "
+        ",
+            "start": 30,
+            "type": "Text",
+          },
+          {
+            "end": 49,
+            "expression": Node {
+              "end": 47,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "line": 3,
+                },
+                "start": Position {
+                  "column": 10,
+                  "line": 3,
+                },
+              },
+              "name": "second",
+              "start": 41,
+              "type": "Identifier",
+            },
+            "start": 39,
+            "type": "MustacheTag",
+          },
+          {
+            "data": "
+        ",
+            "end": 58,
+            "raw": "
+        ",
+            "start": 49,
+            "type": "Text",
+          },
+          {
+            "end": 67,
+            "expression": Node {
+              "end": 65,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 15,
+                  "line": 4,
+                },
+                "start": Position {
+                  "column": 10,
+                  "line": 4,
+                },
+              },
+              "name": "third",
+              "start": 60,
+              "type": "Identifier",
+            },
+            "start": 58,
+            "type": "MustacheTag",
+          },
+          {
+            "data": "
+        ",
+            "end": 76,
+            "raw": "
+        ",
+            "start": 67,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "end": 88,
+                "expression": Node {
+                  "end": 86,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 18,
+                      "line": 5,
+                    },
+                    "start": Position {
+                      "column": 13,
+                      "line": 5,
+                    },
+                  },
+                  "name": "forth",
+                  "start": 81,
+                  "type": "Identifier",
+                },
+                "start": 79,
+                "type": "MustacheTag",
+              },
+            ],
+            "end": 92,
+            "name": "p",
+            "start": 76,
+            "type": "Element",
+          },
+          {
+            "data": "
+      ",
+            "end": 99,
+            "raw": "
+      ",
+            "start": 92,
+            "type": "Text",
+          },
+        ],
+        "end": 105,
+        "name": "div",
+        "start": 0,
+        "type": "Element",
+      },
+    ],
+    "components": [],
+    "directives": [],
+    "helpers": Set {},
+    "source": "<div>
+        <p>{ first }</p>
+        { second }
+        { third }
+        <p>{ forth }</p>
+      </div>",
+    "temps": 0,
+    "type": 0,
+  },
+  "source": "<div>
+        <p>{ first }</p>
+        { second }
+        { third }
+        <p>{ forth }</p>
+      </div>",
+  "template": [],
+  "type": 0,
+}
+`;

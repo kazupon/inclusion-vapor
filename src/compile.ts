@@ -6,12 +6,12 @@ import { transform } from './transform'
 import { IRNodeTypes } from './ir'
 
 import type {
-  CompilerOptions,
+  CompilerOptions as BaseCompilerOptions,
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
 import type { SvelteAst, RootNode } from './ir'
-import type { NodeTransform, DirectiveTransform } from './transforms'
+import type { HackOptions, NodeTransform, DirectiveTransform } from './transforms'
 
 // Svelte Code / Svelte AST -> IR (transform) -> JS (generate)
 export function compile(
@@ -59,7 +59,6 @@ export function compile(
 
   const ir = transform(
     ast,
-    // @ts-expect-error -- FIXME: TS2345
     extend({}, resolvedOptions, {
       nodeTransforms: [
         ...nodeTransforms,
@@ -76,7 +75,7 @@ export function compile(
   return generate(ir as unknown as VaporRootIRNode, resolvedOptions)
 }
 
-// export type CompilerOptions = HackOptions<BaseCompilerOptions>
+export type CompilerOptions = HackOptions<BaseCompilerOptions>
 export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {

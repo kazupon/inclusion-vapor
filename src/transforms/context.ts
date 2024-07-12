@@ -1,7 +1,7 @@
 import { EMPTY_OBJ, NOOP, extend } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
 import { newDynamic } from './utils'
-import { IRDynamicInfo } from '../ir'
+import { IRDynamicInfo, DynamicFlag } from '../ir'
 
 import type {
   CompilerCompatOptions,
@@ -82,6 +82,14 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
   }
 
   increaseId = (): number => this.globalId++
+
+  reference(): number {
+    if (this.dynamic.id !== undefined) {
+      return this.dynamic.id
+    }
+    this.dynamic.flags |= DynamicFlag.REFERENCED
+    return (this.dynamic.id = this.increaseId())
+  }
 
   pushTemplate(content: string): number {
     const existing = this.ir.template.indexOf(content)
