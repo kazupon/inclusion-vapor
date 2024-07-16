@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Svelete Attribute Node > components 1`] = `
+exports[`Svelte Attribute Node > components 1`] = `
 "import { resolveComponent as _resolveComponent, children as _children, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"></div>")
 
@@ -22,7 +22,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Svelete Attribute Node > components 2`] = `
+exports[`Svelte Attribute Node > components 2`] = `
 {
   "block": {
     "dynamic": {
@@ -463,7 +463,7 @@ exports[`Svelete Attribute Node > components 2`] = `
 }
 `;
 
-exports[`Svelete Attribute Node > components 3`] = `
+exports[`Svelte Attribute Node > components 3`] = `
 Set {
   "resolveComponent",
   "children",
@@ -472,7 +472,7 @@ Set {
 }
 `;
 
-exports[`Svelete Attribute Node > native elements 1`] = `
+exports[`Svelte Attribute Node > native elements 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<p style=\\"color: red;\\"></p>")
 const t1 = _template("<img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\">")
@@ -510,7 +510,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Svelete Attribute Node > native elements 2`] = `
+exports[`Svelte Attribute Node > native elements 2`] = `
 {
   "block": {
     "dynamic": {
@@ -1310,7 +1310,7 @@ exports[`Svelete Attribute Node > native elements 2`] = `
 }
 `;
 
-exports[`Svelete Attribute Node > native elements 3`] = `
+exports[`Svelte Attribute Node > native elements 3`] = `
 Set {
   "template",
 }

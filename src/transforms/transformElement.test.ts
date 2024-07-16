@@ -7,7 +7,7 @@ const compileWithTransform = makeCompile({
   nodeTransforms: [transformChildren, transformElement]
 })
 
-describe('Svelete Attribute Node', () => {
+describe('Svelte Attribute Node', () => {
   test('native elements', () => {
     const { ir, code, vaporHelpers } = compileWithTransform(
       `<div class="container">
