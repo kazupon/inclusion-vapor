@@ -1,16 +1,24 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+// Forked from `@vue/compiler-vapor`
+// Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
+// Repository url: https://github.com/vuejs/core-vapor
+
 import { EMPTY_OBJ, NOOP, extend } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
-import { newDynamic } from './utils'
+import { newDynamic, isConstantExpression } from './utils'
 import { IRDynamicInfo, DynamicFlag } from '../ir'
 
 import type {
   CompilerCompatOptions,
+  SimpleExpressionNode,
   TransformOptions as BaseTransformOptions
 } from '@vue-vapor/compiler-dom'
 import type {
   RootNode,
   RootIRNode,
   BlockIRNode,
+  OperationNode,
   IRSlots,
   SvelteTemplateNode,
   SvelteComment
@@ -106,6 +114,31 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
     }
     const id = this.pushTemplate(this.template)
     return (this.dynamic.template = id)
+  }
+
+  registerEffect(expressions: SimpleExpressionNode[], ...operations: OperationNode[]): void {
+    expressions = expressions.filter(exp => !isConstantExpression(exp))
+    if (this.inVOnce || expressions.length === 0) {
+      return this.registerOperation(...operations)
+    }
+    const existing = this.block.effect.find(e => isSameExpression(e.expressions, expressions))
+    if (existing) {
+      existing.operations.push(...operations)
+    } else {
+      this.block.effect.push({
+        expressions,
+        operations
+      })
+    }
+
+    function isSameExpression(a: SimpleExpressionNode[], b: SimpleExpressionNode[]) {
+      if (a.length !== b.length) return false
+      return a.every((exp, i) => exp.content === b[i].content)
+    }
+  }
+
+  registerOperation(...node: OperationNode[]): void {
+    this.block.operation.push(...node)
   }
 
   create<T extends SvelteTemplateNode>(node: T, index: number): TransformContext<T> {

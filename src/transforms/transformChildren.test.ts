@@ -9,6 +9,23 @@ const compileWithTransform = makeCompile({
 describe('compiler: children transform', () => {
   test.todo('basic')
 
+  test('native elements', () => {
+    const {
+      ir,
+      code,
+      vaporHelpers: _
+    } = compileWithTransform(
+      `<div>
+        <div>
+          <p>Hello</p>
+        </div>
+        <p>World</p>
+      </div>`
+    )
+    expect(code).toMatchSnapshot()
+    expect(ir).toMatchSnapshot()
+  })
+
   test('sibling references', () => {
     const {
       ir,

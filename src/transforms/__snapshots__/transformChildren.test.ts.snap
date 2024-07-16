@@ -3,7 +3,14 @@
 exports[`compiler: children transform > components 1`] = `
 "
 export function render(_ctx) {
-  return n0
+  const n0 = n7.firstChild
+  const n2 = n0.nextSibling
+  const n1 = n2.firstChild
+  const n3 = n2.nextSibling
+  const n5 = n3.nextSibling
+  const n4 = n5.firstChild
+  const n6 = n5.nextSibling
+  return [n0, n1, n2, n3, n4, n5, n6, n7]
 }"
 `;
 
@@ -13,9 +20,47 @@ exports[`compiler: children transform > components 2`] = `
     "dynamic": {
       "children": [
         {
-          "children": [],
+          "children": [
+            {
+              "children": [],
+              "flags": 1,
+              "id": 0,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 1,
+                },
+              ],
+              "flags": 1,
+              "id": 2,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 3,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 4,
+                },
+              ],
+              "flags": 1,
+              "id": 5,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 6,
+            },
+          ],
           "flags": 1,
-          "id": 0,
+          "id": 7,
         },
       ],
       "flags": 1,
@@ -120,6 +165,13 @@ exports[`compiler: children transform > components 2`] = `
     "operation": [],
     "returns": [
       0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
     ],
     "type": 1,
   },
@@ -230,10 +282,355 @@ exports[`compiler: children transform > components 2`] = `
 }
 `;
 
+exports[`compiler: children transform > native elements 1`] = `
+"
+export function render(_ctx) {
+  const n0 = n10.firstChild
+  const n5 = n0.nextSibling
+  const n1 = n5.firstChild
+  const n3 = n1.nextSibling
+  const n2 = n3.firstChild
+  const n4 = n3.nextSibling
+  const n6 = n5.nextSibling
+  const n8 = n6.nextSibling
+  const n7 = n8.firstChild
+  const n9 = n8.nextSibling
+  return [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10]
+}"
+`;
+
+exports[`compiler: children transform > native elements 2`] = `
+{
+  "block": {
+    "dynamic": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "flags": 1,
+              "id": 0,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 1,
+                },
+                {
+                  "children": [
+                    {
+                      "children": [],
+                      "flags": 1,
+                      "id": 2,
+                    },
+                  ],
+                  "flags": 1,
+                  "id": 3,
+                },
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 4,
+                },
+              ],
+              "flags": 1,
+              "id": 5,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 6,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 7,
+                },
+              ],
+              "flags": 1,
+              "id": 8,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 9,
+            },
+          ],
+          "flags": 1,
+          "id": 10,
+        },
+      ],
+      "flags": 1,
+    },
+    "effect": [],
+    "node": {
+      "children": [
+        {
+          "attributes": [],
+          "children": [
+            {
+              "data": "
+        ",
+              "end": 14,
+              "raw": "
+        ",
+              "start": 5,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "data": "
+          ",
+                  "end": 30,
+                  "raw": "
+          ",
+                  "start": 19,
+                  "type": "Text",
+                },
+                {
+                  "attributes": [],
+                  "children": [
+                    {
+                      "data": "Hello",
+                      "end": 38,
+                      "raw": "Hello",
+                      "start": 33,
+                      "type": "Text",
+                    },
+                  ],
+                  "end": 42,
+                  "name": "p",
+                  "start": 30,
+                  "type": "Element",
+                },
+                {
+                  "data": "
+        ",
+                  "end": 51,
+                  "raw": "
+        ",
+                  "start": 42,
+                  "type": "Text",
+                },
+              ],
+              "end": 57,
+              "name": "div",
+              "start": 14,
+              "type": "Element",
+            },
+            {
+              "data": "
+        ",
+              "end": 66,
+              "raw": "
+        ",
+              "start": 57,
+              "type": "Text",
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "data": "World",
+                  "end": 74,
+                  "raw": "World",
+                  "start": 69,
+                  "type": "Text",
+                },
+              ],
+              "end": 78,
+              "name": "p",
+              "start": 66,
+              "type": "Element",
+            },
+            {
+              "data": "
+      ",
+              "end": 85,
+              "raw": "
+      ",
+              "start": 78,
+              "type": "Text",
+            },
+          ],
+          "end": 91,
+          "name": "div",
+          "start": 0,
+          "type": "Element",
+        },
+      ],
+      "components": [],
+      "directives": [],
+      "helpers": Set {},
+      "source": "<div>
+        <div>
+          <p>Hello</p>
+        </div>
+        <p>World</p>
+      </div>",
+      "temps": 0,
+      "type": 0,
+    },
+    "operation": [],
+    "returns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+    ],
+    "type": 1,
+  },
+  "component": Set {},
+  "directive": Set {},
+  "node": {
+    "children": [
+      {
+        "attributes": [],
+        "children": [
+          {
+            "data": "
+        ",
+            "end": 14,
+            "raw": "
+        ",
+            "start": 5,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "data": "
+          ",
+                "end": 30,
+                "raw": "
+          ",
+                "start": 19,
+                "type": "Text",
+              },
+              {
+                "attributes": [],
+                "children": [
+                  {
+                    "data": "Hello",
+                    "end": 38,
+                    "raw": "Hello",
+                    "start": 33,
+                    "type": "Text",
+                  },
+                ],
+                "end": 42,
+                "name": "p",
+                "start": 30,
+                "type": "Element",
+              },
+              {
+                "data": "
+        ",
+                "end": 51,
+                "raw": "
+        ",
+                "start": 42,
+                "type": "Text",
+              },
+            ],
+            "end": 57,
+            "name": "div",
+            "start": 14,
+            "type": "Element",
+          },
+          {
+            "data": "
+        ",
+            "end": 66,
+            "raw": "
+        ",
+            "start": 57,
+            "type": "Text",
+          },
+          {
+            "attributes": [],
+            "children": [
+              {
+                "data": "World",
+                "end": 74,
+                "raw": "World",
+                "start": 69,
+                "type": "Text",
+              },
+            ],
+            "end": 78,
+            "name": "p",
+            "start": 66,
+            "type": "Element",
+          },
+          {
+            "data": "
+      ",
+            "end": 85,
+            "raw": "
+      ",
+            "start": 78,
+            "type": "Text",
+          },
+        ],
+        "end": 91,
+        "name": "div",
+        "start": 0,
+        "type": "Element",
+      },
+    ],
+    "components": [],
+    "directives": [],
+    "helpers": Set {},
+    "source": "<div>
+        <div>
+          <p>Hello</p>
+        </div>
+        <p>World</p>
+      </div>",
+    "temps": 0,
+    "type": 0,
+  },
+  "source": "<div>
+        <div>
+          <p>Hello</p>
+        </div>
+        <p>World</p>
+      </div>",
+  "template": [],
+  "type": 0,
+}
+`;
+
 exports[`compiler: children transform > sibling references 1`] = `
 "
 export function render(_ctx) {
-  return n0
+  const n0 = n11.firstChild
+  const n2 = n0.nextSibling
+  const n1 = n2.firstChild
+  const n3 = n2.nextSibling
+  const n4 = n3.nextSibling
+  const n5 = n4.nextSibling
+  const n6 = n5.nextSibling
+  const n7 = n6.nextSibling
+  const n9 = n7.nextSibling
+  const n8 = n9.firstChild
+  const n10 = n9.nextSibling
+  return [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11]
 }"
 `;
 
@@ -243,9 +640,67 @@ exports[`compiler: children transform > sibling references 2`] = `
     "dynamic": {
       "children": [
         {
-          "children": [],
+          "children": [
+            {
+              "children": [],
+              "flags": 1,
+              "id": 0,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 1,
+                },
+              ],
+              "flags": 1,
+              "id": 2,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 3,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 4,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 5,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 6,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 7,
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "flags": 1,
+                  "id": 8,
+                },
+              ],
+              "flags": 1,
+              "id": 9,
+            },
+            {
+              "children": [],
+              "flags": 1,
+              "id": 10,
+            },
+          ],
           "flags": 1,
-          "id": 0,
+          "id": 11,
         },
       ],
       "flags": 1,
@@ -425,6 +880,17 @@ exports[`compiler: children transform > sibling references 2`] = `
     "operation": [],
     "returns": [
       0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
     ],
     "type": 1,
   },

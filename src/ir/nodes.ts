@@ -1,13 +1,18 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+// Forked from `@vue/compiler-vapor`
+// Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
+// Repository url: https://github.com/vuejs/core-vapor
+
 import { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
 
 import type {
-  // Node,
   BindingTypes,
   CompoundExpressionNode,
   DirectiveNode,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
-import type { TemplateNode as SvelteTemplateNode } from 'svelte/types/compiler/interfaces'
+import type { SvelteTemplateNode } from './svelte'
 import type { IRProp, IRProps, IRSlots } from './component'
 import type { Overwrite } from '../types'
 
@@ -234,12 +239,5 @@ export type VaporDirectiveNode = Overwrite<
     arg: Exclude<DirectiveNode['arg'], CompoundExpressionNode>
   }
 >
-
-export type {
-  Ast as SvelteAst,
-  Element as SvelteElement,
-  TemplateNode as SvelteTemplateNode,
-  Comment as SvelteComment
-} from 'svelte/types/compiler/interfaces'
 
 export { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
