@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`line break 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<!--\\n    hello world\\n    -->")
+
+export function render(_ctx) {
+  const n1 = t0()
+  return [n0, n1]
+}"
+`;
+
+exports[`simple comment 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<!-- hello world -->")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;

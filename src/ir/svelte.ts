@@ -7,6 +7,7 @@ import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   Element as SvelteElement,
   BaseNode as SvelteBaseNode,
+  Comment as SveletComment,
   Text as SvelteText,
   MustacheTag as SvelteMustacheTag
 } from 'svelte/types/compiler/interfaces'
@@ -46,6 +47,10 @@ export function isSvelteMustacheTag(node: unknown): node is SvelteMustacheTag {
 
 export function isSvelteText(node: unknown): node is SvelteText {
   return isObject(node) && 'type' in node && node.type === 'Text'
+}
+
+export function isSvelteComment(node: unknown): node is SveletComment {
+  return isObject(node) && 'type' in node && node.type === 'Comment'
 }
 
 export function convertToSourceLocation(node: SvelteBaseNode, source: string): SourceLocation {
