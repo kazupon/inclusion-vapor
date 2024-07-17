@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-import { makeMap } from '@vue-vapor/shared'
+import { makeMap, isObject } from '@vue-vapor/shared'
 
 import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   Element as SvelteElement,
-  BaseNode as SvelteBaseNode
+  BaseNode as SvelteBaseNode,
+  Text as SvelteText,
+  MustacheTag as SvelteMustacheTag
 } from 'svelte/types/compiler/interfaces'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
@@ -29,12 +31,21 @@ const SVELTE_ELEMENT_TYPES = new Set([
 ])
 
 export function isSvelteElement(node: unknown): node is SvelteElement {
+  return isObject(node) && 'type' in node && SVELTE_ELEMENT_TYPES.has((node as SvelteBaseNode).type)
+}
+
+const SVELETE_MUSTACHE_TAG_TYPES = new Set(['MustacheTag', 'RawMustacheTag'])
+
+export function isSvelteMustacheTag(node: unknown): node is SvelteMustacheTag {
   return (
-    typeof node === 'object' &&
-    node !== null &&
+    isObject(node) &&
     'type' in node &&
-    SVELTE_ELEMENT_TYPES.has((node as SvelteBaseNode).type)
+    SVELETE_MUSTACHE_TAG_TYPES.has((node as SvelteBaseNode).type)
   )
+}
+
+export function isSvelteText(node: unknown): node is SvelteText {
+  return isObject(node) && 'type' in node && node.type === 'Text'
 }
 
 export function convertToSourceLocation(node: SvelteBaseNode, source: string): SourceLocation {
@@ -58,6 +69,7 @@ export type {
   Element as SvelteElement,
   TemplateNode as SvelteTemplateNode,
   Text as SvelteText,
+  MustacheTag as SvelteMustacheTag,
   Comment as SvelteComment,
   Attribute as SvelteAttribute,
   SpreadAttribute as SvelteSpreadAttribute,

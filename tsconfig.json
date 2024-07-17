@@ -106,5 +106,5 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["**/*.ts", "**/*.d.ts"],
-  "exclude": ["tsdown.config.ts"]
+  "exclude": ["tsdown.config.ts", "vitest.config.ts"]
 }

@@ -50,6 +50,7 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
+    "@babel/parser": "^7.24.8",
     "@vue-vapor/compiler-dom": "3.20240702.0-b44ca85",
     "@vue-vapor/compiler-vapor": "3.20240702.0-b44ca85",
     "@vue-vapor/shared": "3.20240702.0-b44ca85",

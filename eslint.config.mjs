@@ -31,6 +31,6 @@ export default defineConfig(
   }),
   {
     name: 'ignores',
-    ignores: ['tsdown.config.ts', '**/dist/*', 'pnpm-lock.yaml']
+    ignores: ['tsdown.config.ts', 'vitest.config.ts', '**/dist/*', 'pnpm-lock.yaml']
   }
 )
