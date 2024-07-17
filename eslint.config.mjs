@@ -3,6 +3,7 @@ import {
   javascript,
   comments,
   typescript,
+  jsonc,
   unicorn,
   regexp
 } from '@kazupon/eslint-config'
@@ -26,11 +27,24 @@ export default defineConfig(
   }),
   typescript({
     parserOptions: {
-      project: true
+      project: ['./tsconfig.json']
     }
+  }),
+  jsonc({
+    json: true,
+    jsonc: true,
+    json5: true,
+    prettier: true
   }),
   {
     name: 'ignores',
-    ignores: ['tsdown.config.ts', 'vitest.config.ts', '**/dist/*', 'pnpm-lock.yaml']
+    ignores: [
+      '**/tsdown.config.ts',
+      'vitest.config.ts',
+      '**/dist/*',
+      '**/tsconfig.json',
+      'pnpm-lock.yaml',
+      'pnpm-workspace.yaml'
+    ]
   }
 )

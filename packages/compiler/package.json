@@ -1,0 +1,59 @@
+{
+  "name": "svelte-vapor-compiler",
+  "description": "Vapor compiler for svelte",
+  "private": true,
+  "version": "0.0.0",
+  "author": {
+    "name": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com"
+  },
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
+  "bugs": {
+    "url": "https://github.com/kazupon/svelte-vapor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazupon/svelte-vapor.git",
+    "directory": "packages/compiler"
+  },
+  "keywords": [
+    "svelte",
+    "vapor",
+    "compiler"
+  ],
+  "homepage": "https://github.com/kazupon/svelte-vapor#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 18.18"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.24.8",
+    "@vue-vapor/compiler-dom": "3.20240702.0-b44ca85",
+    "@vue-vapor/compiler-vapor": "3.20240702.0-b44ca85",
+    "@vue-vapor/shared": "3.20240702.0-b44ca85",
+    "svelte": "4.2.18"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.24.9",
+    "tsdown": "^0.2.3"
+  }
+}

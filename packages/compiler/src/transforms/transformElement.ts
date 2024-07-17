@@ -30,7 +30,7 @@ import type {
   SvelteBaseNode
 } from '../ir'
 import type { NodeTransform } from './types'
-import type { TransformContext, DirectiveTransformResult } from '../transforms'
+import type { TransformContext, DirectiveTransformResult } from '.'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO:
