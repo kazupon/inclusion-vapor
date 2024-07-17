@@ -78,7 +78,7 @@ window.init = () => {
           compilerOptions.prefixIdentifiers ||
           compilerOptions.mode === 'module' ||
           compilerOptions.ssr,
-        filename: 'ExampleTemplate.vue',
+        filename: 'ExampleTemplate.svelte',
         sourceMap: true,
         onError: err => {
           errors.push(err as VaporCompilerError)

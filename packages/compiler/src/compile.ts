@@ -9,6 +9,7 @@ import { parse } from 'svelte/compiler'
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
+import { transformChildren, transformComment, transformElement, transformText } from './transforms'
 import { transform } from './transform'
 import { IRNodeTypes } from './ir'
 
@@ -93,11 +94,11 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
       // transformVFor,
       // transformSlotOutlet,
       // transformTemplateRef,
-      // transformText,
-      // transformElement,
+      transformText,
+      transformElement,
       // transformVSlot,
-      // transformComment,
-      // transformChildren,
+      transformComment,
+      transformChildren
     ],
     {
       // bind: transformVBind,

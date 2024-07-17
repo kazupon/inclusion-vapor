@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 import type { CompilerOptions } from 'svelte-vapor-compiler'
 
 export const ssrMode: Ref<boolean> = ref(false)
-export const vaporMode: Ref<boolean> = ref(true)
+// export const vaporMode: Ref<boolean> = ref(true)
 
 export const defaultOptions: CompilerOptions = {
   mode: 'module',
@@ -20,6 +20,8 @@ export const defaultOptions: CompilerOptions = {
 
 export const compilerOptions: CompilerOptions = reactive(Object.assign({}, defaultOptions))
 
+const COMMIT = __COMMIT__
+
 const App = {
   setup() {
     return () => {
@@ -28,20 +30,20 @@ const App = {
       const usePrefix = compilerOptions.prefixIdentifiers || compilerOptions.mode === 'module'
 
       return [
-        h('h1', `Vue Vapor Template Explorer`),
+        h('h1', `Svelte Vapor Template Explorer`),
         h(
           'a',
           {
-            href: `https://github.com/vuejs/core-vapor/tree/${__COMMIT__}`,
+            href: `https://github.com/kazupon/svelte-vapor/tree/${COMMIT}`,
             target: `_blank`
           },
-          `@${__COMMIT__}`
+          `@${COMMIT}`
         ),
         ' | ',
         h(
           'a',
           {
-            href: 'https://app.netlify.com/sites/vue-next-template-explorer/deploys',
+            href: 'https://app.netlify.com/sites/svelte-vapor-template-explorer/deploys',
             target: `_blank`
           },
           'History'
@@ -185,34 +187,34 @@ const App = {
                 }
               }),
               h('label', { for: 'inline' }, 'inline')
-            ]),
+            ])
 
             // compat mode
-            h('li', [
-              h('input', {
-                type: 'checkbox',
-                id: 'compat',
-                checked: compilerOptions.compatConfig!.MODE === 2,
-                onChange(e: Event) {
-                  compilerOptions.compatConfig!.MODE = (e.target as HTMLInputElement).checked
-                    ? 2
-                    : 3
-                }
-              }),
-              h('label', { for: 'compat' }, 'v2 compat mode')
-            ]),
+            // h('li', [
+            //   h('input', {
+            //     type: 'checkbox',
+            //     id: 'compat',
+            //     checked: compilerOptions.compatConfig!.MODE === 2,
+            //     onChange(e: Event) {
+            //       compilerOptions.compatConfig!.MODE = (e.target as HTMLInputElement).checked
+            //         ? 2
+            //         : 3
+            //     }
+            //   }),
+            //   h('label', { for: 'compat' }, 'v2 compat mode')
+            // ]),
 
-            h('li', [
-              h('input', {
-                type: 'checkbox',
-                id: 'vapor',
-                checked: vaporMode.value,
-                onChange(e: Event) {
-                  vaporMode.value = (e.target as HTMLInputElement).checked
-                }
-              }),
-              h('label', { for: 'vapor' }, 'vapor')
-            ])
+            // h('li', [
+            //   h('input', {
+            //     type: 'checkbox',
+            //     id: 'vapor',
+            //     checked: vaporMode.value,
+            //     onChange(e: Event) {
+            //       vaporMode.value = (e.target as HTMLInputElement).checked
+            //     }
+            //   }),
+            //   h('label', { for: 'vapor' }, 'vapor')
+            // ])
           ])
         ])
       ]

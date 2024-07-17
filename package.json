@@ -26,6 +26,9 @@
     "test": "vitest",
     "build": "run-p \"build:*\"",
     "build:compiler": "pnpm run --filter=./packages/compiler build",
+    "build:template-explorer": "pnpm run --filter=./packages/template-explorer build",
+    "dev:compiler": "run-s \"build\" serve",
+    "serve": "serve",
     "typecheck": "tsc -p ."
   },
   "devDependencies": {
@@ -39,13 +42,15 @@
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.2",
+    "serve": "^14.2.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.0",
     "vitest": "^2.0.1"
   },
   "pnpm": {
     "overrides": {
-      "estree-walker": "^2.0.2"
+      "estree-walker": "^2.0.2",
+      "unplugin-isolated-decl": "^0.4.1"
     }
   },
   "prettier": "@kazupon/prettier-config",
