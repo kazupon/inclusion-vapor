@@ -1,4 +1,4 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-console.log('TODO: errors')
+export type { VaporCompilerError } from '@vue-vapor/compiler-vapor'

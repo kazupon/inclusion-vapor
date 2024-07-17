@@ -5,4 +5,5 @@
 // Repository url: https://github.com/vuejs/core-vapor
 
 export * from './transform'
+export * from './errors'
 export * from './compile'

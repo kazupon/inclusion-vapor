@@ -4,7 +4,7 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import { EMPTY_OBJ, NOOP, extend } from '@vue-vapor/shared'
+import { NOOP, extend } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
 import { newDynamic, isConstantExpression } from './utils'
 import { IRDynamicInfo, DynamicFlag } from '../ir'
@@ -42,7 +42,6 @@ const defaultOptions = {
   ssr: false,
   inSSR: false,
   ssrCssVars: ``,
-  bindingMetadata: EMPTY_OBJ,
   inline: false,
   isTS: false,
   onError: defaultOnError,
