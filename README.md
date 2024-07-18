@@ -94,6 +94,7 @@ Svelte based on v4 (v3)
   - [ ] simple bindings
   - [ ] simple events
 - [ ] TODO-MVC App
+- [x] Template Explorer
 - [ ] Repl
 
 ## ©️ License
