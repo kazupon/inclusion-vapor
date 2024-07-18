@@ -13,8 +13,8 @@ importers:
   .:
     devDependencies:
       '@kazupon/eslint-config':
-        specifier: ^0.10.0
-        version: 0.10.0(eslint-plugin-jsonc@2.16.0(eslint@9.7.0))(eslint-plugin-regexp@2.6.0(eslint@9.7.0))(eslint-plugin-unicorn@54.0.0(eslint@9.7.0))(eslint@9.7.0)(typescript-eslint@7.16.1(eslint@9.7.0)(typescript@5.5.3))
+        specifier: ^0.10.1
+        version: 0.10.1(eslint-plugin-jsonc@2.16.0(eslint@9.7.0))(eslint-plugin-regexp@2.6.0(eslint@9.7.0))(eslint-plugin-unicorn@54.0.0(eslint@9.7.0))(eslint@9.7.0)(typescript-eslint@7.16.1(eslint@9.7.0)(typescript@5.5.3))
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -824,8 +824,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@kazupon/eslint-config@0.10.0':
-    resolution: {integrity: sha512-nbJMIhL9MS2EVdS25ixuMkAn4mYL0rVfsA/f6d/v63fAVyGDj3yBbouuqEiFAP0pr4N1ebBIkxRQMmh7KA5CdA==}
+  '@kazupon/eslint-config@0.10.1':
+    resolution: {integrity: sha512-TRaQPVFMOgyvnS7BxxhyaH8fLnJ/LIixHic/zSILbXxxZpKAa4YLGWDYQ/ga11T8PRzgjaxmAfb3qnoqwuZ/ow==}
     engines: {node: '>= 18.18'}
     peerDependencies:
       eslint: '>=8.56.0 || >=9.0.0'
@@ -3617,7 +3617,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@kazupon/eslint-config@0.10.0(eslint-plugin-jsonc@2.16.0(eslint@9.7.0))(eslint-plugin-regexp@2.6.0(eslint@9.7.0))(eslint-plugin-unicorn@54.0.0(eslint@9.7.0))(eslint@9.7.0)(typescript-eslint@7.16.1(eslint@9.7.0)(typescript@5.5.3))':
+  '@kazupon/eslint-config@0.10.1(eslint-plugin-jsonc@2.16.0(eslint@9.7.0))(eslint-plugin-regexp@2.6.0(eslint@9.7.0))(eslint-plugin-unicorn@54.0.0(eslint@9.7.0))(eslint@9.7.0)(typescript-eslint@7.16.1(eslint@9.7.0)(typescript@5.5.3))':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.3.0(eslint@9.7.0)
       '@eslint/js': 9.7.0
