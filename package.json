@@ -27,6 +27,7 @@
     "build": "run-p \"build:*\"",
     "build:compiler": "pnpm run --filter=./packages/compiler build",
     "build:template-explorer": "pnpm run --filter=./packages/template-explorer build",
+    "open": "open http://localhost:3000/packages/template-explorer/local.html",
     "dev:compiler": "run-s \"build\" serve",
     "serve": "serve",
     "typecheck": "tsc -p ."
