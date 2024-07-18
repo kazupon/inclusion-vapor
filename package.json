@@ -30,7 +30,7 @@
     "prepare": "git config --local core.hooksPath .githooks",
     "prepublishOnly": "pnpm build",
     "serve": "serve",
-    "test": "vitest",
+    "test": "vitest run",
     "typecheck": "tsc -p ."
   },
   "devDependencies": {

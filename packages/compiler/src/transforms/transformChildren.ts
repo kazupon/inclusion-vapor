@@ -41,4 +41,8 @@ export const transformChildren: NodeTransform = (node, context) => {
 
     context.dynamic.children[i] = childContext.dynamic
   }
+
+  if (!isFragment) {
+    // TODO: if not fragment, we need to process for dynamic children
+  }
 }
