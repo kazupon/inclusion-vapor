@@ -1,13 +1,13 @@
 # Svelte Vapor
 
-[![Svelte Vapor Template Explorer](https://api.netlify.com/api/v1/badges/632f10b3-40d8-4a67-9909-e02e9b145c71/deploy-status)](https://app.netlify.com/sites/svelte-vapor-template-explorer/deploys)
-
-Convert Svelte to Vapor
+Vapor for Svelte
 
 Svelte based on v4 (v3)
 
 > [!WARNING]
 > This is WIP 👷
+
+- [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
 
 ## ✅ TODO
 
