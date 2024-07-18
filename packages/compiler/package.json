@@ -30,11 +30,11 @@
     "node": ">= 18.18"
   },
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
   "files": [
     "dist"
   ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -47,9 +47,9 @@
   },
   "dependencies": {
     "@babel/parser": "^7.24.8",
-    "@vue-vapor/compiler-dom": "3.20240702.0-b44ca85",
-    "@vue-vapor/compiler-vapor": "3.20240702.0-b44ca85",
-    "@vue-vapor/shared": "3.20240702.0-b44ca85",
+    "@vue-vapor/compiler-dom": "latest",
+    "@vue-vapor/compiler-vapor": "latest",
+    "@vue-vapor/shared": "latest",
     "svelte": "4.2.18"
   },
   "devDependencies": {

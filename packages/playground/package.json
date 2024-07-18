@@ -1,0 +1,31 @@
+{
+  "name": "playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "npm:@vue-vapor/vue@latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "npm:@vue-vapor/vite-plugin-vue@0.0.0-alpha.5",
+    "@vue/compiler-core": "npm:@vue-vapor/compiler-core@latest",
+    "@vue/compiler-dom": "npm:@vue-vapor/compiler-dom@latest",
+    "@vue/compiler-sfc": "npm:@vue-vapor/compiler-sfc@latest",
+    "@vue/compiler-ssr": "npm:@vue-vapor/compiler-ssr@latest",
+    "@vue/compiler-vapor": "npm:@vue-vapor/compiler-vapor@latest",
+    "@vue/reactivity": "npm:@vue-vapor/reactivity@latest",
+    "@vue/runtime-core": "npm:@vue-vapor/runtime-core@latest",
+    "@vue/runtime-dom": "npm:@vue-vapor/runtime-dom@latest",
+    "@vue/runtime-shared": "npm:@vue-vapor/runtime-shared@latest",
+    "@vue/runtime-vapor": "npm:@vue-vapor/runtime-vapor@latest",
+    "@vue/shared": "npm:@vue-vapor/shared@latest",
+    "@vue/vapor": "npm:@vue-vapor/vapor@latest",
+    "vite": "^5.3.4",
+    "vite-plugin-inspect": "^0.8.5"
+  }
+}

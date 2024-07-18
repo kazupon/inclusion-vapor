@@ -26,6 +26,7 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
     "open": "open http://localhost:3000/packages/template-explorer/local.html",
+    "play": "pnpm run --filter=./packages/playground dev",
     "prepare": "git config --local core.hooksPath .githooks",
     "prepublishOnly": "pnpm build",
     "serve": "serve",

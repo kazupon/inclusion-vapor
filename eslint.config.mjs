@@ -39,11 +39,10 @@ export default defineConfig(
   {
     name: 'ignores',
     ignores: [
-      '**/tsdown.config.ts',
-      '**/build.config.ts',
-      'vitest.config.ts',
+      '**/*.config.ts',
       '**/dist/*',
       '**/tsconfig.json',
+      '**/*.d.ts',
       'pnpm-lock.yaml',
       'pnpm-workspace.yaml'
     ]
