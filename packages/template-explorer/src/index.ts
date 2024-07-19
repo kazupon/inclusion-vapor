@@ -91,10 +91,10 @@ window.init = () => {
         // `@vue/compiler-dom`,
         errors.filter(e => e.loc).map(formatError) // eslint-disable-line unicorn/no-array-callback-reference
       )
-      console.log(`AST:`, ast)
+      console.log(`AST(IR):`, ast)
 
       console.log(`Options:`, toRaw(compilerOptions))
-      lastSuccessfulCode = code + `\n\n// Check the console for the AST`
+      lastSuccessfulCode = code + `\n\n// Check the console for the AST(IR)`
       if (map) {
         lastSuccessfulMap = new SourceMapConsumer(map)
         lastSuccessfulMap.computeColumnSpans()
