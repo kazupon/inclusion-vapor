@@ -3,9 +3,17 @@ import { generate } from '@vue-vapor/compiler-vapor'
 import { transform } from '../transform'
 import { IRNodeTypes } from '../ir'
 
-import type { RootIRNode as VaporRootIRNode } from '@vue-vapor/compiler-vapor'
+import type {
+  RootIRNode as VaporRootIRNode,
+  CompilerOptions as VaporCompilerOptions
+} from '@vue-vapor/compiler-vapor'
 import type { CompilerOptions } from '../compile'
 import type { RootNode } from '../ir'
+
+export const DEFUALT_OPTIONS: CompilerOptions = {
+  prefixIdentifiers: true
+}
+export const DEFUALT_VAPOR_COMPILER_OPTIONS = DEFUALT_OPTIONS as VaporCompilerOptions
 
 export function makeCompile(options: CompilerOptions = {}) {
   return (source: string, overrideOptions: CompilerOptions = {}) => {
@@ -22,12 +30,12 @@ export function makeCompile(options: CompilerOptions = {}) {
     }
 
     const ir = transform(ast, {
-      prefixIdentifiers: true,
+      ...DEFUALT_OPTIONS,
       ...options,
       ...overrideOptions
     })
     const { code, helpers, vaporHelpers } = generate(ir as unknown as VaporRootIRNode, {
-      prefixIdentifiers: true,
+      ...DEFUALT_OPTIONS,
       ...options,
       ...overrideOptions
     })

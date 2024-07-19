@@ -116,13 +116,14 @@ function resolveSimpleExpression<T extends SvelteMustacheTag>(
         : context.ir.source.slice(node.start, node.end))
   const loc = expression.loc || convertToSourceLocation(node, content) // FIXME: twaeak loc type
 
-  let ast: false | BabelParseResult<BabelExpression> = false
+  let ast: BabelParseResult<BabelExpression> | false = false
   const isStatic =
     expression.type === 'Identifier'
       ? false
       : expression.type === 'Literal' && !isString(expression.value)
   if (!isStatic && context.options.prefixIdentifiers) {
-    ast = parseExpression(`${content}`, {
+    // HACK: we need to parse the expression in prefix mode to resolve scope IDs
+    ast = parseExpression(` ${content}`, {
       sourceType: 'module',
       plugins: context.options.expressionPlugins
     })
