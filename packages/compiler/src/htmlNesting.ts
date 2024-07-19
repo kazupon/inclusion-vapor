@@ -26,16 +26,18 @@ export function isValidHTMLNesting(parent: string, child: string): boolean {
     parent in knownInvalidChildren && // check if the child is in the list of invalid children
     // if so, return false
     knownInvalidChildren[parent].has(child)
-  )
+  ) {
     return false
+  }
 
   // if we know the list of parents that are NOT valid for the given child
   if (
     child in knownInvalidParents && // check if the parent is in the list of invalid parents
     // if so, return false
     knownInvalidParents[child].has(parent)
-  )
+  ) {
     return false
+  }
 
   return true
 }

@@ -144,7 +144,7 @@ function isAllTextLike(children: SvelteTemplateNode[]): children is TextLike[] {
     // eslint-disable-next-line unicorn/no-array-callback-reference
     children.every(isTextLike) &&
     // at least one an mustache tag
-    children.some(n => n.type === 'MustacheTag')
+    children.some(n => isSvelteMustacheTag(n))
   )
 }
 

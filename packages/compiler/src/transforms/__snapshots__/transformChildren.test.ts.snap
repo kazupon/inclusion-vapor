@@ -14,20 +14,15 @@ export function render(_ctx) {
 `;
 
 exports[`compiler: children transform > components > recieved 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
-const t0 = _template("\\n  ")
-const t1 = _template("\\n")
-const t2 = _template("<div></div>")
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const _component_Foo = _resolveComponent("Foo")
-  const n3 = t2()
-  const n0 = n3.firstChild
-  const n0 = t0()
-  const n2 = n0.nextSibling
-  const n2 = t1()
-  const n1 = _createComponent(_component_Foo)
-  return [n0, n1, n2, n3]
+  const n1 = t0()
+  const n0 = _createComponent(_component_Foo)
+  _insert(n0, n1)
+  return n1
 }"
 `;
 
@@ -43,37 +38,11 @@ export function render(_ctx) {
 
 exports[`compiler: children transform > native elements > recieved 1`] = `
 "import { template as _template } from 'vue/vapor';
-const t0 = _template("\\n  ")
-const t1 = _template("\\n    ")
-const t2 = _template("Hello")
-const t3 = _template("<p></p>")
-const t4 = _template("<div></div>")
-const t5 = _template("World")
-const t6 = _template("\\n")
+const t0 = _template("<div><div><p>Hello</p></div> <p>World</p></div>")
 
 export function render(_ctx) {
-  const n10 = t4()
-  const n0 = n10.firstChild
   const n0 = t0()
-  const n5 = n0.nextSibling
-  const n5 = t4()
-  const n1 = n5.firstChild
-  const n1 = t1()
-  const n3 = n1.nextSibling
-  const n3 = t3()
-  const n2 = n3.firstChild
-  const n2 = t2()
-  const n4 = n3.nextSibling
-  const n4 = t0()
-  const n6 = n5.nextSibling
-  const n6 = t0()
-  const n8 = n6.nextSibling
-  const n8 = t3()
-  const n7 = n8.firstChild
-  const n7 = t5()
-  const n9 = n8.nextSibling
-  const n9 = t6()
-  return [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10]
+  return n0
 }"
 `;
 
@@ -95,32 +64,18 @@ export function render(_ctx) {
 `;
 
 exports[`compiler: children transform > sibling references > recieved 1`] = `
-"import { children as _children, next as _next, createTextNode as _createTextNode, renderEffect as _renderEffect, setText as _setText, template as _template } from 'vue/vapor';
-const t0 = _template("\\n  ")
-const t1 = _template("<p></p>")
-const t2 = _template("\\n")
-const t3 = _template("<div></div>")
+"import { next as _next, createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, template as _template } from 'vue/vapor';
+const t0 = _template("<div><p></p> <!><p></p></div>")
 
 export function render(_ctx) {
-  const n11 = t3()
-  const n0 = n11.firstChild
-  const n0 = t0()
-  const n1 = n0.nextSibling
-  const n1 = t1()
-  const n2 = _children(n1, -1)
-  const n3 = n1.nextSibling
-  const n3 = t0()
-  const n5 = _next(n3, 0)
-  const n6 = _next(n5, 0)
-  const n7 = _next(n6, 0)
-  const n8 = n7.nextSibling
-  const n8 = t1()
-  const n9 = _children(n8, -1)
-  const n10 = n8.nextSibling
-  const n10 = t2()
-  const n4 = _createTextNode(() => [secon_ctx.d, "\\n  ", thir_ctx.d, "\\n  "])
-  _renderEffect(() => _setText(n1, firs_ctx.t))
-  _renderEffect(() => _setText(n8, fort_ctx.h))
-  return [n0, n1, n3, n4, n8, n10, n11]
+  const n4 = t0()
+  const n0 = n4.firstChild
+  const n3 = _next(n0, 2)
+  const n2 = n3.nextSibling
+  const n1 = _createTextNode(() => [second, " ", third, " "])
+  _insert(n1, n4, n3)
+  _renderEffect(() => _setText(n0, first))
+  _renderEffect(() => _setText(n2, forth))
+  return n4
 }"
 `;
