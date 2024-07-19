@@ -10,7 +10,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`line break > recieved 1`] = `
+exports[`line break > received 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!--\\n  hello world\\n-->")
 
@@ -30,7 +30,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`simple comment > recieved 1`] = `
+exports[`simple comment > received 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!-- hello world -->")
 

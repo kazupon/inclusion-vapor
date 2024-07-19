@@ -2,7 +2,7 @@ import { createTextNode as _createTextNode, defineComponent } from 'vue/vapor' /
 
 import type { Component } from 'vue/vapor'
 
-// @ts-expect-error -- IGORE
+// @ts-expect-error -- IGNORE
 function render(_ctx) {
   const n0 = _createTextNode(['hello world'])
   return n0

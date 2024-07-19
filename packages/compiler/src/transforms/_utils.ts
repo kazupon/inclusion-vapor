@@ -10,10 +10,10 @@ import type {
 import type { CompilerOptions } from '../compile'
 import type { RootNode } from '../ir'
 
-export const DEFUALT_OPTIONS: CompilerOptions = {
+export const DEFAULT_OPTIONS: CompilerOptions = {
   prefixIdentifiers: true
 }
-export const DEFUALT_VAPOR_COMPILER_OPTIONS = DEFUALT_OPTIONS as VaporCompilerOptions
+export const DEFAULT_VAPOR_COMPILER_OPTIONS = DEFAULT_OPTIONS as VaporCompilerOptions
 
 export function makeCompile(options: CompilerOptions = {}) {
   return (source: string, overrideOptions: CompilerOptions = {}) => {
@@ -30,12 +30,12 @@ export function makeCompile(options: CompilerOptions = {}) {
     }
 
     const ir = transform(ast, {
-      ...DEFUALT_OPTIONS,
+      ...DEFAULT_OPTIONS,
       ...options,
       ...overrideOptions
     })
     const { code, helpers, vaporHelpers } = generate(ir as unknown as VaporRootIRNode, {
-      ...DEFUALT_OPTIONS,
+      ...DEFAULT_OPTIONS,
       ...options,
       ...overrideOptions
     })
