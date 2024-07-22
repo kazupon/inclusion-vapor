@@ -89,13 +89,14 @@ Svelte based on v4 (v3)
   - [ ] eashing
   - [ ] action
 - [ ] Codegen with Vapor generator
+- [x] Template Explorer
+- [ ] Vite plugin with unplugin
+- [ ] Repl
 - [ ] Vapor Runtime Integration
 - [ ] Counter App
   - [ ] simple bindings
   - [ ] simple events
 - [ ] TODO-MVC App
-- [x] Template Explorer
-- [ ] Repl
 
 ## ©️ License
 
