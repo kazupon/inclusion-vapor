@@ -1,0 +1,138 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`component > basic > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"></div>")
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n1 = t0()
+  const n0 = _createComponent(_component_Foo, [
+    { class: () => ("foo") }
+  ])
+  _insert(n0, n1)
+  return n1
+}"
+`;
+
+exports[`component > basic > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"></div>")
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n1 = t0()
+  const n0 = _createComponent(_component_Foo, [
+    { class: () => ("foo") }
+  ])
+  _insert(n0, n1)
+  return n1
+}"
+`;
+
+exports[`component > import + resolve component 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > static props > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, [
+    {
+      id: () => ("foo"), 
+      class: () => ("bar")
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`component > static props > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, [
+    {
+      id: () => ("foo"), 
+      class: () => ("bar")
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`empty template 1`] = `
+"
+export function render(_ctx) {
+  return null
+}"
+`;
+
+exports[`native elements > expected 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > received 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`props + chilrend 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\"><span></span></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`static props 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\" class=\\"bar\\"></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;

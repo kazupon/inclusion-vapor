@@ -161,7 +161,7 @@ export function buildProps(
     const result = transformProp(prop, node, context)
     if (result) {
       dynamicExpr.push(result.key, result.value)
-      if (isComponent) {
+      if (isComponent && !result.key.isStatic) {
         // component props
         // TODO:
       } else {
