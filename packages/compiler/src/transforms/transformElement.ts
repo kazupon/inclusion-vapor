@@ -11,7 +11,7 @@ import {
   ErrorCodes,
   NodeTypes
 } from '@vue-vapor/compiler-dom'
-import { isVoidTag, extend, makeMap } from '@vue-vapor/shared'
+import { isVoidTag, extend } from '@vue-vapor/shared'
 import {
   isSvelteElement,
   isBuiltInDirective,
@@ -22,17 +22,12 @@ import {
   IRNodeTypes
 } from '../ir'
 import { isValidHTMLNesting } from '../htmlNesting'
-import { EMPTY_EXPRESSION } from './utils'
+import { EMPTY_EXPRESSION, isReservedProp } from './utils'
 
 import type { SimpleExpressionNode, AttributeNode } from '@vue-vapor/compiler-dom'
 import type { IRProps, IRProp, IRPropsStatic, SvelteElement, VaporDirectiveNode } from '../ir'
 import type { NodeTransform } from './types'
 import type { TransformContext, DirectiveTransformResult } from '.'
-
-export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
-  // the leading comma is intentional so empty string "" is also included
-  ',key,ref,ref_for,ref_key,'
-)
 
 export const transformElement: NodeTransform = (_node, context) => {
   return function postTransformElement() {

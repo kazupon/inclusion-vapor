@@ -1,0 +1,67 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`svelte binding > basic: <div id={id} /> > expected 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  return n0
+}"
+`;
+
+exports[`svelte binding > basic: <div id={id} /> > received 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  return n0
+}"
+`;
+
+exports[`svelte binding > camel case: <div camel-case={value1} /> > expected 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1))
+  return n0
+}"
+`;
+
+exports[`svelte binding > camel case: <div camel-case={value1} /> > received 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1))
+  return n0
+}"
+`;
+
+exports[`svelte binding > shorthand: <div {id} /> > expected 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  return n0
+}"
+`;
+
+exports[`svelte binding > shorthand: <div {id} /> > received 1`] = `
+"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  return n0
+}"
+`;

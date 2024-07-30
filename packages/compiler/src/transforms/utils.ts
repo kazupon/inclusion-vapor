@@ -6,12 +6,17 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/utils.ts
 
 import { createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
-import { isGloballyAllowed } from '@vue-vapor/shared'
+import { isGloballyAllowed, makeMap } from '@vue-vapor/shared'
 import { IRNodeTypes, DynamicFlag } from '../ir'
 
 import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { BlockIRNode, IRDynamicInfo } from '../ir'
+
+export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
+  // the leading comma is intentional so empty string "" is also included
+  ',key,ref,ref_for,ref_key,'
+)
 
 export const EMPTY_EXPRESSION: ReturnType<typeof createSimpleExpression> = createSimpleExpression(
   '',
@@ -38,6 +43,16 @@ export function isConstantExpression(exp: SimpleExpressionNode): boolean {
     isGloballyAllowed(exp.content) ||
     getLiteralExpressionValue(exp) !== null
   )
+}
+
+export function resolveExpression(exp: SimpleExpressionNode): SimpleExpressionNode {
+  if (!exp.isStatic) {
+    const value = getLiteralExpressionValue(exp)
+    if (value !== null) {
+      return createSimpleExpression('' + value, true, exp.loc)
+    }
+  }
+  return exp
 }
 
 export function getLiteralExpressionValue(
