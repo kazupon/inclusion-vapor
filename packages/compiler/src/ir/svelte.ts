@@ -8,9 +8,15 @@ import type {
   Element as SvelteElement,
   BaseNode as SvelteBaseNode,
   Comment as SveletComment,
-  Text as SvelteText,
+  Attribute as SvelteAttribute,
+  SpreadAttribute as SvelteSpreadAttribute,
   MustacheTag as SvelteMustacheTag
 } from 'svelte/types/compiler/interfaces'
+
+import type {
+  Text as SvelteText,
+  ShorthandAttribute as SvelteShorthandAttribute
+} from 'svelte/compiler'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO: add svelte built-in directives
@@ -53,6 +59,18 @@ export function isSvelteComment(node: unknown): node is SveletComment {
   return isObject(node) && 'type' in node && node.type === 'Comment'
 }
 
+export function isSvelteAttribute(node: unknown): node is SvelteAttribute {
+  return isObject(node) && 'type' in node && node.type === 'Attribute'
+}
+
+export function isSvelteSpreadAttribute(node: unknown): node is SvelteSpreadAttribute {
+  return isObject(node) && 'type' in node && node.type === 'Spread'
+}
+
+export function isSvelteShorthandAttribute(node: unknown): node is SvelteShorthandAttribute {
+  return isObject(node) && 'type' in node && node.type === 'AttributeShorthand'
+}
+
 export function convertToSourceLocation(node: SvelteBaseNode, source: string): SourceLocation {
   return {
     start: {
@@ -73,7 +91,6 @@ export type {
   Ast as SvelteAst,
   Element as SvelteElement,
   TemplateNode as SvelteTemplateNode,
-  Text as SvelteText,
   MustacheTag as SvelteMustacheTag,
   Comment as SvelteComment,
   Attribute as SvelteAttribute,
@@ -81,3 +98,8 @@ export type {
   BaseDirective as SvelteBaseDirective,
   BaseNode as SvelteBaseNode
 } from 'svelte/types/compiler/interfaces'
+
+export type {
+  Text as SvelteText,
+  ShorthandAttribute as SvelteShorthandAttribute
+} from 'svelte/compiler'

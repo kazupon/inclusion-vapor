@@ -50,10 +50,12 @@
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-vapor": "latest",
     "@vue-vapor/shared": "latest",
+    "astring": "^1.8.6",
     "svelte": "4.2.18"
   },
   "devDependencies": {
     "@babel/types": "^7.24.9",
+    "@types/estree": "^1.0.5",
     "tsdown": "^0.2.3"
   }
 }
