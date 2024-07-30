@@ -240,4 +240,4 @@ export type VaporDirectiveNode = Overwrite<
   }
 >
 
-export { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
+export { IRNodeTypes, DynamicFlag, IRDynamicPropsKind } from '@vue-vapor/compiler-vapor'

@@ -5,38 +5,33 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformElement.ts
 
-import { createSimpleExpression } from '@vue-vapor/compiler-dom'
+import {
+  createSimpleExpression,
+  createCompilerError,
+  ErrorCodes,
+  NodeTypes
+} from '@vue-vapor/compiler-dom'
 import { isVoidTag, extend, makeMap } from '@vue-vapor/shared'
 import {
   isSvelteElement,
-  convertToSourceLocation,
-  // isBuiltInDirective,
+  isBuiltInDirective,
+  convertProps,
   DynamicFlag,
+  IRDynamicPropsKind,
+  IRPropsDynamicAttribute,
   IRNodeTypes
 } from '../ir'
 import { isValidHTMLNesting } from '../htmlNesting'
 import { EMPTY_EXPRESSION } from './utils'
 
-import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type {
-  IRProps,
-  IRProp,
-  IRPropsStatic,
-  SvelteElement,
-  SvelteAttribute,
-  SvelteBaseDirective,
-  SvelteSpreadAttribute,
-  SvelteText,
-  SvelteBaseNode
-} from '../ir'
+import type { SimpleExpressionNode, AttributeNode } from '@vue-vapor/compiler-dom'
+import type { IRProps, IRProp, IRPropsStatic, SvelteElement, VaporDirectiveNode } from '../ir'
 import type { NodeTransform } from './types'
 import type { TransformContext, DirectiveTransformResult } from '.'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
-  // TODO:
   // the leading comma is intentional so empty string "" is also included
-  // ',key,ref,ref_for,ref_key,',
-  ''
+  ',key,ref,ref_for,ref_key,'
 )
 
 export const transformElement: NodeTransform = (_node, context) => {
@@ -63,7 +58,7 @@ function transformComponentElement(
   propsResult: PropsResult,
   context: TransformContext<SvelteElement>
 ) {
-  const asset = true
+  const asset = true // TODO: might remove this
   context.component.add(tag)
   context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
   const root = context.root === context.parent && (context.parent.node.children || []).length === 1
@@ -141,7 +136,7 @@ export function buildProps(
   context: TransformContext<SvelteElement>,
   isComponent: boolean
 ): PropsResult {
-  const props = node.attributes
+  const props = convertProps(node)
   if (props.length === 0) {
     return [false, []]
   }
@@ -150,7 +145,7 @@ export function buildProps(
   const dynamicExpr: SimpleExpressionNode[] = []
   let results: DirectiveTransformResult[] = []
 
-  function _pushMergeArg() {
+  function pushMergeArg() {
     if (results.length > 0) {
       dynamicArgs.push(dedupeProperties(results))
       results = []
@@ -158,12 +153,60 @@ export function buildProps(
   }
 
   for (const prop of props) {
+    if (prop.type === NodeTypes.DIRECTIVE && !prop.arg) {
+      if (prop.name === 'bind') {
+        // v-bind="obj"
+        if (prop.exp) {
+          dynamicExpr.push(prop.exp)
+          pushMergeArg()
+          dynamicArgs.push({
+            kind: IRDynamicPropsKind.EXPRESSION,
+            value: prop.exp
+          })
+        } else {
+          context.options.onError(createCompilerError(ErrorCodes.X_V_BIND_NO_EXPRESSION, prop.loc))
+        }
+        continue
+      } else if (prop.name === 'on') {
+        // v-on="obj"
+        if (prop.exp) {
+          if (isComponent) {
+            dynamicExpr.push(prop.exp)
+            pushMergeArg()
+            dynamicArgs.push({
+              kind: IRDynamicPropsKind.EXPRESSION,
+              value: prop.exp,
+              handler: true
+            })
+          } else {
+            context.registerEffect(
+              [prop.exp],
+
+              {
+                type: IRNodeTypes.SET_DYNAMIC_EVENTS,
+                element: context.reference(),
+                event: prop.exp
+              }
+            )
+          }
+        } else {
+          context.options.onError(createCompilerError(ErrorCodes.X_V_ON_NO_EXPRESSION, prop.loc))
+        }
+        continue
+      }
+    }
+
     const result = transformProp(prop, node, context)
     if (result) {
       dynamicExpr.push(result.key, result.value)
       if (isComponent && !result.key.isStatic) {
-        // component props
-        // TODO:
+        // v-bind:[name]="value" or v-on:[name]="value"
+        pushMergeArg()
+        dynamicArgs.push(
+          extend(resolveDirectiveResult(result), {
+            kind: IRDynamicPropsKind.ATTRIBUTE
+          }) as IRPropsDynamicAttribute
+        )
       } else {
         // other static props
         results.push(result)
@@ -171,19 +214,60 @@ export function buildProps(
     }
   }
 
-  // has dynamic key or ...
-  // TODO:
+  // has dynamic key or v-bind="{}"
+  if (dynamicArgs.length > 0 || results.some(({ key }) => !key.isStatic)) {
+    // take rest of props as dynamic props
+    pushMergeArg()
+    return [true, dynamicArgs, dynamicExpr]
+  }
 
   const irProps = dedupeProperties(results)
   return [false, irProps]
 }
 
 function transformProp(
-  prop: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective,
-  _node: SvelteElement,
+  // prop: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective,
+  prop: VaporDirectiveNode | AttributeNode,
+  node: SvelteElement,
   context: TransformContext<SvelteElement>
 ): DirectiveTransformResult | void {
-  const name = prop.name as string
+  const { name } = prop
+
+  if (prop.type === NodeTypes.ATTRIBUTE) {
+    if (isReservedProp(name)) {
+      return
+    }
+    return {
+      key: createSimpleExpression(prop.name, true, prop.nameLoc),
+      value: prop.value
+        ? createSimpleExpression(prop.value.content, true, prop.value.loc)
+        : EMPTY_EXPRESSION
+    }
+  }
+
+  const directiveTransform = context.options.directiveTransforms[name]
+  if (directiveTransform) {
+    return directiveTransform(prop, node, context)
+  }
+
+  if (!isBuiltInDirective(name)) {
+    // const fromSetup =
+    //   !__BROWSER__ && resolveSetupReference(`v-${name}`, context)
+    // if (fromSetup) {
+    //   name = fromSetup
+    // } else {
+    //   context.directive.add(name)
+    // }
+    // context.registerOperation({
+    //   type: IRNodeTypes.WITH_DIRECTIVE,
+    //   element: context.reference(),
+    //   dir: prop,
+    //   name,
+    //   asset: !fromSetup,
+    // })
+  }
+  /*
+  const name = prop.name
 
   // for `SvelteAttribute`
   if (prop.type === 'Attribute') {
@@ -194,13 +278,13 @@ function transformProp(
     // TODO: should be handled for multiple values
     const value = prop.value[0]
       ? createSimpleExpression(
-          (prop.value[0] as SvelteText).data,
-          true,
-          convertToSourceLocation(
-            prop.value[0] as SvelteBaseNode,
-            (prop.value[0] as SvelteText).data
-          )
+        (prop.value[0] as SvelteText).data,
+        true,
+        convertToSourceLocation(
+          prop.value[0] as SvelteBaseNode,
+          (prop.value[0] as SvelteText).data
         )
+      )
       : EMPTY_EXPRESSION
     return {
       key,
@@ -230,6 +314,7 @@ function transformProp(
   //     name,
   //   })
   // }
+  */
 }
 
 // Dedupe props in an object literal.
