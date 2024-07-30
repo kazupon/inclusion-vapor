@@ -10,7 +10,9 @@ import type {
   Comment as SveletComment,
   Attribute as SvelteAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
-  MustacheTag as SvelteMustacheTag
+  MustacheTag as SvelteMustacheTag,
+  Directive as SvelteDirective,
+  BaseExpressionDirective as SvelteBaseExpressionDirective
 } from 'svelte/types/compiler/interfaces'
 
 import type {
@@ -39,6 +41,24 @@ const SVELTE_ELEMENT_TYPES = new Set([
 
 export function isSvelteElement(node: unknown): node is SvelteElement {
   return isObject(node) && 'type' in node && SVELTE_ELEMENT_TYPES.has((node as SvelteBaseNode).type)
+}
+
+const SVELTE_DIRECTIVE_TYPES = new Set([
+  'Action',
+  'Animation',
+  'Binding',
+  'Class',
+  'StyleDirective',
+  'EventHandler',
+  'Let',
+  'Ref',
+  'Transition'
+])
+
+export function isSvelteDirective(node: unknown): node is SvelteDirective {
+  return (
+    isObject(node) && 'type' in node && SVELTE_DIRECTIVE_TYPES.has((node as SvelteBaseNode).type)
+  )
 }
 
 const SVELETE_MUSTACHE_TAG_TYPES = new Set(['MustacheTag', 'RawMustacheTag'])
@@ -71,6 +91,10 @@ export function isSvelteShorthandAttribute(node: unknown): node is SvelteShortha
   return isObject(node) && 'type' in node && node.type === 'AttributeShorthand'
 }
 
+export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressionDirective {
+  return isObject(node) && 'type' in node && node.type === 'EventHandler'
+}
+
 export function convertToSourceLocation(node: SvelteBaseNode, source: string): SourceLocation {
   return {
     start: {
@@ -96,7 +120,9 @@ export type {
   Attribute as SvelteAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   BaseDirective as SvelteBaseDirective,
-  BaseNode as SvelteBaseNode
+  BaseNode as SvelteBaseNode,
+  Directive as SvelteDirective,
+  BaseExpressionDirective as SvelteBaseExpressionDirective
 } from 'svelte/types/compiler/interfaces'
 
 export type {

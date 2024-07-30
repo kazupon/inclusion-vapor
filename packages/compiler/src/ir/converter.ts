@@ -5,27 +5,34 @@ import {
   isSvelteSpreadAttribute,
   isSvelteText,
   isSvelteMustacheTag,
-  isSvelteShorthandAttribute
+  isSvelteShorthandAttribute,
+  isSvelteEventHandler
 } from './svelte'
 import { parseExpression } from '@babel/parser'
 
 import type { AttributeNode, SourceLocation, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { VaporDirectiveNode } from './nodes'
-import type { SvelteElement, SvelteAttribute, SvelteText, SvelteSpreadAttribute } from './svelte'
+import type {
+  SvelteElement,
+  SvelteAttribute,
+  SvelteText,
+  SvelteSpreadAttribute,
+  SvelteBaseDirective
+} from './svelte'
 
 export function convertProps(node: SvelteElement): (VaporDirectiveNode | AttributeNode)[] {
   const props: (VaporDirectiveNode | AttributeNode)[] = []
 
-  const attrsOrProps = node.attributes
-  for (const attrOrProp of attrsOrProps) {
-    if (isSvelteAttribute(attrOrProp)) {
-      if (isVaporDirectable(attrOrProp)) {
-        props.push(convertVaporDirective(attrOrProp))
+  const attrs = node.attributes
+  for (const attr of attrs) {
+    if (isSvelteAttribute(attr)) {
+      if (isVaporDirectable(attr)) {
+        props.push(convertVaporDirective(attr))
       } else {
-        props.push(convertSvelteAttribute(attrOrProp))
+        props.push(convertSvelteAttribute(attr))
       }
-    } else if (isSvelteSpreadAttribute(attrOrProp)) {
-      props.push(convertVaporDirective(attrOrProp))
+    } else if (isSvelteSpreadAttribute(attr) || isSvelteEventHandler(attr)) {
+      props.push(convertVaporDirective(attr))
     }
   }
 
@@ -71,7 +78,18 @@ function convertSvelteAttribute(node: SvelteAttribute): AttributeNode {
   return ret
 }
 
-function convertVaporDirective(node: SvelteAttribute | SvelteSpreadAttribute): VaporDirectiveNode {
+const EVENT_MODIFIERS_MAP: Record<string, string> = {
+  preventDefault: 'prevent',
+  stopPropagation: 'stop',
+  capture: 'capture',
+  self: 'self',
+  once: 'once',
+  passive: 'passive'
+}
+
+function convertVaporDirective(
+  node: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective
+): VaporDirectiveNode {
   if (isSvelteAttribute(node)) {
     const start = node.start
     const arg = createSimpleExpression(
@@ -102,7 +120,7 @@ function convertVaporDirective(node: SvelteAttribute | SvelteSpreadAttribute): V
       arg,
       exp
     }
-  } else {
+  } else if (isSvelteSpreadAttribute(node)) {
     const content = generate(node.expression)
     return {
       type: NodeTypes.DIRECTIVE,
@@ -113,24 +131,69 @@ function convertVaporDirective(node: SvelteAttribute | SvelteSpreadAttribute): V
       exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
       arg: undefined
     }
+  } else if (isSvelteEventHandler(node)) {
+    const start = node.start
+    const arg = createSimpleExpression(
+      node.name,
+      true,
+      convertSvelteLocation({ start, end: start + node.name.length }, node.name)
+    )
+    const exp = convertVaporDirectiveExpression(node)
+    if (exp) {
+      const ast = parseExpression(` ${exp.content}`, {
+        sourceType: 'module'
+        // TODO: use babel plugins
+        // plugins: context.options.expressionPlugins
+      })
+      exp.ast = ast
+    }
+    const modifiers =
+      node.modifiers.length > 0 ? node.modifiers.map(m => EVENT_MODIFIERS_MAP[m]) : []
+    const modifiersSource = `${node.modifiers.length > 0 ? '|' : ''}${node.modifiers.join('|')}`
+    const directiveLocSource = exp
+      ? `on:${node.name}${modifiersSource}="${exp.content}"`
+      : node.name
+    const directiveLoc = {
+      start,
+      end: exp ? start + directiveLocSource.length : start
+    }
+    const vaporModifiers = `${modifiers.length > 0 ? '.' : ''}${modifiers.join('.')}`
+    return {
+      type: NodeTypes.DIRECTIVE,
+      name: 'on',
+      rawName: `v-on:${node.name}${vaporModifiers}`,
+      modifiers,
+      loc: convertSvelteLocation(directiveLoc, directiveLocSource),
+      arg,
+      exp
+    }
   }
 }
 
-function convertVaporDirectiveExpression(node: SvelteAttribute): SimpleExpressionNode | undefined {
-  if (node.value.some(v => isSvelteSpreadAttribute(v) || isSvelteShorthandAttribute(v))) {
+function convertVaporDirectiveExpression(
+  node: SvelteAttribute | SvelteBaseDirective
+): SimpleExpressionNode | undefined {
+  if (isSvelteAttribute(node) && Array.isArray(node.value)) {
+    if (node.value.some(v => isSvelteSpreadAttribute(v) || isSvelteShorthandAttribute(v))) {
+      return undefined
+    }
+
+    let content = ''
+    for (const value of node.value) {
+      if (isSvelteMustacheTag(value)) {
+        content += generate(value.expression)
+      } else if (isSvelteText(value)) {
+        content += value.data
+      }
+    }
+
+    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  } else if (isSvelteEventHandler(node)) {
+    const content = node.expression == undefined ? '' : generate(node.expression)
+    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  } else {
     return undefined
   }
-
-  let content = ''
-  for (const value of node.value) {
-    if (isSvelteMustacheTag(value)) {
-      content += generate(value.expression)
-    } else if (isSvelteText(value)) {
-      content += value.data
-    }
-  }
-
-  return createSimpleExpression(content, false, convertSvelteLocation(node, content))
 }
 
 export function convertSvelteLocation(

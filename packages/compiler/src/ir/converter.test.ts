@@ -390,6 +390,119 @@ describe('convertProps', () => {
     test.todo('$$restProps: <input {...$$restProps} />')
   })
 
+  describe('Svelte EventHandler Node', () => {
+    test('basic: <button on:click={increment}></button>', () => {
+      const el = getSvelteElement('<button on:click={increment}></button>')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'on',
+          rawName: 'v-on:click',
+          modifiers: [],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            // source: 'on:click={increment}'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'click',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'click'
+            }
+          },
+          exp: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'increment',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              source: 'increment'
+            }
+          }
+        }
+      ])
+    })
+
+    test('expression: <button on:click={() => count += 1}></button>', () => {
+      const el = getSvelteElement('<button on:click={() => count += 1}></button>')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'on',
+          rawName: 'v-on:click',
+          modifiers: [],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            // source: 'on:click={() => count += 1}'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'click',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'click'
+            }
+          },
+          exp: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: '() => count += 1',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              source: '() => count += 1'
+            }
+          }
+        }
+      ])
+    })
+
+    test('modifiers "preventDefault": <form on:submit|preventDefault={handleSubmit}></form>', () => {
+      const el = getSvelteElement('<form on:submit|preventDefault={handleSubmit}></form>')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'on',
+          rawName: 'v-on:submit.prevent',
+          modifiers: ['prevent'],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            // source: 'on:submit|preventDefault={handleSubmit}'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'submit',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'submit'
+            }
+          },
+          exp: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'handleSubmit',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              source: 'handleSubmit'
+            }
+          }
+        }
+      ])
+    })
+
+    test.todo('modifiers "stopPropagation"')
+    test.todo('modifiers "stopImmediatePropagation"')
+    test.todo('modifiers "passive"')
+    test.todo('modifiers "nonpassive"')
+    test.todo('modifiers "capture"')
+    test.todo('modifiers "once"')
+    test.todo('modifiers "self"')
+    test.todo('modifiers "trusted"')
+  })
+
   test('no attribute', () => {
     const el = getSvelteElement('<div />')
     expect(convertProps(el!)).toMatchObject([])
