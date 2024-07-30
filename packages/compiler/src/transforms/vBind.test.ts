@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest'
+import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
+import { NodeTypes } from '@vue-vapor/compiler-dom'
 import { makeCompile } from './_utils'
 import { transformElement } from './transformElement'
 import { transformChildren } from './transformChildren'
 import { transformText } from './transformText'
 import { IRNodeTypes, DynamicFlag } from '../ir'
-import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
-import { NodeTypes } from '@vue-vapor/compiler-dom'
 import { transformVBind } from './vBind'
 
 const compileWithVBind = makeCompile({
