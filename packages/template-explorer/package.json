@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "source-map-js": "^1.2.0",
-    "svelte-vapor-compiler": "workspace:^",
+    "svelte-vapor-core": "workspace:^",
     "unbuild": "^2.0.0",
     "vue": "^3.4.32"
   }

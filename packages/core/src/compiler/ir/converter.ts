@@ -1,5 +1,6 @@
 import { NodeTypes, createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { generate } from 'astring'
+import { parseExpression } from '@babel/parser'
 import {
   isSvelteAttribute,
   isSvelteSpreadAttribute,
@@ -8,7 +9,6 @@ import {
   isSvelteShorthandAttribute,
   isSvelteEventHandler
 } from './svelte'
-import { parseExpression } from '@babel/parser'
 
 import type { AttributeNode, SourceLocation, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { VaporDirectiveNode } from './nodes'

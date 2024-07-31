@@ -1,11 +1,11 @@
-import { compile } from 'svelte-vapor-compiler'
+import { compile } from 'svelte-vapor-core'
 import { toRaw, watchEffect } from 'vue'
 import { SourceMapConsumer } from 'source-map-js'
 import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options'
 import theme from './theme'
 
 import type * as m from 'monaco-editor'
-import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-compiler'
+import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-core'
 
 declare global {
   interface Window {

@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
 import { parse } from 'svelte/compiler'
+import { NodeTypes, ConstantTypes } from '@vue-vapor/compiler-dom'
 import { convertProps } from './converter'
 import { isSvelteElement } from './svelte'
-import { NodeTypes, ConstantTypes } from '@vue-vapor/compiler-dom'
 
 import type { SvelteElement } from './svelte'
 

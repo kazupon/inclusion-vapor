@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "run-p \"build:*\"",
-    "build:compiler": "pnpm run --filter=./packages/compiler build",
+    "build:compiler": "pnpm run --filter=./packages/core build",
     "build:template-explorer": "pnpm run --filter=./packages/template-explorer build",
     "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
     "dev:compiler": "run-s \"build\" serve",

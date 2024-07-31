@@ -1,6 +1,6 @@
 {
-  "name": "svelte-vapor-compiler",
-  "description": "Vapor compiler for svelte",
+  "name": "svelte-vapor-core",
+  "description": "svelte transform and compiler for vapor",
   "private": true,
   "version": "0.0.0",
   "author": {
