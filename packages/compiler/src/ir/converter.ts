@@ -189,7 +189,8 @@ function convertVaporDirectiveExpression(
 
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else if (isSvelteEventHandler(node)) {
-    const content = node.expression == undefined ? '' : generate(node.expression)
+    const content =
+      node.expression == undefined ? `$emit('${node.name}')` : generate(node.expression)
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else {
     return undefined

@@ -17,7 +17,7 @@ function getSvelteElement(code: string): SvelteElement | null {
 
 // NOTE:
 // we will use the following code for the test:
-// - vapor repl: https://vapor-template-explorer.netlify.app/#eyJzcmMiOiI8ZGl2IGlkPVwiYXBwXCIgLz5cbjxpbnB1dCB0eXBlPVwiY2hlY2tib3hcIiBjaGVja2VkIC8+XG48YSA6aHJlZj1cImBwYWdlLyR7cH1gXCI+cGFnZSB7e3B9fTwvYT5cbjxidXR0b24gOmRpc2FibGVkPVwiIWNsaWNrYWJsZVwiPi4uLjwvYnV0dG9uPlxuPGlucHV0IDpyZXF1aXJlZD1cImZhbHNlXCIgLz5cbjxkaXYgOnRpdGxlPVwibnVsbFwiPlRoaXMgZGl2IGhhcyBubyB0aXRsZSBhdHRyaWJ1dGU8L2Rpdj5cbjxidXR0b24gOmRpc2FibGVkPVwibnVtYmVyICE9PSA0MlwiPi4uLjwvYnV0dG9uPlxuPGJ1dHRvbiA6ZGlzYWJsZWQ+Li4uPC9idXR0b24+XG48V2lkZ2V0IDpmb289XCJiYXJcIiA6YW5zd2VyPVwiNDJcIiB0ZXh0PVwiaGVsbG9cIiAvPlxuPFdpZGdldCB2LWJpbmQ9XCJ0aGluZ3NcIiAvPiIsIm9wdGlvbnMiOnt9fQ==
+// - vapor repl: https://vapor-template-explorer.netlify.app/#eyJzcmMiOiI8ZGl2IGlkPVwiYXBwXCIgLz5cbjxpbnB1dCB0eXBlPVwiY2hlY2tib3hcIiBjaGVja2VkIC8+XG48YSA6aHJlZj1cImBwYWdlLyR7cH1gXCI+cGFnZSB7e3B9fTwvYT5cbjxidXR0b24gOmRpc2FibGVkPVwiIWNsaWNrYWJsZVwiPi4uLjwvYnV0dG9uPlxuPGlucHV0IDpyZXF1aXJlZD1cImZhbHNlXCIgLz5cbjxkaXYgOnRpdGxlPVwibnVsbFwiPlRoaXMgZGl2IGhhcyBubyB0aXRsZSBhdHRyaWJ1dGU8L2Rpdj5cbjxidXR0b24gOmRpc2FibGVkPVwibnVtYmVyICE9PSA0MlwiPi4uLjwvYnV0dG9uPlxuPGJ1dHRvbiA6ZGlzYWJsZWQ+Li4uPC9idXR0b24+XG48V2lkZ2V0IDpmb289XCJiYXJcIiA6YW5zd2VyPVwiNDJcIiB0ZXh0PVwiaGVsbG9cIiAvPlxuPFdpZGdldCB2LWJpbmQ9XCJ0aGluZ3NcIiAvPlxuXG48YnV0dG9uIHYtb246Y2xpY2s9XCJpbmNyZW1lbnRcIj5DbGljayBtZSE8L2J1dHRvbj5cbjxidXR0b24gQGNsaWNrPVwiKCkgPT4gKGNvdW50ICs9IDEpXCI+Y291bnQ6IHt7Y291bnR9fTwvYnV0dG9uPlxuPGJ1dHRvbiBAY2xpY2s9XCIkZW1pdCgnY2xpY2snKVwiPjwvYnV0dG9uPlxuPGZvcm0gQHN1Ym1pdC5wcmV2ZW50PVwiaGFuZGxlU3VibWl0XCI+PC9mb3JtPiIsIm9wdGlvbnMiOnt9fQ==
 // - svelte repl: https://svelte.dev/repl/26f60c3bdd104519844b674f26dac872?version=4.2.18
 
 describe('convertProps', () => {
@@ -501,6 +501,40 @@ describe('convertProps', () => {
     test.todo('modifiers "once"')
     test.todo('modifiers "self"')
     test.todo('modifiers "trusted"')
+
+    test('event forwarding: <button on:click />', () => {
+      const el = getSvelteElement('<button on:click />')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'on',
+          rawName: 'v-on:click',
+          modifiers: [],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            // source: 'on:click'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'click',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'click'
+            }
+          },
+          exp: {
+            ast: {
+              type: 'CallExpression'
+            },
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: "$emit('click')",
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false
+          }
+        }
+      ])
+    })
   })
 
   test('no attribute', () => {
