@@ -55,7 +55,7 @@ importers:
         specifier: ^2.0.1
         version: 2.0.3(@types/node@20.14.11)
 
-  packages/compiler:
+  packages/core:
     dependencies:
       '@babel/parser':
         specifier: ^7.24.8
@@ -149,7 +149,7 @@ importers:
         version: 1.2.0
       svelte-vapor-core:
         specifier: workspace:^
-        version: link:../compiler
+        version: link:../core
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.5.3)
