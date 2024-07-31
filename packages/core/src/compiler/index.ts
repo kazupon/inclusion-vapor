@@ -6,4 +6,5 @@
 
 export * from './transform'
 export * from './errors'
+export * from './ir'
 export * from './compile'
