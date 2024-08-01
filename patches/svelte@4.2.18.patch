@@ -1,0 +1,23 @@
+diff --git a/src/compiler/parse/acorn.js b/src/compiler/parse/acorn.js
+index 85d219d8c9a024e0cb35e9554d8fef6c0458c3fd..3f0edfb1720ecbf03893dba90ba4cca21f94a50e 100644
+--- a/src/compiler/parse/acorn.js
++++ b/src/compiler/parse/acorn.js
+@@ -1,13 +1,14 @@
+ import * as code_red from 'code-red';
++import babel from '@babel/parser';
++
++const { parse: parseBabel } = babel;
+ 
+ /**
+  * @param {string} source
+  */
+ export const parse = (source) =>
+-	code_red.parse(source, {
+-		sourceType: 'module',
+-		ecmaVersion: 13,
+-		locations: true
++	parseBabel(source, {
++		sourceType: 'module'
+ 	});
+ 
+ /**

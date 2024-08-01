@@ -4,6 +4,5 @@ exports[`test transform 1`] = `
 "let count = 0;
 const increment = () => {
   count += 1;
-};
-"
+};"
 `;

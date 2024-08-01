@@ -1,5 +1,6 @@
 declare module 'svelte/compiler' {
   import type { Node } from 'estree'
+  import type { File } from '@babel/types'
   import type { BaseNode } from 'svelte/types/compiler/interfaces'
 
   export interface ShorthandAttribute extends BaseNode {
@@ -11,6 +12,12 @@ declare module 'svelte/compiler' {
     type: 'Text'
     data: string
     raw: string
+  }
+
+  export interface Script extends BaseNode {
+    type: 'Script'
+    context: string
+    content: File
   }
 }
 

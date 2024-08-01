@@ -62,7 +62,7 @@ function convertSvelteAttribute(node: SvelteAttribute): AttributeNode {
   }
 
   const nameLocEnd = attrOnly ? node.end : node.start + node.name.length + 1
-  const ret = {
+  return {
     type: NodeTypes.ATTRIBUTE,
     name: node.name,
     loc: convertSvelteLocation(node, attrOnly ? node.name : `${node.name}="${value!.raw}"`),
@@ -74,8 +74,7 @@ function convertSvelteAttribute(node: SvelteAttribute): AttributeNode {
           content: value!.data,
           loc: convertSvelteLocation({ start: nameLocEnd + 1, end: node.end }, `"${value!.raw}"`)
         }
-  } as AttributeNode
-  return ret
+  }
 }
 
 const EVENT_MODIFIERS_MAP: Record<string, string> = {
@@ -167,6 +166,9 @@ function convertVaporDirective(
       arg,
       exp
     }
+  } else {
+    // TODO: we should consider error strategy
+    throw new Error('unexpected node type')
   }
 }
 

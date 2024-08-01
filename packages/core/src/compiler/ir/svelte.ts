@@ -127,5 +127,6 @@ export type {
 
 export type {
   Text as SvelteText,
+  Script as SvelteScript,
   ShorthandAttribute as SvelteShorthandAttribute
 } from 'svelte/compiler'
