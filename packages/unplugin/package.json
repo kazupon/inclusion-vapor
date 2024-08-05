@@ -88,11 +88,11 @@
     "build": "tsup",
     "build:fix": "esno scripts/postbuild.ts",
     "dev": "tsup --watch src",
-    "play": "npm -C playground run dev",
     "prepublishOnly": "npm run build",
     "start": "esno src/index.ts"
   },
   "dependencies": {
+    "svelte-vapor-core": "workspace:^",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {

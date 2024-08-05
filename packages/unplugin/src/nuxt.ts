@@ -5,6 +5,7 @@ import '@nuxt/schema'
 
 import type { Options } from './types'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ModuleOptions extends Options {}
 
 const nuxt: ReturnType<typeof defineNuxtModule> = defineNuxtModule<ModuleOptions>({

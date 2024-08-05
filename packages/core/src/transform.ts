@@ -1,5 +1,5 @@
 // import generate from '@babel/generator'
-import { print as generate } from 'code-red'
+import { print as _generate } from 'code-red'
 import {
   analyze,
   Scope,
@@ -9,7 +9,7 @@ import {
 } from '@typescript-eslint/scope-manager'
 import {
   simpleTraverse,
-  parse as parseTsEslint,
+  parse as _parseTsEslint,
   AST_NODE_TYPES
 } from '@typescript-eslint/typescript-estree'
 import { MagicStringAST } from 'magic-string-ast'
@@ -17,9 +17,9 @@ import { MagicStringAST } from 'magic-string-ast'
 import type { SvelteScript } from './compiler'
 import type { File as BabelFile, Node as BabelNode } from '@babel/types'
 
-type TSESLintNode = ReturnType<typeof parseTsEslint>
+type TSESLintNode = ReturnType<typeof _parseTsEslint>
 
-export function transformSvelteVapor(code: string): ReturnType<typeof generate> {
+export function transformSvelteVapor(code: string): ReturnType<typeof _generate> {
   return {
     code,
     map: {}

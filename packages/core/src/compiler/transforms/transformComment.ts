@@ -18,6 +18,7 @@ export const transformComment: NodeTransform = (node, context) => {
 
   if (getSiblingIf(context as TransformContext<SvelteComment>)) {
     context.comment.push(node)
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     context.dynamic.flags != DynamicFlag.NON_TEMPLATE
   } else {
     context.template += `<!--${node.data}-->`
