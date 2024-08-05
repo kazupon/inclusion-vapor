@@ -7,5 +7,5 @@ export default <Options>{
   dts: true,
   cjsInterop: true,
   splitting: true,
-  onSuccess: 'npm run build:fix'
+  onSuccess: 'pnpm build:fix'
 }
