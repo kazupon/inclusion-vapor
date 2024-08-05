@@ -17,6 +17,7 @@
     "build": "run-p \"build:*\"",
     "build:compiler": "pnpm run --filter=./packages/core build",
     "build:template-explorer": "pnpm run --filter=./packages/template-explorer build",
+    "build:unplugin": "pnpm run --filter=./packages/unplugin build",
     "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
     "dev:compiler": "run-s \"build\" serve",
     "fix": "run-p \"fix:* {@}\" --",
