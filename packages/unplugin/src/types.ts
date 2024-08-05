@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Options {
-  // define your plugin options here
+  include?: string | RegExp | (string | RegExp)[]
+  exclude?: string | RegExp | (string | RegExp)[]
+  // TODO: we shouldl add more `vite-plugin-svelte` options
 }

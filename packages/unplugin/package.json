@@ -92,12 +92,15 @@
     "start": "esno src/index.ts"
   },
   "dependencies": {
+    "@rollup/pluginutils": "^5.1.0",
+    "debug": "^4.3.6",
     "svelte-vapor-core": "workspace:^",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {
     "@nuxt/kit": "^3",
     "@nuxt/schema": "^3",
+    "@types/debug": "^4.1.12",
     "esbuild": "*",
     "rollup": "^3",
     "vite": ">=3",
