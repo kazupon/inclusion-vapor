@@ -87,9 +87,9 @@
   "scripts": {
     "build": "tsup",
     "build:fix": "esno scripts/postbuild.ts",
-    "dev": "tsup --watch src",
     "prepublishOnly": "npm run build",
-    "start": "esno src/index.ts"
+    "start": "esno src/index.ts",
+    "watch": "tsup --watch src"
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
