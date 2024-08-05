@@ -12,7 +12,7 @@
     "vue": "npm:@vue-vapor/vue@latest"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "npm:@vue-vapor/vite-plugin-vue@0.0.0-alpha.5",
+    "@vitejs/plugin-vue": "npm:@vue-vapor/vite-plugin-vue@0.0.0-alpha.4",
     "@vue/compiler-core": "npm:@vue-vapor/compiler-core@latest",
     "@vue/compiler-dom": "npm:@vue-vapor/compiler-dom@latest",
     "@vue/compiler-sfc": "npm:@vue-vapor/compiler-sfc@latest",
