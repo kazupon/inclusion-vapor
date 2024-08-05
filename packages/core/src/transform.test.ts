@@ -1,6 +1,9 @@
-import { test, expect } from 'vitest'
-import { transformSvelteScript } from './transform'
+import { describe, test, expect } from 'vitest'
+import { transformSvelteScript, transformSvelteVapor } from './transform'
 import { parse } from 'svelte/compiler'
+import { MagicStringAST } from 'magic-string-ast'
+
+import type { File as BabelFile } from '@babel/types'
 
 const svelteCode = `
 <script>
@@ -14,8 +17,25 @@ const svelteCode = `
   count is {count}
 </button>
 `
-test('test transform', () => {
-  const ast = parse(svelteCode)
-  const code = transformSvelteScript(ast.instance!)
-  expect(code).toMatchSnapshot()
+
+describe.skip('transformSvelteVapor', () => {
+  test('MVP: counter case', () => {
+    const { code } = transformSvelteVapor(svelteCode)
+    expect(code).toMatchSnapshot()
+  })
+})
+
+describe('transformSvelteScript', () => {
+  test('MVP: counter case', () => {
+    const ast = parse(svelteCode)
+
+    const babelFileNode = ast.instance!.content as unknown as BabelFile
+    const svelteStr = new MagicStringAST(svelteCode)
+
+    const code = transformSvelteScript(ast.instance!, svelteStr.sliceNode(babelFileNode))
+    expect(code).toMatchSnapshot()
+    expect(code).contains(`import { ref } from 'vue/vapor'`)
+    expect(code).contains('let count = ref(0)')
+    expect(code).contains('count.value += 1')
+  })
 })

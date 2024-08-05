@@ -29,21 +29,24 @@ test('parser', () => {
 
 test('preprocess', async () => {
   const returnValue = await preprocess(svelteCode, {
-    script(params, ...args) {
-      console.log('preprocess params', params)
-      console.log('preprocess args', args)
+    script(_params, ..._args) {
+      // console.log('preprocess params', params)
+      // console.log('preprocess args', args)
       return {
-        code: `import { onMount, computed, ref } from 'vue/vapor'
-        const count = ref(0)
-        onMount(() => {
-          console.log('mounted')
-        })
-        const increment = computed(() => count.value + 1)
+        code: `
+import { onMount, computed, ref } from 'vue/vapor'
+const count = ref(0)
+onMount(() => {
+  console.log('mounted')
+})
+const increment = computed(() => count.value + 1)
 `
       }
     }
   })
   expect(returnValue).toMatchSnapshot()
-  const ast = parse(returnValue.code)
-  console.log('ast.instance', ast.instance)
+
+  // const ast = parse(returnValue.code)
+  // console.log('ast', (ast.instance?.content as unknown as File).program.body)
+  // console.log('ast', ast.instance?.content)
 })
