@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`parse > script 1`] = `
+"<script>
+  let count = 0
+  const increment = () => {
+    count += 1
+  }
+</script>"
+`;
+
+exports[`parse > style 1`] = `
+"<style>
+button {
+  color: red;
+}
+</style>"
+`;
+
+exports[`parse > template 1`] = `
+"<button on:click={increment}>
+  count is {count}
+</button>"
+`;
