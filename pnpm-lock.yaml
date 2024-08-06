@@ -16,7 +16,7 @@ overrides:
 
 patchedDependencies:
   svelte@4.2.18:
-    hash: pshma6txacvzpmvp5pt7lbkb2u
+    hash: nrmskjuickzosje3buqtnt7ufq
     path: patches/svelte@4.2.18.patch
 
 importers:
@@ -109,7 +109,7 @@ importers:
         version: 1.2.0
       svelte:
         specifier: 4.2.18
-        version: 4.2.18(patch_hash=pshma6txacvzpmvp5pt7lbkb2u)
+        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
     devDependencies:
       '@babel/types':
         specifier: ^7.24.9
@@ -117,9 +117,6 @@ importers:
       '@types/babel__generator':
         specifier: ^7.6.8
         version: 7.6.8
-      '@types/estree':
-        specifier: ^1.0.5
-        version: 1.0.5
       tsdown:
         specifier: ^0.2.3
         version: 0.2.3(rollup@4.20.0)(typescript@5.5.3)
@@ -7203,7 +7200,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte@4.2.18(patch_hash=pshma6txacvzpmvp5pt7lbkb2u):
+  svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0

@@ -226,9 +226,24 @@ function createSvelteScriptBlock(
 ): SvelteSFCScriptBlock {
   const type = 'script'
 
-  const content = source.slice(node.start, node.end)
-  const attrs: Record<string, string | true> = parseAttrs(content)
+  const attrs: Record<string, string | true> = {}
+  if (node.attributes) {
+    node.attributes.forEach(attr => {
+      if (isSvelteAttribute(attr)) {
+        if (typeof attr.value === 'boolean') {
+          attrs[attr.name] = attr.value
+        } else if (
+          Array.isArray(attr.value) &&
+          attr.value.length > 0 &&
+          isSvelteText(attr.value[0])
+        ) {
+          attrs[attr.name] = attr.value[0].data
+        }
+      }
+    })
+  }
 
+  const content = source.slice(node.start, node.end)
   const block: SvelteSFCScriptBlock = {
     type,
     content,
@@ -253,20 +268,6 @@ function createSvelteScriptBlock(
   }
 
   return block
-}
-
-const attrRE = /(\w+)="([^"\\]*(?:\\.[^"\\]*)*)"/g
-
-function parseAttrs(str: string): Record<string, string | true> {
-  const attrs: Record<string, string | true> = {}
-  let m
-  while ((m = attrRE.exec(str)) !== null) {
-    if (m.index === attrRE.lastIndex) {
-      attrRE.lastIndex++
-    }
-    attrs[m[1]] = m[2]
-  }
-  return attrs
 }
 
 // TODO: more refactoring

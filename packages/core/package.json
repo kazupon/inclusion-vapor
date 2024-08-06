@@ -64,7 +64,6 @@
   "devDependencies": {
     "@babel/types": "^7.24.9",
     "@types/babel__generator": "^7.6.8",
-    "@types/estree": "^1.0.5",
     "tsdown": "^0.2.3"
   }
 }

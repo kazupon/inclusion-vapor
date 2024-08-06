@@ -103,6 +103,7 @@ exports[`parser 1`] = `
     "type": "Fragment",
   },
   "instance": {
+    "attributes": [],
     "content": Node {
       "comments": [],
       "end": 73,

@@ -1,3 +1,44 @@
+diff --git a/src/compiler/interfaces.d.ts b/src/compiler/interfaces.d.ts
+index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..1171dce5239c264593f390e24a6e551e2bc49073 100644
+--- a/src/compiler/interfaces.d.ts
++++ b/src/compiler/interfaces.d.ts
+@@ -1,5 +1,6 @@
+ import { AssignmentExpression, Node, Program } from 'estree';
+ import { SourceMap } from 'magic-string';
++import type { File } from '@babel/types'
+ 
+ interface BaseNode {
+ 	start: number;
+@@ -90,6 +91,11 @@ export interface SpreadAttribute extends BaseNode {
+ 	expression: Node;
+ }
+ 
++export interface ShorthandAttribute extends BaseNode {
++	type: 'AttributeShorthand';
++	expression: Node;
++}
++
+ export interface Transition extends BaseExpressionDirective {
+ 	type: 'Transition';
+ 	intro: boolean;
+@@ -107,6 +113,7 @@ export type TemplateNode =
+ 	| Element
+ 	| Attribute
+ 	| SpreadAttribute
++	| ShorthandAttribute
+ 	| Directive
+ 	| Transition
+ 	| Comment;
+@@ -127,7 +134,8 @@ export interface Parser {
+ export interface Script extends BaseNode {
+ 	type: 'Script';
+ 	context: string;
+-	content: Program;
++	attributes: any[];
++	content: File;
+ }
+ 
+ export interface Style extends BaseNode {
 diff --git a/src/compiler/parse/acorn.js b/src/compiler/parse/acorn.js
 index 85d219d8c9a024e0cb35e9554d8fef6c0458c3fd..2a104636d9801312f0099b3238e480976befe609 100644
 --- a/src/compiler/parse/acorn.js
@@ -19,3 +60,111 @@ index 85d219d8c9a024e0cb35e9554d8fef6c0458c3fd..2a104636d9801312f0099b3238e48097
  	});
  
  /**
+diff --git a/src/compiler/parse/read/script.js b/src/compiler/parse/read/script.js
+index 3d4ab358df18d42b7af4288ff3b4718d1774ec44..fcdfbd2bcd078253c671da3d01e00278c206364e 100644
+--- a/src/compiler/parse/read/script.js
++++ b/src/compiler/parse/read/script.js
+@@ -55,6 +55,7 @@ export default function read_script(parser, start, attributes) {
+ 		type: 'Script',
+ 		start,
+ 		end: parser.index,
++		attributes,
+ 		context: get_context(parser, attributes, start),
+ 		content: ast
+ 	};
+diff --git a/types/index.d.ts b/types/index.d.ts
+index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..1d7dd6af8c86b3116b8eaf5169ecbfd23f23f9b8 100644
+--- a/types/index.d.ts
++++ b/types/index.d.ts
+@@ -275,6 +275,7 @@ declare module 'svelte' {
+ declare module 'svelte/compiler' {
+ 	import type { AssignmentExpression, Node, Program } from 'estree';
+ 	import type { SourceMap } from 'magic-string';
++	import type { File } from '@babel/types';
+ 	export { walk } from 'estree-walker';
+ 	interface BaseNode {
+ 		start: number;
+@@ -287,6 +288,7 @@ declare module 'svelte/compiler' {
+ 	interface Text extends BaseNode {
+ 		type: 'Text';
+ 		data: string;
++		raw: string;
+ 	}
+ 
+ 	interface MustacheTag extends BaseNode {
+@@ -360,6 +362,11 @@ declare module 'svelte/compiler' {
+ 		expression: Node;
+ 	}
+ 
++	interface ShorthandAttribute extends BaseNode {
++		type: 'AttributeShorthand';
++		expression: Node;
++	}
++
+ 	interface Transition extends BaseExpressionDirective {
+ 		type: 'Transition';
+ 		intro: boolean;
+@@ -377,6 +384,7 @@ declare module 'svelte/compiler' {
+ 		| Element
+ 		| Attribute
+ 		| SpreadAttribute
++		| ShorthandAttribute
+ 		| Directive
+ 		| Transition
+ 		| Comment;
+@@ -384,7 +392,8 @@ declare module 'svelte/compiler' {
+ 	interface Script extends BaseNode {
+ 		type: 'Script';
+ 		context: string;
+-		content: Program;
++		attributes: any[];
++		content: File;
+ 	}
+ 
+ 	interface Style extends BaseNode {
+@@ -866,6 +875,7 @@ declare module 'svelte/types/compiler/preprocess' {
+ 
+ declare module 'svelte/types/compiler/interfaces' {
+ 	import type { AssignmentExpression, Node, Program } from 'estree';
++	import type { File } from '@babel/types';
+ 	import type { SourceMap } from 'magic-string';
+ 	interface BaseNode {
+ 		start: number;
+@@ -883,6 +893,7 @@ declare module 'svelte/types/compiler/interfaces' {
+ 	export interface Text extends BaseNode {
+ 		type: 'Text';
+ 		data: string;
++		raw: string;
+ 	}
+ 
+ 	export interface MustacheTag extends BaseNode {
+@@ -956,6 +967,11 @@ declare module 'svelte/types/compiler/interfaces' {
+ 		expression: Node;
+ 	}
+ 
++	export interface ShorthandAttribute extends BaseNode {
++		type: 'AttributeShorthand';
++		expression: Node;
++	}
++
+ 	export interface Transition extends BaseExpressionDirective {
+ 		type: 'Transition';
+ 		intro: boolean;
+@@ -973,6 +989,7 @@ declare module 'svelte/types/compiler/interfaces' {
+ 		| Element
+ 		| Attribute
+ 		| SpreadAttribute
++		| ShorthandAttribute
+ 		| Directive
+ 		| Transition
+ 		| Comment;
+@@ -993,7 +1010,8 @@ declare module 'svelte/types/compiler/interfaces' {
+ 	export interface Script extends BaseNode {
+ 		type: 'Script';
+ 		context: string;
+-		content: Program;
++		attributes: any[];
++		content: File;
+ 	}
+ 
+ 	export interface Style extends BaseNode {

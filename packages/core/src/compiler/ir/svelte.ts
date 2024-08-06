@@ -12,13 +12,10 @@ import type {
   SpreadAttribute as SvelteSpreadAttribute,
   MustacheTag as SvelteMustacheTag,
   Directive as SvelteDirective,
-  BaseExpressionDirective as SvelteBaseExpressionDirective
-} from 'svelte/types/compiler/interfaces'
-
-import type {
+  BaseExpressionDirective as SvelteBaseExpressionDirective,
   Text as SvelteText,
   ShorthandAttribute as SvelteShorthandAttribute
-} from 'svelte/compiler'
+} from 'svelte/types/compiler/interfaces'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO: add svelte built-in directives
@@ -123,11 +120,8 @@ export type {
   BaseNode as SvelteBaseNode,
   Directive as SvelteDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
-  Style as SvelteStyle
-} from 'svelte/types/compiler/interfaces'
-
-export type {
-  Text as SvelteText,
   Script as SvelteScript,
+  Style as SvelteStyle,
+  Text as SvelteText,
   ShorthandAttribute as SvelteShorthandAttribute
-} from 'svelte/compiler'
+} from 'svelte/types/compiler/interfaces'
