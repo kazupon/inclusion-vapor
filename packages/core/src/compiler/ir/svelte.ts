@@ -122,7 +122,8 @@ export type {
   BaseDirective as SvelteBaseDirective,
   BaseNode as SvelteBaseNode,
   Directive as SvelteDirective,
-  BaseExpressionDirective as SvelteBaseExpressionDirective
+  BaseExpressionDirective as SvelteBaseExpressionDirective,
+  Style as SvelteStyle
 } from 'svelte/types/compiler/interfaces'
 
 export type {

@@ -23,7 +23,8 @@ export default defineConfig(
             camelCase: true
           }
         }
-      ]
+      ],
+      'unicorn/no-array-for-each': 'off'
     }
   }),
   typescript({

@@ -52,11 +52,13 @@
     "@typescript-eslint/scope-manager": "^8.0.0",
     "@typescript-eslint/typescript-estree": "^8.0.0",
     "@vue-vapor/compiler-dom": "latest",
+    "@vue-vapor/compiler-sfc": "latest",
     "@vue-vapor/compiler-vapor": "latest",
     "@vue-vapor/shared": "latest",
     "astring": "^1.8.6",
     "code-red": "^1.0.4",
     "magic-string-ast": "^0.6.2",
+    "source-map-js": "^1.2.0",
     "svelte": "4.2.18"
   },
   "devDependencies": {
