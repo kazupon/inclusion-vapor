@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`parse > script 1`] = `
-"<script>
+"<script lang="js">
   let count = 0
   const increment = () => {
     count += 1
@@ -10,7 +10,7 @@ exports[`parse > script 1`] = `
 `;
 
 exports[`parse > style 1`] = `
-"<style>
+"<style scoped lang="css">
 button {
   color: red;
 }

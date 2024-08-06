@@ -6,6 +6,7 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-sfc/src/parse.ts
 
 import { parse as parseSvelte, compile as compileSvelte } from 'svelte/compiler'
+import { isSvelteAttribute, isSvelteText } from '../compiler'
 // import { SourceMapGenerator } from 'source-map-js'
 
 import type {
@@ -224,8 +225,9 @@ function createSvelteScriptBlock(
   pad: SvelteParseOptions['pad']
 ): SvelteSFCScriptBlock {
   const type = 'script'
-  const attrs: Record<string, string | true> = {}
+
   const content = source.slice(node.start, node.end)
+  const attrs: Record<string, string | true> = parseAttrs(content)
 
   const block: SvelteSFCScriptBlock = {
     type,
@@ -253,6 +255,20 @@ function createSvelteScriptBlock(
   return block
 }
 
+const attrRE = /(\w+)="([^"\\]*(?:\\.[^"\\]*)*)"/g
+
+function parseAttrs(str: string): Record<string, string | true> {
+  const attrs: Record<string, string | true> = {}
+  let m
+  while ((m = attrRE.exec(str)) !== null) {
+    if (m.index === attrRE.lastIndex) {
+      attrRE.lastIndex++
+    }
+    attrs[m[1]] = m[2]
+  }
+  return attrs
+}
+
 // TODO: more refactoring
 function createSvelteStyleBlock(
   node: SvelteStyle,
@@ -260,9 +276,25 @@ function createSvelteStyleBlock(
   pad: SvelteParseOptions['pad']
 ): SvelteSFCStyleBlock {
   const type = 'style'
-  const attrs: Record<string, string | true> = {}
-  const content = source.slice(node.start, node.end)
 
+  const attrs: Record<string, string | true> = {}
+  if (node.attributes) {
+    node.attributes.forEach(attr => {
+      if (isSvelteAttribute(attr)) {
+        if (typeof attr.value === 'boolean') {
+          attrs[attr.name] = attr.value
+        } else if (
+          Array.isArray(attr.value) &&
+          attr.value.length > 0 &&
+          isSvelteText(attr.value[0])
+        ) {
+          attrs[attr.name] = attr.value[0].data
+        }
+      }
+    })
+  }
+
+  const content = source.slice(node.start, node.end)
   const block: SvelteSFCStyleBlock = {
     type,
     content,
@@ -295,43 +327,45 @@ const splitRE = /\r?\n/g // eslint-disable-line regexp/no-useless-flag -- FIXME
 // const emptyRE = /^(?:\/\/)?\s*$/
 const replaceRE = /./g
 
-// function generateSourceMap(
-//   filename: string,
-//   source: string,
-//   generated: string,
-//   sourceRoot: string,
-//   lineOffset: number,
-//   columnOffset: number
-// ): RawSourceMap {
-//   const map = new SourceMapGenerator({
-//     // eslint-disable-next-line unicorn/prefer-string-replace-all  -- FIXME
-//     file: filename.replace(/\\/g, '/'),
-//     // eslint-disable-next-line unicorn/prefer-string-replace-all  -- FIXME
-//     sourceRoot: sourceRoot.replace(/\\/g, '/')
-//   }) as unknown as CodegenSourceMapGenerator
-//   map.setSourceContent(filename, source)
-//   map._sources.add(filename)
-//   generated.split(splitRE).forEach((line, index) => {
-//     if (!emptyRE.test(line)) {
-//       const originalLine = index + 1 + lineOffset
-//       const generatedLine = index + 1
-//       // eslint-disable-next-line unicorn/no-for-loop
-//       for (let i = 0; i < line.length; i++) {
-//         if (!/\s/.test(line[i])) {
-//           map._mappings.add({
-//             originalLine,
-//             originalColumn: i + columnOffset,
-//             generatedLine,
-//             generatedColumn: i,
-//             source: filename,
-//             name: null // eslint-disable-line unicorn/no-null
-//           })
-//         }
-//       }
-//     }
-//   })
-//   return map.toJSON()
-// }
+/*
+function generateSourceMap(
+  filename: string,
+  source: string,
+  generated: string,
+  sourceRoot: string,
+  lineOffset: number,
+  columnOffset: number
+): RawSourceMap {
+  const map = new SourceMapGenerator({
+    // eslint-disable-next-line unicorn/prefer-string-replace-all  -- FIXME
+    file: filename.replace(/\\/g, '/'),
+    // eslint-disable-next-line unicorn/prefer-string-replace-all  -- FIXME
+    sourceRoot: sourceRoot.replace(/\\/g, '/')
+  }) as unknown as CodegenSourceMapGenerator
+  map.setSourceContent(filename, source)
+  map._sources.add(filename)
+  generated.split(splitRE).forEach((line, index) => {
+    if (!emptyRE.test(line)) {
+      const originalLine = index + 1 + lineOffset
+      const generatedLine = index + 1
+      // eslint-disable-next-line unicorn/no-for-loop
+      for (let i = 0; i < line.length; i++) {
+        if (!/\s/.test(line[i])) {
+          map._mappings.add({
+            originalLine,
+            originalColumn: i + columnOffset,
+            generatedLine,
+            generatedColumn: i,
+            source: filename,
+            name: null // eslint-disable-line unicorn/no-null
+          })
+        }
+      }
+    }
+  })
+  return map.toJSON()
+}
+  */
 
 function padContent(content: string, block: SFCBlock, pad: SvelteParseOptions['pad']): string {
   content = content.slice(0, block.loc.start.offset)
