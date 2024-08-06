@@ -1,2 +1,5 @@
 packages:
   - 'packages/*'
+
+catalog:
+  'vite': ^5.3.4

@@ -134,7 +134,7 @@
     "fast-glob": "^3.3.2",
     "rollup": "^4.6.1",
     "tsup": "^8.0.1",
-    "vite": "^5.0.4",
+    "vite": "catalog:",
     "webpack": "^5.89.0"
   }
 }
