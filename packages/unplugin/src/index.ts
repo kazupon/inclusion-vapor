@@ -1,5 +1,6 @@
 import { createUnplugin } from 'unplugin'
-import { resolveOptions } from './core'
+import { resolveOptions, parseRequestQuery } from './core/utils'
+import { transformMain } from './core/transform'
 import createDebug from 'debug'
 
 import type { UnpluginFactory, UnpluginInstance } from 'unplugin'
@@ -8,7 +9,6 @@ import type { Options } from './types'
 const debug = createDebug('unplugin-svelte-vapor')
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options = {}, _meta) => {
-  debug('Resolving options ...', options)
   const resolvedOptions = resolveOptions(options)
   debug('... resolved options:', resolvedOptions)
 
@@ -17,29 +17,36 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options = 
 
     resolveId(id, importer) {
       debug('Resolving ID ...', id, importer)
-
-      // TODO:
-
-      return id
+      const { filename, query } = parseRequestQuery(id)
+      debug('resolveId ... parsed:', filename, query)
+      if ('svelte' in query) {
+        // TODO:
+        return id
+      }
     },
 
     load(id) {
       debug('Loading ...', id)
 
+      const { filename, query } = parseRequestQuery(id)
+      debug('load ... parsed:', filename, query)
+
       // TODO:
     },
 
     transformInclude(id) {
-      debug('Transforming include ...', id)
-
-      // TODO:
-
-      return id.endsWith('main.ts')
+      debug('transformInclude params: id:', id)
+      const { filename } = parseRequestQuery(id)
+      return filename.endsWith('.svelte')
     },
 
-    transform(code) {
-      // TODO:
-      return code.replace('__UNPLUGIN__', `Hello Unplugin!`)
+    transform(code, id) {
+      const { filename, query } = parseRequestQuery(id)
+      debug('transform parsed id:', filename, query, code)
+
+      if (!('svelte' in query)) {
+        return transformMain(code, filename, resolvedOptions)
+      }
     },
 
     vite: {
