@@ -4075,6 +4075,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.25.2
 
+  '@babel/parser@7.25.3':
+    dependencies:
+      '@babel/types': 7.25.2
+
   '@babel/standalone@7.24.10': {}
 
   '@babel/template@7.24.7':
