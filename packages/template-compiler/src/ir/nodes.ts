@@ -14,7 +14,7 @@ import type {
 } from '@vue-vapor/compiler-dom'
 import type { SvelteTemplateNode } from './svelte'
 import type { IRProp, IRProps, IRSlots } from './component'
-import type { Overwrite } from '../../types'
+import type { Overwrite } from '../types'
 
 export interface BaseIRNode {
   type: IRNodeTypes
