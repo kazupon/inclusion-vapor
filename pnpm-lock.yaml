@@ -231,15 +231,21 @@ importers:
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
+      '@vue-vapor/shared':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
       debug:
         specifier: ^4.3.6
         version: 4.3.6
       esbuild:
         specifier: '*'
         version: 0.23.0
-      svelte-vapor-template-compiler:
+      svelte:
+        specifier: 'catalog:'
+        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+      svelte-vapor-sfc-compiler:
         specifier: workspace:^
-        version: link:../template-compiler
+        version: link:../sfc-compiler
       unplugin:
         specifier: ^1.5.1
         version: 1.11.0

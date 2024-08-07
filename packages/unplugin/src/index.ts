@@ -40,22 +40,29 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options = 
       return filename.endsWith('.svelte')
     },
 
-    transform(code, id) {
+    async transform(code, id) {
       const { filename, query } = parseRequestQuery(id)
       debug('transform parsed id:', filename, query, code)
 
       if (!('svelte' in query)) {
-        return transformMain(code, filename, resolvedOptions)
+        return transformMain(this, code, filename, resolvedOptions, false, false)
       }
     },
 
     vite: {
+      configResolved(config) {
+        resolvedOptions.sourcemap = !!config.build.sourcemap
+      },
       handleHotUpdate(ctx) {
         debug('Handling hot update ...', ctx)
 
         // TODO:
       }
     }
+
+    // TODO:
+    // welcome contribution :)
+    // webpack: {}
   }
 }
 

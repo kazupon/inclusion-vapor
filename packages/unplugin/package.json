@@ -93,8 +93,10 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
+    "@vue-vapor/shared": "latest",
     "debug": "^4.3.6",
-    "svelte-vapor-template-compiler": "workspace:^",
+    "svelte": "catalog:",
+    "svelte-vapor-sfc-compiler": "workspace:^",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {

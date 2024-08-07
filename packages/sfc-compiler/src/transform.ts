@@ -47,7 +47,7 @@ export interface TransformSvelteScriptOptions {
    * Enable source map
    * @default false
    */
-  sourceMap?: boolean
+  sourcemap?: boolean
 }
 
 /**
@@ -76,11 +76,11 @@ export function transformSvelteScript(
   // NOTE: avoid Maximum call stack size exceeded error with `code-red` print
   disableParentableNodes(jsAst)
 
-  const sourceMap = !!options.sourceMap
+  const sourceMap = !!options.sourcemap
   const id = options.id
   if (sourceMap) {
     if (!id) {
-      throw new Error('`id` is required when `sourceMap` is enabled')
+      throw new Error('`id` is required when `sourcemap` is enabled')
     }
     const gen = generateTransform(jsStr, id)
     if (gen == undefined) {

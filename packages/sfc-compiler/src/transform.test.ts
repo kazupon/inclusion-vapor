@@ -44,7 +44,7 @@ describe('transformSvelteScript', () => {
       const { code, map } = transformSvelteScript(svelteStr.sliceNode(babelFileNode), {
         ast: ast.instance,
         id: 'test.svelte',
-        sourceMap: true
+        sourcemap: true
       }) as { code: string; map: ReturnType<MagicStringAST['generateMap']> }
       expect(code).toMatchSnapshot()
       expect(code).contains(`import { ref } from 'vue/vapor'`)
