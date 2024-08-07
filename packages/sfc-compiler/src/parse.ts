@@ -6,7 +6,7 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-sfc/src/parse.ts
 
 import { parse as parseSvelte, compile as compileSvelte } from 'svelte/compiler'
-import { isSvelteAttribute, isSvelteText } from '../compiler'
+import { isSvelteAttribute, isSvelteText } from 'svelte-vapor-template-compiler'
 // import { SourceMapGenerator } from 'source-map-js'
 
 import type {
@@ -24,8 +24,12 @@ import type {
   SFCBlock
 } from '@vue-vapor/compiler-sfc'
 import type { CompileOptions as SvelteCompileOptions } from 'svelte/compiler'
-import type { Overwrite } from '../types'
-import type { SvelteTemplateNode, SvelteScript, SvelteStyle } from '../compiler'
+import type {
+  Overwrite,
+  SvelteTemplateNode,
+  SvelteScript,
+  SvelteStyle
+} from 'svelte-vapor-template-compiler'
 
 export const DEFAULT_FILENAME = 'anonymous.svelte'
 

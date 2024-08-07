@@ -1,6 +1,6 @@
 {
-  "name": "svelte-vapor-template-compiler",
-  "description": "svelte template compiler for vapor",
+  "name": "svelte-vapor-sfc-compiler",
+  "description": "Svelte component compiler for SFC-flavoured vapor",
   "private": true,
   "version": "0.0.0",
   "author": {
@@ -15,11 +15,13 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kazupon/svelte-vapor.git",
-    "directory": "packages/template-compiler"
+    "directory": "packages/sfc-compiler"
   },
   "keywords": [
     "svelte",
     "vapor",
+    "sfc",
+    "component",
     "compiler"
   ],
   "homepage": "https://github.com/kazupon/svelte-vapor#readme",
@@ -46,13 +48,14 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.25.1",
-    "@babel/parser": "^7.24.8",
+    "@typescript-eslint/scope-manager": "^8.0.0",
+    "@typescript-eslint/typescript-estree": "^8.0.0",
     "@vue-vapor/compiler-dom": "latest",
-    "@vue-vapor/compiler-vapor": "latest",
-    "@vue-vapor/shared": "latest",
-    "astring": "^1.8.6",
-    "svelte": "catalog:"
+    "@vue-vapor/compiler-sfc": "latest",
+    "magic-string-ast": "^0.6.2",
+    "source-map-js": "catalog:",
+    "svelte": "catalog:",
+    "svelte-vapor-template-compiler": "workspace:^"
   },
   "devDependencies": {
     "@babel/types": "^7.24.9",

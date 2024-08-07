@@ -3,8 +3,6 @@ import { transformSvelteScript, transformSvelteVapor } from './transform'
 import { parse } from 'svelte/compiler'
 import { MagicStringAST } from 'magic-string-ast'
 
-import type { File as BabelFile } from '@babel/types'
-
 const svelteCode = `
 <script>
   let count = 0
@@ -29,7 +27,7 @@ describe('transformSvelteScript', () => {
   test('MVP: counter case', () => {
     const ast = parse(svelteCode)
 
-    const babelFileNode = ast.instance!.content as unknown as BabelFile
+    const babelFileNode = ast.instance!.content
     const svelteStr = new MagicStringAST(svelteCode)
 
     const code = transformSvelteScript(ast.instance!, svelteStr.sliceNode(babelFileNode))

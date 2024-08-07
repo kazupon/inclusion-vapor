@@ -31,7 +31,8 @@
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "paths": {
-      "svelte-vapor-core": ["packages/template-compiler/src"],
+      "svelte-vapor-template-compiler": ["packages/template-compiler/src"],
+      "svelte-vapor-sfc-compiler": ["packages/sfc-compiler/src"],
       "vue/vapor": ["packages/playground/node_modules/vue/vapor"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

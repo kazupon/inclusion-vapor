@@ -1,5 +1,5 @@
 // import generate from '@babel/generator'
-import { print as _generate } from 'code-red'
+// import { print as _generate } from 'code-red'
 import {
   analyze,
   Scope,
@@ -14,20 +14,22 @@ import {
 } from '@typescript-eslint/typescript-estree'
 import { MagicStringAST } from 'magic-string-ast'
 
-import type { SvelteScript } from './compiler'
+import type { SvelteScript } from 'svelte-vapor-template-compiler'
 import type { File as BabelFile, Node as BabelNode } from '@babel/types'
 
 type TSESLintNode = ReturnType<typeof _parseTsEslint>
+type GenerateMap = ReturnType<typeof MagicStringAST.prototype.generateMap>
 
-export function transformSvelteVapor(code: string): ReturnType<typeof _generate> {
+export function transformSvelteVapor(code: string): { code: string; map: GenerateMap } {
   return {
     code,
-    map: {}
+
+    map: {} as unknown as GenerateMap
   }
 }
 
 export function transformSvelteScript(script: SvelteScript, code: string): string {
-  const babelFileNode = script.content as unknown as BabelFile
+  const babelFileNode = script.content
   const jsAst = babelFileNode.program as unknown as TSESLintNode
   enableParentableNodes(jsAst)
 

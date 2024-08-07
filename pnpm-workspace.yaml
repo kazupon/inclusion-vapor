@@ -4,3 +4,5 @@ packages:
 catalog:
   'vite': ^5.3.4
   'source-map-js': ^1.2.0
+  'svelte': 4.2.18
+  'tsdown': ^0.2.3

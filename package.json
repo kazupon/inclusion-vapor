@@ -16,6 +16,7 @@
   "scripts": {
     "build": "run-p \"build:*\"",
     "build:compiler": "pnpm run --filter=./packages/template-compiler build",
+    "build:sfc": "pnpm run --filter=./packages/sfc-compiler build",
     "build:template": "pnpm run --filter=./packages/template-explorer build",
     "build:unplugin": "pnpm run --filter=./packages/unplugin build",
     "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
