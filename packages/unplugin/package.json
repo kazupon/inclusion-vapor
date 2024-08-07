@@ -104,7 +104,7 @@
     "@nuxt/schema": "^3",
     "@types/debug": "^4.1.12",
     "esbuild": "*",
-    "rollup": "^3",
+    "rollup": "^3 || ^4.0.0",
     "vite": ">=3",
     "webpack": "^4 || ^5"
   },
