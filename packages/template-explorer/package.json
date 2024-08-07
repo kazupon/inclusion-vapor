@@ -9,8 +9,8 @@
     "monaco-editor": "^0.49.0"
   },
   "devDependencies": {
-    "source-map-js": "^1.2.0",
-    "svelte-vapor-core": "workspace:^",
+    "source-map-js": "catalog:",
+    "svelte-vapor-template-compiler": "workspace:^",
     "unbuild": "^2.0.0",
     "vue": "^3.4.32"
   }

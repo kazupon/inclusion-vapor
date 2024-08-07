@@ -94,7 +94,7 @@
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
     "debug": "^4.3.6",
-    "svelte-vapor-core": "workspace:^",
+    "svelte-vapor-template-compiler": "workspace:^",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {

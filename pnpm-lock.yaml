@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    source-map-js:
+      specifier: ^1.2.0
+      version: 1.2.0
     vite:
       specifier: ^5.3.4
       version: 5.3.4
@@ -66,61 +69,6 @@ importers:
         specifier: ^2.0.1
         version: 2.0.3(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/core:
-    dependencies:
-      '@babel/eslint-parser':
-        specifier: ^7.25.1
-        version: 7.25.1(@babel/core@7.24.9)(eslint@9.7.0)
-      '@babel/generator':
-        specifier: ^7.25.0
-        version: 7.25.0
-      '@babel/parser':
-        specifier: ^7.24.8
-        version: 7.24.8
-      '@typescript-eslint/scope-manager':
-        specifier: ^8.0.0
-        version: 8.0.0
-      '@typescript-eslint/typescript-estree':
-        specifier: ^8.0.0
-        version: 8.0.0(typescript@5.5.3)
-      '@vue-vapor/compiler-dom':
-        specifier: latest
-        version: 3.20240714.0-6608bb3
-      '@vue-vapor/compiler-sfc':
-        specifier: latest
-        version: 3.20240714.0-6608bb3
-      '@vue-vapor/compiler-vapor':
-        specifier: latest
-        version: 3.20240714.0-6608bb3
-      '@vue-vapor/shared':
-        specifier: latest
-        version: 3.20240714.0-6608bb3
-      astring:
-        specifier: ^1.8.6
-        version: 1.8.6
-      code-red:
-        specifier: ^1.0.4
-        version: 1.0.4
-      magic-string-ast:
-        specifier: ^0.6.2
-        version: 0.6.2
-      source-map-js:
-        specifier: ^1.2.0
-        version: 1.2.0
-      svelte:
-        specifier: 4.2.18
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
-    devDependencies:
-      '@babel/types':
-        specifier: ^7.24.9
-        version: 7.24.9
-      '@types/babel__generator':
-        specifier: ^7.6.8
-        version: 7.6.8
-      tsdown:
-        specifier: ^0.2.3
-        version: 0.2.3(rollup@4.20.0)(typescript@5.5.3)
-
   packages/playground:
     dependencies:
       vue:
@@ -176,6 +124,61 @@ importers:
         specifier: ^0.8.5
         version: 0.8.5(rollup@4.20.0)(vite@5.3.4(@types/node@20.14.11)(terser@5.31.3))
 
+  packages/template-compiler:
+    dependencies:
+      '@babel/eslint-parser':
+        specifier: ^7.25.1
+        version: 7.25.1(@babel/core@7.24.9)(eslint@9.7.0)
+      '@babel/generator':
+        specifier: ^7.25.0
+        version: 7.25.0
+      '@babel/parser':
+        specifier: ^7.24.8
+        version: 7.24.8
+      '@typescript-eslint/scope-manager':
+        specifier: ^8.0.0
+        version: 8.0.0
+      '@typescript-eslint/typescript-estree':
+        specifier: ^8.0.0
+        version: 8.0.0(typescript@5.5.3)
+      '@vue-vapor/compiler-dom':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
+      '@vue-vapor/compiler-sfc':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
+      '@vue-vapor/compiler-vapor':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
+      '@vue-vapor/shared':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
+      astring:
+        specifier: ^1.8.6
+        version: 1.8.6
+      code-red:
+        specifier: ^1.0.4
+        version: 1.0.4
+      magic-string-ast:
+        specifier: ^0.6.2
+        version: 0.6.2
+      source-map-js:
+        specifier: 'catalog:'
+        version: 1.2.0
+      svelte:
+        specifier: 4.2.18
+        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+    devDependencies:
+      '@babel/types':
+        specifier: ^7.24.9
+        version: 7.25.2
+      '@types/babel__generator':
+        specifier: ^7.6.8
+        version: 7.6.8
+      tsdown:
+        specifier: ^0.2.3
+        version: 0.2.3(rollup@4.20.0)(typescript@5.5.3)
+
   packages/template-explorer:
     dependencies:
       monaco-editor:
@@ -183,11 +186,11 @@ importers:
         version: 0.49.0
     devDependencies:
       source-map-js:
-        specifier: ^1.2.0
+        specifier: 'catalog:'
         version: 1.2.0
-      svelte-vapor-core:
+      svelte-vapor-template-compiler:
         specifier: workspace:^
-        version: link:../core
+        version: link:../template-compiler
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.5.3)
@@ -209,9 +212,9 @@ importers:
       esbuild:
         specifier: '*'
         version: 0.23.0
-      svelte-vapor-core:
+      svelte-vapor-template-compiler:
         specifier: workspace:^
-        version: link:../core
+        version: link:../template-compiler
       unplugin:
         specifier: ^1.5.1
         version: 1.11.0
@@ -345,10 +348,6 @@ packages:
 
   '@babel/traverse@7.24.8':
     resolution: {integrity: sha512-t0P1xxAPzEDcEPmjprAQq19NWum4K0EQPjMwZQZbHt+GiZqvjCHjj755Weq1YRPVzBI+3zSfvScfpnuIecVFJQ==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.24.9':
-    resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.25.2':
@@ -1101,63 +1100,63 @@ packages:
   '@polka/url@1.0.0-next.25':
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
 
-  '@rolldown/binding-darwin-arm64@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-j0V2IM7j3O5W7IdxYDzinAn4T8iogfcq6d4pCsXCewsIQ1gQHs9SjG2cz3P7eU9bx7Z/VyaCk/dbnXAKXxepjA==}
+  '@rolldown/binding-darwin-arm64@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-kUQQFPpNAhYdbDola79V57Tw06vJXQFzAZ+CEU95KyuAWC3j1DnaMAWGQdDP8HK53kzKiVZBWfl5XOvr8EUgIQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-t/gk8X0Ng/ildGX14OnjNfzIHP5/E3h6Xlbi/Knk3RVbSCzmArClPLN2XD9CzAsWpUXTcn9kKejv4OdDStUiJg==}
+  '@rolldown/binding-darwin-x64@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-BlXsLnMLh7aCZzv1AD7Nfzjhp1tPPUF4NXpRm/T3q0ls6jbdZSKLfte6m1sILBEv5lQPrc7VYw8rxr/K/dm+0g==}
     cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-freebsd-x64@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-f2bDrucI4JiwJ3b8IWNcv7Ng1elwb6Mb/JZKGOw4R+9wOt9PLxwiHbhF0poQGT8ao1PG4TcFgcu2Nu1I9ToBLw==}
+  '@rolldown/binding-freebsd-x64@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-quPzSptNns0X1mUnNt5rcVNGVSY71Fhr12hXtnQvhcjaA7lS8mq3nJ2+QRhwvg4CbL/2219jlPpbLQaw9FNW5A==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-r/72C8IYwz1MniP4YTojJ9GoY1pnVx5rrh7f6t5g61Fm1E2SVNGvmhsj+nVuB9uS+KpM1eM+tIJunZP0ETPWVA==}
+  '@rolldown/binding-linux-arm-gnueabihf@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-hNWtEY3ClDPDxS2WaDtlYYOvEGUXhY8JJNyMORROpw5Bkjroo4Rn7u3m/K7xiDkUIrOhbCFetjqJIAS689AwHQ==}
     cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-6X5HrjfzT9geKjosvOD3zlSxhHwlbtcG2E3zdAnybOgLJIIpaWKyzHCFdPCk+wsiC8QHJA2GATnoCNjOpRZuyQ==}
+  '@rolldown/binding-linux-arm64-gnu@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-WFK1Bsl6Kn0MnZ4kpB/YMjPRFIFTjOu+lxJQJjaggyV0a6xmQeGNbbDwztDvMPMV29atQ61RHBYxOBlAGaIL/A==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-musl@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-p0HHp8F+cjexKPUqy6t/DKbf7rovmrSRodf1avFvxLHSQZ/OGNNasn6afk+gfZecIX8eF9i8Q1cZa7Usnmd8QQ==}
+  '@rolldown/binding-linux-arm64-musl@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-704qzGHHGFFxVgHmIb0roRvNNGC1+mrejaIkaRDIUP58LNUDLlqcC/K4CZwftyevg994pixUx61BKnqI2O6DNQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-gnu@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-mwJxhCemJm4NVgQuLFHUk2xVwyxGQp0FPlI/9jUOsOOQoeJy8InRwzNfMZfPWUqSyUPIiDonhBH7k3Q7za4FWw==}
+  '@rolldown/binding-linux-x64-gnu@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-dUmN2LbCC8WFqsgvM9YqDe1EM1sNokseDfw9uzgi9Qn2DQgNdpagmaqtrBVMEXJZ38FITsW7dQAVlYUFbq2PVg==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-musl@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-f4Jd7DzlVJ+16g8T6BMszg0j+WeW5d4uYPlC3Mj9E+d3TuR1a3qM3/W/J3LVpyy2xZIMqscXNZBOJH8zf2hp0Q==}
+  '@rolldown/binding-linux-x64-musl@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-GZjwp0kPsS8zC1Hmf6xXiDaHChXpRKO2Y9QTDzGVuuDMhMxsHTLqotT9mG+k5ExzPGhRUgIYVr6HrVCsgRaDNQ==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-wasm32-wasi@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-RGL9z/n7Dy3VFgFr2EcRwADyon/3UFawsZmu+j5Bhbhbeo8FQZW+Du+VnE8LbHnJ1yLokG1HTLnNHNis/5sHoA==}
+  '@rolldown/binding-wasm32-wasi@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-KJGB697Aa4psMFmiBh3kq9Xundk1cotwke8t5Q6M69qEPu5uJYlChh/Mq8UpbxSoLwlnqS5FalQcEErMmcpbhQ==}
     engines: {node: '>=14.21.3'}
     cpu: [wasm32]
 
-  '@rolldown/binding-win32-arm64-msvc@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-fxmRSqevQekwcD/G0G1ITmvuQB9PuVsEFM6uy6HoGHcD1Ar2dbK6/MDYJ0Df1FTLj4UsNhPiHgFNXj9/hCtAQQ==}
+  '@rolldown/binding-win32-arm64-msvc@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-nQeCOV4SNoSpxUXXd86LfTsa1/0L5zntN6C3Scyxw2uqvv4bDh90yWEjsgzJhmC8uUfITkOTNlXkQnyTroInDQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-ia32-msvc@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-w6XEsdesikHsezQP16SAzt7Jg9eSvxxwq7sXRKqaSg7fKQZfApqqyiDWtpai5mzX/daEHFwfJoAbj5j1htiNWw==}
+  '@rolldown/binding-win32-ia32-msvc@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-JQfZos0uO/OCn2n3WXlOINVyyQya+1BBPU6kBDCVcEubud1jy3f8FZwikIA5mFfAzIHnsfFzREZ0S522WlCyeg==}
     cpu: [ia32]
     os: [win32]
 
-  '@rolldown/binding-win32-x64-msvc@0.12.2-snapshot-ad78e63-20240806002905':
-    resolution: {integrity: sha512-wvS8RlKh383EHucPanPZVEwNIlp8n6AUWRgrCb8BD4WDz2fiQrb9BgEN8mNt+E/DeTTa+y8denpwQJsp7BBgEQ==}
+  '@rolldown/binding-win32-x64-msvc@0.12.2-snapshot-394a5f3-20240807002945':
+    resolution: {integrity: sha512-1ffkBUISF8pO4qbrLXLJ9OvD1HK4GapH00TNiAWlDXCfTgvowT8pIaevOnvtu3QC2be0GACegOtwis5nGcjtsA==}
     cpu: [x64]
     os: [win32]
 
@@ -3329,8 +3328,8 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rolldown@0.12.2-snapshot-ad78e63-20240806002905:
-    resolution: {integrity: sha512-LpKTY7TKMdxyqXxob70aIwc6wHPlxn4MlE99+WOSvsQ+/jUEzKs4rt0J/ZNrtpu1g0Nit/kI2zOMdTUtXzzv8w==}
+  rolldown@0.12.2-snapshot-394a5f3-20240807002945:
+    resolution: {integrity: sha512-aRJrnXox4g70/3yP0j1qwAHe15SLjrbElfNx6JZoQaeUgEDQMiCwuDJE2anuZmy0bFXhT6IhPBljvyPtpoaffQ==}
     hasBin: true
 
   rollup-plugin-dts@6.1.1:
@@ -3974,7 +3973,7 @@ snapshots:
       '@babel/parser': 7.24.8
       '@babel/template': 7.24.7
       '@babel/traverse': 7.24.8
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
       convert-source-map: 2.0.0
       debug: 4.3.6
       gensync: 1.0.0-beta.2
@@ -4008,21 +4007,21 @@ snapshots:
 
   '@babel/helper-environment-visitor@7.24.7':
     dependencies:
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/helper-function-name@7.24.7':
     dependencies:
       '@babel/template': 7.24.7
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/helper-hoist-variables@7.24.7':
     dependencies:
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/helper-module-imports@7.24.7':
     dependencies:
       '@babel/traverse': 7.24.8
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
     transitivePeerDependencies:
       - supports-color
 
@@ -4040,13 +4039,13 @@ snapshots:
   '@babel/helper-simple-access@7.24.7':
     dependencies:
       '@babel/traverse': 7.24.8
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
     transitivePeerDependencies:
       - supports-color
 
   '@babel/helper-split-export-declaration@7.24.7':
     dependencies:
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/helper-string-parser@7.24.8': {}
 
@@ -4057,7 +4056,7 @@ snapshots:
   '@babel/helpers@7.24.8':
     dependencies:
       '@babel/template': 7.24.7
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -4068,7 +4067,7 @@ snapshots:
 
   '@babel/parser@7.24.8':
     dependencies:
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/standalone@7.24.10': {}
 
@@ -4076,7 +4075,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.24.7
       '@babel/parser': 7.24.8
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
 
   '@babel/traverse@7.24.8':
     dependencies:
@@ -4087,17 +4086,11 @@ snapshots:
       '@babel/helper-hoist-variables': 7.24.7
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.24.8
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
       debug: 4.3.6
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/types@7.24.9':
-    dependencies:
-      '@babel/helper-string-parser': 7.24.8
-      '@babel/helper-validator-identifier': 7.24.7
-      to-fast-properties: 2.0.0
 
   '@babel/types@7.25.2':
     dependencies:
@@ -4586,42 +4579,42 @@ snapshots:
 
   '@polka/url@1.0.0-next.25': {}
 
-  '@rolldown/binding-darwin-arm64@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-darwin-arm64@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-darwin-x64@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-darwin-x64@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-freebsd-x64@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-linux-arm-gnueabihf@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-linux-arm64-gnu@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-linux-arm64-musl@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-linux-arm64-musl@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-linux-x64-gnu@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-linux-x64-gnu@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-linux-x64-musl@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-linux-x64-musl@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-wasm32-wasi@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-wasm32-wasi@0.12.2-snapshot-394a5f3-20240807002945':
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.4
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-win32-arm64-msvc@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-win32-ia32-msvc@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-win32-ia32-msvc@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@0.12.2-snapshot-ad78e63-20240806002905':
+  '@rolldown/binding-win32-x64-msvc@0.12.2-snapshot-394a5f3-20240807002945':
     optional: true
 
   '@rollup/plugin-alias@5.1.0(rollup@3.29.4)':
@@ -4880,7 +4873,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.0.0
       '@typescript-eslint/visitor-keys': 8.0.0
-      debug: 4.3.5
+      debug: 4.3.6
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -4926,7 +4919,7 @@ snapshots:
   '@vitest/snapshot@2.0.3':
     dependencies:
       '@vitest/pretty-format': 2.0.3
-      magic-string: 0.30.10
+      magic-string: 0.30.11
       pathe: 1.1.2
 
   '@vitest/spy@2.0.3':
@@ -6354,7 +6347,7 @@ snapshots:
 
   magic-string-ast@0.6.2:
     dependencies:
-      magic-string: 0.30.10
+      magic-string: 0.30.11
 
   magic-string@0.30.10:
     dependencies:
@@ -6925,22 +6918,22 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown@0.12.2-snapshot-ad78e63-20240806002905:
+  rolldown@0.12.2-snapshot-394a5f3-20240807002945:
     dependencies:
       zod: 3.23.8
     optionalDependencies:
-      '@rolldown/binding-darwin-arm64': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-darwin-x64': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-freebsd-x64': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-linux-arm-gnueabihf': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-linux-arm64-gnu': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-linux-arm64-musl': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-linux-x64-gnu': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-linux-x64-musl': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-wasm32-wasi': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-win32-arm64-msvc': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-win32-ia32-msvc': 0.12.2-snapshot-ad78e63-20240806002905
-      '@rolldown/binding-win32-x64-msvc': 0.12.2-snapshot-ad78e63-20240806002905
+      '@rolldown/binding-darwin-arm64': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-darwin-x64': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-freebsd-x64': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-linux-arm-gnueabihf': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-linux-arm64-gnu': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-linux-arm64-musl': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-linux-x64-gnu': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-linux-x64-musl': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-wasm32-wasi': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-win32-arm64-msvc': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-win32-ia32-msvc': 0.12.2-snapshot-394a5f3-20240807002945
+      '@rolldown/binding-win32-x64-msvc': 0.12.2-snapshot-394a5f3-20240807002945
 
   rollup-plugin-dts@6.1.1(rollup@3.29.4)(typescript@5.5.3):
     dependencies:
@@ -7214,7 +7207,7 @@ snapshots:
       estree-walker: 2.0.2
       is-reference: 3.0.2
       locate-character: 3.0.0
-      magic-string: 0.30.10
+      magic-string: 0.30.11
       periscopic: 3.1.0
 
   svgo@3.3.2:
@@ -7304,7 +7297,7 @@ snapshots:
       consola: 3.2.3
       globby: 14.0.2
       pkg-types: 1.1.3
-      rolldown: 0.12.2-snapshot-ad78e63-20240806002905
+      rolldown: 0.12.2-snapshot-394a5f3-20240807002945
       unconfig: 0.4.5
       unplugin-isolated-decl: 0.4.1(rollup@4.20.0)(typescript@5.5.3)
     transitivePeerDependencies:
@@ -7452,7 +7445,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.20.0)
       oxc-transform: 0.16.3
-      unplugin: 1.11.0
+      unplugin: 1.12.0
     optionalDependencies:
       typescript: 5.5.3
     transitivePeerDependencies:
@@ -7476,7 +7469,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.24.9
       '@babel/standalone': 7.24.10
-      '@babel/types': 7.24.9
+      '@babel/types': 7.25.2
       defu: 6.1.4
       jiti: 1.21.6
       mri: 1.2.0

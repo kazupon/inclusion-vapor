@@ -1,6 +1,6 @@
 {
-  "name": "svelte-vapor-core",
-  "description": "svelte transform and compiler for vapor",
+  "name": "svelte-vapor-template-compiler",
+  "description": "svelte template compiler for vapor",
   "private": true,
   "version": "0.0.0",
   "author": {
@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kazupon/svelte-vapor.git",
-    "directory": "packages/compiler"
+    "directory": "packages/template-compiler"
   },
   "keywords": [
     "svelte",
@@ -58,7 +58,7 @@
     "astring": "^1.8.6",
     "code-red": "^1.0.4",
     "magic-string-ast": "^0.6.2",
-    "source-map-js": "^1.2.0",
+    "source-map-js": "catalog:",
     "svelte": "4.2.18"
   },
   "devDependencies": {

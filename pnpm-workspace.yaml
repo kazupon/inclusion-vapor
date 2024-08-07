@@ -3,3 +3,4 @@ packages:
 
 catalog:
   'vite': ^5.3.4
+  'source-map-js': ^1.2.0
