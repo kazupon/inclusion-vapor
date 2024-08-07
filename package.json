@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/kazupon/svelte-vapor.git"
   },
-  "packageManager": "pnpm@9.5.0",
+  "packageManager": "pnpm@9.7.0",
   "engines": {
     "node": ">= 18.18"
   },
