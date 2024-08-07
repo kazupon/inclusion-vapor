@@ -46,8 +46,7 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.25.1",
-    "@babel/parser": "^7.24.8",
+    "@babel/parser": "catalog:",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-vapor": "latest",
     "@vue-vapor/shared": "latest",
@@ -55,7 +54,7 @@
     "svelte": "catalog:"
   },
   "devDependencies": {
-    "@babel/types": "^7.24.9",
+    "@babel/types": "catalog:",
     "tsdown": "catalog:"
   }
 }

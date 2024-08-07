@@ -48,6 +48,7 @@
     "build": "tsdown"
   },
   "dependencies": {
+    "@babel/parser": "catalog:",
     "@typescript-eslint/scope-manager": "^8.0.0",
     "@typescript-eslint/typescript-estree": "^8.0.0",
     "@vue-vapor/compiler-dom": "latest",
@@ -58,7 +59,7 @@
     "svelte-vapor-template-compiler": "workspace:^"
   },
   "devDependencies": {
-    "@babel/types": "^7.24.9",
+    "@babel/types": "catalog:",
     "tsdown": "catalog:"
   }
 }

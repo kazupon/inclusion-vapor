@@ -6,6 +6,12 @@ settings:
 
 catalogs:
   default:
+    '@babel/parser':
+      specifier: ^7.24.8
+      version: 7.24.8
+    '@babel/types':
+      specifier: ^7.24.9
+      version: 7.25.2
     source-map-js:
       specifier: ^1.2.0
       version: 1.2.0
@@ -132,6 +138,9 @@ importers:
 
   packages/sfc-compiler:
     dependencies:
+      '@babel/parser':
+        specifier: 'catalog:'
+        version: 7.24.8
       '@typescript-eslint/scope-manager':
         specifier: ^8.0.0
         version: 8.0.0
@@ -158,7 +167,7 @@ importers:
         version: link:../template-compiler
     devDependencies:
       '@babel/types':
-        specifier: ^7.24.9
+        specifier: 'catalog:'
         version: 7.25.2
       tsdown:
         specifier: 'catalog:'
@@ -166,11 +175,8 @@ importers:
 
   packages/template-compiler:
     dependencies:
-      '@babel/eslint-parser':
-        specifier: ^7.25.1
-        version: 7.25.1(@babel/core@7.24.9)(eslint@9.7.0)
       '@babel/parser':
-        specifier: ^7.24.8
+        specifier: 'catalog:'
         version: 7.24.8
       '@vue-vapor/compiler-dom':
         specifier: latest
@@ -189,7 +195,7 @@ importers:
         version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
     devDependencies:
       '@babel/types':
-        specifier: ^7.24.9
+        specifier: 'catalog:'
         version: 7.25.2
       tsdown:
         specifier: 'catalog:'
@@ -283,13 +289,6 @@ packages:
   '@babel/core@7.24.9':
     resolution: {integrity: sha512-5e3FI4Q3M3Pbr21+5xJwCv6ZT6KmGkI0vw3Tozy5ODAQFTIWe37iT8Cr7Ice2Ntb+M3iSKCEWMB1MBgKrW3whg==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/eslint-parser@7.25.1':
-    resolution: {integrity: sha512-Y956ghgTT4j7rKesabkh5WeqgSFZVFwaPR0IWFm7KFHFmmJ4afbG49SmfW4S+GyRPx0Dy5jxEWA5t0rpxfElWg==}
-    engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
-    peerDependencies:
-      '@babel/core': ^7.11.0
-      eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
 
   '@babel/generator@7.25.0':
     resolution: {integrity: sha512-3LEEcj3PVW8pW2R1SR1M89g/qrYk/m/mB/tLqn7dn4sbBUQyTqnlod+II2U4dqiGtUmkcnAmkMDralTFZttRiw==}
@@ -1045,9 +1044,6 @@ packages:
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
-
-  '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
-    resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2200,10 +2196,6 @@ packages:
   eslint-scope@8.0.2:
     resolution: {integrity: sha512-6E4xmrTw5wtxnLA5wYL3WDfhZ/1bUBGOXV0zQvVRDOtrR8D0p6W7fs3JweNYhwRYeGvd/1CKX2se0/2s7Q/nJA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  eslint-visitor-keys@2.1.0:
-    resolution: {integrity: sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==}
-    engines: {node: '>=10'}
 
   eslint-visitor-keys@3.4.3:
     resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
@@ -3995,14 +3987,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/eslint-parser@7.25.1(@babel/core@7.24.9)(eslint@9.7.0)':
-    dependencies:
-      '@babel/core': 7.24.9
-      '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
-      eslint: 9.7.0
-      eslint-visitor-keys: 2.1.0
-      semver: 6.3.1
-
   '@babel/generator@7.25.0':
     dependencies:
       '@babel/types': 7.25.2
@@ -4501,10 +4485,6 @@ snapshots:
       '@emnapi/runtime': 1.2.0
       '@tybys/wasm-util': 0.9.0
     optional: true
-
-  '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
-    dependencies:
-      eslint-scope: 5.1.1
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -5828,8 +5808,6 @@ snapshots:
     dependencies:
       esrecurse: 4.3.0
       estraverse: 5.3.0
-
-  eslint-visitor-keys@2.1.0: {}
 
   eslint-visitor-keys@3.4.3: {}
 
