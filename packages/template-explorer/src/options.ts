@@ -1,7 +1,8 @@
 import { createApp, h, reactive, ref } from 'vue'
+import { parse } from 'svelte/compiler'
 
 import type { Ref } from 'vue'
-import type { CompilerOptions } from 'packages/template-compiler/src'
+import type { CompilerOptions } from 'svelte-vapor-template-compiler'
 
 export const ssrMode: Ref<boolean> = ref(false)
 // export const vaporMode: Ref<boolean> = ref(true)
@@ -15,7 +16,10 @@ export const defaultOptions: CompilerOptions = {
   scopeId: null, // eslint-disable-line unicorn/no-null
   inline: false,
   ssrCssVars: `{ color }`,
-  whitespace: 'condense'
+  whitespace: 'condense',
+  parser(source) {
+    return parse(source).html
+  }
 }
 
 export const compilerOptions: CompilerOptions = reactive(Object.assign({}, defaultOptions))

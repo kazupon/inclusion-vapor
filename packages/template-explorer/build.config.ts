@@ -12,6 +12,9 @@ function commit() {
 export default defineBuildConfig({
   entries: ['src/index.ts'],
   clean: true,
+  alias: {
+    'svelte/compiler': 'node_modules/svelte/compiler.cjs'
+  },
   rollup: {
     output: {
       name: 'TemplateExplorer',

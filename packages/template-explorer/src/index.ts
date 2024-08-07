@@ -5,7 +5,7 @@ import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options
 import theme from './theme'
 
 import type * as m from 'monaco-editor'
-import type { CompilerOptions, VaporCompilerError } from 'packages/template-compiler/src'
+import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-template-compiler'
 
 declare global {
   interface Window {
