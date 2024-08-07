@@ -1,11 +1,39 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`transformSvelteScript > MVP: counter case 1`] = `
+exports[`transformSvelteScript > MVP: counter case > code only 1`] = `
+"import { ref } from 'vue/vapor'
+let count = ref(0)
+const increment = () => {
+  count.value += 1
+}"
+`;
+
+exports[`transformSvelteScript > MVP: counter case > with ast 1`] = `
 "import { ref } from 'vue/vapor'
 
-  let count = ref(0)
-  const increment = () => {
-    count.value += 1
-  }
+let count = ref(0)
+const increment = () => {
+  count.value += 1
+}
 "
+`;
+
+exports[`transformSvelteScript > MVP: counter case > with ast 2`] = `
+SourceMap {
+  "file": undefined,
+  "mappings": ";AAAA;AACA,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,MAAC;AACb,KAAK,CAAC,SAAS,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACzB,CAAC,CAAC,WAAK,CAAC,CAAC,CAAC,CAAC,CAAC;AACZ,CAAC;",
+  "names": [],
+  "sources": [
+    "test.svelte",
+  ],
+  "sourcesContent": [
+    "
+let count = 0
+const increment = () => {
+  count += 1
+}
+",
+  ],
+  "version": 3,
+}
 `;

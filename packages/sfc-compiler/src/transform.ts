@@ -12,7 +12,8 @@ import {
   parse as _parseTsEslint,
   AST_NODE_TYPES
 } from '@typescript-eslint/typescript-estree'
-import { MagicStringAST } from 'magic-string-ast'
+import { parse as parseBabel } from '@babel/parser'
+import { MagicStringAST, generateTransform } from 'magic-string-ast'
 
 import type { SvelteScript } from 'svelte-vapor-template-compiler'
 import type { File as BabelFile, Node as BabelNode } from '@babel/types'
@@ -28,8 +29,42 @@ export function transformSvelteVapor(code: string): { code: string; map: Generat
   }
 }
 
-export function transformSvelteScript(script: SvelteScript, code: string): string {
-  const babelFileNode = script.content
+/**
+ * {@link transformSvelteScript} options
+ */
+export interface TransformSvelteScriptOptions {
+  /**
+   * Svelte Script AST
+   * @default undefined
+   */
+  ast?: SvelteScript
+  /**
+   * Svelte script id. if you want to use source map, you should set this.
+   * @default undefined
+   */
+  id?: string
+  /**
+   * Enable source map
+   * @default false
+   */
+  sourceMap?: boolean
+}
+
+/**
+ * Transform Svelte script to Vapor script
+ *
+ * @param {string} code - a string of svelte script
+ * @param {TransformSvelteScriptOptions} options - {@link TransformSvelteScriptOptions | options}
+ * @returns {string | ReturnType<typeof generateTransform>}
+ */
+// TODO: frientdly return type with infer from options
+export function transformSvelteScript(
+  code: string,
+  options: TransformSvelteScriptOptions = {}
+): string | { code: string; map: GenerateMap } {
+  const babelFileNode = options.ast
+    ? options.ast.content
+    : parseBabel(code, { sourceType: 'module', plugins: ['estree'] })
   const jsAst = babelFileNode.program as unknown as TSESLintNode
   enableParentableNodes(jsAst)
 
@@ -41,7 +76,20 @@ export function transformSvelteScript(script: SvelteScript, code: string): strin
   // NOTE: avoid Maximum call stack size exceeded error with `code-red` print
   disableParentableNodes(jsAst)
 
-  return jsStr.toString()
+  const sourceMap = !!options.sourceMap
+  const id = options.id
+  if (sourceMap) {
+    if (!id) {
+      throw new Error('`id` is required when `sourceMap` is enabled')
+    }
+    const gen = generateTransform(jsStr, id)
+    if (gen == undefined) {
+      throw new Error('Failed to generate source map')
+    }
+    return gen
+  } else {
+    return jsStr.toString()
+  }
 }
 
 function rewriteToVaporRef(

@@ -30,7 +30,7 @@ test('parser', () => {
 test('preprocess', async () => {
   const returnValue = await preprocess(svelteCode, {
     script(_params, ..._args) {
-      // console.log('preprocess params', params)
+      // console.log('preprocess params', _params)
       // console.log('preprocess args', args)
       return {
         code: `

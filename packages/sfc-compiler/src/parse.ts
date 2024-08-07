@@ -73,6 +73,13 @@ export type SvelteSFCParseResult = Overwrite<
   }
 >
 
+/**
+ * Parse a svelte source file into an SFC descriptor.
+ *
+ * @param {string} source - a string of svelte source code
+ * @param {SvelteCompileOptions} options - a {@link SvelteParseOptions}
+ * @returns {SvelteSFCParseResult} {@link SvelteSFCParseResult}
+ */
 export function parse(source: string, options: SvelteParseOptions = {}): SvelteSFCParseResult {
   // TODO
   // const cache = parseCache.get(sourceKey)
