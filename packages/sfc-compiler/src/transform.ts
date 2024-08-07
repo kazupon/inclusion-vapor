@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Author: kazuya kawaguchi (a.k.a. kazupon)
+
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
 import {

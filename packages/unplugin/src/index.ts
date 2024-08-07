@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Author: kazuya kawaguchi (a.k.a. kazupon)
+
 import { createUnplugin } from 'unplugin'
 import { resolveOptions, parseRequestQuery } from './core/utils'
 import { transformMain } from './core/transform'
