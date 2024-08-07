@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compile > ast > code 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+const t1 = _template("<button></button>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = t0()
+  const n1 = t1()
+  _delegate(n1, "click", () => increment)
+  _renderEffect(() => _setText(n1, "\\n  count is ", count, "\\n"))
+  return [n0, n1]
+}"
+`;
+
+exports[`compile > source code > code 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+const t1 = _template("<button></button>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = t0()
+  const n1 = t1()
+  _delegate(n1, "click", () => increment)
+  _renderEffect(() => _setText(n1, "\\n  count is ", count, "\\n"))
+  return [n0, n1]
+}"
+`;

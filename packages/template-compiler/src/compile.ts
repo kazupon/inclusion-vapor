@@ -5,7 +5,6 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/compile.ts
 
-import { parse } from 'svelte/compiler'
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
@@ -25,12 +24,12 @@ import type {
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { SvelteAst, RootNode } from './ir'
+import type { SvelteTemplateNode, RootNode } from './ir'
 import type { HackOptions, NodeTransform, DirectiveTransform } from './transforms'
 
-// Svelte Code / Svelte AST -> IR (transform) -> JS (generate)
+// Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
 export function compile(
-  source: string | SvelteAst,
+  source: string | SvelteTemplateNode,
   options: CompilerOptions = {} // TODO: maybe we need some svelte compiler options
 ): VaporCodegenResult {
   const onError = options.onError || defaultOnError
@@ -54,16 +53,12 @@ export function compile(
     prefixIdentifiers
   })
 
-  // TODO: tweak options for svelte parser
-  const svelteAst = isString(source) ? parse(source) : source
-  // TODO: convert `instance` and `module` to the Vapor (Vue) runtime API
-  // svelteAst.instance
-  // svelteAst.module
+  const svelteAst = isString(source) ? getSvelteTemplateNode(options, source) : source
 
   const ast: RootNode = {
     type: IRNodeTypes.ROOT,
-    children: svelteAst.html.children || [],
-    source: isString(source) ? source : '', // TODO
+    children: svelteAst.children || [],
+    source: isString(source) ? source : '', // TODO:
     components: [],
     directives: [],
     helpers: new Set(),
@@ -90,7 +85,26 @@ export function compile(
   return generate(ir as unknown as VaporRootIRNode, resolvedOptions)
 }
 
-export type CompilerOptions = HackOptions<BaseCompilerOptions>
+function getSvelteTemplateNode(
+  { parser }: SvelteCompilerOptions,
+  source: string
+): SvelteTemplateNode {
+  if (!parser) {
+    throw new Error('svelte code parsing function option is not given.')
+  }
+  return parser(source)
+}
+
+interface SvelteCompilerOptions {
+  /**
+   * Svelte parser
+   * @param source - Svelte code
+   * @returns Svelte template AST
+   */
+  parser?: (source: string) => SvelteTemplateNode
+}
+
+export type CompilerOptions = HackOptions<BaseCompilerOptions> & SvelteCompilerOptions
 export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
