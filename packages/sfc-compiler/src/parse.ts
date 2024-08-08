@@ -278,6 +278,8 @@ function createSvelteScriptBlock(
     block.content = padContent(source, block, pad) + block.content
   }
 
+  block.lang = (attrs.lang as string) || 'js'
+
   return block
 }
 
