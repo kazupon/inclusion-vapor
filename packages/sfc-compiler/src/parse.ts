@@ -254,19 +254,19 @@ function createSvelteScriptBlock(
     })
   }
 
-  const content = source.slice(node.start, node.end)
+  const content = source.slice(node.content.start!, node.content.end!)
   const block: SvelteSFCScriptBlock = {
     type,
     content,
     attrs,
     loc: {
       start: {
-        offset: node.start,
+        offset: node.content.start!,
         line: -1, // NOTE: we can't get the line info from svelte ast ...
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
       end: {
-        offset: node.end,
+        offset: node.content.end!,
         line: -1, // NOTE: we can't get the line info from svelte ast ...
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
@@ -306,19 +306,19 @@ function createSvelteStyleBlock(
     })
   }
 
-  const content = source.slice(node.start, node.end)
+  const content = node.content.styles
   const block: SvelteSFCStyleBlock = {
     type,
     content,
     attrs,
     loc: {
       start: {
-        offset: node.start,
+        offset: node.content.start,
         line: -1, // NOTE: we can't get the line info from svelte ast ...
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
       end: {
-        offset: node.end,
+        offset: node.content.end,
         line: -1, // NOTE: we can't get the line info from svelte ast ...
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
