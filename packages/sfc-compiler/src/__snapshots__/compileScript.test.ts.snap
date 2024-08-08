@@ -1,0 +1,468 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compileScript 1`] = `
+[
+  Node {
+    "attributes": [],
+    "end": 32,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 31,
+        "index": 32,
+        "line": 2,
+      },
+      "filename": undefined,
+      "identifierName": undefined,
+      "start": Position {
+        "column": 0,
+        "index": 1,
+        "line": 2,
+      },
+    },
+    "source": Node {
+      "end": 32,
+      "extra": {
+        "raw": "'vue/vapor'",
+        "rawValue": "vue/vapor",
+      },
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 31,
+          "index": 32,
+          "line": 2,
+        },
+        "filename": undefined,
+        "identifierName": undefined,
+        "start": Position {
+          "column": 20,
+          "index": 21,
+          "line": 2,
+        },
+      },
+      "start": 21,
+      "type": "StringLiteral",
+      "value": "vue/vapor",
+    },
+    "specifiers": [
+      Node {
+        "end": 13,
+        "imported": Node {
+          "end": 13,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "index": 13,
+              "line": 2,
+            },
+            "filename": undefined,
+            "identifierName": "ref",
+            "start": Position {
+              "column": 9,
+              "index": 10,
+              "line": 2,
+            },
+          },
+          "name": "ref",
+          "start": 10,
+          "type": "Identifier",
+        },
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 12,
+            "index": 13,
+            "line": 2,
+          },
+          "filename": undefined,
+          "identifierName": undefined,
+          "start": Position {
+            "column": 9,
+            "index": 10,
+            "line": 2,
+          },
+        },
+        "local": Node {
+          "end": 13,
+          "extra": undefined,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "index": 13,
+              "line": 2,
+            },
+            "filename": undefined,
+            "identifierName": "ref",
+            "start": Position {
+              "column": 9,
+              "index": 10,
+              "line": 2,
+            },
+          },
+          "name": "ref",
+          "range": undefined,
+          "start": 10,
+          "type": "Identifier",
+        },
+        "start": 10,
+        "type": "ImportSpecifier",
+      },
+    ],
+    "start": 1,
+    "type": "ImportDeclaration",
+  },
+  Node {
+    "declarations": [
+      Node {
+        "end": 51,
+        "id": Node {
+          "end": 42,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 9,
+              "index": 42,
+              "line": 3,
+            },
+            "filename": undefined,
+            "identifierName": "count",
+            "start": Position {
+              "column": 4,
+              "index": 37,
+              "line": 3,
+            },
+          },
+          "name": "count",
+          "start": 37,
+          "type": "Identifier",
+        },
+        "init": Node {
+          "arguments": [
+            Node {
+              "end": 50,
+              "extra": {
+                "raw": "0",
+                "rawValue": 0,
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 17,
+                  "index": 50,
+                  "line": 3,
+                },
+                "filename": undefined,
+                "identifierName": undefined,
+                "start": Position {
+                  "column": 16,
+                  "index": 49,
+                  "line": 3,
+                },
+              },
+              "start": 49,
+              "type": "NumericLiteral",
+              "value": 0,
+            },
+          ],
+          "callee": Node {
+            "end": 48,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 15,
+                "index": 48,
+                "line": 3,
+              },
+              "filename": undefined,
+              "identifierName": "ref",
+              "start": Position {
+                "column": 12,
+                "index": 45,
+                "line": 3,
+              },
+            },
+            "name": "ref",
+            "start": 45,
+            "type": "Identifier",
+          },
+          "end": 51,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 18,
+              "index": 51,
+              "line": 3,
+            },
+            "filename": undefined,
+            "identifierName": undefined,
+            "start": Position {
+              "column": 12,
+              "index": 45,
+              "line": 3,
+            },
+          },
+          "start": 45,
+          "type": "CallExpression",
+        },
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 18,
+            "index": 51,
+            "line": 3,
+          },
+          "filename": undefined,
+          "identifierName": undefined,
+          "start": Position {
+            "column": 4,
+            "index": 37,
+            "line": 3,
+          },
+        },
+        "start": 37,
+        "type": "VariableDeclarator",
+      },
+    ],
+    "end": 51,
+    "kind": "let",
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 18,
+        "index": 51,
+        "line": 3,
+      },
+      "filename": undefined,
+      "identifierName": undefined,
+      "start": Position {
+        "column": 0,
+        "index": 33,
+        "line": 3,
+      },
+    },
+    "start": 33,
+    "type": "VariableDeclaration",
+  },
+  Node {
+    "declarations": [
+      Node {
+        "end": 98,
+        "id": Node {
+          "end": 67,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 15,
+              "index": 67,
+              "line": 4,
+            },
+            "filename": undefined,
+            "identifierName": "increment",
+            "start": Position {
+              "column": 6,
+              "index": 58,
+              "line": 4,
+            },
+          },
+          "name": "increment",
+          "start": 58,
+          "type": "Identifier",
+        },
+        "init": Node {
+          "async": false,
+          "body": Node {
+            "body": [
+              Node {
+                "end": 96,
+                "expression": Node {
+                  "end": 96,
+                  "left": Node {
+                    "computed": false,
+                    "end": 91,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 13,
+                        "index": 91,
+                        "line": 5,
+                      },
+                      "filename": undefined,
+                      "identifierName": undefined,
+                      "start": Position {
+                        "column": 2,
+                        "index": 80,
+                        "line": 5,
+                      },
+                    },
+                    "object": Node {
+                      "end": 85,
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 7,
+                          "index": 85,
+                          "line": 5,
+                        },
+                        "filename": undefined,
+                        "identifierName": "count",
+                        "start": Position {
+                          "column": 2,
+                          "index": 80,
+                          "line": 5,
+                        },
+                      },
+                      "name": "count",
+                      "start": 80,
+                      "type": "Identifier",
+                    },
+                    "property": Node {
+                      "end": 91,
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 13,
+                          "index": 91,
+                          "line": 5,
+                        },
+                        "filename": undefined,
+                        "identifierName": "value",
+                        "start": Position {
+                          "column": 8,
+                          "index": 86,
+                          "line": 5,
+                        },
+                      },
+                      "name": "value",
+                      "start": 86,
+                      "type": "Identifier",
+                    },
+                    "start": 80,
+                    "type": "MemberExpression",
+                  },
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 18,
+                      "index": 96,
+                      "line": 5,
+                    },
+                    "filename": undefined,
+                    "identifierName": undefined,
+                    "start": Position {
+                      "column": 2,
+                      "index": 80,
+                      "line": 5,
+                    },
+                  },
+                  "operator": "+=",
+                  "right": Node {
+                    "end": 96,
+                    "extra": {
+                      "raw": "1",
+                      "rawValue": 1,
+                    },
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 18,
+                        "index": 96,
+                        "line": 5,
+                      },
+                      "filename": undefined,
+                      "identifierName": undefined,
+                      "start": Position {
+                        "column": 17,
+                        "index": 95,
+                        "line": 5,
+                      },
+                    },
+                    "start": 95,
+                    "type": "NumericLiteral",
+                    "value": 1,
+                  },
+                  "start": 80,
+                  "type": "AssignmentExpression",
+                },
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 18,
+                    "index": 96,
+                    "line": 5,
+                  },
+                  "filename": undefined,
+                  "identifierName": undefined,
+                  "start": Position {
+                    "column": 2,
+                    "index": 80,
+                    "line": 5,
+                  },
+                },
+                "start": 80,
+                "type": "ExpressionStatement",
+              },
+            ],
+            "directives": [],
+            "end": 98,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 1,
+                "index": 98,
+                "line": 6,
+              },
+              "filename": undefined,
+              "identifierName": undefined,
+              "start": Position {
+                "column": 24,
+                "index": 76,
+                "line": 4,
+              },
+            },
+            "start": 76,
+            "type": "BlockStatement",
+          },
+          "end": 98,
+          "generator": false,
+          "id": null,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 1,
+              "index": 98,
+              "line": 6,
+            },
+            "filename": undefined,
+            "identifierName": undefined,
+            "start": Position {
+              "column": 18,
+              "index": 70,
+              "line": 4,
+            },
+          },
+          "params": [],
+          "start": 70,
+          "type": "ArrowFunctionExpression",
+        },
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 1,
+            "index": 98,
+            "line": 6,
+          },
+          "filename": undefined,
+          "identifierName": undefined,
+          "start": Position {
+            "column": 6,
+            "index": 58,
+            "line": 4,
+          },
+        },
+        "start": 58,
+        "type": "VariableDeclarator",
+      },
+    ],
+    "end": 98,
+    "kind": "const",
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 1,
+        "index": 98,
+        "line": 6,
+      },
+      "filename": undefined,
+      "identifierName": undefined,
+      "start": Position {
+        "column": 0,
+        "index": 52,
+        "line": 4,
+      },
+    },
+    "start": 52,
+    "type": "VariableDeclaration",
+  },
+]
+`;
