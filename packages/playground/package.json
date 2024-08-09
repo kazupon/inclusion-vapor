@@ -27,6 +27,6 @@
     "@vue/vapor": "npm:@vue-vapor/vapor@latest",
     "unplugin-svelte-vapor": "workspace:^",
     "vite": "catalog:",
-    "vite-plugin-inspect": "^0.8.5"
+    "vite-plugin-vue-devtools": "^7.0.25"
   }
 }
