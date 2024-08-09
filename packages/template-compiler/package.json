@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/types": "catalog:",
+    "@rollup/plugin-replace": "^5.0.7",
     "tsdown": "catalog:"
   }
 }
