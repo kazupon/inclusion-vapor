@@ -11,7 +11,7 @@ import {
   ErrorCodes,
   NodeTypes
 } from '@vue-vapor/compiler-dom'
-import { isVoidTag, extend } from '@vue-vapor/shared'
+import { isVoidTag, extend, camelize, capitalize } from '@vue-vapor/shared'
 import {
   isSvelteElement,
   isBuiltInDirective,
@@ -53,8 +53,27 @@ function transformComponentElement(
   propsResult: PropsResult,
   context: TransformContext<SvelteElement>
 ) {
-  const asset = true // TODO: might remove this
-  context.component.add(tag)
+  let asset = true
+
+  if (!__BROWSER__) {
+    const fromSetup = resolveSetupReference(tag, context)
+    if (fromSetup) {
+      tag = fromSetup
+      asset = false
+    }
+    const dotIndex = tag.indexOf('.')
+    if (dotIndex > 0) {
+      const ns = resolveSetupReference(tag.slice(0, dotIndex), context)
+      if (ns) {
+        tag = ns + tag.slice(dotIndex)
+        asset = false
+      }
+    }
+  }
+  if (asset) {
+    context.component.add(tag)
+  }
+
   context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
   const root = context.root === context.parent && (context.parent.node.children || []).length === 1
 
@@ -69,6 +88,23 @@ function transformComponentElement(
     once: context.inVOnce
   })
   context.slots = []
+}
+
+function resolveSetupReference(name: string, context: TransformContext): string | undefined {
+  const bindings = context.options.bindingMetadata
+  if (!bindings || bindings.__isScriptSetup === false) {
+    return
+  }
+
+  const camelName = camelize(name)
+  const PascalName = capitalize(camelName)
+  return bindings[name]
+    ? name
+    : bindings[camelName]
+      ? camelName
+      : bindings[PascalName] // eslint-disable-line unicorn/no-nested-ternary
+        ? PascalName
+        : undefined
 }
 
 function transformNativeElement(

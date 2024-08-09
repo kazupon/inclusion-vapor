@@ -30,6 +30,36 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`component > do not resolve component from non-script-setup bindings 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > generate multi root component 1`] = `
+"import { createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("123")
+
+export function render(_ctx) {
+  const n1 = t0()
+  const n0 = _createComponent(_ctx.Comp)
+  return [n0, n1]
+}"
+`;
+
+exports[`component > generate single root component 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_ctx.Comp, null, null, true)
+  return n0
+}"
+`;
+
 exports[`component > import + resolve component 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
@@ -40,22 +70,57 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`component > resolve namespaced component > expected 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+exports[`component > resolve component from setup bindings (inline const) 1`] = `
+"(() => {
+  const n0 = _createComponent(Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve component from setup bindings (inline) 1`] = `
+"(() => {
+  const n0 = _createComponent(_unref(Example), null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve component from setup bindings 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
-  const _component_Foo46Example = _resolveComponent("Foo.Example")
-  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  const n0 = _createComponent(_ctx.Example, null, null, true)
   return n0
 }"
 `;
 
-exports[`component > resolve namespaced component > received 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+exports[`component > resolve namespaced component from props bindings (inline) 1`] = `
+"(() => {
+  const n0 = _createComponent(Foo.Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve namespaced component from props bindings (non-inline) 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
-  const _component_Foo46Example = _resolveComponent("Foo.Example")
-  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from setup bindings (inline const) 1`] = `
+"(() => {
+  const n0 = _createComponent(Foo.Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve namespaced component from setup bindings 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
   return n0
 }"
 `;
