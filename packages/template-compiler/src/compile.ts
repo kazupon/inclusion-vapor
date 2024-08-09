@@ -53,7 +53,7 @@ export function compile(
     prefixIdentifiers
   })
 
-  const svelteAst = isString(source) ? getSvelteTemplateNode(options, source) : source
+  const svelteAst = isString(source) ? getSvelteTemplateNode(source, options) : source
 
   const ast: RootNode = {
     type: IRNodeTypes.ROOT,
@@ -86,8 +86,8 @@ export function compile(
 }
 
 function getSvelteTemplateNode(
-  { parser }: SvelteCompilerOptions,
-  source: string
+  source: string,
+  { parser }: SvelteCompilerOptions
 ): SvelteTemplateNode {
   if (!parser) {
     throw new Error('svelte code parsing function option is not given.')
