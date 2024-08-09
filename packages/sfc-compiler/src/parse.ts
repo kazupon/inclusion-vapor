@@ -14,64 +14,18 @@ import type {
   // RawSourceMap,
   // CodegenSourceMapGenerator
 } from '@vue-vapor/compiler-dom'
+import type { SFCBlock } from '@vue-vapor/compiler-sfc'
+import type { SvelteTemplateNode, SvelteScript, SvelteStyle } from 'svelte-vapor-template-compiler'
 import type {
-  SFCParseOptions,
-  SFCParseResult,
-  SFCDescriptor,
-  SFCTemplateBlock,
-  SFCScriptBlock,
-  SFCStyleBlock,
-  SFCBlock
-} from '@vue-vapor/compiler-sfc'
-import type { CompileOptions as SvelteCompileOptions } from 'svelte/compiler'
-import type {
-  Overwrite,
-  SvelteTemplateNode,
-  SvelteScript,
-  SvelteStyle
-} from 'svelte-vapor-template-compiler'
+  SvelteParseOptions,
+  SvelteSFCParseResult,
+  SvelteSFCDescriptor,
+  SvelteSFCTemplateBlock,
+  SvelteSFCScriptBlock,
+  SvelteSFCStyleBlock
+} from './types'
 
 export const DEFAULT_FILENAME = 'anonymous.svelte'
-
-export type SvelteParseOptions = Overwrite<
-  SFCParseOptions,
-  {
-    compiler?: {
-      compile: typeof compileSvelte
-      parse: typeof parseSvelte
-    }
-    templateParseOptions?: SvelteCompileOptions
-  }
->
-
-export type SvelteSFCTemplateBlock = Overwrite<
-  SFCTemplateBlock,
-  {
-    ast?: SvelteTemplateNode
-  }
->
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SvelteSFCScriptBlock extends SFCScriptBlock {}
-
-export interface SvelteSFCStyleBlock extends SFCStyleBlock {
-  ast?: SvelteStyle | null
-}
-
-export type SvelteSFCDescriptor = Overwrite<
-  SFCDescriptor,
-  {
-    template?: SvelteSFCTemplateBlock | null
-    scriptSetup?: SvelteSFCScriptBlock | null
-  }
->
-
-export type SvelteSFCParseResult = Overwrite<
-  SFCParseResult,
-  {
-    descriptor: SvelteSFCDescriptor
-  }
->
 
 /**
  * Parse a svelte source file into an SFC descriptor.
@@ -81,7 +35,7 @@ export type SvelteSFCParseResult = Overwrite<
  * @returns {SvelteSFCParseResult} {@link SvelteSFCParseResult}
  */
 export function parse(source: string, options: SvelteParseOptions = {}): SvelteSFCParseResult {
-  // TODO
+  // TODO:
   // const cache = parseCache.get(sourceKey)
   // if (cache) {
   //   return cache

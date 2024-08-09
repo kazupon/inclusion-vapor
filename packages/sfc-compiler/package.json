@@ -53,6 +53,8 @@
     "@typescript-eslint/typescript-estree": "^8.0.0",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-sfc": "latest",
+    "@vue-vapor/shared": "latest",
+    "hash-sum": "^2.0.0",
     "magic-string-ast": "^0.6.2",
     "source-map-js": "catalog:",
     "svelte": "catalog:",
@@ -60,6 +62,7 @@
   },
   "devDependencies": {
     "@babel/types": "catalog:",
+    "@types/hash-sum": "^1.0.2",
     "tsdown": "catalog:"
   }
 }

@@ -107,6 +107,8 @@ interface SvelteCompilerOptions {
 export type CompilerOptions = HackOptions<BaseCompilerOptions> & SvelteCompilerOptions
 export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
+export type { VaporCodegenResult } from '@vue-vapor/compiler-vapor'
+
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
   return [
     [
