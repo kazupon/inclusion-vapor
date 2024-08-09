@@ -1,4 +1,3 @@
-// TODO: Remove this script, if we will remove `build:fix` script
 import path from 'node:path'
 import { promises as fs } from 'node:fs'
 import { fileURLToPath } from 'node:url'

@@ -6,12 +6,14 @@
 
 import createDebug from 'debug'
 import { preprocess } from 'svelte/compiler'
-import { transformSvelteScript, parse as parseSvelteSFC } from 'svelte-vapor-sfc-compiler'
+import { transformSvelteScript } from 'svelte-vapor-sfc-compiler'
 import { isObject, isString } from '@vue-vapor/shared'
+import { createDescriptor, getPrevDescriptor } from './descriptor'
 import { genScriptCode } from './script'
-import { genTemplateCode, isUseInlineTemplate } from './template'
+import { genTemplateCode, isUseInlineTemplate as ____ } from './template'
 import { genStyleCode } from './style'
 import { EXPORT_HELPER_ID } from './helper'
+import { createRollupError } from './utils'
 
 import type { UnpluginOptions } from 'unplugin'
 import type { ResolvedOptions, UnpluginContext } from './types'
@@ -24,19 +26,23 @@ export async function transformMain(
   code: string,
   filename: string,
   options: ResolvedOptions,
-  ssr: boolean, // TODO: more refactoring
-  customElement: boolean // TODO: more refactoring
-): Promise<ReturnType<Required<UnpluginOptions>['transform']>> {
+  ssr: boolean,
+  customElement: boolean
+): Promise<ReturnType<Required<UnpluginOptions>['transform']> | null> {
+  // const { root, isProduction } = options
+
   // preprocess svelte component
   const preprocessedCode = await preprocessSvelte(code, filename, options)
 
-  // parse svelte component
-  // TODO: we should cache the descriptor like `@vite/plugin-vue`
-  const { descriptor, errors: _errors } = parseSvelteSFC(preprocessedCode, {
-    filename,
-    sourceMap: options.sourcemap
-  })
-  debug('descriptor', descriptor)
+  const _prevDescriptor = getPrevDescriptor(filename)
+
+  // get sfc descriptor from svelte component
+  const { descriptor, errors } = createDescriptor(filename, preprocessedCode, options)
+  //  debug('descriptor', descriptor)
+  if (errors.length > 0) {
+    errors.forEach(error => context.error(createRollupError(filename, error)))
+    return null // eslint-disable-line unicorn/no-null
+  }
 
   // feature information
   const attachedProps: [string, string][] = []
@@ -47,13 +53,15 @@ export async function transformMain(
     context,
     descriptor,
     options,
-    false, // TODO: ssr
-    false // TODO: customElement
+    ssr,
+    customElement
   )
-  debug('scriptCode', scriptCode)
+  debug('transformMain: scriptCode', scriptCode)
 
   // template
-  const hasTemplateImport = !!descriptor.template && !isUseInlineTemplate(descriptor, options)
+  // TODO: const hasTemplateImport = !!descriptor.template && !isUseInlineTemplate(descriptor, options)
+  const hasTemplateImport = !!descriptor.template
+  debug('transformMain: hasTemplateImport', hasTemplateImport)
 
   let templateCode = ''
   let templateMap: RawSourceMap | undefined = undefined
@@ -62,11 +70,11 @@ export async function transformMain(
       context,
       descriptor,
       options,
-      false, // TODO: ssr
-      false // TODO: customElement
+      ssr,
+      customElement
     ))
   }
-  debug('templateCode', templateCode, templateMap)
+  debug('transformMain: templateCode', templateCode, templateMap)
 
   if (hasTemplateImport) {
     attachedProps.push(ssr ? ['ssrRender', '_sfc_ssrRender'] : ['render', '_sfc_render'])
@@ -82,6 +90,7 @@ export async function transformMain(
 
   // styles
   const stylesCode = await genStyleCode(context, descriptor, customElement, attachedProps)
+  debug('transformMain: stylesCode', stylesCode)
 
   const output: string[] = [
     scriptCode,
@@ -219,7 +228,7 @@ async function preprocessSvelte(
     }
   })
 
-  debug('preprocessSvelte preprocessed', preprocessed)
+  // debug('preprocessSvelte preprocessed', preprocessed)
   // TODO: we might need to return `preprocessed` directly
   return preprocessed.code
 }

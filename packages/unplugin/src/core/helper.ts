@@ -4,7 +4,7 @@
 // Author: Evan you (https://github.com/yyx990803), Vite team and Vue community
 // Repository url: https://github.com/vitejs/vite-plugin-vue
 
-export const EXPORT_HELPER_ID = '\0plugin-vue:export-helper'
+export const EXPORT_HELPER_ID = '\0plugin-svelte:export-helper'
 
 export const helperCode = `
 export default (sfc, props) => {

@@ -8,6 +8,8 @@ import type { UnpluginBuildContext, UnpluginContext as _UnpluginContext } from '
 
 export interface ResolvedOptions extends Options {
   filter: ReturnType<typeof _createFilter>
+  root: string
+  isProduction: boolean
   sourcemap: boolean
 }
 

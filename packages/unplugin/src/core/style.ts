@@ -12,12 +12,12 @@ import type { UnpluginContext } from './types'
 const debug = createDebug('unplugin-svelte-vapor:core:style')
 
 export async function genStyleCode(
-  context: UnpluginContext,
-  descriptor: SvelteSFCDescriptor,
-  customElement: boolean,
-  attachedProps: [string, string][]
+  _context: UnpluginContext,
+  _descriptor: SvelteSFCDescriptor,
+  _customElement: boolean,
+  _attachedProps: [string, string][]
 ): Promise<string> {
-  debug('genStyleCode', context, descriptor, customElement, attachedProps)
+  debug('genStyleCode') //, context, descriptor, customElement, attachedProps)
 
   const stylesCode = ``
 
