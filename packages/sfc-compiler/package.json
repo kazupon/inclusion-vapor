@@ -1,6 +1,6 @@
 {
   "name": "svelte-vapor-sfc-compiler",
-  "description": "Svelte component compiler for SFC-flavoured vapor",
+  "description": "SFC-flavoured vapor svelte component compiler",
   "private": true,
   "version": "0.0.0",
   "author": {

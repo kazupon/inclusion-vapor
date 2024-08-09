@@ -1,6 +1,6 @@
 # Svelte Vapor
 
-Vapor for Svelte
+Svelte for Vapor
 
 Svelte based on v4 (v3)
 
@@ -12,10 +12,12 @@ Svelte based on v4 (v3)
 ## ✅ TODO
 
 - [ ] transform
-  - [ ] NodeTransform
-  - [ ] DirectiveTransform
-- [ ] Svelte Component (Convert to vapor component)
-  - [ ] prop (`export`)
+  - [x] NodeTransform
+  - [ ] WIP: DirectiveTransform
+- [ ] Svelte Component
+  - [x] prop
+  - [x] attrs
+  - [ ] prop export
   - [ ] `$$props`
   - [ ] `$$restProps`
   - [ ] `$`
@@ -30,7 +32,7 @@ Svelte based on v4 (v3)
   - [ ] `{@debug}`
   - [ ] `{@const}`
 - [ ] Element directives
-  - [ ] `on:eventname`
+  - [x] `on:eventname`
   - [ ] `bind:property`
   - [ ] Binding `<select>` value
   - [ ] Media element bindings
@@ -50,7 +52,7 @@ Svelte based on v4 (v3)
   - [ ] Animation Parameters
   - [ ] Custom animation functions
 - [ ] Component directives
-  - [ ] `on:eventname`
+  - [x] `on:eventname`
   - [ ] `--style-props`
   - [ ] `bind:property`
   - [ ] `bind:this`
@@ -88,14 +90,13 @@ Svelte based on v4 (v3)
   - [ ] animate
   - [ ] eashing
   - [ ] action
-- [ ] Codegen with Vapor generator
 - [x] Template Explorer
-- [ ] Vite plugin with unplugin
-- [ ] Repl
-- [ ] Vapor Runtime Integration
+- [x] SFC-flavoured component compiler
+- [ ] WIP: Vite plugin with unplugin
 - [ ] Counter App
   - [ ] simple bindings
   - [ ] simple events
+- [ ] Repl
 - [ ] TODO-MVC App
 
 ## ©️ License

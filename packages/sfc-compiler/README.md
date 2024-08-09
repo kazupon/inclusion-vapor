@@ -1,6 +1,6 @@
 # svelte-vapor-sfc-compiler
 
-> Svelte component compiler for SFC-flavoured vapor
+> SFC-flavoured vapor svelte component compiler
 
 ## ©️ License
 
