@@ -9,6 +9,13 @@ Svelte based on v4 (v3)
 
 - [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
 
+## 🍭 Playground
+
+```sh
+pnpm build # build the packages
+pnpm play # start playground
+```
+
 ## ✅ TODO
 
 - [ ] transform
@@ -91,11 +98,14 @@ Svelte based on v4 (v3)
   - [ ] eashing
   - [ ] action
 - [x] Template Explorer
-- [x] SFC-flavoured component compiler
+- [ ] WIP: SFC-flavoured component compiler
+  - [ ] template
+  - [ ] script
+  - [ ] styles
 - [ ] WIP: Vite plugin with unplugin
-- [ ] Counter App
-  - [ ] simple bindings
-  - [ ] simple events
+- [x] Counter App
+  - [x] simple bindings
+  - [x] simple events
 - [ ] Repl
 - [ ] TODO-MVC App
 
