@@ -69,7 +69,7 @@
     "*.{json,md,yml}": [
       "prettier --write"
     ],
-    "*.{js,mjs,cjs}": [
+    "*.{js,mjs,cjs,vue,svelte}": [
       "prettier --write",
       "eslint --fix"
     ],
