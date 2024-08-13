@@ -1,13 +1,16 @@
-# Svelte Vapor
+# Inclusion Vapor
 
-Svelte for Vapor
+This Resarch & Development project is for running various components in [vapor](https://github.com/vuejs/core-vapor).
 
-Svelte based on v4 (v3)
+This project try to work **whether interoperability can be provided between components of different frameworks on vapor**.
 
 > [!WARNING]
 > This is WIP 👷
 
-- [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
+## 🚂 Current working status:
+
+- Svelte
+- React (WIP)
 
 ## 🍭 Playground
 
@@ -16,7 +19,21 @@ pnpm build # build the packages
 pnpm play # start playground
 ```
 
-## ✅ TODO
+## react-vapor
+
+WIP:
+
+## svelte-vapor
+
+Svelte based on v4 (v3)
+
+- [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
+
+### ✅ TODO
+
+svelte-vapor
+
+<details>
 
 - [ ] transform
   - [x] NodeTransform
@@ -108,6 +125,8 @@ pnpm play # start playground
   - [x] simple events
 - [ ] Repl
 - [ ] TODO-MVC App
+
+</details>
 
 ## ©️ License
 

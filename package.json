@@ -1,13 +1,13 @@
 {
-  "name": "svelte-vapor",
+  "name": "inclusion-vapor",
   "private": true,
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kazupon/svelte-vapor/issues"
+    "url": "https://github.com/kazupon/inclusion-vapor/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kazupon/svelte-vapor.git"
+    "url": "git+https://github.com/kazupon/inclusion-vapor.git"
   },
   "packageManager": "pnpm@9.7.0",
   "engines": {
@@ -15,29 +15,30 @@
   },
   "scripts": {
     "build": "run-p \"build:*\"",
-    "build:compiler": "pnpm run --filter=./packages/template-compiler build",
-    "build:sfc": "pnpm run --filter=./packages/sfc-compiler build",
-    "build:template": "pnpm run --filter=./packages/template-explorer build",
-    "build:unplugin": "pnpm run --filter=./packages/unplugin build",
+    "build:svelte": "run-s \"build:svelte:compiler\" \"build:svelte:sfc\" \"build:svelte:unplugin\" \"build:svelte:template\"",
+    "build:svelte:compiler": "pnpm run --filter=./packages/svelte-template-compiler build",
+    "build:svelte:sfc": "pnpm run --filter=./packages/svelte-sfc-compiler build",
+    "build:svelte:template": "pnpm run --filter=./packages/svelte-template-explorer build",
+    "build:svelte:unplugin": "pnpm run --filter=./packages/unplugin-svelte build",
     "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
-    "dev:compiler": "run-s \"build:compiler\" \"build:template\" serve",
+    "dev:svelte:compiler": "run-s \"build:svelte:compiler\" \"build:svelte:template\" serve",
     "fix": "run-p \"fix:* {@}\" --",
     "fix:eslint": "eslint . --fix",
     "fix:prettier": "prettier . --write",
     "lint": "run-p \"lint:* {@}\" --",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
-    "open": "open http://localhost:3000/packages/template-explorer/local.html",
+    "open": "open http://localhost:3000/packages/svelte-template-explorer/local.html",
     "play": "pnpm run --filter=./packages/playground dev",
     "prepare": "git config --local core.hooksPath .githooks",
     "prepublishOnly": "pnpm build",
     "serve": "serve",
     "test": "vitest run",
     "typecheck": "tsc -p .",
-    "watch:unplugin": "pnpm run --filter=./packages/unplugin watch"
+    "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
-    "@kazupon/eslint-config": "^0.10.1",
+    "@kazupon/eslint-config": "^0.11.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.14.10",
     "eslint": "^9.6.0",

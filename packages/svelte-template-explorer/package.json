@@ -13,6 +13,6 @@
     "svelte": "catalog:",
     "svelte-vapor-template-compiler": "workspace:^",
     "unbuild": "^2.0.0",
-    "vue": "^3.4.32"
+    "vue": "^3.4.37"
   }
 }

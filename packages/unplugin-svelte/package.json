@@ -6,12 +6,12 @@
   "license": "MIT",
   "funding": "https://github.com/sponsors/kazupon",
   "bugs": {
-    "url": "https://github.com/kazupon/unplugin-svelte-vapor/issues"
+    "url": "https://github.com/kazupon/inclusion-vapor/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kazupon/unplugin-svelte-vapor.git",
-    "directory": "packages/unplugin"
+    "url": "git+https://github.com/kazupon/inclusion-vapor.git",
+    "directory": "packages/unplugin-svelte"
   },
   "keywords": [
     "unplugin",
@@ -20,7 +20,7 @@
     "rollup",
     "transform"
   ],
-  "homepage": "https://github.com/kazupon/unplugin-svelte-vapor#readme",
+  "homepage": "https://github.com/kazupon/inclusion-vapor#readme",
   "type": "module",
   "files": [
     "dist"

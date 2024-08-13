@@ -21,7 +21,7 @@ import type {
 export type { SFCDescriptor, CompilerError } from '@vue-vapor/compiler-sfc'
 
 export interface SvelteTemplateCompiler {
-  compile: typeof import('svelte-vapor-template-compiler').compile
+  compile: typeof import('packages/svelte-template-compiler/src').compile
   parse: typeof import('svelte/compiler').parse
 }
 

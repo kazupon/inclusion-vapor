@@ -10,12 +10,12 @@
   "license": "MIT",
   "funding": "https://github.com/sponsors/kazupon",
   "bugs": {
-    "url": "https://github.com/kazupon/svelte-vapor/issues"
+    "url": "https://github.com/kazupon/inclusion-vapor/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kazupon/svelte-vapor.git",
-    "directory": "packages/sfc-compiler"
+    "url": "git+https://github.com/kazupon/inclusion-vapor.git",
+    "directory": "packages/svelte-sfc-compiler"
   },
   "keywords": [
     "svelte",
@@ -24,7 +24,7 @@
     "component",
     "compiler"
   ],
-  "homepage": "https://github.com/kazupon/svelte-vapor#readme",
+  "homepage": "https://github.com/kazupon/inclusion-vapor#readme",
   "publishConfig": {
     "access": "public"
   },
