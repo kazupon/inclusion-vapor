@@ -5,7 +5,8 @@ import {
   typescript,
   jsonc,
   unicorn,
-  regexp
+  regexp,
+  vue
 } from '@kazupon/eslint-config'
 
 export default defineConfig(
@@ -30,13 +31,20 @@ export default defineConfig(
   typescript({
     parserOptions: {
       project: ['./tsconfig.json']
-    }
+    },
+    extraFileExtensions: ['.vue']
   }),
   jsonc({
     json: true,
     jsonc: true,
     json5: true,
     prettier: true
+  }),
+  vue({
+    typescript: true,
+    rules: {
+      'vue/multi-word-component-names': 'off'
+    }
   }),
   {
     name: 'ignores',

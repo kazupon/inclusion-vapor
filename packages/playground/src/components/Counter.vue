@@ -6,7 +6,12 @@ const count = ref(0)
 
 <template>
   <div class="card">
-    <button type="button" @click="count++">Vue Vapor count is {{ count }}</button>
+    <button
+      type="button"
+      @click="count++"
+    >
+      Vue Vapor count is {{ count }}
+    </button>
   </div>
 </template>
 
