@@ -6,7 +6,8 @@ import {
   jsonc,
   unicorn,
   regexp,
-  vue
+  vue,
+  svelte
 } from '@kazupon/eslint-config'
 
 export default defineConfig(
@@ -32,7 +33,7 @@ export default defineConfig(
     parserOptions: {
       project: ['./tsconfig.json']
     },
-    extraFileExtensions: ['.vue']
+    extraFileExtensions: ['.vue', '.svelte']
   }),
   jsonc({
     json: true,
@@ -45,6 +46,9 @@ export default defineConfig(
     rules: {
       'vue/multi-word-component-names': 'off'
     }
+  }),
+  svelte({
+    typescript: true
   }),
   {
     name: 'ignores',
