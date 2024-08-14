@@ -48,7 +48,7 @@ importers:
         specifier: ^20.14.10
         version: 20.14.15
       eslint:
-        specifier: ^9.6.0
+        specifier: ^9.9.0
         version: 9.9.0(jiti@1.21.6)
       eslint-plugin-jsonc:
         specifier: ^2.16.0
@@ -90,7 +90,7 @@ importers:
         specifier: ^5.5.3
         version: 5.5.4
       typescript-eslint:
-        specifier: ^8.0.0
+        specifier: ^8.1.0
         version: 8.1.0(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4)
       vitest:
         specifier: ^2.0.1
