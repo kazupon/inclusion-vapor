@@ -106,7 +106,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options = 
       } else {
         // sub block request
         if (query.type === 'template') {
-          // TOOD:
+          // TODO:
         } else if (query.type === 'style') {
           // TODO:
         }
