@@ -38,11 +38,14 @@
     "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
-    "@kazupon/eslint-config": "^0.12.0",
+    "@kazupon/eslint-config": "^0.13.1",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.14.10",
     "eslint": "^9.6.0",
     "eslint-plugin-jsonc": "^2.16.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-regexp": "^2.6.0",
     "eslint-plugin-svelte": "^2.43.0",
     "eslint-plugin-unicorn": "^54.0.0",

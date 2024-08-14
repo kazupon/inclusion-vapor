@@ -7,6 +7,7 @@ import {
   unicorn,
   regexp,
   vue,
+  react,
   svelte
 } from '@kazupon/eslint-config'
 
@@ -40,6 +41,9 @@ export default defineConfig(
     jsonc: true,
     json5: true,
     prettier: true
+  }),
+  react({
+    refresh: true
   }),
   vue({
     typescript: true,
