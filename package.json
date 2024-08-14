@@ -52,6 +52,7 @@
     "eslint-plugin-vue": "^9.27.0",
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
+    "pkg-pr-new": "^0.0.20",
     "prettier": "^3.3.2",
     "serve": "^14.2.3",
     "typescript": "^5.5.3",
