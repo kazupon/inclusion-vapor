@@ -9,8 +9,8 @@ This project try to work **whether interoperability can be provided between comp
 
 ## 🚂 Current working status:
 
-- Svelte
-- React (WIP)
+- svelte-vapor (PoC Done): svelte for vapor
+- react-vapor (PoC WIP): react for vapor
 
 ## 🍭 Playground
 
@@ -29,7 +29,7 @@ Svelte based on v4 (v3)
 
 - [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
 
-### ✅ TODO
+## ✅ TODO
 
 svelte-vapor
 
@@ -127,6 +127,20 @@ svelte-vapor
 - [ ] TODO-MVC App
 
 </details>
+
+## 💖 Credits
+
+This project is supported by:
+
+- [React](https://react.dev/), created by Meta Platforms, Inc, and affiliates.
+- [Svelte](https://svelte.dev/), created by [Rich Harris](https://github.com/Rich-Harris) and Svelte community
+
+And Inspired by:
+
+- [unplugin-vue-jsx-vapor](https://github.com/unplugin/unplugin-vue-jsx-vapor), created by [zhiyuanzmj](https://github.com/zhiyuanzmj)
+- [vue-hooks](https://github.com/Ubugeeei/vue-hooks), created by [Ubugeeei](https://github.com/Ubugeeei)
+
+Thank you! ❤️
 
 ## ©️ License
 

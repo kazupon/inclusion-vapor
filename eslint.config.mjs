@@ -8,7 +8,8 @@ import {
   regexp,
   vue,
   react,
-  svelte
+  // svelte,
+  yaml
 } from '@kazupon/eslint-config'
 
 export default defineConfig(
@@ -34,7 +35,10 @@ export default defineConfig(
     parserOptions: {
       project: ['./tsconfig.json']
     },
-    extraFileExtensions: ['.vue', '.svelte']
+    // TODO:
+    // sometimes, Resolving `parserOptions.project` is not working in `.svelte` files.
+    // extraFileExtensions: ['.vue', '.svelte']
+    extraFileExtensions: ['.vue']
   }),
   jsonc({
     json: true,
@@ -51,12 +55,16 @@ export default defineConfig(
       'vue/multi-word-component-names': 'off'
     }
   }),
-  svelte({
-    typescript: true
-  }),
+  // TODO:
+  // sometimes, Resolving `parserOptions.project` is not working in `.svelte` files.
+  // svelte({
+  //   typescript: true
+  // }),
+  yaml(),
   {
     name: 'ignores',
     ignores: [
+      '**/*.svelte',
       '**/*.config.ts',
       '**/dist/*',
       '**/tsconfig.json',
