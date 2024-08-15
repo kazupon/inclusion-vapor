@@ -64,6 +64,8 @@ export default defineConfig(
   {
     name: 'ignores',
     ignores: [
+      // TODO:
+      // sometimes, Resolving `parserOptions.project` is not working in `.svelte` files.
       '**/*.svelte',
       '**/*.config.ts',
       '**/dist/*',
