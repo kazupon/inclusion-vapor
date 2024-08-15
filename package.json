@@ -15,6 +15,8 @@
   },
   "scripts": {
     "build": "run-p \"build:*\"",
+    "build:react": "run-s \"build:react:*\"",
+    "build:react:hooks": "pnpm run --filter=./packages/react-vapor-hooks build",
     "build:svelte": "run-s \"build:svelte:compiler\" \"build:svelte:sfc\" \"build:svelte:unplugin\" \"build:svelte:template\"",
     "build:svelte:compiler": "pnpm run --filter=./packages/svelte-template-compiler build",
     "build:svelte:sfc": "pnpm run --filter=./packages/svelte-sfc-compiler build",
