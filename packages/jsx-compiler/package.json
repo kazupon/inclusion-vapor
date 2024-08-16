@@ -48,11 +48,14 @@
     "@babel/parser": "catalog:",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-vapor": "latest",
-    "@vue-vapor/shared": "latest"
+    "@vue-vapor/shared": "latest",
+    "html-tags": "^4.0.0",
+    "svg-tags": "^1.0.0"
   },
   "devDependencies": {
     "@babel/types": "catalog:",
     "@rollup/plugin-replace": "^5.0.7",
+    "@types/svg-tags": "^1.0.2",
     "tsdown": "catalog:"
   }
 }

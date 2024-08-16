@@ -5,6 +5,12 @@ export type {
   JSXAttribute,
   JSXElement,
   JSXFragment,
+  JSXText,
+  JSXExpressionContainer,
+  JSXSpreadAttribute,
   Node as BabelNode,
-  Program as BabelProgram
+  Expression as BabelExpression,
+  Program as BabelProgram,
+  CallExpression as BabelCallExpression,
+  SourceLocation as BabelSourceLocation
 } from '@babel/types'

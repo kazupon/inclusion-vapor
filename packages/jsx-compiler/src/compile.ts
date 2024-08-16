@@ -9,6 +9,7 @@ import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/comp
 import { generate } from '@vue-vapor/compiler-vapor'
 import { parse } from '@babel/parser'
 import { extend, isString } from '@vue-vapor/shared'
+import { transformChildren, transformText, transformElement } from './transforms'
 import { transform } from './transform'
 import { IRNodeTypes } from './ir'
 
@@ -115,10 +116,10 @@ export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransfor
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
   return [
     [
-      // transformText,
-      // transformElement,
+      transformText,
+      transformElement,
       // transformVSlot,
-      // transformChildren
+      transformChildren
     ],
     {
       // bind: transformVBind,
