@@ -19,13 +19,15 @@ pnpm build # build the packages
 pnpm play # start playground
 ```
 
-## react-vapor
+## ⚛️ react-vapor
 
 WIP:
 
-## svelte-vapor
+Based on React v18 latest
 
-Svelte based on v4 (v3)
+## 🎩 svelte-vapor
+
+Based on Svelte v4 (maybe v3 compatible)
 
 - [Svelte Vapor Template Explorer](https://svelte-vapor-template-explorer.netlify.app)
 
