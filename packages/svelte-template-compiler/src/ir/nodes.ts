@@ -4,8 +4,9 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import { IRNodeTypes, DynamicFlag } from '@vue-vapor/compiler-vapor'
+import { IRNodeTypes } from '@vue-vapor/compiler-vapor'
 
+import { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
 import type {
   BindingTypes,
   CompoundExpressionNode,
@@ -219,14 +220,6 @@ export type OperationNode =
   | DeclareOldRefIRNode
   | SlotOutletIRNode
 
-export interface IRDynamicInfo {
-  id?: number
-  flags: DynamicFlag
-  anchor?: number
-  children: IRDynamicInfo[]
-  template?: number
-}
-
 export interface IREffect {
   expressions: SimpleExpressionNode[]
   operations: OperationNode[]
@@ -240,4 +233,6 @@ export type VaporDirectiveNode = Overwrite<
   }
 >
 
+export * from './svelte'
+export type { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
 export { IRNodeTypes, DynamicFlag, IRDynamicPropsKind } from '@vue-vapor/compiler-vapor'

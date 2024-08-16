@@ -7,7 +7,7 @@
 import { NOOP, extend } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
 import { newDynamic, isConstantExpression } from './utils'
-import { IRDynamicInfo, DynamicFlag } from '../ir'
+import { DynamicFlag } from '../ir'
 
 import type {
   CompilerCompatOptions,
@@ -15,6 +15,7 @@ import type {
   TransformOptions as BaseTransformOptions
 } from '@vue-vapor/compiler-dom'
 import type {
+  IRDynamicInfo,
   RootNode,
   RootIRNode,
   BlockIRNode,
@@ -79,6 +80,7 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
   constructor(ir: RootIRNode, node: T, options: TransformOptions = {}) {
     this.ir = ir
     this.node = node
+    // @ts-expect-error -- FIXME
     this.options = extend({}, defaultOptions, options)
     this.root = this as TransformContext<RootNode>
 
@@ -131,7 +133,9 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
     }
 
     function isSameExpression(a: SimpleExpressionNode[], b: SimpleExpressionNode[]) {
-      if (a.length !== b.length) return false
+      if (a.length !== b.length) {
+        return false
+      }
       return a.every((exp, i) => exp.content === b[i].content)
     }
   }
