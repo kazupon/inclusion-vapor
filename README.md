@@ -7,7 +7,7 @@ This project try to work **whether interoperability can be provided between comp
 > [!WARNING]
 > This is WIP 👷
 
-![inclusion-vapor](https://raw.githubusercontent.com/kazupon/inclusion-vapor/main/assets/inclusion-vapor-v0.svg)
+![inclusion-vapor](./assets/inclusion-vapor-v0.png)
 
 ## 🚂 Current working status:
 
