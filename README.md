@@ -11,8 +11,8 @@ This project try to work **whether interoperability can be provided between comp
 
 ## 🚂 Current working status:
 
-- svelte-vapor (PoC Done): svelte for vapor
 - react-vapor (PoC WIP): react for vapor
+- svelte-vapor (PoC Done): svelte for vapor
 
 ## 🍭 Playground
 
@@ -26,6 +26,8 @@ pnpm play # start playground
 WIP:
 
 Based on React v18 latest
+
+- [Jsx Vapor Explorer](https://jsx-vapor-explorer.netlify.app/)
 
 ## 🎩 svelte-vapor
 
@@ -77,6 +79,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] use
   - [ ] experimental_taintObjectReference
   - [ ] experimental_taintUniqueValue
+- [x] Template Explorer
 - [ ] Counter App
   - [ ] simple bindings
   - [ ] simple events
@@ -169,11 +172,11 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] eashing
   - [ ] action
 - [x] Template Explorer
-- [ ] WIP: SFC-flavoured component compiler
+- [ ] WIP(PoC Done): SFC-flavoured component compiler
   - [ ] template
   - [ ] script
   - [ ] styles
-- [ ] WIP: Vite plugin with unplugin
+- [ ] WIP(Poc Done): Vite plugin with unplugin
 - [x] Counter App
   - [x] simple bindings
   - [x] simple events
