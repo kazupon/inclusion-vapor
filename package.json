@@ -15,7 +15,9 @@
   },
   "scripts": {
     "build": "run-p \"build:*\"",
-    "build:jsx": "pnpm run --filter=./packages/jsx-compiler build",
+    "build:jsx": "run-s \"build:jsx:*\"",
+    "build:jsx:compiler": "pnpm run --filter=./packages/jsx-compiler build",
+    "build:jsx:template": "pnpm run --filter=./packages/jsx-explorer build",
     "build:react": "run-s \"build:react:*\"",
     "build:react:hooks": "pnpm run --filter=./packages/react-vapor-hooks build",
     "build:shared": "pnpm run --filter=./packages/shared build",
@@ -25,6 +27,7 @@
     "build:svelte:template": "pnpm run --filter=./packages/svelte-template-explorer build",
     "build:svelte:unplugin": "pnpm run --filter=./packages/unplugin-svelte build",
     "debug:eslint": "pnpx @eslint/config-inspector --config eslint.config.mjs",
+    "dev:jsx:compiler": "run-s \"build:jsx:compiler\" \"build:jsx:template\" serve",
     "dev:svelte:compiler": "run-s \"build:svelte:compiler\" \"build:svelte:template\" serve",
     "fix": "run-p \"fix:* {@}\" --",
     "fix:eslint": "eslint . --fix",

@@ -1,25 +1,21 @@
 import { createApp, h, reactive, ref } from 'vue'
-import { parse } from 'svelte/compiler'
 
 import type { Ref } from 'vue'
-import type { CompilerOptions } from 'svelte-vapor-template-compiler'
+import type { CompilerOptions } from 'jsx-vapor-compiler'
 
 export const ssrMode: Ref<boolean> = ref(false)
 // export const vaporMode: Ref<boolean> = ref(true)
 
 export const defaultOptions: CompilerOptions = {
   mode: 'module',
-  filename: 'Foo.svelte',
+  filename: 'Foo.jsx',
   prefixIdentifiers: false,
   hoistStatic: false,
   cacheHandlers: false,
   scopeId: null, // eslint-disable-line unicorn/no-null
   inline: false,
   ssrCssVars: `{ color }`,
-  whitespace: 'condense',
-  parser(source) {
-    return parse(source).html
-  }
+  whitespace: 'condense'
 }
 
 export const compilerOptions: CompilerOptions = reactive(Object.assign({}, defaultOptions))
@@ -34,7 +30,7 @@ const App = {
       const usePrefix = compilerOptions.prefixIdentifiers || compilerOptions.mode === 'module'
 
       return [
-        h('h1', `Svelte Vapor Template Explorer`),
+        h('h1', `Jsx Vapor Explorer`),
         h(
           'a',
           {
@@ -47,7 +43,7 @@ const App = {
         h(
           'a',
           {
-            href: 'https://app.netlify.com/sites/svelte-vapor-template-explorer/deploys',
+            href: 'https://app.netlify.com/sites/jsx-vapor-explorer/deploys',
             target: `_blank`
           },
           'History'
