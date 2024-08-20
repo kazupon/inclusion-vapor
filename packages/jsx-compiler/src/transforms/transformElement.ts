@@ -35,8 +35,6 @@ import type {
   IRPropsStatic
 } from '../ir'
 
-// import { EMPTY_EXPRESSION } from './utils'
-
 export const isReservedProp: ReturnType<typeof makeMap> = /* #__PURE__ */ makeMap(
   // the leading comma is intentional so empty string "" is also included
   ',key,ref,ref_for,ref_key,'
@@ -116,7 +114,7 @@ function transformComponentElement(
 
 function resolveSetupReference(name: string, context: TransformContext): string | undefined {
   const bindings = context.options.bindingMetadata
-  // TODO
+  // TODO:
   if (!context.options.prefixIdentifiers) {
     return name
   }
@@ -171,7 +169,7 @@ function transformNativeElement(
   }
 
   template += `>${context.childrenTemplate.join('')}`
-  // TODO remove unnecessary close tag, e.g. if it's the last element of the template
+  // TODO: remove unnecessary close tag, e.g. if it's the last element of the template
   if (!isVoidTag(tag)) {
     template += `</${tag}>`
   }
@@ -298,7 +296,7 @@ function transformProp(
       context.directive.add(name)
     }
 
-    // TODO
+    // TODO:
     // context.registerOperation({
     //   type: IRNodeTypes.WITH_DIRECTIVE,
     //   element: context.reference(),
