@@ -1,0 +1,315 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`component > basic > jsx 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"></div>")
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n1 = t0()
+  const n0 = _createComponent(_component_Foo, [
+    { class: () => ("foo") }
+  ])
+  _insert(n0, n1)
+  return n1
+}"
+`;
+
+exports[`component > basic > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"></div>")
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n1 = t0()
+  const n0 = _createComponent(_component_Foo, [
+    { class: () => ("foo") }
+  ])
+  _insert(n0, n1)
+  return n1
+}"
+`;
+
+exports[`component > do not resolve component from non-script-setup bindings > jsx 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > do not resolve component from non-script-setup bindings > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > generate multi root component > jsx 1`] = `
+"import { createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("123")
+
+export function render(_ctx) {
+  const n1 = t0()
+  const n0 = _createComponent(_ctx.Comp)
+  return [n0, n1]
+}"
+`;
+
+exports[`component > generate multi root component > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("123")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = t0()
+  const n0 = _createComponent(_component_Comp)
+  return [n0, n1]
+}"
+`;
+
+exports[`component > generate single root component > jsx 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_ctx.Comp, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > generate single root component > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n0 = _createComponent(_component_Comp, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > import + resolve component > jsx 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > import + resolve component > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve component from setup bindings (inline const) > jsx 1`] = `
+"(() => {
+  const n0 = _createComponent(Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve component from setup bindings (inline const) > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve component from setup bindings (inline) > jsx 1`] = `
+"(() => {
+  const n0 = _createComponent(_unref(Example), null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve component from setup bindings (inline) > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve component from setup bindings > jsx 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve component from setup bindings > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Example = _resolveComponent("Example")
+  const n0 = _createComponent(_component_Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from props bindings (inline) > jsx 1`] = `
+"(() => {
+  const n0 = _createComponent(Foo.Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve namespaced component from props bindings (inline) > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from props bindings (non-inline) > jsx 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from props bindings (non-inline) > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from setup bindings (inline const) > jsx 1`] = `
+"(() => {
+  const n0 = _createComponent(Foo.Example, null, null, true)
+  return n0
+})()"
+`;
+
+exports[`component > resolve namespaced component from setup bindings (inline const) > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from setup bindings > jsx 1`] = `
+"import { createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > resolve namespaced component from setup bindings > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo46Example = _resolveComponent("Foo.Example")
+  const n0 = _createComponent(_component_Foo46Example, null, null, true)
+  return n0
+}"
+`;
+
+exports[`component > static props > jsx 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, [
+    {
+      id: () => ("foo"), 
+      class: () => ("bar")
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`component > static props > vapor 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Foo = _resolveComponent("Foo")
+  const n0 = _createComponent(_component_Foo, [
+    {
+      id: () => ("foo"), 
+      class: () => ("bar")
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`empty template 1`] = `
+"
+export function render(_ctx) {
+  return null
+}"
+`;
+
+exports[`native elements > jsx 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > vapor 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`props + children 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\"><span></span></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`static props 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\" class=\\"bar\\"></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;

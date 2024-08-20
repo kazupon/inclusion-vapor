@@ -58,7 +58,7 @@ describe('compiler: children transform', () => {
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
   })
 
-  // NOTE: WIP, how should we handle components?
+  // TODO: WIP, how should we handle components?
   test('components', () => {
     const jsxSource = `(<><div>
   <Foo></Foo>

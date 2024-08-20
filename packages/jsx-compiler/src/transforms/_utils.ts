@@ -23,6 +23,7 @@ export function makeCompile(options: CompilerOptions = {}) {
       sourceType: 'module',
       plugins: ['jsx']
     }).program
+    console.log(statement, source)
     let children!: JSXElement[] | JSXFragment['children']
     if (statement.type === 'ExpressionStatement') {
       children =

@@ -117,7 +117,9 @@ function transformComponentElement(
 function resolveSetupReference(name: string, context: TransformContext): string | undefined {
   const bindings = context.options.bindingMetadata
   // TODO
-  if (!context.options.prefixIdentifiers) return name
+  if (!context.options.prefixIdentifiers) {
+    return name
+  }
   if (!bindings || bindings.__isScriptSetup === false) {
     return
   }
