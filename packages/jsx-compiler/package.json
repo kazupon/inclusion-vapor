@@ -48,9 +48,7 @@
     "@babel/parser": "catalog:",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-vapor": "latest",
-    "@vue-vapor/shared": "latest",
-    "html-tags": "^4.0.0",
-    "svg-tags": "^1.0.0"
+    "@vue-vapor/shared": "latest"
   },
   "devDependencies": {
     "@babel/types": "catalog:",
