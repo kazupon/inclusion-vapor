@@ -9,7 +9,13 @@ import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/comp
 import { generate } from '@vue-vapor/compiler-vapor'
 import { parse } from '@babel/parser'
 import { extend, isString } from '@vue-vapor/shared'
-import { transformChildren, transformText, transformElement } from './transforms'
+import {
+  transformChildren,
+  transformElement,
+  transformText,
+  transformVBind,
+  transformVOn
+} from './transforms'
 import { transform } from './transform'
 import { IRNodeTypes } from './ir'
 
@@ -110,7 +116,16 @@ export function compile(
   ) as unknown as VaporCodegenResult
 }
 
-export type CompilerOptions = HackOptions<BaseCompilerOptions>
+interface JsxCompilerOptions {
+  /**
+   * jsx parser
+   * @param source - jsx code
+   * @returns Babel AST
+   */
+  parser?: (source: string) => BabelProgram
+}
+
+export type CompilerOptions = HackOptions<BaseCompilerOptions> & JsxCompilerOptions
 export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
@@ -122,8 +137,8 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
       transformChildren
     ],
     {
-      // bind: transformVBind,
-      // on: transformVOn,
+      bind: transformVBind,
+      on: transformVOn
       // model: transformVModel,
       // show: transformVShow,
       // html: transformVHtml,

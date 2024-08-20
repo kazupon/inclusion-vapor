@@ -192,16 +192,6 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`props + chilrend 1`] = `
-"import { template as _template } from 'vue/vapor';
-const t0 = _template("<div id=\\"foo\\"><span></span></div>")
-
-export function render(_ctx) {
-  const n0 = t0()
-  return n0
-}"
-`;
-
 exports[`static props 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\" class=\\"bar\\"></div>")
