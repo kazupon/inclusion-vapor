@@ -30,7 +30,8 @@
   },
   "type": "module",
   "files": [
-    "dist"
+    "dist/index.cjs",
+    "dist/index.js"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -40,7 +41,6 @@
       "require": "./dist/index.cjs"
     }
   },
-  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsdown"
   },
