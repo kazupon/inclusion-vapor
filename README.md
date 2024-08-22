@@ -190,6 +190,7 @@ Based on Svelte v4 (maybe v3 compatible)
 
 This project is supported by:
 
+- [Vue.js & Vapor](https://github.com/vuejs/core-vapor), created by [Evan You](https://github.com/yyx990803) and [Vapor team](https://github.com/orgs/vuejs/teams/vapor)
 - [React](https://react.dev/), created by Meta Platforms, Inc, and affiliates.
 - [Svelte](https://svelte.dev/), created by [Rich Harris](https://github.com/Rich-Harris) and Svelte community
 
