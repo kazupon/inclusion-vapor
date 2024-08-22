@@ -20,6 +20,7 @@
     "build:jsx:template": "pnpm run --filter=./packages/jsx-explorer build",
     "build:react": "run-s \"build:react:*\"",
     "build:react:hooks": "pnpm run --filter=./packages/react-vapor-hooks build",
+    "build:react:unplugin": "pnpm run --filter=./packages/unplugin-react build",
     "build:shared": "pnpm run --filter=./packages/shared build",
     "build:svelte": "run-s \"build:svelte:compiler\" \"build:svelte:sfc\" \"build:svelte:unplugin\" \"build:svelte:template\"",
     "build:svelte:compiler": "pnpm run --filter=./packages/svelte-template-compiler build",

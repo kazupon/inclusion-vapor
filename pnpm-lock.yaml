@@ -344,6 +344,61 @@ importers:
         specifier: ^3.4.37
         version: 3.4.37(typescript@5.5.4)
 
+  packages/unplugin-react:
+    dependencies:
+      '@rollup/pluginutils':
+        specifier: ^5.1.0
+        version: 5.1.0(rollup@4.20.0)
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
+      '@vue-vapor/shared':
+        specifier: latest
+        version: 3.20240714.0-6608bb3
+      debug:
+        specifier: ^4.3.6
+        version: 4.3.6
+      esbuild:
+        specifier: '*'
+        version: 0.23.0
+      jsx-vapor-compiler:
+        specifier: workspace:^
+        version: link:../jsx-compiler
+      react-vapor-hooks:
+        specifier: workspace:^
+        version: link:../react-vapor-hooks
+      unplugin:
+        specifier: ^1.5.1
+        version: 1.12.1
+    devDependencies:
+      '@nuxt/kit':
+        specifier: ^3.8.2
+        version: 3.12.4(rollup@4.20.0)
+      '@nuxt/schema':
+        specifier: ^3.8.2
+        version: 3.12.4(rollup@4.20.0)
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      esno:
+        specifier: ^4.0.0
+        version: 4.7.0
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      rollup:
+        specifier: ^4.6.1
+        version: 4.20.0
+      tsup:
+        specifier: ^8.0.1
+        version: 8.2.4(jiti@1.21.6)(postcss@8.4.41)(tsx@4.17.0)(typescript@5.5.4)(yaml@2.5.0)
+      vite:
+        specifier: 'catalog:'
+        version: 5.4.0(@types/node@20.14.15)(terser@5.31.5)
+      webpack:
+        specifier: ^5.89.0
+        version: 5.93.0(esbuild@0.23.0)
+
   packages/unplugin-svelte:
     dependencies:
       '@rollup/pluginutils':
