@@ -25,6 +25,7 @@
     "@vue/runtime-vapor": "npm:@vue-vapor/runtime-vapor@latest",
     "@vue/shared": "npm:@vue-vapor/shared@latest",
     "@vue/vapor": "npm:@vue-vapor/vapor@latest",
+    "unplugin-react-vapor": "workspace:^",
     "unplugin-svelte-vapor": "workspace:^",
     "vite": "catalog:",
     "vite-plugin-vue-devtools": "^7.0.25"

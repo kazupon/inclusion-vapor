@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import * as CompilerSFC from '@vue/compiler-sfc'
 import svelteVapor from 'unplugin-svelte-vapor/vite'
+import reactVapor from 'unplugin-react-vapor/vite'
 import devtools from 'vite-plugin-vue-devtools'
 
 const dirname = path.dirname(fileURLToPath(new URL(import.meta.url)))
@@ -22,6 +23,7 @@ export default defineConfig({
       compiler: CompilerSFC
     }),
     svelteVapor(),
+    reactVapor(),
     devtools()
   ]
 })
