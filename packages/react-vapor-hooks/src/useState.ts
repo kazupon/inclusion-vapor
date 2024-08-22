@@ -5,7 +5,7 @@
 // React hooks original Author: Meta Platforms, Inc, and React community
 
 import { getCurrentInstance, shallowRef, isRef } from '@vue-vapor/vapor'
-import { USI, USV, resetIndexes } from './internal'
+import { USI, USV } from './internal'
 
 import type { SetStateAction, Dispatch } from 'react'
 import type { Ref } from '@vue-vapor/vapor'
@@ -51,8 +51,6 @@ export function useState<State = undefined>(
     } else {
       instance[USV]![currentIndex].value = newState
     }
-
-    resetIndexes(instance)
   }
 
   instance[USI]++

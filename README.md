@@ -42,8 +42,8 @@ Based on Svelte v4 (maybe v3 compatible)
 <details>
 
 - [ ] transform for jsx
-  - [ ] NodeTransform
-  - [ ] DirectiveTransform
+  - [x] NodeTransform
+  - [ ] WIP: DirectiveTransform
 - [ ] hooks
   - [ ] useActionState
   - [ ] useCallback
@@ -59,7 +59,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] useOptimistic
   - [ ] useReducer
   - [ ] useRef
-  - [ ] useState
+  - [ ] WIP(PoC Done) useState
   - [ ] useSyncExternalStore
   - [ ] useTransition
 - [ ] Components
@@ -80,6 +80,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] experimental_taintObjectReference
   - [ ] experimental_taintUniqueValue
 - [x] Template Explorer
+- [ ] Vite plugin with unplugin
 - [ ] Counter App
   - [ ] simple bindings
   - [ ] simple events
