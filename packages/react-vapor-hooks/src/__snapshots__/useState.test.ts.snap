@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useState > basic 1`] = `"<button>count is 1</button>"`;

@@ -58,6 +58,7 @@
     "eslint-plugin-unicorn": "^54.0.0",
     "eslint-plugin-vue": "^9.27.0",
     "eslint-plugin-yml": "^1.14.0",
+    "jsdom": "^24.1.1",
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
     "pkg-pr-new": "^0.0.20",
