@@ -7,15 +7,30 @@ import type { Options } from '../types'
 import type { ResolvedOptions } from './types'
 import type { RollupError } from 'rollup'
 
-export function resolveOptions(options: Options): ResolvedOptions {
-  options.include ||= /\.(jsx|tsx)$/
+const RE_DEFAULT_INCLUDE = /\.[jt]sx?$/
 
-  const filter = createFilter(options.include, options.exclude)
+export function resolveOptions(options: Options): ResolvedOptions {
+  const filter = createFilter(options.include ?? RE_DEFAULT_INCLUDE, options.exclude)
+  const jsxImportSource = (options.jsxImportSource ??= 'react')
+  const jsxImportRuntime = `${jsxImportSource}/jsx-runtime`
+  const jsxImportDevRuntime = `${jsxImportSource}/jsx-dev-runtime`
+
+  // Provide default values for Rollup compat.
+  const devBase = '/'
   const root = process.cwd()
   const isProduction = process.env.NODE_ENV === 'production'
-  const sourcemap = false
+  const skipFastRefresh = false
 
-  return { ...options, filter, root, isProduction, sourcemap }
+  return {
+    ...options,
+    filter,
+    devBase,
+    root,
+    isProduction,
+    skipFastRefresh,
+    jsxImportRuntime,
+    jsxImportDevRuntime
+  }
 }
 
 export function createRollupError(id: string, error: SyntaxError): RollupError {

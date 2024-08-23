@@ -92,16 +92,21 @@
     "watch": "tsup --watch src"
   },
   "dependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-react-jsx-self": "^7.24.7",
+    "@babel/plugin-transform-react-jsx-source": "^7.24.7",
     "@rollup/pluginutils": "^5.1.0",
     "@vue-vapor/shared": "latest",
     "debug": "^4.3.6",
     "jsx-vapor-compiler": "workspace:^",
+    "react-refresh": "^0.14.2",
     "react-vapor-hooks": "workspace:^",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {
     "@nuxt/kit": "^3",
     "@nuxt/schema": "^3",
+    "@types/babel__core": "^7.20.5",
     "@types/debug": "^4.1.12",
     "esbuild": "*",
     "rollup": "^3 || ^4.0.0",
