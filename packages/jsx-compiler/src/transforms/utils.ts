@@ -9,15 +9,13 @@ import { parseExpression } from '@babel/parser'
 import { isString } from '@vue-vapor/shared'
 import { isLiteralWhitelisted, createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { isGloballyAllowed } from '@vue-vapor/shared'
-import { tags as htmlTags } from '../htmlTags'
-import { tags as svgTags } from '../svgTags'
+import { isHtmlTags } from '../htmlTags'
+import { isSvgTags } from '../svgTags'
 import { DynamicFlag, IRNodeTypes } from '../ir'
 
 import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { ParseResult } from '@babel/parser'
 import type { SimpleExpressionNode, SourceLocation } from '@vue-vapor/compiler-dom'
-import type { HtmlTags } from '../htmlTags'
-import type { SvgTags } from '../svgTags'
 import type {
   IRDynamicInfo,
   BlockIRNode,
@@ -148,7 +146,7 @@ export function isComponentNode(node: BabelNode): node is JSXElement {
   const { openingElement } = node
   if (openingElement.name.type === 'JSXIdentifier') {
     const name = openingElement.name.name
-    return !htmlTags.includes(name as HtmlTags) && !svgTags.includes(name as SvgTags)
+    return !isHtmlTags(name) && !isSvgTags(name)
   } else {
     return openingElement.name.type === 'JSXMemberExpression'
   }

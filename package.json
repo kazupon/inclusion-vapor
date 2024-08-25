@@ -46,7 +46,7 @@
     "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
-    "@kazupon/eslint-config": "^0.13.3",
+    "@kazupon/eslint-config": "^0.15.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.14.10",
     "eslint": "^9.9.0",
@@ -71,8 +71,7 @@
   },
   "pnpm": {
     "overrides": {
-      "estree-walker": "^2.0.2",
-      "unplugin-isolated-decl": "^0.4.1"
+      "estree-walker": "^2.0.2"
     },
     "patchedDependencies": {
       "svelte@4.2.18": "patches/svelte@4.2.18.patch"
