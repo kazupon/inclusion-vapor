@@ -13,7 +13,7 @@ import {
   runtimeCode,
   preambleCode
 } from './core/fastRefresh'
-import { EXPORT_HELPER_ID, helperCode } from './core/helper'
+// import { EXPORT_HELPER_ID, helperCode } from './core/helper'
 
 import type { UnpluginFactory, UnpluginInstance, UnpluginOptions } from 'unplugin'
 import type {
@@ -103,23 +103,23 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
     // welcome contribution :)
     // webpack: {}
 
-    resolveId(id, importer) {
-      debug('resolving id ...', id, importer)
-      // component export helper
-      if (id === EXPORT_HELPER_ID) {
-        return id
-      }
+    // resolveId(id, importer) {
+    //   debug('resolving id ...', id, importer)
+    //   // component export helper
+    //   if (id === EXPORT_HELPER_ID) {
+    //     return id
+    //   }
 
-      return id
-    },
+    //   return id
+    // },
 
-    load(id) {
-      debug('load params', id)
+    // load(id) {
+    //   debug('load params', id)
 
-      if (id === EXPORT_HELPER_ID) {
-        return helperCode
-      }
-    },
+    //   if (id === EXPORT_HELPER_ID) {
+    //     return helperCode
+    //   }
+    // },
 
     transformInclude(id) {
       debug('transformInclude params: id:', id)
@@ -224,6 +224,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
       })
 
       if (result) {
+        debug('transform result:', result.code)
         let code = result.code!
         if (useFastRefresh) {
           if (RE_REFRESH_CONTENT.test(code)) {
@@ -286,15 +287,15 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
     // webpack: {}
 
     resolveId(id, importer) {
-      debugRefresh('resolving id ...', id, importer)
       if (id === runtimePublicPath) {
+        debugRefresh('resolvedId', id, importer)
         return id
       }
     },
 
     load(id) {
-      debugRefresh('load params', id)
       if (id === runtimePublicPath) {
+        debugRefresh('load', id, runtimeCode)
         return runtimeCode
       }
     }
@@ -302,6 +303,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
   // @ts-expect-error -- IGNORE
   refresh.preambleCode = preambleCode
 
+  // return [babel, refresh]
   return [babel, refresh]
 }
 

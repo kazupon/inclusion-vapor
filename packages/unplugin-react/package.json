@@ -85,7 +85,7 @@
     }
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && pnpx tsx scripts/copyRefreshUtils.ts",
     "build:fix": "esno scripts/postbuild.ts",
     "prepublishOnly": "npm run build",
     "start": "esno src/index.ts",

@@ -47,7 +47,10 @@ export default defineConfig(
     prettier: true
   }),
   react({
-    refresh: true
+    refresh: true,
+    rules: {
+      'react/react-in-jsx-scope': 'off'
+    }
   }),
   vue({
     typescript: true,
@@ -72,7 +75,8 @@ export default defineConfig(
       '**/tsconfig.json',
       '**/*.d.ts',
       'pnpm-lock.yaml',
-      'pnpm-workspace.yaml'
+      'pnpm-workspace.yaml',
+      'packages/unplugin-react/src/core/refreshUtils.js'
     ]
   }
 )
