@@ -9,7 +9,7 @@ const jsxCode = `
 
 describe('compile', () => {
   test('source code', () => {
-    const { code } = compile(jsxCode, {
+    const { code, preamble, vaporHelpers } = compile(jsxCode, {
       sourceMap: true,
       parser: (source: string) =>
         parse(source, {
@@ -18,11 +18,13 @@ describe('compile', () => {
         }).program
     })
     expect(code).toMatchSnapshot('code')
+    expect(preamble).toMatchSnapshot('preamble')
+    expect(vaporHelpers).toMatchSnapshot('vaporHelpers')
     expect(code).contains(`_renderEffect(() => _setText(n0, "\\n  count is ", count, "\\n"))`)
   })
 
   test('ast', () => {
-    const { code } = compile(
+    const { code, preamble, vaporHelpers } = compile(
       parse(jsxCode, {
         sourceType: 'module',
         plugins: ['jsx']
@@ -32,6 +34,8 @@ describe('compile', () => {
       }
     )
     expect(code).toMatchSnapshot('code')
+    expect(preamble).toMatchSnapshot('preamble')
+    expect(vaporHelpers).toMatchSnapshot('vaporHelpers')
     expect(code).contains(`_renderEffect(() => _setText(n0, "\\n  count is ", count, "\\n"))`)
   })
 })

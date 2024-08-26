@@ -3,11 +3,11 @@
 
 import { createFilter } from '@rollup/pluginutils'
 
-import type { Options } from '../types'
-import type { ResolvedOptions } from './types'
 import type { RollupError } from 'rollup'
+import type { Options } from '../types.ts'
+import type { ResolvedOptions } from './types.ts'
 
-const RE_DEFAULT_INCLUDE = /\.[jt]sx?$/
+const RE_DEFAULT_INCLUDE = /\.[jt]sx$/
 
 export function resolveOptions(options: Options): ResolvedOptions {
   const filter = createFilter(options.include ?? RE_DEFAULT_INCLUDE, options.exclude)

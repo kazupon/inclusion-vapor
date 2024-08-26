@@ -3,7 +3,7 @@
 
 import { createFilter as _createFilter } from '@rollup/pluginutils'
 
-import type { Options, ReactBabelOptions, ReactBabelHookContext } from '../types'
+import type { Options, ReactBabelOptions, ReactBabelHookContext } from '../types.ts'
 import type { UnpluginBuildContext, UnpluginContext as _UnpluginContext } from 'unplugin'
 
 export interface ResolvedOptions extends Options {

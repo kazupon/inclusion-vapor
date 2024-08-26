@@ -92,14 +92,13 @@
     "watch": "tsup --watch src"
   },
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/plugin-transform-react-jsx-self": "^7.24.7",
-    "@babel/plugin-transform-react-jsx-source": "^7.24.7",
+    "@babel/parser": "catalog:",
     "@rollup/pluginutils": "^5.1.0",
     "@vue-vapor/shared": "latest",
+    "ast-kit": "^1.1.0",
     "debug": "^4.3.6",
     "jsx-vapor-compiler": "workspace:^",
-    "react-refresh": "^0.14.2",
+    "magic-string-stack": "^0.1.1",
     "react-vapor-hooks": "workspace:^",
     "unplugin": "^1.5.1"
   },

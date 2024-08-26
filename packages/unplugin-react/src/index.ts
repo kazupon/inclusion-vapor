@@ -3,39 +3,40 @@
 
 import { createUnplugin } from 'unplugin'
 import createDebug from 'debug'
-import * as babelCore from '@babel/core'
-import { resolveOptions } from './core/utils'
-// import { transformMain } from './core/transform'
-import {
-  addClassComponentRefreshWrapper,
-  addRefreshWrapper,
-  runtimePublicPath,
-  runtimeCode,
-  preambleCode
-} from './core/fastRefresh'
+// import * as babelCore from '@babel/core'
+import { resolveOptions } from './core/utils.ts'
+import { transform as transformReact } from './core/transform.ts'
+// import {
+//   addClassComponentRefreshWrapper,
+//   addRefreshWrapper,
+//   runtimePublicPath,
+//   runtimeCode,
+//   preambleCode
+// } from './core/fastRefresh'
 // import { EXPORT_HELPER_ID, helperCode } from './core/helper'
 
 import type { UnpluginFactory, UnpluginInstance, UnpluginOptions } from 'unplugin'
 import type {
-  Options,
-  BabelOptions,
-  ReactBabelOptions,
-  ReactBabelHook,
-  ViteReactPluginApi
-} from './types'
-import type { PluginItem } from '@babel/core'
+  Options
+  // BabelOptions,
+  // ReactBabelOptions,
+  // ReactBabelHook,
+  // ViteReactPluginApi
+} from './types.ts'
+// import type { PluginItem } from '@babel/core'
 
 const debug = createDebug('unplugin-react-vapor')
 
-const RE_REACT_COMP = /extends\s+(?:React\.)?(?:Pure)?Component/
-const RE_REFRESH_CONTENT = /\$Refresh(?:Reg|Sig)\$\(/
-const RE_TS = /\.tsx?$/
+// const RE_REACT_COMP = /extends\s+(?:React\.)?(?:Pure)?Component/
+// const RE_REFRESH_CONTENT = /\$Refresh(?:Reg|Sig)\$\(/
 
 // Support patterns like:
 // - import * as React from 'react';
 // - import React from 'react';
 // - import React, {useEffect} from 'react';
-const RE_IMPORT_REACT = /\bimport\s+(?:\*\s+as\s+)?React\b/
+// const RE_IMPORT_REACT = /\bimport\s+(?:\*\s+as\s+)?React\b/
+
+const RE_IMPORT_REACT = /from\s+["']react["']/
 
 export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
   options = {},
@@ -44,6 +45,61 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
   const resolvedOptions = resolveOptions(options)
   debug('... resolved options:', resolvedOptions)
 
+  const vapor: UnpluginOptions = {
+    name: 'unplugin-svelte-vapor',
+    enforce: 'pre',
+
+    vite: {
+      configResolved(config) {
+        resolvedOptions.devBase = config.base
+        resolvedOptions.isProduction = config.isProduction
+        resolvedOptions.root = config.root
+      },
+      handleHotUpdate(ctx) {
+        debug('Handling hot update ...', ctx)
+        // TODO:
+      }
+    },
+
+    // TODO:
+    // welcome contribution :)
+    // webpack: {}
+
+    transformInclude(id) {
+      debug('transformInclude params: id:', id)
+
+      if (id.includes('/node_modules/')) {
+        return false
+      }
+
+      const [filepath] = id.split('?')
+      // eslint-disable-next-line unicorn/no-array-callback-reference
+      if (!resolvedOptions.filter(filepath)) {
+        return false
+      }
+
+      return true
+    },
+
+    transform(code, id) {
+      debug('transform params:', code, id)
+
+      // const _ssr = false // opts?.ssr === true
+      const [filepath] = id.split('?')
+
+      if (!RE_IMPORT_REACT.test(code)) {
+        return
+      }
+
+      const result = transformReact(code, filepath, resolvedOptions)
+      debug('transform result:', result)
+
+      return result
+    }
+  }
+
+  return [vapor]
+  /*
   const babel: UnpluginOptions = {
     name: 'unplugin-svelte-vapor:babel',
     enforce: 'pre',
@@ -52,17 +108,17 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
       config() {
         return resolvedOptions.jsxRuntime === 'classic'
           ? {
-              esbuild: {
-                jsx: 'transform'
-              }
+            esbuild: {
+              jsx: 'transform'
             }
+          }
           : {
-              esbuild: {
-                jsx: 'automatic',
-                jsxImportSource: resolvedOptions.jsxImportSource
-              },
-              optimizeDeps: { esbuildOptions: { jsx: 'automatic' } }
-            }
+            esbuild: {
+              jsx: 'automatic',
+              jsxImportSource: resolvedOptions.jsxImportSource
+            },
+            optimizeDeps: { esbuildOptions: { jsx: 'automatic' } }
+          }
       },
 
       configResolved(config) {
@@ -165,7 +221,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
           (resolvedOptions.jsxRuntime === 'classic'
             ? RE_IMPORT_REACT.test(code)
             : code.includes(resolvedOptions.jsxImportDevRuntime) ||
-              code.includes(resolvedOptions.jsxImportRuntime)))
+            code.includes(resolvedOptions.jsxImportRuntime)))
       if (useFastRefresh) {
         plugins.push([await loadPlugin('react-refresh/babel'), { skipEnvCheck: true }])
       }
@@ -305,8 +361,10 @@ export const unpluginFactory: UnpluginFactory<Options | undefined, true> = (
 
   // return [babel, refresh]
   return [babel, refresh]
+  */
 }
 
+/*
 // lazy load babel since it's not used during build if plugins are not used
 let babel: typeof babelCore | undefined
 async function loadBabel() {
@@ -374,30 +432,30 @@ function hasCompilerWithDefaultRuntime(plugins: ReactBabelOptions['plugins']) {
         p[1]?.runtimeModule === undefined)
   )
 }
+*/
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- NOET: to tree-shaking, not use types that is provided by vite
-const silenceUseClientWarning = (userConfig: /*UserConfig*/ any): any /*BuildOptions*/ => ({
-  rollupOptions: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-function-type -- NOET: to tree-shaking, not use types that is provided by vite
-    onwarn(warning: any, defaultHandler: Function) {
-      if (
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        warning.message.includes('use client')
-      ) {
-        return
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (userConfig.build?.rollupOptions?.onwarn) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        userConfig.build.rollupOptions.onwarn(warning, defaultHandler)
-      } else {
-        defaultHandler(warning)
-      }
-    }
-  }
-})
+// const silenceUseClientWarning = (userConfig: /*UserConfig*/ any): any /*BuildOptions*/ => ({
+//   rollupOptions: {
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-function-type -- NOET: to tree-shaking, not use types that is provided by vite
+//     onwarn(warning: any, defaultHandler: Function) {
+//       if (
+//         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+//         warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
+//         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+//         warning.message.includes('use client')
+//       ) {
+//         return
+//       }
+//       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+//       if (userConfig.build?.rollupOptions?.onwarn) {
+//         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+//         userConfig.build.rollupOptions.onwarn(warning, defaultHandler)
+//       } else {
+//         defaultHandler(warning)
+//       }
+//     }
+//   }
+// })
 
 export const unplugin: UnpluginInstance<Options | undefined, boolean> =
   /* #__PURE__ */ createUnplugin(unpluginFactory)

@@ -30,9 +30,11 @@ export async function transformMain(
   customElement: boolean
 ): Promise<ReturnType<Required<UnpluginOptions>['transform']> | null> {
   // const { root, isProduction } = options
+  debug('transformMain', code, filename)
 
   // preprocess svelte component
   const preprocessedCode = await preprocessSvelte(code, filename, options)
+  debug('transformMain preprocessedCode', preprocessedCode, filename)
 
   const _prevDescriptor = getPrevDescriptor(filename)
 
