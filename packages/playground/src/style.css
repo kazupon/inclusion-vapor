@@ -47,7 +47,16 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #61dafb;
+}
+button.vue:hover {
+  border-color: #35eb9a;
+}
+button.react:hover {
+  border-color: #61dafb;
+}
+button.svelte:hover {
+  border-color: #ff3e00;
 }
 button:focus,
 button:focus-visible {

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import VueContainer from './components/VueContainer.vue'
-import SvelteContainer from './components/SvelteContainer.svelte'
-// import ReactCounter from './components/Counter.tsx'
+import VueCounter from './components/Counter.vue'
+import ReactCounter from './components/Counter.tsx'
+import SvelteCounter from './components/Counter.svelte'
 </script>
 
 <template>
-  <VueContainer />
-  <SvelteContainer />
+  <VueCounter />
+  <ReactCounter />
+  <SvelteCounter />
 </template>

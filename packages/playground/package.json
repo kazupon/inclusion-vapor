@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build --minify false",
     "dev": "vite",
     "preview": "vite preview"
   },
   "dependencies": {
+    "react-vapor-hooks": "workspace:^",
     "vue": "npm:@vue-vapor/vue@latest"
   },
   "devDependencies": {
