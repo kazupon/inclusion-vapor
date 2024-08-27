@@ -1,3 +1,56 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`basic 1`] = `undefined`;
+exports[`transformComponent > function: export default 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, delegateEvents as _delegateEvents, template as _template, defineComponent as _defineComponent } from "vue/vapor"
+const _00 = _template("<button></button>")
+_delegateEvents("click");
+import { useState } from "react-vapor-hooks"
+export default App = /*#__PURE__*/ _defineComponent(() => {
+  const [count, setCount] = useState(0)
+  return (() => {
+  const n0 = _00()
+  _delegate(n0, "click", () => () => setCount(count + 1))
+  _renderEffect(() => _setText(n0, "count is ", count))
+  return n0
+})()
+})
+
+"
+`;
+
+exports[`transformComponent > function: export default via identifier 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, delegateEvents as _delegateEvents, template as _template, defineComponent as _defineComponent } from "vue/vapor"
+const _00 = _template("<button></button>")
+_delegateEvents("click");
+import { useState } from "react-vapor-hooks"
+const App = /*#__PURE__*/ _defineComponent(() => {
+  const [count, setCount] = useState(0)
+  return (() => {
+  const n0 = _00()
+  _delegate(n0, "click", () => () => setCount(count + 1))
+  _renderEffect(() => _setText(n0, "count is ", count))
+  return n0
+})()
+})
+
+export default App
+"
+`;
+
+exports[`transformReactivity > useState 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, delegateEvents as _delegateEvents, template as _template, defineComponent as _defineComponent } from "vue/vapor"
+const _00 = _template("<button></button>")
+_delegateEvents("click");
+import { useState } from "react-vapor-hooks"
+export default App = /*#__PURE__*/ _defineComponent(() => {
+  const [count, setCount] = useState(0)
+  return (() => {
+  const n0 = _00()
+  _delegate(n0, "click", () => () => setCount(count.value + 1))
+  _renderEffect(() => _setText(n0, "count is ", count.value))
+  return n0
+})()
+})
+
+"
+`;

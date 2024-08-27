@@ -2,32 +2,36 @@
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
 import createDebug from 'debug'
-import { walkAST } from 'ast-kit'
 import { parse as parseBabel } from '@babel/parser'
 import MagicStringStack from 'magic-string-stack'
+import { walkAST } from 'ast-kit'
 import { compile } from 'jsx-vapor-compiler'
-// import { isObject, isString } from '@vue-vapor/shared'
-// import { EXPORT_HELPER_ID } from './helper'
-// import { createRollupError } from './utils'
 
-// import type { UnpluginOptions } from 'unplugin'
 import type { ParserPlugin } from '@babel/parser'
-import type { BabelNode, JSXElement, JSXFragment } from 'jsx-vapor-compiler'
+import type { Node as BabelNode, ReturnStatement, FunctionDeclaration } from '@babel/types'
 import type { ResolvedOptions } from './types'
-// import type { RawSourceMap } from 'source-map-js'
+import type { VaporCodegenResult, CompilerOptions } from 'jsx-vapor-compiler'
 
 const debug = createDebug('unplugin-react-vapor:core:transform')
 
 const RE_TS = /\.tsx$/
 
-export function transform(
+type VaporTransformContext = {
+  s: MagicStringStack
+  preambleIndex: number
+  importSet: Set<string>
+  delegateEventSet: Set<string>
+  preambleMap: Map<string, string>
+  compilerOptions: CompilerOptions
+}
+
+export function transformComponent(
   code: string,
   filepath: string,
   _options: ResolvedOptions
 ): ReturnType<typeof generateTransform> {
   // const { root, isProduction } = options
-  debug('transforming ...', code)
-  const s = new MagicStringStack(code)
+  debug('transformComponent ...', code)
 
   const plugins: ParserPlugin[] = ['jsx']
   const isTS = RE_TS.test(filepath)
@@ -35,86 +39,204 @@ export function transform(
     plugins.push('typescript')
   }
 
+  const ctx: VaporTransformContext = {
+    s: new MagicStringStack(code),
+    preambleIndex: 0,
+    preambleMap: new Map<string, string>(),
+    importSet: new Set<string>(),
+    delegateEventSet: new Set<string>(),
+    compilerOptions: {
+      mode: 'module',
+      inline: true,
+      filename: filepath,
+      isTS
+    }
+  }
+
+  const babelAst = parseBabel(ctx.s.original, {
+    sourceType: 'module',
+    plugins
+  })
+
+  for (const node of babelAst.program.body) {
+    switch (node.type) {
+      case 'ImportDeclaration': {
+        if (node.type === 'ImportDeclaration') {
+          ctx.s.overwrite(node.source.start!, node.source.end!, `"react-vapor-hooks"`)
+        }
+        break
+      }
+      case 'FunctionDeclaration': {
+        transformComponentFunctionDeclaration(ctx, node)
+        break
+      }
+      case 'VariableDeclaration': {
+        // TODO:
+        break
+      }
+      case 'ExportNamedDeclaration': {
+        // TODO:
+        break
+      }
+      case 'ExportDefaultDeclaration': {
+        if (node.declaration.type === 'FunctionDeclaration') {
+          transformComponentFunctionDeclaration(ctx, node.declaration, true)
+        } else {
+          // TODO:
+        }
+        break
+      }
+    }
+  }
+
+  // tweak preamble
+  generatePreamble(ctx)
+
+  // code generation!
+  return generateTransform(ctx.s, filepath)
+}
+
+function transformComponentFunctionDeclaration(
+  ctx: VaporTransformContext,
+  node: FunctionDeclaration,
+  exportDefault: boolean = false
+) {
+  const returnStmt = node.body.body.find(
+    node => node.type === 'ReturnStatement' && isJSXNode(node.argument)
+  ) as ReturnStatement | undefined
+  if (returnStmt && returnStmt.argument) {
+    // TODO: optimaize jsx compiler for AST
+    const result = compile(
+      ctx.s.slice(returnStmt.argument.start!, returnStmt.argument.end!),
+      ctx.compilerOptions
+    )
+    aggregateAndTransfomrPreamble(ctx, returnStmt, result, code => `return ${code}`)
+    const funcName = node.id?.name ?? `Anonymous${ctx.preambleIndex}`
+    const componentCode = `${exportDefault ? '' : 'const '}${funcName} = /*#__PURE__*/ _defineComponent(() => ${ctx.s.slice(node.body.start!, node.body.end!)})\n`
+    ctx.importSet.add(`defineComponent`)
+    ctx.s.overwrite(node.start!, node.end!, componentCode)
+  }
+}
+
+export function transformReactivity(
+  code: string,
+  filepath: string,
+  _options: ResolvedOptions
+): ReturnType<typeof generateTransform> {
+  debug('transformReactivity ...', code)
+
+  const plugins: ParserPlugin[] = ['jsx']
+  const isTS = RE_TS.test(filepath)
+  if (isTS) {
+    plugins.push('typescript')
+  }
+
+  const s = new MagicStringStack(code)
   const babelAst = parseBabel(s.original, {
     sourceType: 'module',
     plugins
   })
 
-  let preambleIndex = 0
-  const importSet = new Set<string>()
-  const delegateEventSet = new Set<string>()
-  const preambleMap = new Map<string, string>()
-  function _transform() {
-    const rootNodes: (JSXElement | JSXFragment)[] = []
-    walkAST<BabelNode>(babelAst, {
-      enter(node, parent) {
-        console.log('enter', node.type, parent?.type)
-        switch (node.type) {
-          case 'ImportDeclaration': {
-            s.overwrite(node.source.start!, node.source.end!, `"react-vapor-hooks"`)
-            break
-          }
-          case 'JSXElement': {
-            if (parent?.type === 'ReturnStatement') {
-              console.log('JSXElement', s.slice(node.start!, node.end!))
-              rootNodes.push(node)
-              this.skip()
+  const variables: Set<string> = new Set()
+  walkAST<BabelNode>(babelAst, {
+    enter(node, parent) {
+      if (node.type === 'Identifier') {
+        if (parent?.type === 'CallExpression') {
+          // console.log('enter', node.type, node.name, parent?.type)
+          if (
+            node.name === '_defineComponent' &&
+            parent?.arguments.length === 1 &&
+            parent?.arguments[0].type === 'ArrowFunctionExpression'
+          ) {
+            const funcNode = parent?.arguments[0]
+            if (funcNode.body.type === 'BlockStatement') {
+              for (const child of funcNode.body.body) {
+                if (child.type === 'VariableDeclaration') {
+                  for (const decl of child.declarations) {
+                    if (
+                      decl.type === 'VariableDeclarator' &&
+                      decl.init?.type === 'CallExpression' &&
+                      decl.init.callee.type === 'Identifier' &&
+                      decl.init.callee.name === 'useState' &&
+                      decl.id.type === 'ArrayPattern' &&
+                      decl.id.elements[0] &&
+                      decl.id.elements[0].type === 'Identifier'
+                    ) {
+                      variables.add(decl.id.elements[0].name)
+                    }
+                  }
+                }
+              }
+            }
+          } else {
+            if (variables.has(node.name)) {
+              s.overwrite(node.start!, node.end!, `${node.name}.value`)
             }
           }
-        }
-      }
-    })
-
-    for (const node of rootNodes) {
-      // eslint-disable-next-line prefer-const
-      let { code, vaporHelpers, preamble } = compile(s.slice(node.start!, node.end!), {
-        mode: 'module',
-        inline: true,
-        isTS,
-        filename: filepath
-      })
-      vaporHelpers.forEach(helper => importSet.add(helper))
-
-      preamble = preamble.replaceAll(/(?<=const )t(?=(\d))/g, `_${preambleIndex}`)
-      code = code.replaceAll(/(?<== )t(?=\d)/g, `_${preambleIndex}`)
-      preambleIndex++
-
-      for (const [, key, value] of preamble.matchAll(/const (_\d+) = (_template\(.*\))/g)) {
-        const result = preambleMap.get(value)
-        if (result) {
-          code = code.replaceAll(key, result)
         } else {
-          preambleMap.set(value, key)
+          if (variables.has(node.name) && parent?.type !== 'ArrayPattern') {
+            s.overwrite(node.start!, node.end!, `${node.name}.value`)
+          }
         }
       }
-
-      for (const [, events] of preamble.matchAll(/_delegateEvents\((.*)\)/g)) {
-        events.split(', ').forEach(event => delegateEventSet.add(event))
-      }
-
-      s.overwrite(node.start!, node.end!, code)
+      // leave(node, parent) {
+      //   if (node.type === 'Identifier' && parent?.type === 'CallExpression') {
+      //     console.log('leave', node.type, node.name, parent?.type)
+      //   }
+      // }
     }
-  }
-  _transform()
-
-  if (delegateEventSet.size > 0) {
-    s.prepend(`_delegateEvents(${[...delegateEventSet].join(', ')});\n`)
-  }
-
-  if (preambleMap.size > 0) {
-    let preambleResult = ''
-    for (const [value, key] of preambleMap) {
-      preambleResult += `const ${key} = ${value}\n`
-    }
-    s.prepend(preambleResult)
-  }
-
-  const importResult = [...importSet].map(i => `${i} as _${i}`)
-  if (importResult.length > 0) {
-    s.prepend(`import { ${importResult.join(', ')} } from "vue/vapor"\n`)
-  }
+  })
 
   return generateTransform(s, filepath)
+}
+
+function aggregateAndTransfomrPreamble(
+  ctx: VaporTransformContext,
+  node: BabelNode,
+  result: VaporCodegenResult,
+  contentGen?: (code: string) => string
+) {
+  const codeGen = contentGen || (code => code)
+
+  result.vaporHelpers.forEach(helper => ctx.importSet.add(helper))
+
+  const preamble = result.preamble.replaceAll(/(?<=const )t(?=(\d))/g, `_${ctx.preambleIndex}`)
+  let code = result.code.replaceAll(/(?<== )t(?=\d)/g, `_${ctx.preambleIndex}`)
+  ctx.preambleIndex++
+
+  for (const [, key, value] of preamble.matchAll(/const (_\d+) = (_template\(.*\))/g)) {
+    const result = ctx.preambleMap.get(value)
+    if (result) {
+      code = code.replaceAll(key, result)
+    } else {
+      ctx.preambleMap.set(value, key)
+    }
+  }
+
+  for (const [, events] of preamble.matchAll(/_delegateEvents\((.*)\)/g)) {
+    events.split(', ').forEach(event => ctx.delegateEventSet.add(event))
+  }
+
+  ctx.s.overwrite(node.start!, node.end!, codeGen(code))
+}
+
+function generatePreamble(ctx: VaporTransformContext) {
+  if (ctx.delegateEventSet.size > 0) {
+    ctx.s.prepend(`_delegateEvents(${[...ctx.delegateEventSet].join(', ')});\n`)
+  }
+
+  if (ctx.preambleMap.size > 0) {
+    let preambleResult = ''
+    for (const [value, key] of ctx.preambleMap) {
+      preambleResult += `const ${key} = ${value}\n`
+    }
+    ctx.s.prepend(preambleResult)
+  }
+
+  const imports = [...ctx.importSet].map(i => `${i} as _${i}`)
+  if (imports.length > 0) {
+    ctx.s.prepend(`import { ${imports.join(', ')} } from "vue/vapor"\n`)
+  }
 }
 
 type SourceMap = ReturnType<typeof MagicStringStack.prototype.generateMap>
@@ -135,8 +257,6 @@ function generateTransform(
   }
 }
 
-// function isJSXElement(
-//   node?: BabelNode | null,
-// ): node is JSXElement | JSXFragment {
-//   return !!node && (node.type === 'JSXElement' || node.type === 'JSXFragment')
-// }
+function isJSXNode(node: BabelNode | null | undefined): boolean {
+  return !!node && (node.type === 'JSXElement' || node.type === 'JSXFragment')
+}
