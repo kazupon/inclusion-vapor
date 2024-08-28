@@ -5,13 +5,13 @@ This Research & Development project is for running various components in [vapor]
 This project try to work **whether interoperability can be provided between components of different frameworks on vapor**.
 
 > [!WARNING]
-> This is WIP 👷
+> This is WIP 👷, so don't use in production
 
 ![inclusion-vapor](./assets/inclusion-vapor-v0.png)
 
 ## 🚂 Current working status:
 
-- react-vapor (PoC WIP): react for vapor
+- react-vapor (PoC Done): react for vapor
 - svelte-vapor (PoC Done): svelte for vapor
 
 ## 🍭 Playground
@@ -22,8 +22,6 @@ pnpm play # start playground
 ```
 
 ## ⚛️ react-vapor
-
-WIP:
 
 Based on React v18 latest
 
@@ -59,7 +57,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] useOptimistic
   - [ ] useReducer
   - [ ] useRef
-  - [ ] WIP(PoC Done) useState
+  - [x] useState
   - [ ] useSyncExternalStore
   - [ ] useTransition
 - [ ] Components
@@ -80,10 +78,10 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] experimental_taintObjectReference
   - [ ] experimental_taintUniqueValue
 - [x] Template Explorer
-- [ ] Vite plugin with unplugin
-- [ ] Counter App
-  - [ ] simple bindings
-  - [ ] simple events
+- [x] Vite plugin with unplugin
+- [x] Counter App
+  - [x] simple bindings
+  - [x] simple events
 - [ ] Repl
 - [ ] TODO-MVC App
 
