@@ -20,6 +20,7 @@ export default defineConfig(
   unicorn({
     rules: {
       'unicorn/prevent-abbreviations': 'off',
+      'unicorn/no-nested-ternary': 'off', // conflict with prettier
       'unicorn/filename-case': [
         'error',
         {
@@ -47,7 +48,11 @@ export default defineConfig(
     json5: true,
     prettier: true
   }),
-  toml(),
+  toml({
+    rules: {
+      'toml/array-bracket-spacing': 'off' // conflict with prettier
+    }
+  }),
   react({
     refresh: true,
     rules: {
@@ -57,7 +62,9 @@ export default defineConfig(
   vue({
     typescript: true,
     rules: {
-      'vue/multi-word-component-names': 'off'
+      'vue/multi-word-component-names': 'off',
+      'vue/singleline-html-element-content-newline': 'off', // conflict with prettier
+      'vue/max-attributes-per-line': 'off' // conflict with prettier
     }
   }),
   // TODO:

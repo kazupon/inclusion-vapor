@@ -78,9 +78,9 @@ export function compile(
     children =
       statement.expression.type === 'JSXFragment'
         ? statement.expression.children
-        : (statement.expression.type === 'JSXElement'
+        : statement.expression.type === 'JSXElement'
           ? [statement.expression]
-          : [])
+          : []
   }
 
   const ast: RootNode = {

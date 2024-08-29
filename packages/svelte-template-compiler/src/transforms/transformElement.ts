@@ -103,7 +103,7 @@ function resolveSetupReference(name: string, context: TransformContext): string 
     ? name
     : bindings[camelName]
       ? camelName
-      : bindings[PascalName] // eslint-disable-line unicorn/no-nested-ternary
+      : bindings[PascalName]
         ? PascalName
         : undefined
 }

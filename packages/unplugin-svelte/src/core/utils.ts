@@ -62,9 +62,9 @@ export function attrsToQuery(
   if (langFallback || attrs.lang) {
     query +=
       `lang` in attrs
-        ? (forceLangFallback
+        ? forceLangFallback
           ? `&lang.${langFallback}`
-          : `&lang.${attrs.lang}`)
+          : `&lang.${attrs.lang}`
         : `&lang.${langFallback}`
   }
   return query

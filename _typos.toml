@@ -1,2 +1,2 @@
 [files]
-extend-exclude = [ "assets/inclusion-vapor-v0.excalidraw" ]
+extend-exclude = ["assets/inclusion-vapor-v0.excalidraw"]

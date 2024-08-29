@@ -56,9 +56,9 @@ export const transformElement: NodeTransform = (node, context) => {
     const tag =
       name.type === 'JSXIdentifier'
         ? name.name
-        : (name.type === 'JSXMemberExpression'
+        : name.type === 'JSXMemberExpression'
           ? context.ir.source.slice(name.start!, name.end!)
-          : '')
+          : ''
     const isComponent = isComponentNode(node)
     const propsResult = buildProps(node, context as TransformContext<JSXElement>, isComponent)
 
@@ -128,7 +128,7 @@ function resolveSetupReference(name: string, context: TransformContext): string 
     ? name
     : bindings[camelName]
       ? camelName
-      : bindings[PascalName] // eslint-disable-line unicorn/no-nested-ternary
+      : bindings[PascalName]
         ? PascalName
         : undefined
 }
@@ -265,9 +265,9 @@ function transformProp(
   let name =
     prop.name.type === 'JSXIdentifier'
       ? prop.name.name
-      : (prop.name.type === 'JSXNamespacedName'
+      : prop.name.type === 'JSXNamespacedName'
         ? prop.name.namespace.name
-        : '')
+        : ''
 
   if (!isDirectiveRegex.test(name) && (!prop.value || prop.value.type === 'StringLiteral')) {
     if (isReservedProp(name)) {
@@ -282,7 +282,7 @@ function transformProp(
     }
   }
 
-  name = isEventRegex.test(name) ? 'on' : (isDirectiveRegex.test(name) ? name.slice(2) : 'bind')
+  name = isEventRegex.test(name) ? 'on' : isDirectiveRegex.test(name) ? name.slice(2) : 'bind'
   const directiveTransform = context.options.directiveTransforms[name]
   if (directiveTransform) {
     return directiveTransform(prop, node, context)

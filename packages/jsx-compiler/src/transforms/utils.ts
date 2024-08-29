@@ -78,8 +78,7 @@ export function resolveExpression(
   const source = node
     ? node.type === 'JSXIdentifier'
       ? node.name
-      : // eslint-disable-next-line unicorn/no-nested-ternary
-        isStatic
+      : isStatic
         ? node.value
         : node.type === 'JSXExpressionContainer'
           ? node.expression.type === 'Identifier'

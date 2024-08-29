@@ -17,9 +17,9 @@ function getRootNodeAst(source: string): RootNode {
     children =
       statement.expression.type === 'JSXFragment'
         ? statement.expression.children
-        : (statement.expression.type === 'JSXElement'
+        : statement.expression.type === 'JSXElement'
           ? [statement.expression]
-          : [])
+          : []
   }
 
   return {

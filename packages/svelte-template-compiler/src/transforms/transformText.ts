@@ -111,9 +111,9 @@ function resolveSimpleExpression<T extends SvelteMustacheTag>(
   const content =
     expression.type === 'Identifier'
       ? expression.name
-      : (expression.type === 'Literal'
+      : expression.type === 'Literal'
         ? expression.raw || ''
-        : context.ir.source.slice(node.start, node.end))
+        : context.ir.source.slice(node.start, node.end)
   const loc = expression.loc || convertToSourceLocation(node, content) // FIXME: twaeak loc type
 
   let ast: BabelParseResult<BabelExpression> | false = false

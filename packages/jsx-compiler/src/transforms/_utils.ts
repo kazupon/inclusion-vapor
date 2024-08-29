@@ -28,9 +28,9 @@ export function makeCompile(options: CompilerOptions = {}) {
       children =
         statement.expression.type === 'JSXFragment'
           ? statement.expression.children
-          : (statement.expression.type === 'JSXElement'
+          : statement.expression.type === 'JSXElement'
             ? [statement.expression]
-            : [])
+            : []
     }
 
     const ast: RootNode = {
