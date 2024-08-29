@@ -8,7 +8,7 @@ import createDebug from 'debug'
 import { preprocess } from 'svelte/compiler'
 import { transformSvelteScript } from 'svelte-vapor-sfc-compiler'
 import { isObject, isString } from '@vue-vapor/shared'
-import { createDescriptor, getPrevDescriptor } from './descriptor'
+import { createDescriptor, getPrevDescriptor as _ } from './descriptor'
 import { genScriptCode } from './script'
 import { genTemplateCode, isUseInlineTemplate as ____ } from './template'
 import { genStyleCode } from './style'
@@ -36,7 +36,7 @@ export async function transformMain(
   const preprocessedCode = await preprocessSvelte(code, filename, options)
   debug('transformMain preprocessedCode', preprocessedCode, filename)
 
-  const _prevDescriptor = getPrevDescriptor(filename)
+  // const _prevDescriptor = getPrevDescriptor(filename)
 
   // get sfc descriptor from svelte component
   const { descriptor, errors } = createDescriptor(filename, preprocessedCode, options)
@@ -176,7 +176,7 @@ export async function transformMain(
 
   // handle TS transpilation
   const resolvedCode = output.join('\n')
-  const _lang = descriptor.scriptSetup?.lang
+  // const _lang = descriptor.scriptSetup?.lang
 
   // TODO:
   // if (

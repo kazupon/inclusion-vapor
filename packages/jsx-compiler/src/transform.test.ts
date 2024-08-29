@@ -42,7 +42,7 @@ test('transform', () => {
 
   const afterTransform1 = vi.fn()
   const nodeTransform1 = vi.fn().mockImplementation(() => afterTransform1)
-  const _ir = transform(ast, {
+  transform(ast, {
     nodeTransforms: [nodeTransform1]
   })
   expect(nodeTransform1).toHaveBeenCalled()

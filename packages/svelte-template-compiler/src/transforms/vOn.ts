@@ -31,7 +31,7 @@ export const transformVOn: DirectiveTransform = (dir, node, context) => {
   if (!exp && modifiers.length === 0) {
     context.options.onError(createCompilerError(ErrorCodes.X_V_ON_NO_EXPRESSION, loc))
   }
-  let arg = resolveExpression(dir.arg)
+  let arg = resolveExpression(dir.arg!)
 
   const { keyModifiers, nonKeyModifiers, eventOptionModifiers } = resolveModifiers(
     arg.isStatic ? `on${arg.content}` : arg,

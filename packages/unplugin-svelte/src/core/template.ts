@@ -29,7 +29,7 @@ export function genTemplateCode(
   // debug('genTemplateCode', context, descriptor, options, ssr, customElement)
 
   const template = descriptor.template!
-  const _hasScoped = descriptor.styles.some(style => style.scoped)
+  // const _hasScoped = descriptor.styles.some(style => style.scoped)
 
   // If the template is not using pre-processor AND is not using external src,
   // compile and inline it directly in the main module. When served in vite this
@@ -132,7 +132,7 @@ export function resolveTemplateCompilerOptions(
   // TODO: let transformAssetUrls = options.template?.transformAssetUrls
   const transformAssetUrls: boolean | Record<string, unknown> = false
   // compiler-sfc should export `AssetURLOptions`
-  let _assetUrlOptions //: AssetURLOptions | undefined
+  // let _assetUrlOptions //: AssetURLOptions | undefined
 
   if (transformAssetUrls === false) {
     // if explicitly disabled, let assetUrlOptions be undefined
@@ -155,9 +155,9 @@ export function resolveTemplateCompilerOptions(
   } else {
     // build: force all asset urls into import requests so that they go through
     // the assets plugin for asset registration
-    _assetUrlOptions = {
-      includeAbsolute: true
-    }
+    // _assetUrlOptions = {
+    //   includeAbsolute: true
+    // }
   }
 
   // TODO:

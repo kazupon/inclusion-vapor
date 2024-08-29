@@ -43,7 +43,7 @@
     "prepublishOnly": "pnpm build",
     "serve": "serve",
     "test": "vitest run",
-    "typecheck": "tsc -p .",
+    "typecheck": "vue-tsc -p .",
     "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
@@ -71,7 +71,8 @@
     "serve": "^14.2.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
-    "vitest": "^2.0.1"
+    "vitest": "^2.0.1",
+    "vue-tsc": "^2.1.2"
   },
   "pnpm": {
     "overrides": {
