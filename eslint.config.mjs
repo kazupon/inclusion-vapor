@@ -76,6 +76,14 @@ export default defineConfig(
     prettier: true
   }),
   {
+    name: 'settings',
+    settings: {
+      react: {
+        version: '18'
+      }
+    }
+  },
+  {
     name: 'ignores',
     ignores: [
       // TODO:
