@@ -2,10 +2,10 @@
 
 This Research & Development project is for running various components in [vapor](https://github.com/vuejs/core-vapor).
 
-This project try to work **whether interoperability can be provided between components of different frameworks on vapor**.
-
 > [!WARNING]
 > This is WIP 👷, so don't use in production
+
+This project try to work **whether interoperability can be provided between components of different frameworks on vapor**.
 
 ![inclusion-vapor](./assets/inclusion-vapor-v0.png)
 
