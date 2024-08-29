@@ -99,5 +99,6 @@
       "prettier --parser=typescript --write",
       "eslint --fix"
     ]
-  }
+  },
+  "version": "0.0.0"
 }
