@@ -94,8 +94,7 @@ export default defineConfig(
       '**/tsconfig.json',
       '**/*.d.ts',
       'pnpm-lock.yaml',
-      'pnpm-workspace.yaml',
-      'packages/unplugin-react/src/core/refreshUtils.js'
+      'pnpm-workspace.yaml'
     ]
   }
 )
