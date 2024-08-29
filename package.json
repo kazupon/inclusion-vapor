@@ -1,6 +1,7 @@
 {
   "name": "inclusion-vapor",
   "private": true,
+  "version": "0.0.0",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kazupon/inclusion-vapor/issues"
@@ -99,6 +100,5 @@
       "prettier --parser=typescript --write",
       "eslint --fix"
     ]
-  },
-  "version": "0.0.0"
+  }
 }
