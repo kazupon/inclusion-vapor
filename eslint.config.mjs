@@ -65,7 +65,9 @@ export default defineConfig(
   // svelte({
   //   typescript: true
   // }),
-  yaml(),
+  yaml({
+    prettier: true
+  }),
   {
     name: 'ignores',
     ignores: [
