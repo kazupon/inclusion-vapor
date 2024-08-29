@@ -121,7 +121,8 @@
     "packages/global.d.ts",
     "packages/*/scripts",
     "packages/unplugin-svelte/test",
-    "packages/unplugin-svelte/playground"
+    "packages/unplugin-svelte/playground",
+    "scripts/*.ts"
   ],
   "exclude": ["tsdown.config.ts", "vitest.config.ts"]
 }

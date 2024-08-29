@@ -97,9 +97,9 @@
     "@vue-vapor/shared": "latest",
     "ast-kit": "^1.1.0",
     "debug": "^4.3.6",
-    "jsx-vapor-compiler": "workspace:^",
+    "jsx-vapor-compiler": "workspace:*",
     "magic-string-stack": "^0.1.1",
-    "react-vapor-hooks": "workspace:^",
+    "react-vapor-hooks": "workspace:*",
     "unplugin": "^1.5.1"
   },
   "peerDependencies": {

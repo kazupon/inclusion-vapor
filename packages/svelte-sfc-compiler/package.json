@@ -57,7 +57,7 @@
     "magic-string-ast": "^0.6.2",
     "source-map-js": "catalog:",
     "svelte": "catalog:",
-    "svelte-vapor-template-compiler": "workspace:^"
+    "svelte-vapor-template-compiler": "workspace:*"
   },
   "devDependencies": {
     "@babel/types": "catalog:",

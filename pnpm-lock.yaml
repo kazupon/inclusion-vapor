@@ -148,7 +148,7 @@ importers:
         version: 0.49.0
     devDependencies:
       jsx-vapor-compiler:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../jsx-compiler
       source-map-js:
         specifier: 'catalog:'
@@ -163,7 +163,7 @@ importers:
   packages/playground:
     dependencies:
       react-vapor-hooks:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../react-vapor-hooks
       vue:
         specifier: npm:@vue-vapor/vue@latest
@@ -221,10 +221,10 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       unplugin-react-vapor:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../unplugin-react
       unplugin-svelte-vapor:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../unplugin-svelte
       vite:
         specifier: 'catalog:'
@@ -304,7 +304,7 @@ importers:
         specifier: 'catalog:'
         version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
       svelte-vapor-template-compiler:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../svelte-template-compiler
     devDependencies:
       '@babel/types':
@@ -361,7 +361,7 @@ importers:
         specifier: 'catalog:'
         version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
       svelte-vapor-template-compiler:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../svelte-template-compiler
       unbuild:
         specifier: ^2.0.0
@@ -394,13 +394,13 @@ importers:
         specifier: '*'
         version: 0.23.0
       jsx-vapor-compiler:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../jsx-compiler
       magic-string-stack:
         specifier: ^0.1.1
         version: 0.1.1
       react-vapor-hooks:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../react-vapor-hooks
       unplugin:
         specifier: ^1.5.1
@@ -458,7 +458,7 @@ importers:
         specifier: 'catalog:'
         version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
       svelte-vapor-sfc-compiler:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../svelte-sfc-compiler
       unplugin:
         specifier: ^1.5.1

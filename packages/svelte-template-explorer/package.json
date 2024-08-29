@@ -11,7 +11,7 @@
   "devDependencies": {
     "source-map-js": "catalog:",
     "svelte": "catalog:",
-    "svelte-vapor-template-compiler": "workspace:^",
+    "svelte-vapor-template-compiler": "workspace:*",
     "unbuild": "^2.0.0",
     "vue": "^3.4.37"
   }

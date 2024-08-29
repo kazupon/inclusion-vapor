@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-vapor-hooks": "workspace:^",
+    "react-vapor-hooks": "workspace:*",
     "vue": "npm:@vue-vapor/vue@latest"
   },
   "devDependencies": {
@@ -30,8 +30,8 @@
     "@vue/vapor": "npm:@vue-vapor/vapor@latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "unplugin-react-vapor": "workspace:^",
-    "unplugin-svelte-vapor": "workspace:^",
+    "unplugin-react-vapor": "workspace:*",
+    "unplugin-svelte-vapor": "workspace:*",
     "vite": "catalog:",
     "vite-plugin-vue-devtools": "^7.0.25"
   }
