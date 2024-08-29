@@ -16,6 +16,7 @@
     "jsonc",
     "json5",
     "yaml",
+    "toml",
     "yml"
   ],
   "files.associations": {

@@ -57,6 +57,7 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-regexp": "^2.6.0",
     "eslint-plugin-svelte": "^2.43.0",
+    "eslint-plugin-toml": "^0.11.1",
     "eslint-plugin-unicorn": "^54.0.0",
     "eslint-plugin-vue": "^9.27.0",
     "eslint-plugin-yml": "^1.14.0",
@@ -66,6 +67,7 @@
     "pkg-pr-new": "^0.0.20",
     "prettier": "^3.3.2",
     "prettier-plugin-svelte": "^3.2.6",
+    "prettier-plugin-toml": "^2.0.1",
     "serve": "^14.2.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.1.0",
@@ -84,8 +86,8 @@
     "*.{json,md,yml}": [
       "prettier --write"
     ],
-    "*.{js,mjs,cjs,vue,svelte}": [
-      "prettier --write --plugin prettier-plugin-svelte",
+    "*.{js,mjs,cjs,vue,svelte,toml}": [
+      "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-toml",
       "eslint --fix"
     ],
     "*.ts?(x)": [

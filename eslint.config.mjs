@@ -9,7 +9,8 @@ import {
   vue,
   react,
   // svelte,
-  yaml
+  yaml,
+  toml
 } from '@kazupon/eslint-config'
 
 export default defineConfig(
@@ -46,6 +47,7 @@ export default defineConfig(
     json5: true,
     prettier: true
   }),
+  toml(),
   react({
     refresh: true,
     rules: {
