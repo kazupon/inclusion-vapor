@@ -2,7 +2,7 @@ name: nightly release
 on: [push, pull_request]
 
 jobs:
-  release:
+  nightly-release:
     runs-on: ubuntu-latest
 
     steps:
