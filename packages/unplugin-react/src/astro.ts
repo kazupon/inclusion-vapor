@@ -1,4 +1,4 @@
-import unplugin from './index.ts'
+import { default as unplugin } from './index.ts'
 
 import type { Options } from './types.ts'
 
