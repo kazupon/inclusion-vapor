@@ -40,3 +40,11 @@ export type HackOptions<T> = Prettify<
     }
   >
 >
+
+// A structural directive transform is technically also a NodeTransform;
+// svelte #if, #each logic blocks into this category.
+export type StructuralDirectiveTransform = (
+  node: SvelteElement,
+  dir: VaporDirectiveNode,
+  context: TransformContext<SvelteElement>
+) => void | (() => void)

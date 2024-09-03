@@ -12,6 +12,7 @@ import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
 import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { BlockIRNode, IRDynamicInfo } from '../ir/index.ts'
+import type { NodeTransform, StructuralDirectiveTransform } from './types.ts'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included
@@ -67,4 +68,15 @@ export function getLiteralExpressionValue(
   }
   // eslint-disable-next-line unicorn/no-null
   return exp.isStatic ? exp.content : null
+}
+
+export function createStructuralDirectiveTransform(
+  _name: string | string[],
+  _fn: StructuralDirectiveTransform
+): NodeTransform {
+  // TODO: transform vapor structurel directive from svelte logic blocks
+
+  return (_node, _context) => {
+    // TODO:
+  }
 }

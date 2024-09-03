@@ -12,14 +12,6 @@ import { TransformContext, newBlock } from './transforms/index.ts'
 import type { RootIRNode, RootNode } from './ir/index.ts'
 import type { NodeTransform, TransformOptions } from './transforms/index.ts'
 
-// // A structural directive transform is technically also a NodeTransform;
-// // Only v-if and v-for fall into this category.
-// export type StructuralDirectiveTransform = (
-//   node: SvelteElement,
-//   dir: VaporDirectiveNode,
-//   context: TransformContext<SvelteElement>,
-// ) => void | (() => void)
-
 // Svelte AST -> IR
 export function transform(node: RootNode, options: TransformOptions = {}): RootIRNode {
   const ir: RootIRNode = {
