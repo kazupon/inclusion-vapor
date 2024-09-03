@@ -5,8 +5,8 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-sfc/src/parse.ts
 
-import { parse as parseSvelte, compile as compileSvelte } from 'svelte/compiler'
 import { isSvelteAttribute, isSvelteText } from 'svelte-vapor-template-compiler'
+import { compile as compileSvelte, parse as parseSvelte } from 'svelte/compiler'
 // import { SourceMapGenerator } from 'source-map-js'
 
 import type {
@@ -15,15 +15,15 @@ import type {
   // CodegenSourceMapGenerator
 } from '@vue-vapor/compiler-dom'
 import type { SFCBlock } from '@vue-vapor/compiler-sfc'
-import type { SvelteTemplateNode, SvelteScript, SvelteStyle } from 'svelte-vapor-template-compiler'
+import type { SvelteScript, SvelteStyle, SvelteTemplateNode } from 'svelte-vapor-template-compiler'
 import type {
   SvelteParseOptions,
-  SvelteSFCParseResult,
   SvelteSFCDescriptor,
-  SvelteSFCTemplateBlock,
+  SvelteSFCParseResult,
   SvelteSFCScriptBlock,
-  SvelteSFCStyleBlock
-} from './types'
+  SvelteSFCStyleBlock,
+  SvelteSFCTemplateBlock
+} from './types.ts'
 
 export const DEFAULT_FILENAME = 'anonymous.svelte'
 

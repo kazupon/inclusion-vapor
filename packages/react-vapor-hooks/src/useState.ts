@@ -4,12 +4,12 @@
 // Author: Ubugeeei (https://github.com/Ubugeeei/vue-hooks)
 // React hooks original Author: Meta Platforms, Inc, and React community
 
-import { getCurrentInstance, shallowRef, isRef } from '@vue-vapor/vapor'
-import { USI, USV } from './internal'
+import { getCurrentInstance, isRef, shallowRef } from '@vue-vapor/vapor'
+import { USI, USV } from './internal.ts'
 
-import type { SetStateAction, Dispatch } from 'react'
 import type { Ref } from '@vue-vapor/vapor'
-import type { MaybeRefOrGetter } from './types'
+import type { Dispatch, SetStateAction } from 'react'
+import type { MaybeRefOrGetter } from './types.ts'
 
 type VaporState<State> = MaybeRefOrGetter<State>
 

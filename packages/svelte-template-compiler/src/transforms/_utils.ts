@@ -1,14 +1,14 @@
-import { parse } from 'svelte/compiler'
 import { generate } from '@vue-vapor/compiler-vapor'
-import { transform } from '../transform'
-import { IRNodeTypes } from '../ir'
+import { parse } from 'svelte/compiler'
+import { IRNodeTypes } from '../ir/index.ts'
+import { transform } from '../transform.ts'
 
 import type {
-  RootIRNode as VaporRootIRNode,
-  CompilerOptions as VaporCompilerOptions
+  CompilerOptions as VaporCompilerOptions,
+  RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { CompilerOptions } from '../compile'
-import type { RootNode, RootIRNode } from '../ir'
+import type { CompilerOptions } from '../compile.ts'
+import type { RootIRNode, RootNode } from '../ir/index.ts'
 
 export const DEFAULT_OPTIONS: CompilerOptions = {
   prefixIdentifiers: true

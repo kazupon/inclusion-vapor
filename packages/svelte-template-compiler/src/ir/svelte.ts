@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-import { makeMap, isObject } from '@vue-vapor/shared'
+import { isObject, makeMap } from '@vue-vapor/shared'
 
 import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
-  Element as SvelteElement,
-  BaseNode as SvelteBaseNode,
   Comment as SveletComment,
   Attribute as SvelteAttribute,
-  SpreadAttribute as SvelteSpreadAttribute,
-  MustacheTag as SvelteMustacheTag,
-  Directive as SvelteDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
-  Text as SvelteText,
-  ShorthandAttribute as SvelteShorthandAttribute
+  BaseNode as SvelteBaseNode,
+  Directive as SvelteDirective,
+  Element as SvelteElement,
+  MustacheTag as SvelteMustacheTag,
+  ShorthandAttribute as SvelteShorthandAttribute,
+  SpreadAttribute as SvelteSpreadAttribute,
+  Text as SvelteText
 } from 'svelte/types/compiler/interfaces'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
@@ -110,18 +110,18 @@ export function convertToSourceLocation(node: SvelteBaseNode, source: string): S
 
 export type {
   Ast as SvelteAst,
-  Element as SvelteElement,
-  TemplateNode as SvelteTemplateNode,
-  MustacheTag as SvelteMustacheTag,
-  Comment as SvelteComment,
   Attribute as SvelteAttribute,
-  SpreadAttribute as SvelteSpreadAttribute,
   BaseDirective as SvelteBaseDirective,
-  BaseNode as SvelteBaseNode,
-  Directive as SvelteDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
+  BaseNode as SvelteBaseNode,
+  Comment as SvelteComment,
+  Directive as SvelteDirective,
+  Element as SvelteElement,
+  MustacheTag as SvelteMustacheTag,
   Script as SvelteScript,
+  ShorthandAttribute as SvelteShorthandAttribute,
+  SpreadAttribute as SvelteSpreadAttribute,
   Style as SvelteStyle,
-  Text as SvelteText,
-  ShorthandAttribute as SvelteShorthandAttribute
+  TemplateNode as SvelteTemplateNode,
+  Text as SvelteText
 } from 'svelte/types/compiler/interfaces'

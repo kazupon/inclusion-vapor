@@ -1,8 +1,8 @@
+import { SourceMapConsumer } from 'source-map-js'
 import { compile } from 'svelte-vapor-template-compiler'
 import { toRaw, watchEffect } from 'vue'
-import { SourceMapConsumer } from 'source-map-js'
-import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options'
-import theme from './theme'
+import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options.ts'
+import theme from './theme.ts'
 
 import type * as m from 'monaco-editor'
 import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-template-compiler'

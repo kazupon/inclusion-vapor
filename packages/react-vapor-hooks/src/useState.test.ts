@@ -1,16 +1,16 @@
 // @vitest-environment jsdom
 
-import { describe, test, expect } from 'vitest'
 import {
-  template,
   delegate,
   delegateEvents,
-  setText,
+  nextTick,
   renderEffect,
-  nextTick
+  setText,
+  template
 } from '@vue-vapor/vapor'
-import { makeRender, triggerEvent } from './_helper'
-import { useState } from './useState'
+import { describe, expect, test } from 'vitest'
+import { makeRender, triggerEvent } from './_helper.ts'
+import { useState } from './useState.ts'
 
 const define = makeRender()
 

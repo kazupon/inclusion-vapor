@@ -2,15 +2,15 @@
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
 export type {
+  CallExpression as BabelCallExpression,
+  Expression as BabelExpression,
+  Node as BabelNode,
+  Program as BabelProgram,
+  SourceLocation as BabelSourceLocation,
   JSXAttribute,
   JSXElement,
-  JSXFragment,
-  JSXText,
   JSXExpressionContainer,
+  JSXFragment,
   JSXSpreadAttribute,
-  Node as BabelNode,
-  Expression as BabelExpression,
-  Program as BabelProgram,
-  CallExpression as BabelCallExpression,
-  SourceLocation as BabelSourceLocation
+  JSXText
 } from '@babel/types'

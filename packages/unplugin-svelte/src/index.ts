@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-import { createUnplugin } from 'unplugin'
 import createDebug from 'debug'
-import { resolveOptions, parseRequestQuery } from './core/utils'
-import { getDescriptor } from './core/descriptor'
-import { transformMain } from './core/transform'
-import { getResolvedScript } from './core/script'
-import { EXPORT_HELPER_ID, helperCode } from './core/helper'
+import { createUnplugin } from 'unplugin'
+import { getDescriptor } from './core/descriptor.ts'
+import { EXPORT_HELPER_ID, helperCode } from './core/helper.ts'
+import { getResolvedScript } from './core/script.ts'
+import { transformMain } from './core/transform.ts'
+import { parseRequestQuery, resolveOptions } from './core/utils.ts'
 
-import type { UnpluginFactory, UnpluginInstance } from 'unplugin'
 import type { SvelteSFCBlock } from 'svelte-vapor-sfc-compiler'
-import type { Options } from './types'
+import type { UnpluginFactory, UnpluginInstance } from 'unplugin'
+import type { Options } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor')
 

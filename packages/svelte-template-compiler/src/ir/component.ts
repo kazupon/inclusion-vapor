@@ -5,11 +5,11 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/ir/component.ts
 
-import { IRDynamicPropsKind, IRSlotType } from '@vue-vapor/compiler-vapor'
+import type { IRDynamicPropsKind, IRSlotType } from '@vue-vapor/compiler-vapor'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { BlockIRNode, IRFor } from './nodes'
-import type { DirectiveTransformResult } from '../transforms'
+import type { DirectiveTransformResult } from '../transforms/index.ts'
+import type { BlockIRNode, IRFor } from './nodes.ts'
 
 // props
 export interface IRProp extends Omit<DirectiveTransformResult, 'value'> {

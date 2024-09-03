@@ -4,18 +4,17 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import { IRNodeTypes } from '@vue-vapor/compiler-vapor'
+import type { IRDynamicInfo, IRNodeTypes } from '@vue-vapor/compiler-vapor'
 
-import { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
 import type {
   BindingTypes,
   CompoundExpressionNode,
   DirectiveNode,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
-import type { SvelteTemplateNode } from './svelte'
-import type { IRProp, IRProps, IRSlots } from './component'
 import type { Overwrite } from '../types'
+import type { IRProp, IRProps, IRSlots } from './component'
+import type { SvelteTemplateNode } from './svelte'
 
 export interface BaseIRNode {
   type: IRNodeTypes
@@ -233,6 +232,6 @@ export type VaporDirectiveNode = Overwrite<
   }
 >
 
-export * from './svelte'
+export { DynamicFlag, IRDynamicPropsKind, IRNodeTypes } from '@vue-vapor/compiler-vapor'
 export type { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
-export { IRNodeTypes, DynamicFlag, IRDynamicPropsKind } from '@vue-vapor/compiler-vapor'
+export * from './svelte.ts'

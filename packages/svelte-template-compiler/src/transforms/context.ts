@@ -4,25 +4,25 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import { NOOP, extend } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
-import { newDynamic, isConstantExpression } from './utils'
-import { DynamicFlag } from '../ir'
+import { NOOP, extend } from '@vue-vapor/shared'
+import { DynamicFlag } from '../ir/index.ts'
+import { isConstantExpression, newDynamic } from './utils.ts'
 
 import type {
+  TransformOptions as BaseTransformOptions,
   CompilerCompatOptions,
-  SimpleExpressionNode,
-  TransformOptions as BaseTransformOptions
+  SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
 import type {
-  IRDynamicInfo,
-  RootNode,
-  RootIRNode,
   BlockIRNode,
-  OperationNode,
+  IRDynamicInfo,
   IRSlots,
-  SvelteTemplateNode,
-  SvelteComment
+  OperationNode,
+  RootIRNode,
+  RootNode,
+  SvelteComment,
+  SvelteTemplateNode
 } from '../ir'
 import type { HackOptions } from './types'
 

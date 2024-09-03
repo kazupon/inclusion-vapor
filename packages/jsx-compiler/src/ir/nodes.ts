@@ -5,9 +5,8 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
-import { IRNodeTypes } from '@vue-vapor/compiler-vapor'
+import type { IRNodeTypes, IRDynamicInfo } from '@vue-vapor/compiler-vapor'
 
-import type { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
 import type {
   BindingTypes,
   CompoundExpressionNode,

@@ -4,14 +4,14 @@
 // Author: Evan you (https://github.com/yyx990803), Vite team and Vue community
 // Repository url: https://github.com/vitejs/vite-plugin-vue
 
-import path from 'node:path'
-import fs from 'node:fs'
 import createDebug from 'debug'
+import fs from 'node:fs'
+import path from 'node:path'
 import { parse as parseSvelteSFC } from 'svelte-vapor-sfc-compiler'
-import { normalizePath, getHash } from './utils'
+import { getHash, normalizePath } from './utils.ts'
 
-import type { ResolvedOptions } from './types'
-import type { SvelteSFCParseResult, SvelteSFCDescriptor } from 'svelte-vapor-sfc-compiler'
+import type { SvelteSFCDescriptor, SvelteSFCParseResult } from 'svelte-vapor-sfc-compiler'
+import type { ResolvedOptions } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor:core:descriptor')
 

@@ -1,10 +1,10 @@
-import { describe, test, expect } from 'vitest'
+import { ConstantTypes, NodeTypes } from '@vue-vapor/compiler-dom'
 import { parse } from 'svelte/compiler'
-import { NodeTypes, ConstantTypes } from '@vue-vapor/compiler-dom'
-import { convertProps } from './converter'
-import { isSvelteElement } from './svelte'
+import { describe, expect, test } from 'vitest'
+import { convertProps } from './converter.ts'
+import { isSvelteElement } from './svelte.ts'
 
-import type { SvelteElement } from './svelte'
+import type { SvelteElement } from './svelte.ts'
 
 function getSvelteElement(code: string): SvelteElement | null {
   const ast = parse(code)

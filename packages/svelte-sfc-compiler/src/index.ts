@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-export * from './types'
-export * from './parse'
-export * from './transform'
-export * from './compileScript'
-export * from './compileTemplate'
+export * from './compileScript.ts'
+export * from './compileTemplate.ts'
+export * from './parse.ts'
+export * from './transform.ts'
+export * from './types.ts'

@@ -5,11 +5,11 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
-import { IRDynamicPropsKind } from '@vue-vapor/compiler-vapor'
+import type { IRDynamicPropsKind } from '@vue-vapor/compiler-vapor'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { BlockIRNode, IRFor } from './nodes'
-import type { DirectiveTransformResult } from '../transforms'
+import type { DirectiveTransformResult } from '../transforms/index.ts'
+import type { BlockIRNode, IRFor } from './nodes.ts'
 
 // props
 export interface IRProp extends Omit<DirectiveTransformResult, 'value'> {

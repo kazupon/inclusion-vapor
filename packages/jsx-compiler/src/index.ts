@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
-export * from './types'
-export * from './ir'
-export * from './transforms'
-export * from './transform'
-export * from './errors'
-export * from './compile'
+export * from './compile.ts'
+export * from './errors.ts'
+export * from './ir/index.ts'
+export * from './transform.ts'
+export * from './transforms/index.ts'
+export * from './types.ts'

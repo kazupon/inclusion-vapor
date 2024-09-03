@@ -1,14 +1,14 @@
 import { parse } from '@babel/parser'
 import { generate } from '@vue-vapor/compiler-vapor'
-import { transform } from '../transform'
-import { IRNodeTypes } from '../ir'
+import { IRNodeTypes } from '../ir/index.ts'
+import { transform } from '../transform.ts'
 
 import type {
-  RootIRNode as VaporRootIRNode,
-  CompilerOptions as VaporCompilerOptions
+  CompilerOptions as VaporCompilerOptions,
+  RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { CompilerOptions } from '../compile'
-import type { RootNode, JSXElement, JSXFragment } from '../ir'
+import type { CompilerOptions } from '../compile.ts'
+import type { JSXElement, JSXFragment, RootNode } from '../ir/index.ts'
 
 export const DEFAULT_OPTIONS: CompilerOptions = {
   prefixIdentifiers: true

@@ -1,9 +1,9 @@
-import { describe, expect, test } from 'vitest'
-import { makeCompile } from './_utils'
-import { transformChildren } from './transformChildren'
-import { transformElement } from './transformElement'
-import { transformText } from './transformText'
 import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
+import { describe, expect, test } from 'vitest'
+import { makeCompile } from './_utils.ts'
+import { transformChildren } from './transformChildren.ts'
+import { transformElement } from './transformElement.ts'
+import { transformText } from './transformText.ts'
 
 const compile = makeCompile({
   prefixIdentifiers: false,

@@ -5,11 +5,12 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformChildren.ts
 
-import { IRNodeTypes, IRDynamicInfo, DynamicFlag, isSvelteText, SvelteElement } from '../ir'
-import { transformNode } from '../transform'
+import { DynamicFlag, IRNodeTypes, isSvelteText } from '../ir/index.ts'
+import { transformNode } from '../transform.ts'
 
-import type { NodeTransform } from './types'
+import type { IRDynamicInfo, SvelteElement } from '../ir/index.ts'
 import type { TransformContext } from './context'
+import type { NodeTransform } from './types'
 
 export const transformChildren: NodeTransform = (node, context) => {
   const isFragment =

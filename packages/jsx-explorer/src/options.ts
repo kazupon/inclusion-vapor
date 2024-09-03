@@ -1,7 +1,7 @@
 import { createApp, h, reactive, ref } from 'vue'
 
-import type { Ref } from 'vue'
 import type { CompilerOptions } from 'jsx-vapor-compiler'
+import type { Ref } from 'vue'
 
 export const ssrMode: Ref<boolean> = ref(false)
 // export const vaporMode: Ref<boolean> = ref(true)

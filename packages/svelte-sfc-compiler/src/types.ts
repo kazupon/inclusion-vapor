@@ -1,27 +1,27 @@
 import type {
+  SFCBlock,
+  SFCDescriptor,
   SFCParseOptions,
   SFCParseResult,
-  SFCDescriptor,
+  SFCScriptBlock,
+  SFCScriptCompileOptions,
+  SFCStyleBlock,
   SFCTemplateBlock,
   SFCTemplateCompileOptions,
-  SFCTemplateCompileResults,
-  SFCScriptCompileOptions,
-  SFCScriptBlock,
-  SFCStyleBlock,
-  SFCBlock
+  SFCTemplateCompileResults
 } from '@vue-vapor/compiler-sfc'
-import type { CompileOptions as SvelteCompileOptions } from 'svelte/compiler'
 import type {
+  CompilerOptions,
   Overwrite,
-  SvelteTemplateNode,
   SvelteStyle,
-  CompilerOptions
+  SvelteTemplateNode
 } from 'svelte-vapor-template-compiler'
+import type { CompileOptions as SvelteCompileOptions } from 'svelte/compiler'
 
-export type { SFCDescriptor, CompilerError } from '@vue-vapor/compiler-sfc'
+export type { CompilerError, SFCDescriptor } from '@vue-vapor/compiler-sfc'
 
 export interface SvelteTemplateCompiler {
-  compile: typeof import('packages/svelte-template-compiler/src').compile
+  compile: typeof import('svelte-vapor-template-compiler').compile
   parse: typeof import('svelte/compiler').parse
 }
 

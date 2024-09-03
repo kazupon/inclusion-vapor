@@ -1,8 +1,7 @@
 import { createRspackPlugin } from 'unplugin'
-import { unpluginFactory } from '.'
+import { unpluginFactory } from './index.ts'
 
-import type { UnpluginInstance as _UnpluginInstance, RspackPluginInstance } from 'unplugin'
-import type { Options as _Options } from './types.ts'
+import type { RspackPluginInstance } from 'unplugin'
 
 // FIXME: type error ...
 // const rspack: UnpluginInstance<Options | undefined, boolean> = createRspackPlugin(unpluginFactory)

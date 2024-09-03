@@ -6,16 +6,16 @@
 
 import createDebug from 'debug'
 import { compileTemplate } from 'svelte-vapor-sfc-compiler'
-import { getResolvedScript, resolveScript as ___ } from './script'
-import { createRollupError } from './utils'
+import { getResolvedScript } from './script.ts'
+import { createRollupError } from './utils.ts'
 
+import type { RawSourceMap } from 'source-map-js'
 import type {
   SvelteSFCDescriptor,
   SvelteSFCTemplateCompileOptions,
   SvelteSFCTemplateCompileResults
 } from 'svelte-vapor-sfc-compiler'
-import type { RawSourceMap } from 'source-map-js'
-import type { ResolvedOptions, UnpluginContext } from './types'
+import type { ResolvedOptions, UnpluginContext } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor:core:template')
 

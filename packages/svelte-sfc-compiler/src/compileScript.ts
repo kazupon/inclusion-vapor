@@ -8,7 +8,7 @@ import type {
   SvelteSFCDescriptor,
   SvelteSFCScriptBlock,
   SvelteSFCScriptCompileOptions
-} from './types'
+} from './types.ts'
 
 export function compileScript(
   sfc: SvelteSFCDescriptor,

@@ -6,8 +6,8 @@
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
 import { camelize, extend } from '@vue-vapor/shared'
-import { resolveExpression, resolveSimpleExpression } from './utils'
-import { isReservedProp } from './transformElement'
+import { isReservedProp } from './transformElement.ts'
+import { resolveExpression, resolveSimpleExpression } from './utils.ts'
 
 import type { DirectiveTransform } from './types'
 

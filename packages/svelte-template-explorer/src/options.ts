@@ -1,8 +1,8 @@
-import { createApp, h, reactive, ref } from 'vue'
 import { parse } from 'svelte/compiler'
+import { createApp, h, reactive, ref } from 'vue'
 
-import type { Ref } from 'vue'
 import type { CompilerOptions } from 'svelte-vapor-template-compiler'
+import type { Ref } from 'vue'
 
 export const ssrMode: Ref<boolean> = ref(false)
 // export const vaporMode: Ref<boolean> = ref(true)

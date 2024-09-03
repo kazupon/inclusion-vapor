@@ -6,8 +6,8 @@ import { SourceMapConsumer, SourceMapGenerator } from 'source-map-js'
 import { compile as compileSvelteVapor } from 'svelte-vapor-template-compiler'
 import { parse as parseSvelte } from 'svelte/compiler'
 // import { normalizeOptions, createAssetUrlTransformWithOptions } from './template/transformAssetUrl'
-import { warnOnce } from './warn'
-import { genCssVarsFromList } from './style/cssVars'
+import { genCssVarsFromList } from './style/cssVars.ts'
+import { warnOnce } from './warn.ts'
 
 import type { CompilerError, RawSourceMap } from '@vue-vapor/compiler-dom'
 import type { NodeTransform } from 'svelte-vapor-template-compiler'
@@ -15,7 +15,7 @@ import type {
   SvelteSFCTemplateCompileOptions,
   SvelteSFCTemplateCompileResults,
   SvelteTemplateCompiler
-} from './types'
+} from './types.ts'
 
 export function compileTemplate(
   options: SvelteSFCTemplateCompileOptions

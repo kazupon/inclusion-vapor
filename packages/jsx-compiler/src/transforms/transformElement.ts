@@ -13,27 +13,27 @@ import {
   isVoidTag,
   makeMap
 } from '@vue-vapor/shared'
+import { isValidHTMLNesting } from '../htmlNesting.ts'
+import { DynamicFlag, IRDynamicPropsKind, IRNodeTypes } from '../ir/index.ts'
 import {
   EMPTY_EXPRESSION,
   isComponentNode,
   resolveExpression,
   resolveSimpleExpression
-} from './utils'
-import { isValidHTMLNesting } from '../htmlNesting'
-import { DynamicFlag, IRDynamicPropsKind, IRNodeTypes } from '../ir'
+} from './utils.ts'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { NodeTransform, DirectiveTransformResult } from './types'
-import type { TransformContext } from './context'
 import type {
-  JSXAttribute,
-  JSXElement,
-  JSXSpreadAttribute,
   IRProp,
   IRProps,
   IRPropsDynamicAttribute,
-  IRPropsStatic
-} from '../ir'
+  IRPropsStatic,
+  JSXAttribute,
+  JSXElement,
+  JSXSpreadAttribute
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { DirectiveTransformResult, NodeTransform } from './types.ts'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /* #__PURE__ */ makeMap(
   // the leading comma is intentional so empty string "" is also included

@@ -1,16 +1,17 @@
 import {
-  defineConfig,
-  javascript,
   comments,
-  typescript,
+  defineConfig,
+  imports,
+  javascript,
   jsonc,
-  unicorn,
-  regexp,
-  vue,
   react,
+  regexp,
+  toml,
+  typescript,
+  unicorn,
+  vue,
   // svelte,
-  yaml,
-  toml
+  yaml
 } from '@kazupon/eslint-config'
 
 export default defineConfig(
@@ -40,7 +41,17 @@ export default defineConfig(
     // TODO:
     // sometimes, Resolving `parserOptions.project` is not working in `.svelte` files.
     // extraFileExtensions: ['.vue', '.svelte']
-    extraFileExtensions: ['.vue']
+    extraFileExtensions: ['.vue'],
+    rules: {
+      '@typescript-eslint/consistent-type-imports': ['error', { disallowTypeAnnotations: false }]
+    }
+  }),
+  imports({
+    typescript: true,
+    rules: {
+      'import-x/first': 'error',
+      'import-x/extensions': ['error', 'always', { ignorePackages: true }]
+    }
   }),
   jsonc({
     json: true,

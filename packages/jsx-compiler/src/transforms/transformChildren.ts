@@ -5,13 +5,13 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
-import { isComponentNode } from './utils'
-import { IRNodeTypes, DynamicFlag } from '../ir'
-import { transformNode } from '../transform'
+import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
+import { transformNode } from '../transform.ts'
+import { isComponentNode } from './utils.ts'
 
-import type { BabelNode, IRDynamicInfo } from '../ir'
-import type { NodeTransform } from './types'
-import type { TransformContext } from './context'
+import type { BabelNode, IRDynamicInfo } from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 export const transformChildren: NodeTransform = (node, context) => {
   const isFragment =

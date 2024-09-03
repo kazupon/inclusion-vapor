@@ -5,31 +5,31 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformText.ts
 
+import { parseExpression } from '@babel/parser'
 import { createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { isString } from '@vue-vapor/shared'
-import { parseExpression } from '@babel/parser'
 import {
+  convertToSourceLocation,
   DynamicFlag,
   IRNodeTypes,
   isSvelteElement,
-  isSvelteText,
   isSvelteMustacheTag,
-  convertToSourceLocation
-} from '../ir'
-import { isConstantExpression, getLiteralExpressionValue } from './utils'
+  isSvelteText
+} from '../ir/index.ts'
+import { getLiteralExpressionValue, isConstantExpression } from './utils.ts'
 
-import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { ParseResult as BabelParseResult } from '@babel/parser'
 import type { Expression as BabelExpression } from '@babel/types'
-import type { TransformContext } from './context'
-import type { NodeTransform } from './types'
+import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {
-  SvelteTemplateNode,
   RootNode,
   SvelteElement,
-  SvelteText,
-  SvelteMustacheTag
-} from '../ir'
+  SvelteMustacheTag,
+  SvelteTemplateNode,
+  SvelteText
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 type TextLike = SvelteText | SvelteMustacheTag
 

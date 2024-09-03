@@ -1,23 +1,23 @@
+import { parseExpression } from '@babel/parser'
 import { NodeTypes, createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { generate } from 'astring'
-import { parseExpression } from '@babel/parser'
 import {
   isSvelteAttribute,
-  isSvelteSpreadAttribute,
-  isSvelteText,
+  isSvelteEventHandler,
   isSvelteMustacheTag,
   isSvelteShorthandAttribute,
-  isSvelteEventHandler
-} from './svelte'
+  isSvelteSpreadAttribute,
+  isSvelteText
+} from './svelte.ts'
 
-import type { AttributeNode, SourceLocation, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
+import type { AttributeNode, SimpleExpressionNode, SourceLocation } from '@vue-vapor/compiler-dom'
 import type { VaporDirectiveNode } from './nodes'
 import type {
-  SvelteElement,
   SvelteAttribute,
-  SvelteText,
+  SvelteBaseDirective,
+  SvelteElement,
   SvelteSpreadAttribute,
-  SvelteBaseDirective
+  SvelteText
 } from './svelte'
 
 export function convertProps(node: SvelteElement): (VaporDirectiveNode | AttributeNode)[] {

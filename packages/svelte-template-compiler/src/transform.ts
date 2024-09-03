@@ -6,12 +6,11 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transform.ts
 
 import { isArray } from '@vue-vapor/shared'
-import { newBlock } from './transforms/utils'
-import { IRNodeTypes } from './ir'
-import { TransformContext } from './transforms'
+import { IRNodeTypes } from './ir/index.ts'
+import { TransformContext, newBlock } from './transforms/index.ts'
 
-import type { RootIRNode, RootNode } from './ir'
-import type { NodeTransform, TransformOptions } from './transforms'
+import type { RootIRNode, RootNode } from './ir/index.ts'
+import type { NodeTransform, TransformOptions } from './transforms/index.ts'
 
 // // A structural directive transform is technically also a NodeTransform;
 // // Only v-if and v-for fall into this category.

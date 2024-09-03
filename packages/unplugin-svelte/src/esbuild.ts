@@ -1,8 +1,8 @@
 import { createEsbuildPlugin } from 'unplugin'
-import { unpluginFactory } from '.'
+import { unpluginFactory } from './index.ts'
 
 import type { UnpluginInstance } from 'unplugin'
-import type { Options } from './types'
+import type { Options } from './types.ts'
 
 const esbuild: UnpluginInstance<Options, boolean>['esbuild'] = createEsbuildPlugin(unpluginFactory)
 

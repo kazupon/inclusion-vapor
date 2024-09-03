@@ -7,7 +7,7 @@
 import createDebug from 'debug'
 
 import type { SvelteSFCDescriptor } from 'svelte-vapor-sfc-compiler'
-import type { UnpluginContext } from './types'
+import type { UnpluginContext } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor:core:style')
 

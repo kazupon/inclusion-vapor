@@ -12,11 +12,11 @@ import {
   createSimpleExpression
 } from '@vue-vapor/compiler-dom'
 import { camelize, extend } from '@vue-vapor/shared'
-import { resolveExpression, isReservedProp } from './utils'
+import { isReservedProp, resolveExpression } from './utils.ts'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { TransformContext } from './context'
-import type { DirectiveTransform } from './types'
+import type { TransformContext } from './context.ts'
+import type { DirectiveTransform } from './types.ts'
 
 // same-name shorthand - :arg is expanded to :arg="arg"
 export function normalizeBindShorthand(

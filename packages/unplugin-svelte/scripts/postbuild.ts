@@ -1,8 +1,8 @@
-import path from 'node:path'
-import { promises as fs } from 'node:fs'
-import { fileURLToPath } from 'node:url'
-import fg from 'fast-glob'
 import chalk from 'chalk'
+import fg from 'fast-glob'
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 async function run() {
   // fix cjs exports

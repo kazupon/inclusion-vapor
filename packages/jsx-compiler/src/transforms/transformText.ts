@@ -5,28 +5,28 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
-import { DynamicFlag, IRNodeTypes } from '../ir'
+import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
 // import { processConditionalExpression, processLogicalExpression } from './vIf'
 // import { processMapCallExpression } from './vFor'
 import {
-  isComponentNode,
   getLiteralExpressionValue,
+  isComponentNode,
   isConstantExpression,
   isMapCallExpression,
   resolveExpression
-} from './utils'
+} from './utils.ts'
 
-import type { TransformContext } from './context'
-import type { NodeTransform } from './types'
 import type {
+  BabelCallExpression,
+  BabelNode,
+  BlockIRNode,
   JSXElement,
   JSXExpressionContainer,
   JSXText,
-  BabelNode,
-  BabelCallExpression,
-  RootNode,
-  BlockIRNode
-} from '../ir'
+  RootNode
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 type TextLike = JSXText | JSXExpressionContainer
 

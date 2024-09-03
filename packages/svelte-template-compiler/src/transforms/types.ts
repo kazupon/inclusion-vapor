@@ -4,11 +4,11 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import type { Prettify } from '@vue-vapor/shared'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { TransformContext } from './context'
-import type { BlockIRNode, VaporDirectiveNode, SvelteElement } from '../ir'
-import type { Overwrite } from '../types'
+import type { Prettify } from '@vue-vapor/shared'
+import type { BlockIRNode, SvelteElement, VaporDirectiveNode } from '../ir/index.ts'
+import type { Overwrite } from '../types.ts'
+import type { TransformContext } from './context.ts'
 
 export type NodeTransform = (
   node: BlockIRNode['node'],

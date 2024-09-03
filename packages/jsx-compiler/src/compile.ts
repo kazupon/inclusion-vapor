@@ -5,27 +5,27 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
+import { parse } from '@babel/parser'
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
-import { parse } from '@babel/parser'
 import { extend, isString } from '@vue-vapor/shared'
+import { IRNodeTypes } from './ir/index.ts'
+import { transform } from './transform.ts'
 import {
   transformChildren,
   transformElement,
   transformText,
   transformVBind,
   transformVOn
-} from './transforms'
-import { transform } from './transform'
-import { IRNodeTypes } from './ir'
+} from './transforms/index.ts'
 
 import type {
   CompilerOptions as BaseCompilerOptions,
   VaporCodegenResult as BaseVaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { RootIRNode, RootNode, JSXElement, JSXFragment, BabelProgram } from './ir'
-import type { HackOptions, NodeTransform, DirectiveTransform } from './transforms'
+import type { BabelProgram, JSXElement, JSXFragment, RootIRNode, RootNode } from './ir/index.ts'
+import type { DirectiveTransform, HackOptions, NodeTransform } from './transforms/index.ts'
 
 export interface VaporCodegenResult extends Omit<BaseVaporCodegenResult, 'ast'> {
   ast: RootIRNode

@@ -6,26 +6,25 @@
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
 import { parseExpression } from '@babel/parser'
-import { isString } from '@vue-vapor/shared'
-import { isLiteralWhitelisted, createSimpleExpression } from '@vue-vapor/compiler-dom'
-import { isGloballyAllowed } from '@vue-vapor/shared'
-import { isHtmlTags } from '../htmlTags'
-import { isSvgTags } from '../svgTags'
-import { DynamicFlag, IRNodeTypes } from '../ir'
+import { createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
+import { isGloballyAllowed, isString } from '@vue-vapor/shared'
+import { isHtmlTags } from '../htmlTags.ts'
+import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
+import { isSvgTags } from '../svgTags.ts'
 
-import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { ParseResult } from '@babel/parser'
+import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { SimpleExpressionNode, SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
-  IRDynamicInfo,
-  BlockIRNode,
-  JSXElement,
-  BabelNode,
   BabelCallExpression,
   BabelExpression,
-  BabelSourceLocation
-} from '../ir'
-import type { TransformContext } from './context'
+  BabelNode,
+  BabelSourceLocation,
+  BlockIRNode,
+  IRDynamicInfo,
+  JSXElement
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
 
 export const EMPTY_EXPRESSION: ReturnType<typeof createSimpleExpression> = createSimpleExpression(
   '',

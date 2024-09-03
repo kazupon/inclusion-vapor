@@ -7,11 +7,11 @@
 
 import { createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
 import { isGloballyAllowed, makeMap } from '@vue-vapor/shared'
-import { IRNodeTypes, DynamicFlag } from '../ir'
+import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
 
 import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { BlockIRNode, IRDynamicInfo } from '../ir'
+import type { BlockIRNode, IRDynamicInfo } from '../ir/index.ts'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included

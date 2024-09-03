@@ -1,5 +1,5 @@
-import { test, expect } from 'vitest'
-import { parse } from './parse'
+import { expect, test } from 'vitest'
+import { parse } from './parse.ts'
 
 const svelteCode = `<script lang="js">
   let count = 0

@@ -8,7 +8,7 @@
 // import { DynamicFlag, IRNodeTypes, BabelNode } from '../ir'
 
 // import type { TransformContext } from './context'
-import type { NodeTransform } from './types'
+import type { NodeTransform } from './types.ts'
 // import type { JSXFragment, JSXElement } from '../ir'
 
 export const transformComment: NodeTransform = (_node, _context) => {

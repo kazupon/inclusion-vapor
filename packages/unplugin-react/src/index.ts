@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
-import { createUnplugin } from 'unplugin'
 import createDebug from 'debug'
-import { resolveOptions } from './core/utils.ts'
+import { createUnplugin } from 'unplugin'
 import { transformComponent, transformReactivity } from './core/transform.ts'
+import { resolveOptions } from './core/utils.ts'
 
 import type { UnpluginFactory, UnpluginInstance, UnpluginOptions } from 'unplugin'
 import type { Options } from './types.ts'

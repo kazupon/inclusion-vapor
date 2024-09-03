@@ -3,23 +3,15 @@
 
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
-import {
-  analyze,
-  Scope,
-  ScopeType,
-  Variable,
-  DefinitionType
-} from '@typescript-eslint/scope-manager'
-import {
-  simpleTraverse,
-  parse as _parseTsEslint,
-  AST_NODE_TYPES
-} from '@typescript-eslint/typescript-estree'
 import { parse as parseBabel } from '@babel/parser'
-import { MagicStringAST, generateTransform } from 'magic-string-ast'
+import type { Scope, Variable } from '@typescript-eslint/scope-manager'
+import { analyze, DefinitionType, ScopeType } from '@typescript-eslint/scope-manager'
+import type { parse as _parseTsEslint } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES, simpleTraverse } from '@typescript-eslint/typescript-estree'
+import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
-import type { SvelteScript } from 'svelte-vapor-template-compiler'
 import type { File as BabelFile, Node as BabelNode } from '@babel/types'
+import type { SvelteScript } from 'svelte-vapor-template-compiler'
 
 type TSESLintNode = ReturnType<typeof _parseTsEslint>
 type GenerateMap = ReturnType<typeof MagicStringAST.prototype.generateMap>

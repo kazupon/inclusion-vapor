@@ -6,12 +6,12 @@
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
 import { isArray } from '@vue-vapor/shared'
-import { IRNodeTypes } from './ir'
-import { newBlock } from './transforms/utils'
-import { TransformContext } from './transforms'
+import { IRNodeTypes } from './ir/index.ts'
+import { TransformContext } from './transforms/index.ts'
+import { newBlock } from './transforms/utils.ts'
 
-import type { RootIRNode, RootNode, BlockIRNode } from './ir'
-import type { NodeTransform, TransformOptions } from './transforms'
+import type { BlockIRNode, RootIRNode, RootNode } from './ir/index.ts'
+import type { NodeTransform, TransformOptions } from './transforms/index.ts'
 
 // AST (Babel) -> IR
 export function transform(node: RootNode, options: TransformOptions = {}): RootIRNode {

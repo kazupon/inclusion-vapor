@@ -4,20 +4,20 @@
 // Author: Evan you (https://github.com/yyx990803), Vite team and Vue community
 // Repository url: https://github.com/vitejs/vite-plugin-vue
 
-import createDebug from 'debug'
-import { preprocess } from 'svelte/compiler'
-import { transformSvelteScript } from 'svelte-vapor-sfc-compiler'
 import { isObject, isString } from '@vue-vapor/shared'
-import { createDescriptor, getPrevDescriptor as _ } from './descriptor'
-import { genScriptCode } from './script'
-import { genTemplateCode, isUseInlineTemplate as ____ } from './template'
-import { genStyleCode } from './style'
-import { EXPORT_HELPER_ID } from './helper'
-import { createRollupError } from './utils'
+import createDebug from 'debug'
+import { transformSvelteScript } from 'svelte-vapor-sfc-compiler'
+import { preprocess } from 'svelte/compiler'
+import { createDescriptor } from './descriptor.ts'
+import { EXPORT_HELPER_ID } from './helper.ts'
+import { genScriptCode } from './script.ts'
+import { genStyleCode } from './style.ts'
+import { genTemplateCode } from './template.ts'
+import { createRollupError } from './utils.ts'
 
-import type { UnpluginOptions } from 'unplugin'
-import type { ResolvedOptions, UnpluginContext } from './types'
 import type { RawSourceMap } from 'source-map-js'
+import type { UnpluginOptions } from 'unplugin'
+import type { ResolvedOptions, UnpluginContext } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor:core:transform')
 

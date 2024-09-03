@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { transformComponent, transformReactivity } from './transform.ts'
 
 import type { ResolvedOptions } from './types.ts'

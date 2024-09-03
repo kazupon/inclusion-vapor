@@ -1,8 +1,8 @@
-import type { Prettify } from '@vue-vapor/shared'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { TransformContext } from './context'
-import type { BlockIRNode, JSXAttribute, JSXElement } from '../ir'
-import type { Overwrite } from '../types'
+import type { Prettify } from '@vue-vapor/shared'
+import type { BlockIRNode, JSXAttribute, JSXElement } from '../ir/index.ts'
+import type { Overwrite } from '../types.ts'
+import type { TransformContext } from './context.ts'
 
 export type NodeTransform = (
   node: BlockIRNode['node'],

@@ -1,6 +1,6 @@
-import type { Options } from './types'
+import { default as unplugin } from './index.ts'
 
-import unplugin from '.'
+import type { Options } from './types.ts'
 
 // eslint-disable-next-line unicorn/no-anonymous-default-export
 export default (options: Options) => ({

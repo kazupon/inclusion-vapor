@@ -1,9 +1,9 @@
-import { vi, test, expect } from 'vitest'
 import { parse } from 'svelte/compiler'
-import { IRNodeTypes } from './ir'
-import { transform } from './transform'
+import { expect, test, vi } from 'vitest'
+import { IRNodeTypes } from './ir/index.ts'
+import { transform } from './transform.ts'
 
-import type { RootNode } from './ir'
+import type { RootNode } from './ir/index.ts'
 
 const svelteCode = `
 <script>

@@ -1,7 +1,7 @@
-import { describe, test, expect } from 'vitest'
-import { transformSvelteScript, transformSvelteVapor } from './transform'
-import { parse } from 'svelte/compiler'
 import { MagicStringAST } from 'magic-string-ast'
+import { parse } from 'svelte/compiler'
+import { describe, expect, test } from 'vitest'
+import { transformSvelteScript, transformSvelteVapor } from './transform.ts'
 
 const jsCode = `let count = 0
 const increment = () => {

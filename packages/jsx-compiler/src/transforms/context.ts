@@ -5,26 +5,26 @@
 // Repository url: https://github.com/unplugin/unplugin-vue-jsx-vapor
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
-import { NOOP, extend, EMPTY_OBJ } from '@vue-vapor/shared'
 import { defaultOnError, defaultOnWarn } from '@vue-vapor/compiler-dom'
-import { newDynamic, isConstantExpression } from './utils'
-import { DynamicFlag } from '../ir'
+import { EMPTY_OBJ, NOOP, extend } from '@vue-vapor/shared'
+import { DynamicFlag } from '../ir/index.ts'
+import { isConstantExpression, newDynamic } from './utils.ts'
 
 import type {
-  CompilerCompatOptions,
-  SimpleExpressionNode,
+  TransformOptions as BaseTransformOptions,
   CommentNode,
-  TransformOptions as BaseTransformOptions
+  CompilerCompatOptions,
+  SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
 import type {
-  RootNode,
-  RootIRNode,
   BlockIRNode,
-  OperationNode,
   IRDynamicInfo,
   IRSlots,
   JSXElement,
-  JSXFragment
+  JSXFragment,
+  OperationNode,
+  RootIRNode,
+  RootNode
 } from '../ir'
 import type { HackOptions } from './types'
 

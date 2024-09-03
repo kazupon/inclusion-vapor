@@ -8,6 +8,8 @@
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
+import { IRNodeTypes } from './ir/index.ts'
+import { transform } from './transform.ts'
 import {
   transformChildren,
   transformComment,
@@ -15,17 +17,15 @@ import {
   transformText,
   transformVBind,
   transformVOn
-} from './transforms'
-import { transform } from './transform'
-import { IRNodeTypes } from './ir'
+} from './transforms/index.ts'
 
 import type {
   CompilerOptions as BaseCompilerOptions,
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { SvelteTemplateNode, RootNode } from './ir'
-import type { HackOptions, NodeTransform, DirectiveTransform } from './transforms'
+import type { RootNode, SvelteTemplateNode } from './ir/index.ts'
+import type { DirectiveTransform, HackOptions, NodeTransform } from './transforms/index.ts'
 
 // Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
 export function compile(

@@ -7,17 +7,17 @@
 
 import { ErrorCodes, createCompilerError, resolveModifiers } from '@vue-vapor/compiler-dom'
 import { extend, makeMap } from '@vue-vapor/shared'
-import { IRNodeTypes } from '../ir'
+import { IRNodeTypes } from '../ir/index.ts'
 import {
   EMPTY_EXPRESSION,
   isComponentNode,
   resolveExpression,
   resolveLocation,
   resolveSimpleExpression
-} from './utils'
+} from './utils.ts'
 
-import type { DirectiveTransform } from './types'
-import type { KeyOverride, SetEventIRNode } from '../ir'
+import type { KeyOverride, SetEventIRNode } from '../ir/index.ts'
+import type { DirectiveTransform } from './types.ts'
 
 const delegatedEvents = /*#__PURE__*/ makeMap(
   'beforeinput,click,dblclick,contextmenu,focusin,focusout,input,keydown,' +

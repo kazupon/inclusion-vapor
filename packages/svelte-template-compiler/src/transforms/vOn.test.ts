@@ -1,12 +1,12 @@
-import { describe, expect, test } from 'vitest'
-import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { NodeTypes } from '@vue-vapor/compiler-dom'
-import { makeCompile } from './_utils'
-import { transformElement } from './transformElement'
-import { transformChildren } from './transformChildren'
-import { transformText } from './transformText'
-import { IRNodeTypes } from '../ir'
-import { transformVOn } from './vOn'
+import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
+import { describe, expect, test } from 'vitest'
+import { IRNodeTypes } from '../ir/index.ts'
+import { makeCompile } from './_utils.ts'
+import { transformChildren } from './transformChildren.ts'
+import { transformElement } from './transformElement.ts'
+import { transformText } from './transformText.ts'
+import { transformVOn } from './vOn.ts'
 
 const compileWithVOn = makeCompile({
   nodeTransforms: [transformElement, transformChildren, transformText],

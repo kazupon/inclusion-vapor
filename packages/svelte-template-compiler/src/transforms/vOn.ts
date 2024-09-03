@@ -5,14 +5,13 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/vOn.ts
 
-import { ErrorCodes, createCompilerError } from '@vue-vapor/compiler-dom'
-import { resolveModifiers } from '@vue-vapor/compiler-dom'
+import { ErrorCodes, createCompilerError, resolveModifiers } from '@vue-vapor/compiler-dom'
 import { extend, makeMap } from '@vue-vapor/shared'
-import { IRNodeTypes, isSvelteElement } from '../ir'
-import { EMPTY_EXPRESSION, resolveExpression } from './utils'
+import { IRNodeTypes, isSvelteElement } from '../ir/index.ts'
+import { EMPTY_EXPRESSION, resolveExpression } from './utils.ts'
 
-import type { KeyOverride, SetEventIRNode } from '../ir'
-import type { DirectiveTransform } from './types'
+import type { KeyOverride, SetEventIRNode } from '../ir/index.ts'
+import type { DirectiveTransform } from './types.ts'
 
 const delegatedEvents = /*#__PURE__*/ makeMap(
   'beforeinput,click,dblclick,contextmenu,focusin,focusout,input,keydown,' +

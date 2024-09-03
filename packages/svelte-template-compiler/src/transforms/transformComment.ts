@@ -5,11 +5,11 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformComment.ts
 
-import { DynamicFlag, isSvelteComment, isSvelteText } from '../ir'
+import { DynamicFlag, isSvelteComment, isSvelteText } from '../ir/index.ts'
 
-import type { TransformContext } from './context'
-import type { NodeTransform } from './types'
-import type { SvelteComment, SvelteTemplateNode } from '../ir'
+import type { SvelteComment, SvelteTemplateNode } from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 export const transformComment: NodeTransform = (node, context) => {
   if (!isSvelteComment(node)) {

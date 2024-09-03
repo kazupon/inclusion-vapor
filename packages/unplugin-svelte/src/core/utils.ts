@@ -2,13 +2,13 @@
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
 import { createFilter } from '@rollup/pluginutils'
-import path from 'node:path'
 import { createHash } from 'node:crypto'
+import path from 'node:path'
 
-import type { Options } from '../types'
-import type { ResolvedOptions } from './types'
-import type { SvelteSFCBlock, CompilerError } from 'svelte-vapor-sfc-compiler'
 import type { RollupError } from 'rollup'
+import type { CompilerError, SvelteSFCBlock } from 'svelte-vapor-sfc-compiler'
+import type { Options } from '../types.ts'
+import type { ResolvedOptions } from './types.ts'
 
 export function resolveOptions(options: Options): ResolvedOptions {
   options.include ||= /\.svelte$/

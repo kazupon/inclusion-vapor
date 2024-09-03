@@ -6,29 +6,35 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformElement.ts
 
 import {
-  createSimpleExpression,
   createCompilerError,
+  createSimpleExpression,
   ErrorCodes,
   NodeTypes
 } from '@vue-vapor/compiler-dom'
-import { isVoidTag, extend, camelize, capitalize } from '@vue-vapor/shared'
+import { camelize, capitalize, extend, isVoidTag } from '@vue-vapor/shared'
+import { isValidHTMLNesting } from '../htmlNesting.ts'
 import {
-  isSvelteElement,
-  isBuiltInDirective,
   convertProps,
   DynamicFlag,
   IRDynamicPropsKind,
-  IRPropsDynamicAttribute,
-  IRNodeTypes
-} from '../ir'
-import { isValidHTMLNesting } from '../htmlNesting'
-import { EMPTY_EXPRESSION, isReservedProp } from './utils'
+  IRNodeTypes,
+  isBuiltInDirective,
+  isSvelteElement
+} from '../ir/index.ts'
+import { EMPTY_EXPRESSION, isReservedProp } from './utils.ts'
 
-import type { SimpleExpressionNode, AttributeNode } from '@vue-vapor/compiler-dom'
-import type { IRProps, IRProp, IRPropsStatic, SvelteElement, VaporDirectiveNode } from '../ir'
-import type { NodeTransform } from './types'
-import type { TransformContext } from './context'
+import type { AttributeNode, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type { DirectiveTransformResult } from '.'
+import type {
+  IRProp,
+  IRProps,
+  IRPropsDynamicAttribute,
+  IRPropsStatic,
+  SvelteElement,
+  VaporDirectiveNode
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {
   return function postTransformElement() {

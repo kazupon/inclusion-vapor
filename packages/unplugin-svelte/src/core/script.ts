@@ -7,12 +7,12 @@
 import createDebug from 'debug'
 import path from 'node:path'
 import { compileScript } from 'svelte-vapor-sfc-compiler'
-import { isUseInlineTemplate } from './template'
-import { attrsToQuery } from './utils'
+import { isUseInlineTemplate } from './template.ts'
+import { attrsToQuery } from './utils.ts'
 
-import type { SvelteSFCDescriptor, SvelteSFCScriptBlock } from 'svelte-vapor-sfc-compiler'
 import type { RawSourceMap } from 'source-map-js'
-import type { ResolvedOptions, UnpluginContext } from './types'
+import type { SvelteSFCDescriptor, SvelteSFCScriptBlock } from 'svelte-vapor-sfc-compiler'
+import type { ResolvedOptions, UnpluginContext } from './types.ts'
 
 const debug = createDebug('unplugin-svelte-vapor:core:script')
 

@@ -1,6 +1,6 @@
-import { test, expect } from 'vitest'
-import { parse } from './parse'
-import { compileScript } from './compileScript'
+import { expect, test } from 'vitest'
+import { compileScript } from './compileScript.ts'
+import { parse } from './parse.ts'
 
 const svelteCode = `<script>
 import { ref } from 'vue/vapor'

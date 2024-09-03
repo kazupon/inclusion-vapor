@@ -1,11 +1,11 @@
-import { describe, expect, test } from 'vitest'
-import { makeCompile } from './_utils'
-import { transformElement } from './transformElement'
-import { transformChildren } from './transformChildren'
-import { transformText } from './transformText'
-import { IRNodeTypes } from '../ir'
+import { BindingTypes, NodeTypes } from '@vue-vapor/compiler-dom'
 import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
-import { NodeTypes, BindingTypes } from '@vue-vapor/compiler-dom'
+import { describe, expect, test } from 'vitest'
+import { IRNodeTypes } from '../ir/index.ts'
+import { makeCompile } from './_utils.ts'
+import { transformChildren } from './transformChildren.ts'
+import { transformElement } from './transformElement.ts'
+import { transformText } from './transformText.ts'
 
 import type { BindingMetadata } from '@vue-vapor/compiler-dom'
 

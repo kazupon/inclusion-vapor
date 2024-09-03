@@ -1,6 +1,6 @@
-import { describe, test, expect } from 'vitest'
 import { parse } from 'svelte/compiler'
-import { compile } from './compile'
+import { describe, expect, test } from 'vitest'
+import { compile } from './compile.ts'
 
 const svelteCode = `
 <script>

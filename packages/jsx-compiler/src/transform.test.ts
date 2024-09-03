@@ -1,9 +1,9 @@
-import { vi, test, expect } from 'vitest'
 import { parse } from '@babel/parser'
-import { IRNodeTypes } from './ir'
-import { transform } from './transform'
+import { expect, test, vi } from 'vitest'
+import { IRNodeTypes } from './ir/index.ts'
+import { transform } from './transform.ts'
 
-import type { RootNode, JSXElement, JSXFragment } from './ir'
+import type { JSXElement, JSXFragment, RootNode } from './ir/index.ts'
 
 function getRootNodeAst(source: string): RootNode {
   const {

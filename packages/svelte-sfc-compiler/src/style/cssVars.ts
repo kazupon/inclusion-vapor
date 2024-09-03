@@ -8,7 +8,7 @@
 //   processExpression,
 // } from '@vue-vapor/compiler-dom'
 // import type { SFCDescriptor } from '../parse'
-import { getEscapedCssVarName } from '../script/utils'
+import { getEscapedCssVarName } from '../script/utils.ts'
 // import type { PluginCreator } from 'postcss'
 import hash from 'hash-sum'
 

@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
-import createDebug from 'debug'
 import { parse as parseBabel } from '@babel/parser'
-import MagicStringStack from 'magic-string-stack'
 import { walkAST } from 'ast-kit'
+import createDebug from 'debug'
 import { compile } from 'jsx-vapor-compiler'
+import MagicStringStack from 'magic-string-stack'
 
 import type { ParserPlugin } from '@babel/parser'
-import type { Node as BabelNode, ReturnStatement, FunctionDeclaration } from '@babel/types'
-import type { ResolvedOptions } from './types'
-import type { VaporCodegenResult, CompilerOptions } from 'jsx-vapor-compiler'
+import type { Node as BabelNode, FunctionDeclaration, ReturnStatement } from '@babel/types'
+import type { CompilerOptions, VaporCodegenResult } from 'jsx-vapor-compiler'
+import type { ResolvedOptions } from './types.ts'
 
 const debug = createDebug('unplugin-react-vapor:core:transform')
 
