@@ -9,6 +9,7 @@ import type { NodeTransform } from './types.ts'
 
 export const transformSlotOutlet: NodeTransform = (_node, _context) => {
   // TODO: transform vapor slot from svelte slot
+  // https://svelte.dev/docs/special-elements#slot
 
   return () => {
     // TODO:

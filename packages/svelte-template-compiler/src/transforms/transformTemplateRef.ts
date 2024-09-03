@@ -9,6 +9,9 @@ import type { NodeTransform } from './types.ts'
 
 export const transformTemplateRef: NodeTransform = (_node, _context) => {
   // TODO: transform vapor template ref for svelte `bind:this`
+  // https://svelte.dev/docs/element-directives#bind-this
+  // https://svelte.dev/docs/component-directives#bind-this
+
   return () => {
     // TODO:
   }
