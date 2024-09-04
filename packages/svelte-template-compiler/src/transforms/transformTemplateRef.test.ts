@@ -1,5 +1,6 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
 test.todo('basic', () => {
-  const _source = '<div bind:this={foo} />'
+  const source = '<div bind:this={foo} />'
+  expect(source).toBe('todo')
 })

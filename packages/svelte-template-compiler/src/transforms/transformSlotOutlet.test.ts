@@ -1,41 +1,51 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
 test.todo('default slot', () => {
-  const _source = `<slot />`
+  const source = `<slot />`
+  expect(source).toBe('todo')
 })
 
 test.todo('statically named slot', () => {
-  const _source = `<slot name="foo" />`
+  const source = `<slot name="foo" />`
+  expect(source).toBe('todo')
 })
 
 test.todo('dynamically named slot', () => {
-  const _source = `<slot name={foo} />`
+  const source = `<slot name={foo} />`
+  expect(source).toBe('todo')
 })
 
 test.todo('default slot with props', () => {
-  const _source = `<slot foo="bar" baz={qux} foo-bar={fooBar} />`
+  const source = `<slot foo="bar" baz={qux} foo-bar={fooBar} />`
+  expect(source).toBe('todo')
 })
 
 test.todo('statically named slot with props', () => {
-  const _source = `<slot name="foo" baz={qux} foo-bar={fooBar} />`
+  const source = `<slot name="foo" baz={qux} foo-bar={fooBar} />`
+  expect(source).toBe('todo')
 })
 
 test.todo('statically named slot with spread props', () => {
-  const _source = `<slot name="foo" {...things} />`
+  const source = `<slot name="foo" {...things} />`
+  expect(source).toBe('todo')
 })
 
 test.todo('statically named slot with on:event', () => {
-  const _source = `<slot name="foo" on:click/>`
+  const source = `<slot name="foo" on:click/>`
+  expect(source).toBe('todo')
 })
 
 test.todo('default slot with fallback', () => {
-  const _source = `<slot><div/></slot>`
+  const source = `<slot><div/></slot>`
+  expect(source).toBe('todo')
 })
 
 test.todo('named slot with fallback', () => {
-  const _source = `<slot name="foo"><div/></slot>`
+  const source = `<slot name="foo"><div/></slot>`
+  expect(source).toBe('todo')
 })
 
 test.todo('default slot with fallback and props', () => {
-  const _source = `<slot name={foo} baz={qux}><div/></slot>`
+  const source = `<slot name={foo} baz={qux}><div/></slot>`
+  expect(source).toBe('todo')
 })
