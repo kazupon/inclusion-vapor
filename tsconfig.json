@@ -39,6 +39,7 @@
       "svelte-vapor-sfc-compiler": ["packages/svelte-sfc-compiler/src"],
       "jsx-vapor-compiler": ["packages/jsx-compiler/src"],
       "react-vapor-hooks": ["packages/react-vapor-hooks/src"],
+      "svelte-vapor-runtime": ["packages/svelte-vapor-runtime/src"],
       "vue/vapor": ["packages/playground/node_modules/vue/vapor"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

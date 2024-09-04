@@ -1,0 +1,54 @@
+{
+  "name": "svelte-vapor-runtime",
+  "description": "svelte runtime for vapor",
+  "version": "0.0.0",
+  "author": {
+    "name": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com"
+  },
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
+  "bugs": {
+    "url": "https://github.com/kazupon/inclusion-vapor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazupon/inclusion-vapor.git",
+    "directory": "packages/svelte-vapor-runtime"
+  },
+  "keywords": [
+    "svelte",
+    "runtime",
+    "vapor"
+  ],
+  "homepage": "https://github.com/kazupon/inclusion-vapor#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 18.18"
+  },
+  "type": "module",
+  "files": [
+    "dist/index.cjs",
+    "dist/index.js"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@vue-vapor/vapor": "latest"
+  },
+  "devDependencies": {
+    "svelte": "catalog:",
+    "tsdown": "catalog:"
+  }
+}
