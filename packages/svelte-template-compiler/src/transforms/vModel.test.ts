@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-test('bind:property', () => {
+test.todo('bind:property', () => {
   const source = ``
   expect(source).toBe('todo')
 })

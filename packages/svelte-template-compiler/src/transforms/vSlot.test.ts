@@ -25,7 +25,7 @@ test.todo('named slots with implicit default slot', () => {
   expect(source).toBe('todo')
 })
 
-test('nested slots scoping', () => {
+test.todo('nested slots scoping', () => {
   const source = `<Comp>
   <template let:foo={ foo }>
     <Inner let:bar={ bar }>
@@ -37,12 +37,12 @@ test('nested slots scoping', () => {
   expect(source).toBe('todo')
 })
 
-test('dynamic slots name', () => {
+test.todo('dynamic slots name', () => {
   const source = `<Comp><div slot={ name }>foo</div></Comp>`
   expect(source).toBe('todo')
 })
 
-test('dynamic slots name with #each', () => {
+test.todo('dynamic slots name with #each', () => {
   const source = `<Comp>
   {#each items as item}
   <div slot={ item } let:text={ item }>foo</div>
@@ -51,7 +51,7 @@ test('dynamic slots name with #each', () => {
   expect(source).toBe('todo')
 })
 
-test('dynamic slots name with #each and provide absent key', () => {
+test.todo('dynamic slots name with #each and provide absent key', () => {
   const source = `<Comp>
   {#each items as item, index}
   <div slot={ index } let:text={ item }>foo</div>
