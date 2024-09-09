@@ -2,7 +2,7 @@
   "name": "inclusion-vapor-shared",
   "description": "shared utils for inclusion-vapor",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"

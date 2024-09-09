@@ -1,7 +1,7 @@
 {
   "name": "jsx-vapor-compiler",
   "description": "jsx compiler for vapor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"

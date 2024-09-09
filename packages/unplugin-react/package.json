@@ -1,7 +1,7 @@
 {
   "name": "unplugin-react-vapor",
   "description": "unplugin for react-vapor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "funding": "https://github.com/sponsors/kazupon",
   "bugs": {
