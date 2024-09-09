@@ -1,5 +1,5 @@
 diff --git a/src/compiler/interfaces.d.ts b/src/compiler/interfaces.d.ts
-index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edecb4ffdc4b 100644
+index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..dd458eebe190f508a0bf5077487ac636ecf026d5 100644
 --- a/src/compiler/interfaces.d.ts
 +++ b/src/compiler/interfaces.d.ts
 @@ -1,5 +1,6 @@
@@ -9,7 +9,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edec
  
  interface BaseNode {
  	start: number;
-@@ -35,11 +36,23 @@ export interface ConstTag extends BaseNode {
+@@ -35,11 +36,24 @@ export interface ConstTag extends BaseNode {
  	expression: AssignmentExpression;
  }
  
@@ -21,6 +21,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edec
  
 +export interface IfBlock extends BaseNode {
 +  type: 'IfBlock';
++  elseif?: boolean;
 +  expression: Node;
 +  children: TemplateNode[];
 +  else?: ElseBlock;
@@ -34,7 +35,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edec
  export type DirectiveType =
  	| 'Action'
  	| 'Animation'
-@@ -90,6 +103,11 @@ export interface SpreadAttribute extends BaseNode {
+@@ -90,6 +104,11 @@ export interface SpreadAttribute extends BaseNode {
  	expression: Node;
  }
  
@@ -46,7 +47,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edec
  export interface Transition extends BaseExpressionDirective {
  	type: 'Transition';
  	intro: boolean;
-@@ -103,10 +121,13 @@ export type TemplateNode =
+@@ -103,10 +122,13 @@ export type TemplateNode =
  	| ConstTag
  	| DebugTag
  	| MustacheTag
@@ -60,7 +61,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..b8b5185a79f2b605f493e7604216edec
  	| Directive
  	| Transition
  	| Comment;
-@@ -127,7 +148,8 @@ export interface Parser {
+@@ -127,7 +149,8 @@ export interface Parser {
  export interface Script extends BaseNode {
  	type: 'Script';
  	context: string;
@@ -104,7 +105,7 @@ index 3d4ab358df18d42b7af4288ff3b4718d1774ec44..fcdfbd2bcd078253c671da3d01e00278
  		content: ast
  	};
 diff --git a/types/index.d.ts b/types/index.d.ts
-index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae7df074f7 100644
+index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..9ce00c43ccd5aec73e852622623e27a9a44e6006 100644
 --- a/types/index.d.ts
 +++ b/types/index.d.ts
 @@ -90,7 +90,7 @@ declare module 'svelte' {
@@ -178,12 +179,13 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	}
  
  	interface MustacheTag extends BaseNode {
-@@ -310,6 +312,18 @@ declare module 'svelte/compiler' {
+@@ -310,6 +312,19 @@ declare module 'svelte/compiler' {
  		identifiers: Node[];
  	}
  
 +  interface IfBlock extends BaseNode {
 +    type: 'IfBlock';
++    elseif?: boolean;
 +    expression: Node;
 +    children: TemplateNode[];
 +    else?: ElseBlock;
@@ -197,7 +199,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -360,6 +374,11 @@ declare module 'svelte/compiler' {
+@@ -360,6 +375,11 @@ declare module 'svelte/compiler' {
  		expression: Node;
  	}
  
@@ -209,7 +211,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	interface Transition extends BaseExpressionDirective {
  		type: 'Transition';
  		intro: boolean;
-@@ -373,10 +392,13 @@ declare module 'svelte/compiler' {
+@@ -373,10 +393,13 @@ declare module 'svelte/compiler' {
  		| ConstTag
  		| DebugTag
  		| MustacheTag
@@ -223,7 +225,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  		| Directive
  		| Transition
  		| Comment;
-@@ -384,7 +406,8 @@ declare module 'svelte/compiler' {
+@@ -384,7 +407,8 @@ declare module 'svelte/compiler' {
  	interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
@@ -233,7 +235,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	}
  
  	interface Style extends BaseNode {
-@@ -866,6 +889,7 @@ declare module 'svelte/types/compiler/preprocess' {
+@@ -866,6 +890,7 @@ declare module 'svelte/types/compiler/preprocess' {
  
  declare module 'svelte/types/compiler/interfaces' {
  	import type { AssignmentExpression, Node, Program } from 'estree';
@@ -241,7 +243,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	import type { SourceMap } from 'magic-string';
  	interface BaseNode {
  		start: number;
-@@ -883,6 +907,7 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -883,6 +908,7 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Text extends BaseNode {
  		type: 'Text';
  		data: string;
@@ -249,7 +251,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	}
  
  	export interface MustacheTag extends BaseNode {
-@@ -901,11 +926,23 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -901,11 +927,24 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: AssignmentExpression;
  	}
  
@@ -261,6 +263,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  
 +  export interface IfBlock extends BaseNode {
 +    type: 'IfBlock';
++    elseif?: boolean;
 +    expression: Node;
 +    children: TemplateNode[];
 +    else?: ElseBlock;
@@ -274,7 +277,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	export type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -956,6 +993,11 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -956,6 +995,11 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: Node;
  	}
  
@@ -286,7 +289,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  	export interface Transition extends BaseExpressionDirective {
  		type: 'Transition';
  		intro: boolean;
-@@ -969,10 +1011,13 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -969,10 +1013,13 @@ declare module 'svelte/types/compiler/interfaces' {
  		| ConstTag
  		| DebugTag
  		| MustacheTag
@@ -300,7 +303,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..95e9d40a0b75914f380a3631d4d5deae
  		| Directive
  		| Transition
  		| Comment;
-@@ -993,7 +1038,8 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -993,7 +1040,8 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
