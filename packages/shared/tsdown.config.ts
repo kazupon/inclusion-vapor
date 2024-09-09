@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsdown'
 import replace from '@rollup/plugin-replace'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   entry: 'src/index.ts',
@@ -7,6 +7,7 @@ export default defineConfig({
   platform: 'node',
   outDir: 'dist',
   clean: true,
+  unused: true,
   dts: true,
   // @ts-expect-error
   plugins: [
