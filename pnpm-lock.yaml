@@ -30,7 +30,7 @@ overrides:
 
 patchedDependencies:
   svelte@4.2.18:
-    hash: nrmskjuickzosje3buqtnt7ufq
+    hash: ritfm7brjhkp6eso6qg5hdyif4
     path: patches/svelte@4.2.18.patch
 
 importers:
@@ -39,7 +39,7 @@ importers:
     devDependencies:
       '@kazupon/eslint-config':
         specifier: ^0.17.0
-        version: 0.17.0(fg2amj4gbifjbr7pill4tto47m)
+        version: 0.17.0(zzhixvu25iy6f2pont4shethdq)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -75,7 +75,7 @@ importers:
         version: 2.6.0(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-svelte:
         specifier: ^2.43.0
-        version: 2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq))
+        version: 2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4))
       eslint-plugin-toml:
         specifier: ^0.11.1
         version: 0.11.1(eslint@9.9.0(jiti@1.21.6))
@@ -111,7 +111,7 @@ importers:
         version: 3.3.3
       prettier-plugin-svelte:
         specifier: ^3.2.6
-        version: 3.2.6(prettier@3.3.3)(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq))
+        version: 3.2.6(prettier@3.3.3)(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4))
       prettier-plugin-toml:
         specifier: ^2.0.1
         version: 2.0.1(prettier@3.3.3)
@@ -320,7 +320,7 @@ importers:
         version: 1.2.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+        version: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
       svelte-vapor-template-compiler:
         specifier: workspace:*
         version: link:../svelte-template-compiler
@@ -354,7 +354,7 @@ importers:
         version: 1.8.6
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+        version: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
     devDependencies:
       '@babel/types':
         specifier: 'catalog:'
@@ -377,7 +377,7 @@ importers:
         version: 1.2.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+        version: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
       svelte-vapor-template-compiler:
         specifier: workspace:*
         version: link:../svelte-template-compiler
@@ -396,7 +396,7 @@ importers:
     devDependencies:
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+        version: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
       tsdown:
         specifier: 'catalog:'
         version: 0.2.14(rollup@4.20.0)(typescript@5.5.4)
@@ -487,7 +487,7 @@ importers:
         version: 0.23.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+        version: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
       svelte-vapor-sfc-compiler:
         specifier: workspace:*
         version: link:../svelte-sfc-compiler
@@ -5760,7 +5760,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.17.0(fg2amj4gbifjbr7pill4tto47m)':
+  '@kazupon/eslint-config@0.17.0(zzhixvu25iy6f2pont4shethdq)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.3.0(eslint@9.9.0(jiti@1.21.6))
       '@eslint/js': 9.9.0
@@ -5776,13 +5776,13 @@ snapshots:
       eslint-plugin-react-hooks: 4.6.2(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-react-refresh: 0.4.9(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-regexp: 2.6.0(eslint@9.9.0(jiti@1.21.6))
-      eslint-plugin-svelte: 2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq))
+      eslint-plugin-svelte: 2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4))
       eslint-plugin-toml: 0.11.1(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-unicorn: 54.0.0(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-unused-imports: 4.1.3(@typescript-eslint/eslint-plugin@8.3.0(@typescript-eslint/parser@8.3.0(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-vue: 9.27.0(eslint@9.9.0(jiti@1.21.6))
       eslint-plugin-yml: 1.14.0(eslint@9.9.0(jiti@1.21.6))
-      svelte: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+      svelte: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
       typescript-eslint: 8.3.0(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4)
     transitivePeerDependencies:
       - '@vue/reactivity'
@@ -7601,7 +7601,7 @@ snapshots:
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
 
-  eslint-plugin-svelte@2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)):
+  eslint-plugin-svelte@2.43.0(eslint@9.9.0(jiti@1.21.6))(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.9.0(jiti@1.21.6))
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -7614,9 +7614,9 @@ snapshots:
       postcss-safe-parser: 6.0.0(postcss@8.4.41)
       postcss-selector-parser: 6.1.2
       semver: 7.6.3
-      svelte-eslint-parser: 0.41.0(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq))
+      svelte-eslint-parser: 0.41.0(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4))
     optionalDependencies:
-      svelte: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+      svelte: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
     transitivePeerDependencies:
       - ts-node
 
@@ -9064,10 +9064,10 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-svelte@3.2.6(prettier@3.3.3)(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)):
+  prettier-plugin-svelte@3.2.6(prettier@3.3.3)(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)):
     dependencies:
       prettier: 3.3.3
-      svelte: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+      svelte: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
 
   prettier-plugin-toml@2.0.1(prettier@3.3.3):
     dependencies:
@@ -9594,7 +9594,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-eslint-parser@0.41.0(svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)):
+  svelte-eslint-parser@0.41.0(svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)):
     dependencies:
       eslint-scope: 7.2.2
       eslint-visitor-keys: 3.4.3
@@ -9602,9 +9602,9 @@ snapshots:
       postcss: 8.4.41
       postcss-scss: 4.0.9(postcss@8.4.41)
     optionalDependencies:
-      svelte: 4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq)
+      svelte: 4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4)
 
-  svelte@4.2.18(patch_hash=nrmskjuickzosje3buqtnt7ufq):
+  svelte@4.2.18(patch_hash=ritfm7brjhkp6eso6qg5hdyif4):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0
