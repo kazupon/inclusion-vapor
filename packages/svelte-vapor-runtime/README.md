@@ -1,6 +1,6 @@
-# react-vapor-hooks
+# svelte-vapor-runtime
 
-> React hooks for vapor
+> Svelte runtime for vapor
 
 ## ©️ License
 
