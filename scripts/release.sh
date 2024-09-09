@@ -19,7 +19,7 @@ fi
 # Release packages
 for PKG in packages/* ; do
   if [[ -d $PKG ]]; then
-    if [[ $PKG == packages/svelte-template-explorer || $PKG == packages/jsx-explorer || $PKG == packages/playground || $PKG == pakcages/shared ]]; then
+    if [[ $PKG == packages/svelte-template-explorer || $PKG == packages/jsx-explorer || $PKG == packages/playground ]]; then
       continue
     fi
     pushd $PKG

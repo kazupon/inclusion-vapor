@@ -1,7 +1,6 @@
 {
   "name": "inclusion-vapor-shared",
   "description": "shared utils for inclusion-vapor",
-  "private": true,
   "version": "0.0.3",
   "author": {
     "name": "kazuya kawaguchi",
