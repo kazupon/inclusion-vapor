@@ -1,7 +1,7 @@
 {
   "name": "inclusion-vapor",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kazupon/inclusion-vapor/issues"
