@@ -9,7 +9,7 @@ const entries: Record<string, string> = {
   'react-vapor-hooks': resolveEntryForPkg('react-vapor-hooks'),
   'svete-vapor-sfc-compiler': resolveEntryForPkg('svelte-sfc-compiler'),
   'svelte-vapor-template-compiler': resolveEntryForPkg('svelte-template-compiler'),
-  'svetel-vapor-rutime': resolveEntryForPkg('svelte-vapor-runtime'),
+  'svetel-vapor-runtime': resolveEntryForPkg('svelte-vapor-runtime'),
   'unplugin-react-vapor': resolveEntryForPkg('unplugin-react'),
   'unplugin-svelte-vapor': resolveEntryForPkg('unplugin-svelte')
 }
