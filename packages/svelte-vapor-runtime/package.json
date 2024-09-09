@@ -1,7 +1,7 @@
 {
   "name": "svelte-vapor-runtime",
   "description": "svelte runtime for vapor",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"
