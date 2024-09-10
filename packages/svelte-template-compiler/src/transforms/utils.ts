@@ -5,13 +5,27 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/utils.ts
 
+import { parseExpression } from '@babel/parser'
 import { createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
-import { isGloballyAllowed, makeMap } from '@vue-vapor/shared'
-import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
+import { isGloballyAllowed, isString, makeMap } from '@vue-vapor/shared'
+import { DynamicFlag, IRNodeTypes, convertToSourceLocation } from '../ir/index.ts'
 
-import type { BigIntLiteral, NumericLiteral, StringLiteral } from '@babel/types'
+import type { ParseResult as BabelParseResult } from '@babel/parser'
+import type {
+  Expression as BabelExpression,
+  BigIntLiteral,
+  NumericLiteral,
+  StringLiteral
+} from '@babel/types'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { BlockIRNode, IRDynamicInfo } from '../ir/index.ts'
+import type {
+  BlockIRNode,
+  IRDynamicInfo,
+  SvelteBaseNode,
+  SvelteIfBlock,
+  SvelteMustacheTag
+} from '../ir/index.ts'
+import type { TransformContext } from './context.ts'
 import type { NodeTransform, StructuralDirectiveTransform } from './types.ts'
 
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
@@ -55,6 +69,67 @@ export function resolveExpression(exp: SimpleExpressionNode): SimpleExpressionNo
   }
   return exp
 }
+
+export function resolveSimpleExpression<T extends SvelteMustacheTag | SvelteIfBlock>(
+  node: SvelteMustacheTag | SvelteIfBlock,
+  context: TransformContext<T>
+): SimpleExpressionNode {
+  const { expression } = node as { expression: SvelteMustacheTag['expression'] }
+  const base = node as SvelteBaseNode
+
+  const content =
+    expression.type === 'Identifier'
+      ? expression.name
+      : expression.type === 'Literal'
+        ? expression.raw || ''
+        : context.ir.source.slice(base.start, base.end)
+  const loc = expression.loc || convertToSourceLocation(base, content) // FIXME: twaeak loc type
+
+  let ast: BabelParseResult<BabelExpression> | false = false
+  const isStatic =
+    expression.type === 'Identifier'
+      ? false
+      : expression.type === 'Literal' && !isString(expression.value)
+  if (!isStatic && context.options.prefixIdentifiers) {
+    // HACK: we need to parse the expression in prefix mode to resolve scope IDs
+    ast = parseExpression(` ${content}`, {
+      sourceType: 'module',
+      plugins: context.options.expressionPlugins
+    })
+  }
+
+  const exp = createSimpleExpression(
+    content,
+    isStatic,
+    loc as ReturnType<typeof convertToSourceLocation>
+  )
+  exp.ast = ast ?? null // eslint-disable-line unicorn/no-null
+  return exp
+}
+
+// export function wrapTemplate(node: SvelteTemplateNode, dirs: string[]): TemplateNode {
+//   if (node.tagType === ElementTypes.TEMPLATE) {
+//     return node
+//   }
+//
+//   const reserved: Array<AttributeNode | DirectiveNode> = []
+//   const pass: Array<AttributeNode | DirectiveNode> = []
+//   node.props.forEach(prop => {
+//     if (prop.type === NodeTypes.DIRECTIVE && dirs.includes(prop.name)) {
+//       reserved.push(prop)
+//     } else {
+//       pass.push(prop)
+//     }
+//   })
+//
+//   return extend({}, node, {
+//     type: NodeTypes.ELEMENT,
+//     tag: 'template',
+//     props: reserved,
+//     tagType: ElementTypes.TEMPLATE,
+//     children: [extend({}, node, { props: pass } as TemplateChildNode)],
+//   } as Partial<TemplateNode>)
+// }
 
 export function getLiteralExpressionValue(
   exp: SimpleExpressionNode

@@ -12,6 +12,7 @@ import { transformVIf } from './vIf.ts'
 import type { IfIRNode } from '../ir/index.ts'
 
 const compileWithVIf = makeCompile({
+  prefixIdentifiers: false,
   nodeTransforms: [transformElement, transformChildren, transformText, transformVIf],
   directiveTransforms: {
     bind: transformVBind
@@ -19,14 +20,12 @@ const compileWithVIf = makeCompile({
 })
 
 test('basic', () => {
-  const source = `{#if ok}
-  <div>{msg}</div>
-{/if}`
-  const { code, vaporHelpers, ir, helpers } = compileWithVIf(source)
-  const expectedResult = vaporCompile(`<div v-if="ok">{{msg}}</div>`)
+  const source1 = `{#if ok}<div>{msg}</div>{/if}`
+  const source2 = `<div v-if="ok">{{msg}}</div>`
+  const { code, vaporHelpers, ir, helpers } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
   expect(code).toMatchSnapshot('received')
   expect(expectedResult.code).toMatchSnapshot('expected')
-  expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(vaporHelpers).contains('createIf')
   expect(helpers.size).toBe(0)

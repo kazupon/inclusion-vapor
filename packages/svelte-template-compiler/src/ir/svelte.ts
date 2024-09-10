@@ -117,6 +117,8 @@ export type {
   Comment as SvelteComment,
   Directive as SvelteDirective,
   Element as SvelteElement,
+  ElseBlock as SvelteElseBlock,
+  IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
   Script as SvelteScript,
   ShorthandAttribute as SvelteShorthandAttribute,

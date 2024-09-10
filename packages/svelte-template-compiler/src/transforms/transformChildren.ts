@@ -18,7 +18,14 @@ export const transformChildren: NodeTransform = (node, context) => {
   if (node.type !== 'Element' && !isFragment) {
     return
   }
+  processChildren(node, context, isFragment)
+}
 
+export function processChildren(
+  node: Parameters<NodeTransform>[0],
+  context: Parameters<NodeTransform>[1],
+  isFragment: boolean
+): ReturnType<NodeTransform> {
   const children = node.children || []
 
   // normalize svelte text

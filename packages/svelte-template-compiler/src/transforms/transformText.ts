@@ -5,9 +5,7 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/transformText.ts
 
-import { parseExpression } from '@babel/parser'
 import { createSimpleExpression } from '@vue-vapor/compiler-dom'
-import { isString } from '@vue-vapor/shared'
 import {
   convertToSourceLocation,
   DynamicFlag,
@@ -16,10 +14,12 @@ import {
   isSvelteMustacheTag,
   isSvelteText
 } from '../ir/index.ts'
-import { getLiteralExpressionValue, isConstantExpression } from './utils.ts'
+import {
+  getLiteralExpressionValue,
+  isConstantExpression,
+  resolveSimpleExpression
+} from './utils.ts'
 
-import type { ParseResult as BabelParseResult } from '@babel/parser'
-import type { Expression as BabelExpression } from '@babel/types'
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {
   RootNode,
@@ -100,42 +100,6 @@ function createTextLikeExpression(node: TextLike, context: TransformContext): Si
   return isSvelteText(node)
     ? createSimpleExpression(node.data, true, convertToSourceLocation(node, (node as unknown as { raw: string }).raw || node.data))
     : resolveSimpleExpression(node, context as TransformContext<SvelteMustacheTag>)
-}
-
-function resolveSimpleExpression<T extends SvelteMustacheTag>(
-  node: SvelteMustacheTag,
-  context: TransformContext<T>
-): SimpleExpressionNode {
-  const { expression } = node
-
-  const content =
-    expression.type === 'Identifier'
-      ? expression.name
-      : expression.type === 'Literal'
-        ? expression.raw || ''
-        : context.ir.source.slice(node.start, node.end)
-  const loc = expression.loc || convertToSourceLocation(node, content) // FIXME: twaeak loc type
-
-  let ast: BabelParseResult<BabelExpression> | false = false
-  const isStatic =
-    expression.type === 'Identifier'
-      ? false
-      : expression.type === 'Literal' && !isString(expression.value)
-  if (!isStatic && context.options.prefixIdentifiers) {
-    // HACK: we need to parse the expression in prefix mode to resolve scope IDs
-    ast = parseExpression(` ${content}`, {
-      sourceType: 'module',
-      plugins: context.options.expressionPlugins
-    })
-  }
-
-  const exp = createSimpleExpression(
-    content,
-    isStatic,
-    loc as ReturnType<typeof convertToSourceLocation>
-  )
-  exp.ast = ast ?? null // eslint-disable-line unicorn/no-null
-  return exp
 }
 
 function isAllTextLike(children: SvelteTemplateNode[]): children is TextLike[] {

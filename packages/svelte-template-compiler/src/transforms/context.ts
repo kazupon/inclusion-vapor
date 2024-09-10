@@ -90,6 +90,26 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
     this.directive = this.ir.directive
   }
 
+  enterBlock(ir: BlockIRNode, isVFor: boolean = false): () => void {
+    const { block, template, dynamic, childrenTemplate, slots } = this
+    this.block = ir
+    this.dynamic = ir.dynamic
+    this.template = ''
+    this.childrenTemplate = []
+    this.slots = []
+    isVFor && this.inVFor++ // eslint-disable-line @typescript-eslint/no-unused-expressions
+    return () => {
+      // exit
+      this.registerTemplate()
+      this.block = block
+      this.template = template
+      this.dynamic = dynamic
+      this.childrenTemplate = childrenTemplate
+      this.slots = slots
+      isVFor && this.inVFor-- // eslint-disable-line @typescript-eslint/no-unused-expressions
+    }
+  }
+
   increaseId = (): number => this.globalId++
 
   reference(): number {
