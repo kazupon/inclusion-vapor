@@ -92,7 +92,7 @@ Based on Svelte v4 (maybe v3 compatible)
 <details>
 
 - [ ] transform
-  - [x] NodeTransform
+  - [ ] WIP: NodeTransform
   - [ ] WIP: DirectiveTransform
 - [ ] Svelte Component
   - [x] prop
@@ -103,7 +103,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `$`
   - [ ] `context="module"`
 - [ ] Logic blocks
-  - [ ] `{#if}` / `{:else}` / `{:else if}`
+  - [x] `{#if}` / `{:else}` / `{:else if}`
   - [ ] `{#each}`
   - [ ] `{#await}`
   - [ ] `{#key}`
