@@ -135,7 +135,9 @@ function transformNativeElement(
       const { key, values } = prop
       if (key.isStatic && values.length === 1 && values[0].isStatic) {
         template += ` ${key.content}`
-        if (values[0].content) template += `="${values[0].content}"`
+        if (values[0].content) {
+          template += `="${values[0].content}"`
+        }
       } else {
         context.registerEffect(values, {
           type: IRNodeTypes.SET_PROP,
