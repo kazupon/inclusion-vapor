@@ -3,13 +3,13 @@
 // Forked from `@vue/compiler-vapor`
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
-// Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/.ts
+// Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/vIf.ts
 
-import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
+import { DynamicFlag, IRNodeTypes, isIfBlockOnElseBlock, isIfBlockOnTop } from '../ir/index.ts'
 import { processChildren } from './transformChildren.ts'
 import { newBlock, resolveSimpleExpression } from './utils.ts'
 
-import type { BlockIRNode, SvelteIfBlock, SvelteTemplateNode } from '../ir/index.ts'
+import type { BlockIRNode, IfIRNode, SvelteIfBlock, SvelteTemplateNode } from '../ir/index.ts'
 import type { TransformContext } from './context.ts'
 import type { NodeTransform } from './types.ts'
 
@@ -19,41 +19,61 @@ import type { NodeTransform } from './types.ts'
  */
 export const transformVIf: NodeTransform = (node, context) => {
   if (node.type === 'IfBlock' && !node.elseif) {
-    return processIf(node as SvelteIfBlock, context as TransformContext<SvelteIfBlock>)
+    return processIf(node as SvelteIfBlock, context as TransformContext<SvelteIfBlock>, [])
   }
 }
 
 function processIf(
   node: SvelteIfBlock,
-  context: TransformContext<SvelteIfBlock>
-): (() => void)[] | undefined {
-  const exitFns: (() => void)[] = []
-
-  if (node.type === 'IfBlock' && !node.elseif) {
+  context: TransformContext<SvelteIfBlock>,
+  exitFns: (() => void)[],
+  ifNode?: IfIRNode
+): (() => void)[] {
+  let id = -1
+  if (isIfBlockOnTop(node) && ifNode === undefined) {
     context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
-    const id = context.reference()
-    const condition = resolveSimpleExpression(node, context)
-    const [branch, onExit] = createIfBranch(
-      node as SvelteTemplateNode,
-      context as TransformContext<SvelteTemplateNode>
-    )
+    id = context.reference()
+  }
 
-    processChildren(
-      node as SvelteTemplateNode,
-      context as TransformContext<SvelteTemplateNode>,
-      true
-    )
+  const condition = resolveSimpleExpression(node, context)
+  const [branch, onExit] = createIfBranch(node, context)
+  const operation: IfIRNode = {
+    type: IRNodeTypes.IF,
+    id,
+    condition,
+    positive: branch,
+    once: context.inVOnce
+  }
 
-    exitFns.push(() => {
-      onExit()
-      context.registerOperation({
-        type: IRNodeTypes.IF,
-        id,
-        condition,
-        positive: branch,
-        once: context.inVOnce
-      })
-    })
+  // set new BlockIRNode to negative
+  if (isIfBlockOnElseBlock(node) && ifNode) {
+    ifNode.negative = operation
+  }
+
+  // process children
+  processChildren(node, context, true)
+
+  exitFns.push(() => {
+    onExit()
+    if (isIfBlockOnTop(node)) {
+      // if `#if` blocks is top, register operation
+      context.registerOperation(operation)
+    }
+  })
+
+  // process `:else if` or `:else` block
+  if (node.else?.type === 'ElseBlock') {
+    const ifBlock = node.else.children.find(child => child.type === 'IfBlock') as SvelteIfBlock
+    if (ifBlock == undefined) {
+      // for `:else` block
+      const [branch, onExit] = createIfBranch(node.else, context)
+      operation.negative = branch
+      processChildren(node.else, context, true)
+      exitFns.push(() => onExit())
+    } else {
+      // for `:else if` block
+      return processIf(ifBlock, context, exitFns, operation)
+    }
   }
 
   return exitFns

@@ -22,14 +22,15 @@ const compileWithVIf = makeCompile({
 test('basic', () => {
   const source1 = `{#if ok}<div>{msg}</div>{/if}`
   const source2 = `<div v-if="ok">{{msg}}</div>`
+
   const { code, vaporHelpers, ir, helpers } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
+
   expect(code).toMatchSnapshot('received')
   expect(expectedResult.code).toMatchSnapshot('expected')
 
   expect(vaporHelpers).contains('createIf')
   expect(helpers.size).toBe(0)
-
   expect(ir.template).toEqual(['<div></div>'])
   expect(ir.block.operation).toMatchObject([
     {
@@ -58,61 +59,173 @@ test('basic', () => {
   expect((ir.block.operation[0] as IfIRNode).positive.effect).lengthOf(1)
 })
 
-test.todo('dedupe same template', () => {
-  const source = `{#if ok}
-  <div>{msg}</div>
-{/if}
-{#if ok}
-  <div>{msg}</div>
-{/if}`
-  expect(source).toBe('todo')
+test('#if + :else', () => {
+  const source1 = `{#if ok}<div></div>{:else}<p></p>{/if}`
+  const source2 = `<div v-if="ok"/><p v-else/>`
+
+  const { code, ir, vaporHelpers, helpers } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<div></div>', '<p></p>'])
+  expect(vaporHelpers).contains('createIf')
+  expect(ir.block.effect).lengthOf(0)
+  expect(helpers).lengthOf(0)
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.IF,
+      id: 0,
+      condition: {
+        type: NodeTypes.SIMPLE_EXPRESSION,
+        content: 'ok',
+        isStatic: false
+      },
+      positive: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 0 }]
+        }
+      },
+      negative: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 1 }]
+        }
+      }
+    }
+  ])
+  expect(ir.block.returns).toEqual([0])
 })
 
-test.todo('#if + :else', () => {
-  const source = `{#if ok}
-  <div></div>
-{:else}
-  <p></p>
-{/if}`
-  expect(source).toBe('todo')
+test('#if + :else-if', () => {
+  const source1 = `{#if ok}<div></div>{:else if orNot}<p></p>{/if}`
+  const source2 = `<div v-if="ok"/><p v-else-if="orNot"/>`
+
+  const { code, ir } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<div></div>', '<p></p>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.IF,
+      id: 0,
+      condition: {
+        type: NodeTypes.SIMPLE_EXPRESSION,
+        content: 'ok',
+        isStatic: false
+      },
+      positive: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 0 }]
+        }
+      },
+      negative: {
+        type: IRNodeTypes.IF,
+        condition: {
+          type: NodeTypes.SIMPLE_EXPRESSION,
+          content: 'orNot',
+          isStatic: false
+        },
+        positive: {
+          type: IRNodeTypes.BLOCK,
+          dynamic: {
+            children: [{ template: 1 }]
+          }
+        }
+      }
+    }
+  ])
+  expect(ir.block.returns).toEqual([0])
 })
 
-test.todo('#if + :else-if', () => {
-  const source = `{#if ok}
-  <div></div>
-{:else if orNot}
-  <p></p>
-{/if}`
-  expect(source).toBe('todo')
+test('#if + :else-if + :else', () => {
+  const source1 = `{#if ok}<div></div>{:else if orNot}<p></p>{:else}<span>fine</span>{/if}`
+  const source2 = `<div v-if="ok"/><p v-else-if="orNot"/><span v-else>fine</span>`
+
+  const { code, ir } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<div></div>', '<p></p>', '<span>fine</span>'])
+  expect(ir.block.returns).toEqual([0])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.IF,
+      id: 0,
+      positive: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 0 }]
+        }
+      },
+      negative: {
+        type: IRNodeTypes.IF,
+        positive: {
+          type: IRNodeTypes.BLOCK,
+          dynamic: {
+            children: [{ template: 1 }]
+          }
+        },
+        negative: {
+          type: IRNodeTypes.BLOCK,
+          dynamic: {
+            children: [{ template: 2 }]
+          }
+        }
+      }
+    }
+  ])
 })
 
-test.todo('#if + :else-if + :else', () => {
-  const source = `{#if ok}
-  <div></div>
-{:else if orNot}
-  <p></p>
-{:else}
-  <template>fine</template>
-{/if}`
-  expect(source).toBe('todo')
+test('dedupe same template', () => {
+  const source1 = `{#if ok}<div>hello</div>{/if}{#if ok}<div>hello</div>{/if}`
+  const source2 = `<div v-if="ok">hello</div><div v-if="ok">hello</div>`
+
+  const { code, ir } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<div>hello</div>'])
+  expect(ir.block.returns).toEqual([0, 3])
 })
 
 test.todo('comment between blocks', () => {
-  const source = `{#if ok}
+  const source1 = `{#if ok}
   <div></div>
   <!-- foo -->
 {:else if orNot}
-  <!-- bar -->
   <p></p>
+  <!-- bar -->
 {:else}
-  <template>fine</template>
+  fine
 {/if}`
-  expect(source).toBe('todo')
+  const source2 = `<div v-if="ok"/>
+<!--foo-->
+<p v-else-if="orNot"/>
+<!--bar-->
+<template v-else>fine</template>
+`
+  const { code, ir } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<div></div>', '<!--foo-->', '<p></p>', '<!--bar-->', 'fine'])
 })
 
-test.todo('nested #if', () => {
-  const source = `{#if ok}
-  <p>top</p>
+test('nested #if', () => {
+  const source1 = `{#if ok}
   {#if nested}
     <span>nested</span>
   {:else if nestedElse}
@@ -121,9 +234,83 @@ test.todo('nested #if', () => {
     <span>nestedElse</span>
   {/if}
 {:else}
-  <template>fine</template>
+  fine
 {/if}`
-  expect(source).toBe('todo')
+  const source2 = `<template v-if="ok">
+  <span v-if="nested">nested</span>
+  <span v-else-if="nestedElse">nestedElseIf</span>
+  <span v-else>nestedElse</span>
+</template>
+<template v-else>fine</template>`
+  const { code, ir } = compileWithVIf(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual([
+    '<span>nested</span>',
+    '<span>nestedElseIf</span>',
+    '<span>nestedElse</span>',
+    'fine'
+  ])
+  expect(ir.block.returns).toEqual([0])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.IF,
+      id: 0,
+      condition: {
+        type: NodeTypes.SIMPLE_EXPRESSION,
+        content: 'ok',
+        isStatic: false
+      },
+      positive: {
+        type: IRNodeTypes.BLOCK,
+        operation: [
+          {
+            type: IRNodeTypes.IF,
+            condition: {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              content: 'nested',
+              isStatic: false
+            },
+            positive: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                children: [{ template: 0 }]
+              }
+            },
+            negative: {
+              type: IRNodeTypes.IF,
+              condition: {
+                type: NodeTypes.SIMPLE_EXPRESSION,
+                content: 'nestedElse',
+                isStatic: false
+              },
+              positive: {
+                type: IRNodeTypes.BLOCK,
+                dynamic: {
+                  children: [{ template: 1 }]
+                }
+              },
+              negative: {
+                type: IRNodeTypes.BLOCK,
+                dynamic: {
+                  children: [{ template: 2 }]
+                }
+              }
+            }
+          }
+        ]
+      },
+      negative: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 3 }]
+        }
+      }
+    }
+  ])
 })
 
 test.todo('component #if', () => {

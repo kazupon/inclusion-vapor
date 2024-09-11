@@ -16,6 +16,7 @@ import {
   transformElement,
   transformText,
   transformVBind,
+  transformVIf,
   transformVOn
 } from './transforms/index.ts'
 
@@ -113,7 +114,7 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
   return [
     [
       // transformVOnce,
-      // transformVIf,
+      transformVIf,
       // transformVFor,
       // transformSlotOutlet,
       // transformTemplateRef,

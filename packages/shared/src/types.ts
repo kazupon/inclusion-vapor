@@ -2,9 +2,9 @@
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
 import type {
-  SimpleExpressionNode,
+  CompoundExpressionNode,
   DirectiveNode,
-  CompoundExpressionNode
+  SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
 
 export interface DirectiveTransformResult {
