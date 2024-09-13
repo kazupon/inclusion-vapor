@@ -330,3 +330,43 @@ test.todo('component #if', () => {
 {/if}`
   expect(source).toBe('todo')
 })
+
+test('prefixIdentifiers: true', () => {
+  const source1 = `{#if ok}<div>{msg}</div>{/if}`
+  const source2 = `<div v-if="ok">{{msg}}</div>`
+
+  const { code, vaporHelpers, ir, helpers } = compileWithVIf(source1, { prefixIdentifiers: true })
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(vaporHelpers).contains('createIf')
+  expect(helpers.size).toBe(0)
+  expect(ir.template).toEqual(['<div></div>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.IF,
+      id: 0,
+      condition: {
+        type: NodeTypes.SIMPLE_EXPRESSION,
+        content: 'ok',
+        isStatic: false
+      },
+      positive: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 0 }]
+        }
+      }
+    }
+  ])
+  expect(ir.block.returns).toEqual([0])
+
+  expect(ir.block.dynamic).toMatchObject({
+    children: [{ id: 0 }]
+  })
+
+  expect(ir.block.effect).toEqual([])
+  expect((ir.block.operation[0] as IfIRNode).positive.effect).lengthOf(1)
+})
