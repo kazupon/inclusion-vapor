@@ -1,0 +1,223 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`array spread value > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([[id, ...other], index]) => {
+    const n2 = t0()
+    _renderEffect(() => _setText(n2, id + other + index))
+    return n2
+  }, ([id, ...other], index) => (id))
+  return n0
+}"
+`;
+
+exports[`array spread value > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([[id, ...other], __, index]) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [{id + other + index }])
+    _insert(n2, n3)
+    _renderEffect(() => _setText(n3, {id + other + index }))
+    return n3
+  }, ([id, ...other], __, index) => (id))
+  return n0
+}"
+`;
+
+exports[`basic > expected 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([item]) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setText(n2, item.name))
+    return n2
+  }, (item) => (item.id))
+  return n0
+}"
+`;
+
+exports[`basic > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([item]) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [item.name])
+    _insert(n2, n3)
+    _delegate(n3, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setText(n3, item.name))
+    return n3
+  }, (item) => (item.id))
+  return n0
+}"
+`;
+
+exports[`complex expressions > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([{ foo = bar, baz: [qux = quux] }]) => {
+    const n2 = t0()
+    _renderEffect(() => _setText(n2, foo + bar + baz + qux + quux))
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`complex expressions > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([{ foo = bar, baz: [qux = quux] }]) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [{ foo + bar + baz + qux + quux }])
+    _insert(n2, n3)
+    _renderEffect(() => _setText(n3, { foo + bar + baz + qux + quux }))
+    return n3
+  })
+  return n0
+}"
+`;
+
+exports[`multi effect > expected 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([item, index]) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setDynamicProp(n2, "item", item))
+    _renderEffect(() => _setDynamicProp(n2, "index", index))
+    return n2
+  }, (item, index) => (item.id))
+  return n0
+}"
+`;
+
+exports[`multi effect > received 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([item, __, index]) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setDynamicProp(n2, "item", item))
+    _renderEffect(() => _setDynamicProp(n2, "index", index))
+    return n2
+  }, (item, __, index) => (item.id))
+  return n0
+}"
+`;
+
+exports[`object de-structured value > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<span></span>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([{ id, value }]) => {
+    const n2 = t0()
+    _renderEffect(() => _setText(n2, id, value))
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`object de-structured value > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<span></span>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (items), ([{ id, value }]) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [id, value])
+    _insert(n2, n3)
+    _renderEffect(() => _setText(n3, id, value))
+    return n3
+  })
+  return n0
+}"
+`;
+
+exports[`object spread value > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([{ id, ...other }, index]) => {
+    const n2 = t0()
+    _renderEffect(() => _setText(n2, id + other + index))
+    return n2
+  }, ({ id, ...other }, index) => (id))
+  return n0
+}"
+`;
+
+exports[`object spread value > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([{ id, ...other }, __, index]) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [{id + other + index}])
+    _insert(n2, n3)
+    _renderEffect(() => _setText(n3, {id + other + index}))
+    return n3
+  }, ({ id, ...other }, __, index) => (id))
+  return n0
+}"
+`;
+
+exports[`prefixIdentifiers: true > expected 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (_ctx.items), (_ctx0) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (_ctx.remove(_ctx0[0])))
+    _renderEffect(() => _setText(n2, _ctx0[0].name))
+    return n2
+  }, (item) => (item.id))
+  return n0
+}"
+`;
+
+exports[`prefixIdentifiers: true > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, delegate as _delegate, renderEffect as _renderEffect, setText as _setText, withDestructure as _withDestructure, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (_ctx.items), _withDestructure(([item]) => [], (_ctx0) => {
+    const n3 = t0()
+    const n2 = _createTextNode(() => [_ctx.item.name])
+    _insert(n2, n3)
+    _delegate(n3, "click", () => $event => (_ctx.remove(_ctx.item)))
+    _renderEffect(() => _setText(n3, _ctx.item.name))
+    return n3
+  }), (item) => (_ctx.item.id))
+  return n0
+}"
+`;

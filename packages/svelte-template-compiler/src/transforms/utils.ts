@@ -22,6 +22,7 @@ import type {
   BlockIRNode,
   IRDynamicInfo,
   SvelteBaseNode,
+  SvelteEachBlock,
   SvelteIfBlock,
   SvelteMustacheTag
 } from '../ir/index.ts'
@@ -70,33 +71,24 @@ export function resolveExpression(exp: SimpleExpressionNode): SimpleExpressionNo
   return exp
 }
 
-export function resolveSimpleExpression<T extends SvelteMustacheTag | SvelteIfBlock>(
-  node: SvelteMustacheTag | SvelteIfBlock,
+export function resolveSimpleExpression<
+  T extends SvelteMustacheTag | SvelteIfBlock | SvelteEachBlock
+>(
+  node: SvelteMustacheTag | SvelteIfBlock | SvelteEachBlock,
   context: TransformContext<T>
 ): SimpleExpressionNode {
   const { expression } = node as { expression: SvelteMustacheTag['expression'] }
   const base = node as SvelteBaseNode
 
-  const content =
-    expression.type === 'Identifier'
-      ? expression.name
-      : expression.type === 'Literal'
-        ? expression.raw || ''
-        : context.ir.source.slice(base.start, base.end)
+  const content = resolveSource(expression, context, { start: base.start, end: base.end })
   const loc = expression.loc || convertToSourceLocation(base, content) // FIXME: twaeak loc type
-
-  let ast: BabelParseResult<BabelExpression> | false = false
   const isStatic =
     expression.type === 'Identifier'
       ? false
       : expression.type === 'Literal' && !isString(expression.value)
-  if (!isStatic && context.options.prefixIdentifiers) {
-    // HACK: we need to parse the expression in prefix mode to resolve scope IDs
-    ast = parseExpression(` ${content}`, {
-      sourceType: 'module',
-      plugins: context.options.expressionPlugins
-    })
-  }
+
+  let ast: BabelParseResult<BabelExpression> | false = false
+  ast = parseBabelExpression(content, isStatic, context)
 
   const exp = createSimpleExpression(
     content,
@@ -104,7 +96,47 @@ export function resolveSimpleExpression<T extends SvelteMustacheTag | SvelteIfBl
     loc as ReturnType<typeof convertToSourceLocation>
   )
   exp.ast = ast ?? null // eslint-disable-line unicorn/no-null
+
   return exp
+}
+
+export function resolveSource(
+  node: SvelteMustacheTag['expression'],
+  context: TransformContext,
+  defaultPosition: { start: number; end: number }
+): string {
+  switch (node.type) {
+    case 'Identifier': {
+      return node.name
+    }
+    case 'Literal': {
+      return node.raw || context.ir.source.slice(defaultPosition.start, defaultPosition.end)
+    }
+    case 'MemberExpression': {
+      // TODO: we need to extend svelte estree ...
+      return context.ir.source.slice(
+        (node as unknown as { start: number }).start,
+        (node as unknown as { end: number }).end
+      )
+    }
+    default: {
+      return context.ir.source.slice(defaultPosition.start, defaultPosition.end)
+    }
+  }
+}
+
+export function parseBabelExpression(
+  content: string,
+  isStatic: boolean,
+  context: TransformContext
+): BabelParseResult<BabelExpression> | false {
+  // HACK: we need to parse the expression in prefix mode to resolve scope IDs
+  return !isStatic && context.options.prefixIdentifiers
+    ? parseExpression(` ${content}`, {
+        sourceType: 'module',
+        plugins: context.options.expressionPlugins
+      })
+    : false
 }
 
 // export function wrapTemplate(node: SvelteTemplateNode, dirs: string[]): TemplateNode {

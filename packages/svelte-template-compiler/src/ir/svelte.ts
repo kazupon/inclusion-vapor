@@ -10,6 +10,7 @@ import type {
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
   Directive as SvelteDirective,
+  EachBlock as SvelteEachBlock,
   Element as SvelteElement,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
@@ -93,6 +94,10 @@ export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressio
   return isObject(node) && 'type' in node && node.type === 'EventHandler'
 }
 
+export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
+  return isObject(node) && 'type' in node && node.type === 'EachBlock'
+}
+
 export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
   return node.type === 'IfBlock' && !node.elseif
 }
@@ -101,20 +106,48 @@ export function isIfBlockOnElseBlock(node: SvelteIfBlock): boolean {
   return node.type === 'IfBlock' && !!node.elseif
 }
 
-export function convertToSourceLocation(node: SvelteBaseNode, source: string): SourceLocation {
-  return {
+export type CompatLocationable = {
+  start: number | { line: number; column: number; offset?: number }
+  end: number | { line: number; column: number; offset?: number }
+  source?: string
+}
+
+// TODO: We need to extend svelte AST for location
+export function convertToSourceLocation(node: CompatLocationable, source: string): SourceLocation {
+  const loc = {
     start: {
-      offset: node.start,
+      offset: -1,
       line: -1,
       column: -1
     },
     end: {
-      offset: node.end,
+      offset: -1,
       line: -1,
       column: -1
     },
     source
   }
+
+  function normalize(node: CompatLocationable, position: 'start' | 'end'): void {
+    if (isObject(node[position])) {
+      loc[position].line = node[position].line
+      loc[position].column = node[position].column
+      if (node[position].offset) {
+        loc[position].offset = node[position].offset
+      }
+    } else {
+      loc[position].offset = node[position]
+    }
+  }
+
+  normalize(node, 'start')
+  normalize(node, 'end')
+
+  if (node.source) {
+    loc.source = node.source
+  }
+
+  return loc
 }
 
 export type {
@@ -125,6 +158,7 @@ export type {
   BaseNode as SvelteBaseNode,
   Comment as SvelteComment,
   Directive as SvelteDirective,
+  EachBlock as SvelteEachBlock,
   Element as SvelteElement,
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
@@ -136,3 +170,5 @@ export type {
   TemplateNode as SvelteTemplateNode,
   Text as SvelteText
 } from 'svelte/types/compiler/interfaces'
+
+export { type SourceLocation } from '@vue-vapor/compiler-dom'
