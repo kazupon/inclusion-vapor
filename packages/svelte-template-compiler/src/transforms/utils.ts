@@ -119,6 +119,12 @@ export function resolveSource(
         (node as unknown as { end: number }).end
       )
     }
+    case 'BinaryExpression': {
+      return context.ir.source.slice(
+        (node as unknown as { start: number }).start,
+        (node as unknown as { end: number }).end
+      )
+    }
     default: {
       return context.ir.source.slice(defaultPosition.start, defaultPosition.end)
     }

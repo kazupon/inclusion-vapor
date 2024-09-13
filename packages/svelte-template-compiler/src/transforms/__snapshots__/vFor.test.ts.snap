@@ -21,9 +21,9 @@ const t0 = _template("<div></div>")
 export function render(_ctx) {
   const n0 = _createFor(() => (list), ([[id, ...other], __, index]) => {
     const n3 = t0()
-    const n2 = _createTextNode(() => [{id + other + index }])
+    const n2 = _createTextNode(() => [id + other + index])
     _insert(n2, n3)
-    _renderEffect(() => _setText(n3, {id + other + index }))
+    _renderEffect(() => _setText(n3, id + other + index))
     return n3
   }, ([id, ...other], __, index) => (id))
   return n0
@@ -85,9 +85,9 @@ const t0 = _template("<div></div>")
 export function render(_ctx) {
   const n0 = _createFor(() => (list), ([{ foo = bar, baz: [qux = quux] }]) => {
     const n3 = t0()
-    const n2 = _createTextNode(() => [{ foo + bar + baz + qux + quux }])
+    const n2 = _createTextNode(() => [foo + bar + baz + qux + quux])
     _insert(n2, n3)
-    _renderEffect(() => _setText(n3, { foo + bar + baz + qux + quux }))
+    _renderEffect(() => _setText(n3, foo + bar + baz + qux + quux))
     return n3
   })
   return n0
@@ -124,6 +124,48 @@ export function render(_ctx) {
     _renderEffect(() => _setDynamicProp(n2, "index", index))
     return n2
   }, (item, __, index) => (item.id))
+  return n0
+}"
+`;
+
+exports[`nested #each > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("<span></span>")
+const t1 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([i]) => {
+    const n5 = t1()
+    const n2 = _createFor(() => (i), ([j]) => {
+      const n4 = t0()
+      _renderEffect(() => _setText(n4, j + i))
+      return n4
+    })
+    _insert(n2, n5)
+    return n5
+  })
+  return n0
+}"
+`;
+
+exports[`nested #each > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+const t0 = _template("<span></span>")
+const t1 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createFor(() => (list), ([i]) => {
+    const n6 = t1()
+    const n2 = _createFor(() => (i), ([j]) => {
+      const n5 = t0()
+      const n4 = _createTextNode(() => [j + i])
+      _insert(n4, n5)
+      _renderEffect(() => _setText(n5, j + i))
+      return n5
+    })
+    _insert(n2, n6)
+    return n6
+  })
   return n0
 }"
 `;
@@ -179,9 +221,9 @@ const t0 = _template("<div></div>")
 export function render(_ctx) {
   const n0 = _createFor(() => (list), ([{ id, ...other }, __, index]) => {
     const n3 = t0()
-    const n2 = _createTextNode(() => [{id + other + index}])
+    const n2 = _createTextNode(() => [id + other + index])
     _insert(n2, n3)
-    _renderEffect(() => _setText(n3, {id + other + index}))
+    _renderEffect(() => _setText(n3, id + other + index))
     return n3
   }, ({ id, ...other }, __, index) => (id))
   return n0

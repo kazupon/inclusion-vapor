@@ -282,15 +282,53 @@ test('array spread value', () => {
   expect((ir.block.operation[0] as unknown as ForIRNode).render.effect).lengthOf(1)
 })
 
-test.todo('nested #each', () => {
-  const source = `{#each items as item, i (item.id)}
+test('nested #each', () => {
+  const source1 = `{#each list as i}
   <div>
-  {#each item.children as child, j}
-    <span>{ i + j }</span>
+  {#each i as j}
+    <span>{ j + i }</span>
   {/each}
   </div>
 {/each}`
-  expect(source).toBe('todo')
+  const source2 = `<div v-for="i in list">
+  <span v-for="j in i">{{ j + i }}</span>
+</div>`
+
+  console.log('nested #each ...')
+  const { code, ir } = compileWithVFor(source1)
+  const expectedResult = vaporCompile(source2)
+  console.log('... nested #each')
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<span></span>', '<div></div>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.FOR,
+      id: 0,
+      source: { content: 'list' },
+      value: { content: 'i' },
+      render: {
+        type: IRNodeTypes.BLOCK,
+        dynamic: {
+          children: [{ template: 1 }]
+        }
+      }
+    }
+  ])
+  expect((ir.block.operation[0] as unknown as ForIRNode).render.operation[0]).toMatchObject({
+    type: IRNodeTypes.FOR,
+    id: 2,
+    source: { content: 'i' },
+    value: { content: 'j' },
+    render: {
+      type: IRNodeTypes.BLOCK,
+      dynamic: {
+        children: [{ template: 0 }]
+      }
+    }
+  })
 })
 
 test('complex expressions', () => {
@@ -308,7 +346,7 @@ test('complex expressions', () => {
   expect(expectedResult.code).toMatchSnapshot('expected')
 
   expect(code).contains(`([{ foo = bar, baz: [qux = quux] }]) => {`)
-  expect(code).contains(`{ foo + bar + baz + qux + quux }`)
+  expect(code).contains(`foo + bar + baz + qux + quux`)
 })
 
 test('prefixIdentifiers: true', () => {
