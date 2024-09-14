@@ -263,3 +263,47 @@ export function render(_ctx) {
   return n0
 }"
 `;
+
+exports[`with else block > expected 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<p></p>")
+const t1 = _template("<p>no item</p>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (items.length), () => {
+    const n2 = _createFor(() => (items), ([item]) => {
+      const n4 = t0()
+      _renderEffect(() => _setText(n4, item))
+      return n4
+    })
+    return n2
+  }, () => {
+    const n6 = t1()
+    return n6
+  })
+  return n0
+}"
+`;
+
+exports[`with else block > received 1`] = `
+"import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<p></p>")
+const t1 = _template("<p>no item</p>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (Array.from(items).length), () => {
+    const n1 = _createFor(() => (items), ([item]) => {
+      const n4 = t0()
+      const n3 = _createTextNode(() => [item])
+      _insert(n3, n4)
+      _renderEffect(() => _setText(n4, item))
+      return n4
+    })
+    return n1
+  }, () => {
+    const n6 = t1()
+    return n6
+  })
+  return n1
+}"
+`;

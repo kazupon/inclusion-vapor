@@ -294,10 +294,8 @@ test('nested #each', () => {
   <span v-for="j in i">{{ j + i }}</span>
 </div>`
 
-  console.log('nested #each ...')
   const { code, ir } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
-  console.log('... nested #each')
 
   expect(code).toMatchSnapshot('received')
   expect(expectedResult.code).toMatchSnapshot('expected')
@@ -347,6 +345,26 @@ test('complex expressions', () => {
 
   expect(code).contains(`([{ foo = bar, baz: [qux = quux] }]) => {`)
   expect(code).contains(`foo + bar + baz + qux + quux`)
+})
+
+test('with else block', () => {
+  const source1 = `{#each items as item}
+  <p>{item}</p>
+{:else}
+  <p>no item</p>
+{/each}`
+  const source2 = `<template v-if="items.length">
+  <p v-for="item in items">{{ item }}</p>
+</template>
+<template v-else>
+  <p>no item</p>
+</template>`
+
+  const { code } = compileWithVFor(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
 })
 
 test('prefixIdentifiers: true', () => {

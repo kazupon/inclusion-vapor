@@ -36,12 +36,12 @@ function processIf(
   }
 
   const condition = resolveSimpleExpression(node, context)
-  const [branch, onExit] = createIfBranch(node, context)
+  const [positive, onExit] = createIfBranch(node, context)
   const operation: IfIRNode = {
     type: IRNodeTypes.IF,
     id,
     condition,
-    positive: branch,
+    positive,
     once: context.inVOnce
   }
 
@@ -66,8 +66,8 @@ function processIf(
     const ifBlock = node.else.children.find(child => child.type === 'IfBlock') as SvelteIfBlock
     if (ifBlock == undefined) {
       // for `:else` block
-      const [branch, onExit] = createIfBranch(node.else, context)
-      operation.negative = branch
+      const [negative, onExit] = createIfBranch(node.else, context)
+      operation.negative = negative
       processChildren(node.else, context, true)
       exitFns.push(() => onExit())
     } else {
@@ -79,7 +79,7 @@ function processIf(
   return exitFns
 }
 
-function createIfBranch(
+export function createIfBranch(
   node: SvelteTemplateNode,
   context: TransformContext<SvelteTemplateNode>
 ): [BlockIRNode, () => void] {

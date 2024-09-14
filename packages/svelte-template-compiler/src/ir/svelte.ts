@@ -12,6 +12,7 @@ import type {
   Directive as SvelteDirective,
   EachBlock as SvelteEachBlock,
   Element as SvelteElement,
+  ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
   ShorthandAttribute as SvelteShorthandAttribute,
@@ -96,6 +97,10 @@ export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressio
 
 export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
   return isObject(node) && 'type' in node && node.type === 'EachBlock'
+}
+
+export function isSvelteElseBlock(node: unknown): node is SvelteElseBlock {
+  return isObject(node) && 'type' in node && node.type === 'ElseBlock'
 }
 
 export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
