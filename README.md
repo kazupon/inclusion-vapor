@@ -104,7 +104,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `context="module"`
 - [ ] Logic blocks
   - [x] `{#if}` / `{:else}` / `{:else if}`
-  - [ ] `{#each}`
+  - [x] `{#each}`
   - [ ] `{#await}`
   - [ ] `{#key}`
 - [ ] Special tags
