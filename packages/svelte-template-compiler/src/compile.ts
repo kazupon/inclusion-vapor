@@ -17,6 +17,7 @@ import {
   transformText,
   transformVBind,
   transformVFor,
+  transformVHtml,
   transformVIf,
   transformVOn
 } from './transforms/index.ts'
@@ -123,12 +124,12 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
       transformElement,
       // transformVSlot,
       transformComment,
-      transformChildren
+      transformChildren,
+      transformVHtml
     ],
     {
       bind: transformVBind,
       on: transformVOn
-      // html: transformVHtml,
       // text: transformVText,
       // show: transformVShow,
       // model: transformVModel,
