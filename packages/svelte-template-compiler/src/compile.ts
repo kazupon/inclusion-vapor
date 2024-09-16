@@ -8,7 +8,7 @@
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
-import { IRNodeTypes } from './ir/index.ts'
+import { IRNodeTypes, isSvelteParseError } from './ir/index.ts'
 import { transform } from './transform.ts'
 import {
   transformChildren,
@@ -22,12 +22,13 @@ import {
   transformVOn
 } from './transforms/index.ts'
 
+import type { CompilerError, SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   CompilerOptions as BaseCompilerOptions,
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { RootNode, SvelteTemplateNode } from './ir/index.ts'
+import type { RootNode, SvelteCompileError, SvelteTemplateNode } from './ir/index.ts'
 import type { DirectiveTransform, HackOptions, NodeTransform } from './transforms/index.ts'
 
 // Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
@@ -56,7 +57,18 @@ export function compile(
     prefixIdentifiers
   })
 
-  const svelteAst = isString(source) ? getSvelteTemplateNode(source, options) : source
+  let svelteAst = {} as SvelteTemplateNode
+  try {
+    svelteAst = parse(source, resolvedOptions)
+  } catch (error: unknown) {
+    if (isSvelteParseError(error) && isString(source)) {
+      const vaporError = error as unknown as CompilerError
+      vaporError.loc = convertToVaporCompileErrorSourceLocation(source, error)
+      onError(vaporError)
+    } else {
+      onError(error as CompilerError)
+    }
+  }
 
   const ast: RootNode = {
     type: IRNodeTypes.ROOT,
@@ -86,6 +98,29 @@ export function compile(
   )
 
   return generate(ir as unknown as VaporRootIRNode, resolvedOptions)
+}
+
+function parse(source: string | SvelteTemplateNode, options: CompilerOptions): SvelteTemplateNode {
+  return isString(source) ? getSvelteTemplateNode(source, options) : source
+}
+
+function convertToVaporCompileErrorSourceLocation(
+  source: string,
+  error: SvelteCompileError
+): SourceLocation {
+  return {
+    start: {
+      offset: error.start.character, // TOOD: is this correct?
+      line: error.start.line,
+      column: error.start.column
+    },
+    end: {
+      offset: error.end.character, // TOOD: is this correct?
+      line: error.end.line,
+      column: error.end.column
+    },
+    source
+  }
 }
 
 function getSvelteTemplateNode(

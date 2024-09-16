@@ -100,6 +100,35 @@ export function isIfBlockOnElseBlock(node: SvelteIfBlock): boolean {
   return node.type === 'IfBlock' && !!node.elseif
 }
 
+export interface SvelteCompileError {
+  code: string
+  start: {
+    line: number
+    column: number
+    character: number
+  }
+  end: {
+    line: number
+    column: number
+    character: number
+  }
+  pos: number
+  filename: string
+  frame: string
+}
+
+export function isSvelteParseError(error: unknown): error is SvelteCompileError {
+  return (
+    isObject(error) &&
+    error.constructor.name === 'CompileError' &&
+    'code' in error &&
+    'start' in error &&
+    'end' in error &&
+    'pos' in error &&
+    'frame' in error
+  )
+}
+
 export type CompatLocationable = {
   start: number | { line: number; column: number; offset?: number }
   end: number | { line: number; column: number; offset?: number }
