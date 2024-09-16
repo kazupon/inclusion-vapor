@@ -10,7 +10,6 @@ import type {
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
   Directive as SvelteDirective,
-  EachBlock as SvelteEachBlock,
   Element as SvelteElement,
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
@@ -61,14 +60,8 @@ export function isSvelteDirective(node: unknown): node is SvelteDirective {
   )
 }
 
-const SVELETE_MUSTACHE_TAG_TYPES = new Set(['MustacheTag', 'RawMustacheTag'])
-
 export function isSvelteMustacheTag(node: unknown): node is SvelteMustacheTag {
-  return (
-    isObject(node) &&
-    'type' in node &&
-    SVELETE_MUSTACHE_TAG_TYPES.has((node as SvelteBaseNode).type)
-  )
+  return isObject(node) && 'type' in node && node.type === 'MustacheTag'
 }
 
 export function isSvelteText(node: unknown): node is SvelteText {
@@ -93,10 +86,6 @@ export function isSvelteShorthandAttribute(node: unknown): node is SvelteShortha
 
 export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressionDirective {
   return isObject(node) && 'type' in node && node.type === 'EventHandler'
-}
-
-export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
-  return isObject(node) && 'type' in node && node.type === 'EachBlock'
 }
 
 export function isSvelteElseBlock(node: unknown): node is SvelteElseBlock {

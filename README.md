@@ -108,7 +108,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `{#await}`
   - [ ] `{#key}`
 - [ ] Special tags
-  - [ ] `{@html}`
+  - [x] `{@html}`
   - [ ] `{@debug}`
   - [ ] `{@const}`
 - [ ] Element directives

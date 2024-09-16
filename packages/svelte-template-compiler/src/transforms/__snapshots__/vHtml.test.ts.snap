@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`basic > expected 1`] = `
+"import { renderEffect as _renderEffect, setHtml as _setHtml, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _renderEffect(() => _setHtml(n0, code))
+  return n0
+}"
+`;
+
+exports[`basic > received 1`] = `
+"import { renderEffect as _renderEffect, setHtml as _setHtml, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n1 = t0()
+  const n0 = n1.firstChild
+  _renderEffect(() => _setHtml(n0, code))
+  return n1
+}"
+`;
