@@ -365,6 +365,9 @@ test('with else block', () => {
 
   expect(code).toMatchSnapshot('received')
   expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(code).contain(`_createIf(() => (Array.from(items).length), () => {`)
+  expect(code).contain(`_createFor(() => (items), ([item]) => {`)
 })
 
 test('prefixIdentifiers: true', () => {
