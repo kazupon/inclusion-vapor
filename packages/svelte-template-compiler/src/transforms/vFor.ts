@@ -6,6 +6,7 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/vFor.ts
 
 import { createSimpleExpression } from '@vue-vapor/compiler-dom'
+import { extend } from '@vue-vapor/shared'
 import {
   convertToSourceLocation,
   DynamicFlag,
@@ -14,16 +15,15 @@ import {
 } from '../ir/index.ts'
 import { processChildren } from './transformChildren.ts'
 import { newBlock, parseBabelExpression, resolveSimpleExpression } from './utils.ts'
-import { createIfBranch } from './vIf.ts'
+import { processIf } from './vIf.ts'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {
   BlockIRNode,
   CompatLocationable,
-  IfIRNode,
-  OperationNode,
   SvelteBaseNode,
   SvelteEachBlock,
+  SvelteIfBlock,
   SvelteTemplateNode
 } from '../ir/index.ts'
 import type { TransformContext } from './context.ts'
@@ -37,48 +37,25 @@ export const transformVFor: NodeTransform = (node, context) => {
     if (!isSvelteElseBlock(node.else)) {
       return processFor(node as SvelteEachBlock, context as TransformContext<SvelteEachBlock>, [])
     } else {
-      let exitFns: (() => void)[] = []
-
-      const condition = resolveForSource(
-        node as SvelteEachBlock,
-        context as TransformContext<SvelteEachBlock>
-      )
-      condition.content = `Array.from(${condition.content}).length`
-      context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
-      const id = context.reference()
-      const [positive, onExitPositive] = createIfBranch(
-        node,
-        context as TransformContext<SvelteTemplateNode>
-      )
-      const operation: OperationNode = {
-        type: IRNodeTypes.IF,
-        id,
-        condition,
-        positive,
-        once: context.inVOnce
-      }
-
-      exitFns = processFor(
-        node as SvelteEachBlock,
-        context as TransformContext<SvelteEachBlock>,
-        exitFns,
-        operation
-      )
-
-      exitFns.push(() => {
-        onExitPositive()
-        context.registerOperation(operation)
+      // re-strucutre node with `#if` and `:else` block
+      const elseNode = extend({}, node.else)
+      node.else = undefined
+      const ifNode = extend({}, node, {
+        type: 'IfBlock',
+        children: [node],
+        context: undefined,
+        index: undefined,
+        key: undefined,
+        else: elseNode
       })
 
-      const [negative, onExitNegative] = createIfBranch(
-        node.else as SvelteTemplateNode,
-        context as TransformContext<SvelteTemplateNode>
+      return processIf(
+        ifNode as unknown as SvelteIfBlock,
+        context as TransformContext<SvelteIfBlock>,
+        [],
+        undefined,
+        true
       )
-      operation.negative = negative
-      processChildren(node.else as SvelteTemplateNode, context, true)
-      exitFns.push(() => onExitNegative())
-
-      return exitFns
     }
   }
 }
@@ -86,8 +63,7 @@ export const transformVFor: NodeTransform = (node, context) => {
 function processFor(
   node: SvelteEachBlock,
   context: TransformContext<SvelteEachBlock>,
-  exitFns: (() => void)[],
-  ifNode?: IfIRNode
+  exitFns: (() => void)[]
 ): (() => void)[] {
   const source = resolveForSource(node, context)
   const value = resolveForValue(node, context)
@@ -115,14 +91,6 @@ function processFor(
       render,
       once: context.inVOnce
     })
-    if (ifNode) {
-      /**
-       * NOTE:
-       * if `#each` has `:else` block exists, `IRNodeTypes.FOR` id push to `IRNodeTypes.IF` returns,
-       * because we want to generate `IRNodeTypes.FOR` branch of `IRNodeTypes.IF` returns.
-       */
-      ifNode.positive.returns.push(context.dynamic.id!)
-    }
   })
 
   return exitFns

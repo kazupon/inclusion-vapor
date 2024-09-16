@@ -23,11 +23,12 @@ export const transformVIf: NodeTransform = (node, context) => {
   }
 }
 
-function processIf(
+export function processIf(
   node: SvelteIfBlock,
   context: TransformContext<SvelteIfBlock>,
   exitFns: (() => void)[],
-  ifNode?: IfIRNode
+  ifNode?: IfIRNode,
+  vFor?: boolean
 ): (() => void)[] {
   let id = -1
   if (isIfBlockOnTop(node) && ifNode === undefined) {
@@ -36,6 +37,9 @@ function processIf(
   }
 
   const condition = resolveSimpleExpression(node, context)
+  if (vFor) {
+    condition.content = `Array.from(${condition.content}).length`
+  }
   const [positive, onExit] = createIfBranch(node, context)
   const operation: IfIRNode = {
     type: IRNodeTypes.IF,
@@ -79,7 +83,7 @@ function processIf(
   return exitFns
 }
 
-export function createIfBranch(
+function createIfBranch(
   node: SvelteTemplateNode,
   context: TransformContext<SvelteTemplateNode>
 ): [BlockIRNode, () => void] {

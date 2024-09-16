@@ -292,18 +292,18 @@ const t1 = _template("<p>no item</p>")
 
 export function render(_ctx) {
   const n0 = _createIf(() => (Array.from(items).length), () => {
-    const n1 = _createFor(() => (items), ([item]) => {
-      const n4 = t0()
-      const n3 = _createTextNode(() => [item])
-      _insert(n3, n4)
-      _renderEffect(() => _setText(n4, item))
-      return n4
+    const n2 = _createFor(() => (items), ([item]) => {
+      const n5 = t0()
+      const n4 = _createTextNode(() => [item])
+      _insert(n4, n5)
+      _renderEffect(() => _setText(n5, item))
+      return n5
     })
-    return n1
+    return n2
   }, () => {
-    const n6 = t1()
-    return n6
+    const n7 = t1()
+    return n7
   })
-  return n1
+  return n0
 }"
 `;
