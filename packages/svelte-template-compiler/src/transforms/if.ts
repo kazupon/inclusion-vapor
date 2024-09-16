@@ -6,7 +6,7 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/vIf.ts
 
 import { DynamicFlag, IRNodeTypes, isIfBlockOnElseBlock, isIfBlockOnTop } from '../ir/index.ts'
-import { processChildren } from './transformChildren.ts'
+import { processChildren } from './children.ts'
 import { newBlock, resolveSimpleExpression } from './utils.ts'
 
 import type { BlockIRNode, IfIRNode, SvelteIfBlock, SvelteTemplateNode } from '../ir/index.ts'

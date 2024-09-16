@@ -2,11 +2,11 @@ import { DOMErrorCodes } from '@vue-vapor/compiler-dom'
 import { IRNodeTypes, compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test, vi } from 'vitest'
 import { makeCompile } from './_utils.ts'
-import { transformChildren } from './transformChildren.ts'
-import { transformComment } from './transformComment.ts'
-import { transformElement } from './transformElement.ts'
-import { transformText } from './transformText.ts'
-import { transformVHtml } from './vHtml.ts'
+import { transformChildren } from './children.ts'
+import { transformComment } from './comment.ts'
+import { transformElement } from './element.ts'
+import { transformVHtml } from './html.ts'
+import { transformText } from './text.ts'
 
 const compileWithVHtml = makeCompile({
   prefixIdentifiers: false,

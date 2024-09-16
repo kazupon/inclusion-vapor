@@ -9,8 +9,8 @@ import { DynamicFlag, IRNodeTypes, isSvelteText } from '../ir/index.ts'
 import { transformNode } from '../transform.ts'
 
 import type { IRDynamicInfo, SvelteElement } from '../ir/index.ts'
-import type { TransformContext } from './context'
-import type { NodeTransform } from './types'
+import type { TransformContext } from './context.ts'
+import type { NodeTransform } from './types.ts'
 
 export const transformChildren: NodeTransform = (node, context) => {
   const isFragment =

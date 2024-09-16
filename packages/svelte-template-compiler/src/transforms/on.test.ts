@@ -3,10 +3,10 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { describe, expect, test } from 'vitest'
 import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformChildren } from './transformChildren.ts'
-import { transformElement } from './transformElement.ts'
-import { transformText } from './transformText.ts'
-import { transformVOn } from './vOn.ts'
+import { transformChildren } from './children.ts'
+import { transformElement } from './element.ts'
+import { transformVOn } from './on.ts'
+import { transformText } from './text.ts'
 
 const compileWithVOn = makeCompile({
   nodeTransforms: [transformElement, transformChildren, transformText],

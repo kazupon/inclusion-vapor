@@ -13,9 +13,9 @@ import {
   IRNodeTypes,
   isSvelteElseBlock
 } from '../ir/index.ts'
-import { processChildren } from './transformChildren.ts'
+import { processChildren } from './children.ts'
+import { processIf } from './if.ts'
 import { newBlock, parseBabelExpression, resolveSimpleExpression } from './utils.ts'
-import { processIf } from './vIf.ts'
 
 import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {

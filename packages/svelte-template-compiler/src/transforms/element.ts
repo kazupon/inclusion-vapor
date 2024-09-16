@@ -24,7 +24,6 @@ import {
 import { EMPTY_EXPRESSION, isReservedProp } from './utils.ts'
 
 import type { AttributeNode, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
-import type { DirectiveTransformResult } from '.'
 import type {
   IRProp,
   IRProps,
@@ -34,6 +33,7 @@ import type {
   VaporDirectiveNode
 } from '../ir/index.ts'
 import type { TransformContext } from './context.ts'
+import type { DirectiveTransformResult } from './index.ts'
 import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {

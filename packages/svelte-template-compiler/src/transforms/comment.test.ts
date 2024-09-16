@@ -1,10 +1,10 @@
 import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test } from 'vitest'
 import { makeCompile } from './_utils.ts'
-import { transformChildren } from './transformChildren.ts'
-import { transformComment } from './transformComment.ts'
-import { transformElement } from './transformElement.ts'
-import { transformText } from './transformText.ts'
+import { transformChildren } from './children.ts'
+import { transformComment } from './comment.ts'
+import { transformElement } from './element.ts'
+import { transformText } from './text.ts'
 
 const compileWithCommentTransform = makeCompile({
   nodeTransforms: [transformText, transformChildren, transformElement, transformComment]
