@@ -63,7 +63,8 @@ export const transformVModel: DirectiveTransform = (dir, node, context) => {
       key: arg ? arg : createSimpleExpression('modelValue', true),
       value: exp,
       model: true,
-
+      // @ts-expect-error -- FIXME should resolve `modifiers` type
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       modelModifiers: dir.modifiers.map(m => m.content)
     }
   }

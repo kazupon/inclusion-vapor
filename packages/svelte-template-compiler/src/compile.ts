@@ -19,6 +19,7 @@ import {
   transformVFor,
   transformVHtml,
   transformVIf,
+  transformVModel,
   transformVOn
 } from './transforms/index.ts'
 
@@ -164,10 +165,10 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
     ],
     {
       bind: transformVBind,
-      on: transformVOn
+      on: transformVOn,
       // text: transformVText,
       // show: transformVShow,
-      // model: transformVModel,
+      model: transformVModel
     }
   ]
 }
