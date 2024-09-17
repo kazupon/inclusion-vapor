@@ -48,8 +48,8 @@
   },
   "dependencies": {
     "@babel/parser": "catalog:",
-    "@typescript-eslint/scope-manager": "^8.0.0",
-    "@typescript-eslint/typescript-estree": "^8.0.0",
+    "@typescript-eslint/scope-manager": "^8.6.0",
+    "@typescript-eslint/typescript-estree": "^8.6.0",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-sfc": "latest",
     "@vue-vapor/shared": "latest",
