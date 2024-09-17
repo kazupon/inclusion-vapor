@@ -8,6 +8,7 @@ import type { Options } from './types.ts'
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ModuleOptions extends Options {}
 
+// @ts-expect-error -- FIXME should be fixed for `with`
 const nuxt: ReturnType<typeof defineNuxtModule> = defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'nuxt-unplugin-svelte-vapor',
