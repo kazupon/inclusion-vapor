@@ -3,6 +3,7 @@ import { NodeTypes, createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { generate } from 'astring'
 import {
   isSvelteAttribute,
+  isSvelteBindingDirective,
   isSvelteEventHandler,
   isSvelteMustacheTag,
   isSvelteShorthandAttribute,
@@ -31,7 +32,11 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
       } else {
         props.push(convertSvelteAttribute(attr))
       }
-    } else if (isSvelteSpreadAttribute(attr) || isSvelteEventHandler(attr)) {
+    } else if (
+      isSvelteSpreadAttribute(attr) ||
+      isSvelteEventHandler(attr) ||
+      isSvelteBindingDirective(attr)
+    ) {
       props.push(convertVaporDirective(attr))
     }
   }
@@ -161,10 +166,23 @@ function convertVaporDirective(
       type: NodeTypes.DIRECTIVE,
       name: 'on',
       rawName: `v-on:${node.name}${vaporModifiers}`,
+      // @ts-expect-error -- FIXME
       modifiers,
       loc: convertSvelteLocation(directiveLoc, directiveLocSource),
       arg,
       exp
+    }
+  } else if (isSvelteBindingDirective(node)) {
+    const content = node.expression ? generate(node.expression) : ''
+    return {
+      type: NodeTypes.DIRECTIVE,
+      name: 'model',
+      rawName: 'v-model',
+      // @ts-expect-error -- FIXME
+      modifiers: node.modifiers,
+      loc: convertSvelteLocation(node, `v-model="${content}"`),
+      exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
+      arg: undefined
     }
   } else {
     // TODO: we should consider error strategy

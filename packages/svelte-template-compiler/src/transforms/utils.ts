@@ -6,7 +6,7 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/utils.ts
 
 import { parseExpression } from '@babel/parser'
-import { createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
+import { NodeTypes, createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
 import { isGloballyAllowed, isString, makeMap } from '@vue-vapor/shared'
 import { DynamicFlag, IRNodeTypes, convertToSourceLocation } from '../ir/index.ts'
 
@@ -17,7 +17,7 @@ import type {
   NumericLiteral,
   StringLiteral
 } from '@babel/types'
-import type { SimpleExpressionNode } from '@vue-vapor/compiler-dom'
+import type { ExpressionNode, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {
   BlockIRNode,
   IRDynamicInfo,
@@ -52,6 +52,10 @@ export const newBlock = (node: BlockIRNode['node']): BlockIRNode => ({
   operation: [],
   returns: []
 })
+
+export function getExpSource(exp: ExpressionNode): string {
+  return exp.type === NodeTypes.SIMPLE_EXPRESSION ? exp.content : exp.loc.source
+}
 
 export function isConstantExpression(exp: SimpleExpressionNode): boolean {
   return (

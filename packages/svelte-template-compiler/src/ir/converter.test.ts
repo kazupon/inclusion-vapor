@@ -537,6 +537,32 @@ describe('convertProps', () => {
     })
   })
 
+  describe('Svelte Binding Node', () => {
+    test('basic: <input bind:value={name} />', () => {
+      const el = getSvelteElement('<input bind:value={name} />')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'model',
+          rawName: 'v-model',
+          modifiers: [],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            // source: 'v-model:value={name}'
+          },
+          arg: undefined,
+          exp: {
+            // ast: null,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'name',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false
+          }
+        }
+      ])
+    })
+  })
+
   test('no attribute', () => {
     const el = getSvelteElement('<div />')
     expect(convertProps(el!)).toMatchObject([])

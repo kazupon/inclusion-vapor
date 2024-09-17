@@ -1,18 +1,82 @@
+import { NodeTypes } from '@vue-vapor/compiler-dom'
+import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { describe, expect, test } from 'vitest'
+import { IRNodeTypes } from '../ir/index.ts'
+import { makeCompile } from './_utils.ts'
+import { transformVBind } from './bind.ts'
+import { transformChildren } from './children.ts'
+import { transformComment } from './comment.ts'
+import { transformElement } from './element.ts'
+import { transformVModel } from './model.ts'
+import { transformVOn } from './on.ts'
+import { transformText } from './text.ts'
+
+const compileWithVModel = makeCompile({
+  prefixIdentifiers: false,
+  nodeTransforms: [transformElement, transformChildren, transformText, transformComment],
+  directiveTransforms: {
+    bind: transformVBind,
+    on: transformVOn,
+    model: transformVModel
+  }
+})
 
 describe('bind:property', () => {
-  describe.todo('simple binding', () => {
+  describe('simple binding', () => {
     test('input', () => {
       const source1 = `<input bind:value={text} />`
-      expect(source1).toBe('todo')
+      const source2 = `<input v-model="text" />`
+      const { code, vaporHelpers, ir, helpers } = compileWithVModel(source1)
+      const expectedResult = vaporCompile(source2)
+
+      expect(code).toMatchSnapshot('received')
+      expect(expectedResult.code).toMatchSnapshot('expected')
+
+      expect(code).contains(`_withDirectives(n0, [[_vModelText, () => text]])`)
+      expect(code).contains(`"update:modelValue", () => $event => (text = $event))`)
+
+      expect(vaporHelpers).toContain('vModelText')
+      expect(helpers.size).toBe(0)
+      expect(ir.template).toEqual(['<input>'])
+      expect(ir.block.operation).toMatchObject([
+        {
+          type: IRNodeTypes.SET_MODEL_VALUE,
+          element: 0,
+          isComponent: false,
+          key: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'modelValue',
+            isStatic: true
+          },
+          value: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'text',
+            isStatic: false
+          }
+        },
+        {
+          type: IRNodeTypes.WITH_DIRECTIVE,
+          name: 'vModelText',
+          element: 0,
+          builtin: true,
+          dir: {
+            arg: undefined,
+            exp: {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              content: 'text',
+              isStatic: false
+            }
+          }
+        }
+      ])
     })
 
-    test('textarea', () => {
+    test.todo('textarea', () => {
       const source1 = `<textarea bind:value={text} />`
       expect(source1).toBe('todo')
     })
 
-    test('checkbox', () => {
+    test.todo('checkbox', () => {
       const source1 = `<input type="checkbox" bind:checked={yes} />`
       expect(source1).toBe('todo')
     })
@@ -84,7 +148,7 @@ describe.todo('Binding <select> value', () => {
   })
 })
 
-describe('contenteditable', () => {
+describe.todo('contenteditable', () => {
   test('innerHTML', () => {
     const source1 = `<div contenteditable="true" bind:innerHTML={html} />`
     expect(source1).toBe('todo')

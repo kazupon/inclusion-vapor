@@ -100,6 +100,10 @@ export function isIfBlockOnElseBlock(node: SvelteIfBlock): boolean {
   return node.type === 'IfBlock' && !!node.elseif
 }
 
+export function isSvelteBindingDirective(node: unknown): node is SvelteBaseExpressionDirective {
+  return isObject(node) && 'type' in node && node.type === 'Binding'
+}
+
 export interface SvelteCompileError {
   code: string
   start: {
