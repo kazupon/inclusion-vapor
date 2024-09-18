@@ -59,7 +59,7 @@ type Invalidator<T> = (value?: T) => void
  * https://svelte.dev/docs/svelte-motion#spring
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function spring<T = any>(_value?: T | undefined, _opts?: SpringOpts | undefined): Spring<T> {
+export function spring<T = any>(_value?: T, _opts?: SpringOpts): Spring<T> {
   throw new Error('TODO: implement spring')
 }
 /**
@@ -67,9 +67,6 @@ export function spring<T = any>(_value?: T | undefined, _opts?: SpringOpts | und
  *
  * https://svelte.dev/docs/svelte-motion#tweened
  * */
-export function tweened<T>(
-  _value?: T | undefined,
-  _defaults?: TweenedOptions<T> | undefined
-): Tweened<T> {
+export function tweened<T>(_value?: T, _defaults?: TweenedOptions<T>): Tweened<T> {
   throw new Error('TODO: implement tweened')
 }

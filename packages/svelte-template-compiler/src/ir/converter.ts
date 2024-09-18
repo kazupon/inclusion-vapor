@@ -2,6 +2,7 @@ import { parseExpression } from '@babel/parser'
 import { NodeTypes, createSimpleExpression } from '@vue-vapor/compiler-dom'
 import { generate } from 'astring'
 import {
+  findAttrs,
   isSvelteAttribute,
   isSvelteBindingDirective,
   isSvelteEventHandler,
@@ -28,7 +29,7 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
   for (const attr of attrs) {
     if (isSvelteAttribute(attr)) {
       if (isVaporDirectable(attr)) {
-        props.push(convertVaporDirective(attr))
+        props.push(convertVaporDirective(attr, node))
       } else {
         props.push(convertSvelteAttribute(attr))
       }
@@ -37,7 +38,7 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
       isSvelteEventHandler(attr) ||
       isSvelteBindingDirective(attr)
     ) {
-      props.push(convertVaporDirective(attr))
+      props.push(convertVaporDirective(attr, node))
     }
   }
 
@@ -92,7 +93,8 @@ const EVENT_MODIFIERS_MAP: Record<string, string> = {
 }
 
 function convertVaporDirective(
-  node: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective
+  node: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective,
+  element: SvelteElement
 ): VaporDirectiveNode {
   if (isSvelteAttribute(node)) {
     const start = node.start
@@ -173,14 +175,61 @@ function convertVaporDirective(
       exp
     }
   } else if (isSvelteBindingDirective(node)) {
+    const start = node.start
     const content = node.expression ? generate(node.expression) : ''
+    const typeAttr = findAttrs(element, 'type')
+    let modifiers = node.modifiers
+    let value: { type: string; data: string; raw: string } | undefined
+    if (typeAttr) {
+      value = (typeAttr.value as { type: string; data: string; raw: string }[]).find(
+        v => v.type === 'Text'
+      )
+      if (value && (value.data === 'number' || value.data === 'range')) {
+        modifiers = [...modifiers, 'number']
+      }
+    }
+
+    // TODO: should be occured with `onError` option (might not be occured, so svelte compiler say errors)
+    // validate binding
+    if (element.name === 'input') {
+      if (
+        value?.data === 'checkbox' &&
+        !(node.name === 'value' || node.name === 'checked' || node.name === 'group')
+      ) {
+        throw new Error(
+          `'<input type="checkbox">' should use 'bind:value' or 'bind:group', not 'bind:${node.name}'`
+        )
+      }
+      if (value?.data === 'radio' && node.name !== 'group') {
+        throw new Error(`'<input type="radio">' should use 'bind:group', not 'bind:${node.name}'`)
+      }
+      if (value?.data === 'file' && node.name !== 'files') {
+        throw new Error(`'<input type="file">' should use 'bind:files', not 'bind:${node.name}'`)
+      }
+    } else if (
+      (element.name === 'textarea' || element.name === 'select') &&
+      node.name !== 'value'
+    ) {
+      throw new Error(
+        `'<select>' and '<textarea>' should use 'bind:value', not 'bind:${node.name}'`
+      )
+    }
+
+    const modifiersSource = `${modifiers.length > 0 ? '|' : ''}${modifiers.join('|')}`
+    const directiveLocSource =
+      modifiers.length > 0 ? `v-model${modifiersSource}="${content}"` : `v-model="${content}"`
+    const directiveLoc = {
+      start,
+      end: start + directiveLocSource.length
+    }
+    const vaporModifiers = `${modifiers.length > 0 ? '.' : ''}${modifiers.join('.')}`
     return {
       type: NodeTypes.DIRECTIVE,
       name: 'model',
-      rawName: 'v-model',
+      rawName: `v-model${modifiers.length > 0 ? vaporModifiers : ''}`,
       // @ts-expect-error -- FIXME
-      modifiers: node.modifiers,
-      loc: convertSvelteLocation(node, `v-model="${content}"`),
+      modifiers,
+      loc: convertSvelteLocation(directiveLoc, directiveLocSource),
       exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
       arg: undefined
     }

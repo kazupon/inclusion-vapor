@@ -71,10 +71,7 @@ type StoresValues<T> =
  * https://svelte.dev/docs/svelte-store#readable
  * @param value initial value
  * */
-export function readable<T>(
-  _value?: T | undefined,
-  _start?: StartStopNotifier<T> | undefined
-): Readable<T> {
+export function readable<T>(_value?: T, _start?: StartStopNotifier<T>): Readable<T> {
   throw new Error('TODO: implement readable')
 }
 
@@ -84,10 +81,7 @@ export function readable<T>(
  * https://svelte.dev/docs/svelte-store#writable
  * @param value initial value
  * */
-export function writable<T>(
-  _value?: T | undefined,
-  _start?: StartStopNotifier<T> | undefined
-): Writable<T> {
+export function writable<T>(_value?: T, _start?: StartStopNotifier<T>): Writable<T> {
   throw new Error('TODO: implement writable')
 }
 
@@ -104,7 +98,7 @@ export function derived<S extends Stores, T>(
     set?: (value: T) => void,
     update?: (fn: Updater<T>) => void
   ) => Unsubscriber | void,
-  _initial_value?: T | undefined
+  _initial_value?: T
 ): Readable<T> {
   throw new Error('TODO: implement derived')
 }

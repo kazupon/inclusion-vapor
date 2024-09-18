@@ -71,30 +71,77 @@ describe('bind:property', () => {
       ])
     })
 
-    test.todo('textarea', () => {
+    test('textarea', () => {
       const source1 = `<textarea bind:value={text} />`
-      expect(source1).toBe('todo')
+      const source2 = `<textarea v-model="text" />`
+      const { code, ir, vaporHelpers } = compileWithVModel(source1)
+      const expectedResult = vaporCompile(source2)
+
+      expect(code).toMatchSnapshot('received')
+      expect(expectedResult.code).toMatchSnapshot('expected')
+
+      expect(code).contains(`_withDirectives(n0, [[_vModelText, () => text]])`)
+      expect(code).contains(`"update:modelValue", () => $event => (text = $event))`)
+
+      expect(vaporHelpers).toContain('vModelText')
+      expect(ir.template).toEqual(['<textarea></textarea>'])
     })
 
-    test.todo('checkbox', () => {
+    test('checkbox', () => {
       const source1 = `<input type="checkbox" bind:checked={yes} />`
-      expect(source1).toBe('todo')
+      const source2 = `<input type="checkbox" v-model="yes" />`
+      const { code, ir, vaporHelpers } = compileWithVModel(source1)
+      const expectedResult = vaporCompile(source2)
+
+      expect(code).toMatchSnapshot('received')
+      expect(expectedResult.code).toMatchSnapshot('expected')
+
+      expect(code).contains(`_withDirectives(n0, [[_vModelCheckbox, () => yes]])`)
+      expect(code).contains(`"update:modelValue", () => $event => (yes = $event))`)
+
+      expect(vaporHelpers).toContain('vModelCheckbox')
+      expect(ir.template).toEqual(['<input type="checkbox">'])
     })
   })
 
-  test.todo('omit property', () => {
-    const source1 = `<input bind:value />`
-    expect(source1).toBe('todo')
+  test('omit property', () => {
+    const source = `<input bind:value />`
+    const { code } = compileWithVModel(source)
+
+    expect(code).toMatchSnapshot('received')
+
+    expect(code).contains(`_withDirectives(n0, [[_vModelText, () => value]])`)
+    expect(code).contains(`"update:modelValue", () => $event => (value = $event))`)
   })
 
-  test.todo('input number', () => {
+  test('input number', () => {
     const source1 = `<input type="number" bind:value={num} />`
-    expect(source1).toBe('todo')
+    const source2 = `<input type="number" v-model.number="num" />`
+    const { code } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(
+      `_withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])`
+    )
+    expect(code).contains(`"update:modelValue", () => $event => (num = $event))`)
   })
 
-  test.todo('input range', () => {
+  test('input range', () => {
     const source1 = `<input type="range" bind:value={num} />`
-    expect(source1).toBe('todo')
+    const source2 = `<input type="range" v-model.number="num" />`
+    const { code } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(
+      `_withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])`
+    )
+    expect(code).contains(`"update:modelValue", () => $event => (num = $event))`)
   })
 
   test.todo('input files', () => {
@@ -117,14 +164,34 @@ describe('bind:property', () => {
   })
 })
 
-describe.todo('Binding <select> value', () => {
+describe('Binding <select> value', () => {
   test('basic', () => {
     const source1 = `<select bind:value={selected}>
-	<option value={a}>a</option>
-	<option value={b}>b</option>
-	<option value={c}>c</option>
+  <option value={a}>a</option>
+  <option value={b}>b</option>
+  <option value={c}>c</option>
 </select>`
-    expect(source1).toBe('todo')
+    const source2 = `<select v-model="selected">
+  <option :value="a">a</option>
+  <option :value="b">b</option>
+  <option :value="c">c</option>
+</select>`
+    const { code, ir, vaporHelpers } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(`_withDirectives(n3, [[_vModelSelect, () => selected]])`)
+    expect(code).contains(`"update:modelValue", () => $event => (selected = $event))`)
+    expect(code).contains(`_renderEffect(() => _setDynamicProp(n0, "value", a))`)
+    expect(code).contains(`_renderEffect(() => _setDynamicProp(n1, "value", b))`)
+    expect(code).contains(`_renderEffect(() => _setDynamicProp(n2, "value", c))`)
+
+    expect(vaporHelpers).toContain('vModelSelect')
+    expect(ir.template).toEqual([
+      '<select><option>a</option> <option>b</option> <option>c</option></select>'
+    ])
   })
 
   test('multiple', () => {
@@ -134,7 +201,20 @@ describe.todo('Binding <select> value', () => {
 	<option value="Cheese">Cheese</option>
 	<option value="Guac (extra)">Guac (extra)</option>
 </select>`
-    expect(source1).toBe('todo')
+    const source2 = `<select multiple v-model="fillings">
+	<option value="Rice">Rice</option>
+	<option value="Beans">Beans</option>
+	<option value="Cheese">Cheese</option>
+	<option value="Guac (extra)">Guac (extra)</option>
+</select>`
+    const { code } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(`_withDirectives(n0, [[_vModelSelect, () => fillings]])`)
+    expect(code).contains(`"update:modelValue", () => $event => (fillings = $event))`)
   })
 
   test('omit value', () => {
@@ -144,7 +224,12 @@ describe.todo('Binding <select> value', () => {
 	<option>Cheese</option>
 	<option>Guac (extra)</option>
 </select>`
-    expect(source1).toBe('todo')
+    const { code } = compileWithVModel(source1)
+
+    expect(code).toMatchSnapshot('received')
+
+    expect(code).contains(`_withDirectives(n0, [[_vModelSelect, () => fillings]])`)
+    expect(code).contains(`"update:modelValue", () => $event => (fillings = $event))`)
   })
 })
 
@@ -194,7 +279,9 @@ describe.todo('Media element bindings', () => {
     expect(source1).toBe('todo')
   })
 
-  test('audio', () => {})
+  test.todo('audio', () => {
+    // TODO:
+  })
 })
 
 test.todo('Image element bindings', () => {
@@ -212,11 +299,38 @@ test.todo('Block-level element bindings', () => {
   expect(source1).toBe('todo')
 })
 
-test.todo('bind:group', () => {
-  const source1 = `<input type="radio" bind:group={tortilla} value="Plain" />
+describe('bind:group', () => {
+  test('radio', () => {
+    const source1 = `<input type="radio" bind:group={tortilla} value="Plain" />
 <input type="radio" bind:group={tortilla} value="Whole wheat" />
 <input type="radio" bind:group={tortilla} value="Spinach" />`
-  expect(source1).toBe('todo')
-})
+    const source2 = `<input type="radio" v-model="tortilla" value="Plain" />
+<input type="radio" v-model="tortilla" value="Whole wheat" />
+<input type="radio" v-model="tortilla" value="Spinach" />`
+    const { code } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
 
-// ... and more!
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(`[[_vModelRadio, () => tortilla]]`)
+    expect(code).contains(`"update:modelValue", () => $event => (tortilla = $event))`)
+  })
+
+  test('checkbox', () => {
+    const source1 = `<input type="checkbox" bind:group={tortilla} value="Plain" />
+<input type="checkbox" bind:group={tortilla} value="Whole wheat" />
+<input type="checkbox" bind:group={tortilla} value="Spinach" />`
+    const source2 = `<input type="checkbox" v-model="tortilla" value="Plain" />
+<input type="checkbox" v-model="tortilla" value="Whole wheat" />
+<input type="checkbox" v-model="tortilla" value="Spinach" />`
+    const { code } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contains(`[[_vModelCheckbox, () => tortilla]]`)
+    expect(code).contains(`"update:modelValue", () => $event => (tortilla = $event))`)
+  })
+})
