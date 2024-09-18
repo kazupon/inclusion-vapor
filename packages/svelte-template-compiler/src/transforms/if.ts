@@ -87,7 +87,7 @@ function createIfBranch(
   node: SvelteTemplateNode,
   context: TransformContext<SvelteTemplateNode>
 ): [BlockIRNode, () => void] {
-  context.node = node // TODO: Shuld be wrapped?
+  context.node = node // TODO: Should be wrapped?
 
   const branch: BlockIRNode = newBlock(node)
   const exitBlock = context.enterBlock(branch)

@@ -37,7 +37,7 @@ export const transformVFor: NodeTransform = (node, context) => {
     if (!isSvelteElseBlock(node.else)) {
       return processFor(node as SvelteEachBlock, context as TransformContext<SvelteEachBlock>, [])
     } else {
-      // re-strucutre node with `#if` and `:else` block
+      // re-structure node with `#if` and `:else` block
       const elseNode = extend({}, node.else)
       node.else = undefined
       const ifNode = extend({}, node, {

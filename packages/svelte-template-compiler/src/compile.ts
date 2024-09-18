@@ -111,12 +111,12 @@ function convertToVaporCompileErrorSourceLocation(
 ): SourceLocation {
   return {
     start: {
-      offset: error.start.character, // TOOD: is this correct?
+      offset: error.start.character, // TODO: is this correct?
       line: error.start.line,
       column: error.start.column
     },
     end: {
-      offset: error.end.character, // TOOD: is this correct?
+      offset: error.end.character, // TODO: is this correct?
       line: error.end.line,
       column: error.end.column
     },

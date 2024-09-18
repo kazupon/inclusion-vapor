@@ -191,7 +191,7 @@ export function createStructuralDirectiveTransform(
   _name: string | string[],
   _fn: StructuralDirectiveTransform
 ): NodeTransform {
-  // TODO: transform vapor structurel directive from svelte logic blocks
+  // TODO: transform vapor structural directive from svelte logic blocks
 
   return (_node, _context) => {
     // TODO:

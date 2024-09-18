@@ -189,7 +189,7 @@ function convertVaporDirective(
       }
     }
 
-    // TODO: should be occured with `onError` option (might not be occured, so svelte compiler say errors)
+    // TODO: should be occurred with `onError` option (might not be occurred, so svelte compiler say errors)
     // validate binding
     if (element.name === 'input') {
       if (
