@@ -40,8 +40,8 @@ Based on Svelte v4 (maybe v3 compatible)
 <details>
 
 - [ ] transform for jsx
-  - [x] NodeTransform
-  - [ ] WIP: DirectiveTransform
+  - [x] NodeTransform (Basic implementation done)
+  - [x] DirectiveTransform (Basic implementation done)
 - [ ] hooks
   - [ ] useActionState
   - [ ] useCallback
@@ -78,7 +78,10 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] experimental_taintObjectReference
   - [ ] experimental_taintUniqueValue
 - [x] Template Explorer
-- [x] Vite plugin with unplugin
+- [ ] Vite plugin with unplugin (PoC done)
+  - [ ] analysis dependencies
+  - [ ] runtime transform
+  - [ ] reactivity transform
 - [x] Counter App
   - [x] simple bindings
   - [x] simple events
@@ -92,8 +95,8 @@ Based on Svelte v4 (maybe v3 compatible)
 <details>
 
 - [ ] transform
-  - [ ] WIP: NodeTransform
-  - [ ] WIP: DirectiveTransform
+  - [x] NodeTransform (Basic implementation done)
+  - [x] DirectiveTransform (Basic implementation done)
 - [ ] Svelte Component
   - [x] prop
   - [x] attrs
@@ -113,12 +116,12 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `{@const}`
 - [ ] Element directives
   - [x] `on:eventname`
-  - [ ] `bind:property`
-  - [ ] Binding `<select>` value
+  - [x] `bind:property`
+  - [x] Binding `<select>` value
   - [ ] Media element bindings
   - [ ] Image element bindings
   - [ ] Block-level element bindings
-  - [ ] `bind:group`
+  - [x] `bind:group`
   - [ ] `bind:this`
   - [ ] `class:name`
   - [ ] `style:property`
@@ -171,11 +174,14 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] eashing
   - [ ] action
 - [x] Template Explorer
-- [ ] WIP(PoC Done): SFC-flavoured component compiler
+- [ ] SFC-flavoured component compiler (PoC Done)
   - [ ] template
   - [ ] script
   - [ ] styles
-- [ ] WIP(Poc Done): Vite plugin with unplugin
+- [ ] Vite plugin with unplugin (Poc Done)
+  - [ ] analysis dependencies
+  - [ ] runtime transform
+  - [ ] reactivity transform
 - [x] Counter App
   - [x] simple bindings
   - [x] simple events
