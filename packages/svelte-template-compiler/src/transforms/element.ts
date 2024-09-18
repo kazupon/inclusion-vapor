@@ -63,6 +63,7 @@ function transformComponentElement(
   let asset = true
 
   if (!__BROWSER__) {
+    // NOTE: do we need to handle for svlete?
     const fromSetup = resolveSetupReference(tag, context)
     if (fromSetup) {
       tag = fromSetup
@@ -266,7 +267,6 @@ export function buildProps(
 }
 
 function transformProp(
-  // prop: SvelteAttribute | SvelteSpreadAttribute | SvelteBaseDirective,
   prop: VaporDirectiveNode | AttributeNode,
   node: SvelteElement,
   context: TransformContext<SvelteElement>

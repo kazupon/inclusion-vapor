@@ -157,10 +157,94 @@ describe('bind:property', () => {
 />`
     expect(source1).toBe('todo')
   })
+})
 
-  test.todo('component', () => {
+describe('Component binding', () => {
+  test('basic', () => {
     const source1 = `<Keypad bind:value={pin} />`
-    expect(source1).toBe('todo')
+    const source2 = `<Keypad v-model="pin" />`
+    const { code, ir } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contain(`{ modelValue: () => (pin)`)
+    expect(code).contain(`"onUpdate:modelValue": () => $event => (pin = $event) }`)
+
+    expect(ir.block.operation).toMatchObject([
+      {
+        type: IRNodeTypes.CREATE_COMPONENT_NODE,
+        tag: 'Keypad',
+        props: [
+          [
+            {
+              key: {
+                type: NodeTypes.SIMPLE_EXPRESSION,
+                content: 'modelValue',
+                isStatic: true
+              },
+              value: undefined,
+              model: true,
+              modelModifiers: [],
+              values: [
+                {
+                  type: NodeTypes.SIMPLE_EXPRESSION,
+                  content: 'pin',
+                  isStatic: false
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ])
+  })
+
+  test('multiple bindings', () => {
+    const source1 = `<MyComp bind:foo={buz} bind:bar />`
+    const source2 = `<MyComp v-model:foo="buz" v-model:bar="bar" />`
+    const { code, ir } = compileWithVModel(source1)
+    const expectedResult = vaporCompile(source2)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(code).contain(`foo: () => (buz)`)
+    expect(code).contain(`"onUpdate:foo": () => $event => (buz = $event)`)
+    expect(code).contain(`bar: () => (bar)`)
+    expect(code).contain(`"onUpdate:bar": () => $event => (bar = $event)`)
+
+    expect(ir.block.operation).toMatchObject([
+      {
+        type: IRNodeTypes.CREATE_COMPONENT_NODE,
+        tag: 'MyComp',
+        props: [
+          [
+            {
+              key: {
+                type: NodeTypes.SIMPLE_EXPRESSION,
+                content: 'foo',
+                isStatic: true
+              },
+              value: undefined,
+              model: true,
+              modelModifiers: []
+            },
+            {
+              key: {
+                type: NodeTypes.SIMPLE_EXPRESSION,
+                content: 'bar',
+                isStatic: true
+              },
+              value: undefined,
+              model: true,
+              modelModifiers: []
+            }
+          ]
+        ]
+      }
+    ])
   })
 })
 

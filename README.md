@@ -137,7 +137,7 @@ Based on Svelte v4 (maybe v3 compatible)
 - [ ] Component directives
   - [x] `on:eventname`
   - [ ] `--style-props`
-  - [ ] `bind:property`
+  - [x] `bind:property`
   - [ ] `bind:this`
 - [ ] Special elements
   - [ ] `<slot>`

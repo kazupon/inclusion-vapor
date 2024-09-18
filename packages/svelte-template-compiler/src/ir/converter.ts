@@ -176,7 +176,24 @@ function convertVaporDirective(
     }
   } else if (isSvelteBindingDirective(node)) {
     const start = node.start
-    const content = node.expression ? generate(node.expression) : ''
+    // prettier-ignore
+    const arg = element.type === 'InlineComponent' && node.name !== 'value'
+      ? createSimpleExpression(
+        node.name,
+        true,
+        convertSvelteLocation({ start, end: start + node.name.length }, node.name)
+      )
+      : undefined
+    const exp = convertVaporDirectiveExpression(node)
+    if (exp) {
+      const ast = parseExpression(` ${exp.content}`, {
+        sourceType: 'module'
+        // TODO: use babel plugins
+        // plugins: context.options.expressionPlugins
+      })
+      exp.ast = ast
+    }
+    const content = exp ? exp.content : ''
     const typeAttr = findAttrs(element, 'type')
     let modifiers = node.modifiers
     let value: { type: string; data: string; raw: string } | undefined
@@ -215,23 +232,22 @@ function convertVaporDirective(
       )
     }
 
-    const modifiersSource = `${modifiers.length > 0 ? '|' : ''}${modifiers.join('|')}`
-    const directiveLocSource =
-      modifiers.length > 0 ? `v-model${modifiersSource}="${content}"` : `v-model="${content}"`
+    const vaporModifiers = `${modifiers.length > 0 ? '.' : ''}${modifiers.join('.')}`
+    const rawName = `v-model:${node.name}${modifiers.length > 0 ? vaporModifiers : ''}`
+    const directiveLocSource = node.name == content ? rawName : `${rawName}="${content}"`
     const directiveLoc = {
       start,
       end: start + directiveLocSource.length
     }
-    const vaporModifiers = `${modifiers.length > 0 ? '.' : ''}${modifiers.join('.')}`
     return {
       type: NodeTypes.DIRECTIVE,
       name: 'model',
-      rawName: `v-model${modifiers.length > 0 ? vaporModifiers : ''}`,
+      rawName,
       // @ts-expect-error -- FIXME
       modifiers,
       loc: convertSvelteLocation(directiveLoc, directiveLocSource),
-      exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
-      arg: undefined
+      exp,
+      arg
     }
   } else {
     // TODO: we should consider error strategy
@@ -260,6 +276,9 @@ function convertVaporDirectiveExpression(
   } else if (isSvelteEventHandler(node)) {
     const content =
       node.expression == undefined ? `$emit('${node.name}')` : generate(node.expression)
+    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  } else if (isSvelteBindingDirective(node)) {
+    const content = node.expression ? generate(node.expression) : ''
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else {
     return undefined

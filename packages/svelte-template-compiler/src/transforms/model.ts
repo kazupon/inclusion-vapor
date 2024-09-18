@@ -12,7 +12,7 @@ import { getExpSource } from './utils.ts'
 import type { VaporHelper } from '@vue-vapor/compiler-vapor'
 import type { DirectiveTransform } from './types.ts'
 
-// TODO: transform vapor v-model from svelte some bindings
+// NOTE: transform vapor v-model from svelte some bindings
 // https://svelte.dev/docs/element-directives#bind-property
 // https://svelte.dev/docs/element-directives#binding-select-value
 // ... and more on https://svelte.dev/docs/element-directives

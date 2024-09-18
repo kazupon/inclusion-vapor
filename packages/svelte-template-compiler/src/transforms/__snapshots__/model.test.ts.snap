@@ -72,6 +72,66 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`Component binding > basic > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Keypad = _resolveComponent("Keypad")
+  const n0 = _createComponent(_component_Keypad, [
+    { modelValue: () => (pin),
+    "onUpdate:modelValue": () => $event => (pin = $event) }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`Component binding > basic > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Keypad = _resolveComponent("Keypad")
+  const n0 = _createComponent(_component_Keypad, [
+    { modelValue: () => (pin),
+    "onUpdate:modelValue": () => $event => (pin = $event) }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`Component binding > multiple bindings > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_MyComp = _resolveComponent("MyComp")
+  const n0 = _createComponent(_component_MyComp, [
+    {
+      foo: () => (buz),
+      "onUpdate:foo": () => $event => (buz = $event), 
+      bar: () => (bar),
+      "onUpdate:bar": () => $event => (bar = $event)
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
+exports[`Component binding > multiple bindings > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_MyComp = _resolveComponent("MyComp")
+  const n0 = _createComponent(_component_MyComp, [
+    {
+      foo: () => (buz),
+      "onUpdate:foo": () => $event => (buz = $event), 
+      bar: () => (bar),
+      "onUpdate:bar": () => $event => (bar = $event)
+    }
+  ], null, true)
+  return n0
+}"
+`;
+
 exports[`bind:group > checkbox > expected 1`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\" value=\\"Plain\\">")

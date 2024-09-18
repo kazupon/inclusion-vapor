@@ -544,17 +544,95 @@ describe('convertProps', () => {
         {
           type: NodeTypes.DIRECTIVE,
           name: 'model',
-          rawName: 'v-model',
+          rawName: 'v-model:value',
           modifiers: [],
           loc: {
             // TODO: we want to map for svelte code correctly...
-            // source: 'v-model:value={name}'
+            source: 'v-model:value="name"'
           },
           arg: undefined,
           exp: {
             // ast: null,
             type: NodeTypes.SIMPLE_EXPRESSION,
             content: 'name',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false
+          }
+        }
+      ])
+    })
+
+    test('type="number": <input type="number" bind:value={count} />', () => {
+      const el = getSvelteElement('<input type="number" bind:value={name} />')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.ATTRIBUTE,
+          name: 'type'
+        },
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'model',
+          rawName: 'v-model:value.number',
+          modifiers: ['number'],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            source: `v-model:value.number="name"`
+          },
+          arg: undefined,
+          exp: {
+            // ast: null,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'name',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false
+          }
+        }
+      ])
+    })
+
+    test('multiple bindings: <MyComp bind:foo={buz} bind:bar />', () => {
+      const el = getSvelteElement('<MyComp bind:foo={buz} bind:bar />')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'model',
+          rawName: 'v-model:foo',
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            source: `v-model:foo="buz"`
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'foo',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true
+          },
+          exp: {
+            // ast: null,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'buz',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false
+          }
+        },
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'model',
+          rawName: 'v-model:bar',
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            source: `v-model:bar`
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'bar',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true
+          },
+          exp: {
+            // ast: null,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'bar',
             constType: ConstantTypes.NOT_CONSTANT,
             isStatic: false
           }
