@@ -2,6 +2,8 @@
 
 This Research & Development project is for running various components in [vapor](https://github.com/vuejs/core-vapor).
 
+This project started with my day job project and was inspired by [vue-jsx, which was announced at VueConf China 2024](https://x.com/OikawaRizumu/status/1808860605560074476).
+
 > [!WARNING]
 > This is WIP 👷, so don't use in production
 
@@ -11,8 +13,10 @@ This project try to work **whether interoperability can be provided between comp
 
 ## 🚂 Current working status:
 
+Currently, I’m working on svelte vapor, which is necessary for my day job, so that’s a priority.
+
 - react-vapor (PoC Done): react for vapor
-- svelte-vapor (PoC Done): svelte for vapor
+- svelte-vapor (PoC Done): svelte for vapor,
 
 ## 🍭 Playground
 
