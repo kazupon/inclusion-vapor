@@ -29,9 +29,11 @@ import type {
 import type { TransformContext } from './context.ts'
 import type { NodeTransform, StructuralDirectiveTransform } from './types.ts'
 
+// NOTE: we might not need this for svelte-vapor
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included
-  ',key,ref,ref_for,ref_key,'
+  // ',key,ref,ref_for,ref_key,'
+  ',key,'
 )
 
 export const EMPTY_EXPRESSION: ReturnType<typeof createSimpleExpression> = createSimpleExpression(

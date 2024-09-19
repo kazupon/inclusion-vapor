@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`native element > expected 1`] = `
+"import { setRef as _setRef, template as _template } from 'vue/vapor';
+const t0 = _template("<canvas></canvas>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _setRef(n0, "el")
+  return n0
+}"
+`;
+
+exports[`native element > received 1`] = `
+"import { setRef as _setRef, template as _template } from 'vue/vapor';
+const t0 = _template("<canvas></canvas>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _setRef(n0, "el")
+  return n0
+}"
+`;

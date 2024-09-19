@@ -177,6 +177,7 @@ export function buildProps(
   context: TransformContext<SvelteElement>,
   isComponent: boolean
 ): PropsResult {
+  // convert from svelte props to vapor props
   const props = convertProps(node)
   if (props.length === 0) {
     return [false, []]

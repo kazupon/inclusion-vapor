@@ -12,7 +12,12 @@ import {
   isSvelteText
 } from './svelte.ts'
 
-import type { AttributeNode, SimpleExpressionNode, SourceLocation } from '@vue-vapor/compiler-dom'
+import type {
+  AttributeNode,
+  SimpleExpressionNode,
+  SourceLocation,
+  TextNode
+} from '@vue-vapor/compiler-dom'
 import type { VaporDirectiveNode } from './nodes'
 import type {
   SvelteAttribute,
@@ -33,12 +38,12 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
       } else {
         props.push(convertSvelteAttribute(attr))
       }
-    } else if (
-      isSvelteSpreadAttribute(attr) ||
-      isSvelteEventHandler(attr) ||
-      isSvelteBindingDirective(attr)
-    ) {
+    } else if (isSvelteSpreadAttribute(attr) || isSvelteEventHandler(attr)) {
       props.push(convertVaporDirective(attr, node))
+    } else if (isSvelteBindingDirective(attr) && attr.name !== 'this') {
+      props.push(convertVaporDirective(attr, node))
+      // ignore `this:bind` converting on `convertProps`
+      // props.push(convertVaporAttribute(attr))
     }
   }
 
@@ -283,6 +288,37 @@ function convertVaporDirectiveExpression(
   } else {
     return undefined
   }
+}
+
+export function convertVaporAttribute(node: SvelteBaseDirective): AttributeNode {
+  if (isSvelteBindingDirective(node) && node.name === 'this') {
+    if (__DEV__ && !node.expression) {
+      throw new Error('no expression in binding node')
+    }
+
+    const content = generate(node.expression!)
+    const value: TextNode = {
+      type: NodeTypes.TEXT,
+      content,
+      // TODO: align loc for svlete compiler
+      loc: convertSvelteLocation(
+        node.expression as unknown as { start: number; end: number },
+        content
+      )
+    }
+
+    return {
+      type: NodeTypes.ATTRIBUTE,
+      name: 'ref',
+      value,
+      // TODO: align loc for svlete compiler
+      loc: convertSvelteLocation(node as { start: number; end: number }, `bind:this={${content}}`),
+      // TODO: align loc for svlete compiler
+      nameLoc: convertSvelteLocation(node, `bind:this`)
+    }
+  }
+
+  throw new Error('unexpected node type')
 }
 
 export function convertSvelteLocation(
