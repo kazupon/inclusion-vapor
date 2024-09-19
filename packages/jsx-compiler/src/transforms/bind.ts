@@ -6,10 +6,10 @@
 // Code url: https://github.com/unplugin/unplugin-vue-jsx-vapor/tree/main/src/core/compiler
 
 import { camelize, extend } from '@vue-vapor/shared'
-import { isReservedProp } from './transformElement.ts'
+import { isReservedProp } from './element.ts'
 import { resolveExpression, resolveSimpleExpression } from './utils.ts'
 
-import type { DirectiveTransform } from './types'
+import type { DirectiveTransform } from './types.ts'
 
 export const transformVBind: DirectiveTransform = (dir, _node, context) => {
   const { name, value, loc } = dir
