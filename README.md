@@ -126,7 +126,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] Image element bindings
   - [ ] Block-level element bindings
   - [x] `bind:group`
-  - [ ] `bind:this`
+  - [x] `bind:this`
   - [ ] `class:name`
   - [ ] `style:property`
   - [ ] `use:action`
