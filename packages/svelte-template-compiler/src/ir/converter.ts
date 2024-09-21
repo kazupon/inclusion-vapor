@@ -41,9 +41,8 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
     } else if (isSvelteSpreadAttribute(attr) || isSvelteEventHandler(attr)) {
       props.push(convertVaporDirective(attr, node))
     } else if (isSvelteBindingDirective(attr) && attr.name !== 'this') {
-      props.push(convertVaporDirective(attr, node))
       // ignore `this:bind` converting on `convertProps`
-      // props.push(convertVaporAttribute(attr))
+      props.push(convertVaporDirective(attr, node))
     }
   }
 

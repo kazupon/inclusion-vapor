@@ -161,8 +161,8 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
       transformElement,
       // transformVSlot,
       transformComment,
-      transformChildren,
-      transformVHtml
+      transformVHtml,
+      transformChildren
     ],
     {
       bind: transformVBind,

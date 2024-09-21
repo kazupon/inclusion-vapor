@@ -1,5 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`component > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, setRef as _setRef } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_MyComp = _resolveComponent("MyComp")
+  const n0 = _createComponent(_component_MyComp, null, null, true)
+  _setRef(n0, "instance")
+  return n0
+}"
+`;
+
+exports[`component > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, setRef as _setRef } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_MyComp = _resolveComponent("MyComp")
+  const n0 = _createComponent(_component_MyComp, null, null, true)
+  _setRef(n0, "instance")
+  return n0
+}"
+`;
+
 exports[`native element > expected 1`] = `
 "import { setRef as _setRef, template as _template } from 'vue/vapor';
 const t0 = _template("<canvas></canvas>")

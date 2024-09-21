@@ -15,11 +15,11 @@ import { transformText } from './text.ts'
 const compileWithTransformRef = makeCompile({
   prefixIdentifiers: false,
   nodeTransforms: [
-    transformElement,
-    transformChildren,
+    transformTemplateRef,
     transformText,
+    transformElement,
     transformComment,
-    transformTemplateRef
+    transformChildren
   ],
   directiveTransforms: {
     bind: transformVBind,
@@ -59,7 +59,7 @@ test('native element', () => {
   ])
 })
 
-test.todo('component', () => {
+test('component', () => {
   const source1 = '<MyComp bind:this={instance} />'
   const source2 = '<MyComp ref="instance" />'
 

@@ -642,52 +642,12 @@ describe('convertProps', () => {
 
     test('bind:this: native element', () => {
       const el = getSvelteElement('<canvas bind:this={el} />')
-      expect(convertProps(el!)).toMatchObject([
-        {
-          type: NodeTypes.ATTRIBUTE,
-          name: 'ref',
-          loc: {
-            // TODO: we want to map for svelte code correctly...
-            source: `bind:this={el}`
-          },
-          nameLoc: {
-            source: `bind:this`
-          },
-          value: {
-            type: NodeTypes.TEXT,
-            content: 'el',
-            loc: {
-              // TODO: we want to map for svelte code correctly...
-              source: 'el'
-            }
-          }
-        }
-      ])
+      expect(convertProps(el!)).toMatchObject([])
     })
 
     test('bind:this: component', () => {
       const el = getSvelteElement('<MyComp bind:this={el} />')
-      expect(convertProps(el!)).toMatchObject([
-        {
-          type: NodeTypes.ATTRIBUTE,
-          name: 'ref',
-          loc: {
-            // TODO: we want to map for svelte code correctly...
-            source: `bind:this={el}`
-          },
-          nameLoc: {
-            source: `bind:this`
-          },
-          value: {
-            type: NodeTypes.TEXT,
-            content: 'el',
-            loc: {
-              // TODO: we want to map for svelte code correctly...
-              source: 'el'
-            }
-          }
-        }
-      ])
+      expect(convertProps(el!)).toMatchObject([])
     })
   })
 

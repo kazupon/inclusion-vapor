@@ -18,7 +18,6 @@ import {
   DynamicFlag,
   IRDynamicPropsKind,
   IRNodeTypes,
-  isBuiltInDirective,
   isSvelteElement
 } from '../ir/index.ts'
 import { EMPTY_EXPRESSION, isReservedProp } from './utils.ts'
@@ -291,60 +290,6 @@ function transformProp(
     return directiveTransform(prop, node, context)
   }
 
-  if (!isBuiltInDirective(name)) {
-    // const fromSetup =
-    //   !__BROWSER__ && resolveSetupReference(`v-${name}`, context)
-    // if (fromSetup) {
-    //   name = fromSetup
-    // } else {
-    //   context.directive.add(name)
-    // }
-    // context.registerOperation({
-    //   type: IRNodeTypes.WITH_DIRECTIVE,
-    //   element: context.reference(),
-    //   dir: prop,
-    //   name,
-    //   asset: !fromSetup,
-    // })
-  }
-  /*
-  const name = prop.name
-
-  // for `SvelteAttribute`
-  if (prop.type === 'Attribute') {
-    if (isReservedProp(name)) {
-      return
-    }
-    const key = createSimpleExpression(name, true, convertToSourceLocation(prop, name))
-    // TODO: should be handled for multiple values
-    const value = prop.value[0]
-      ? createSimpleExpression(
-        (prop.value[0] as SvelteText).data,
-        true,
-        convertToSourceLocation(
-          prop.value[0] as SvelteBaseNode,
-          (prop.value[0] as SvelteText).data
-        )
-      )
-      : EMPTY_EXPRESSION
-    return {
-      key,
-      value
-    }
-  }
-
-  // for `SvelteSpreadAttribute`
-  if (prop.type === 'Spread') {
-    return
-  }
-
-  // for `SvelteBaseDirective`
-  const directiveTransform = context.options.directiveTransforms[name]
-  if (directiveTransform) {
-    // TODO: should tweak directive transform for svelte
-    // return directiveTransform(prop, node, context)
-  }
-
   // TODO: should be handled for svelte built-in directives
   // if (!isBuiltInDirective(name)) {
   //   context.directive.add(name)
@@ -355,7 +300,6 @@ function transformProp(
   //     name,
   //   })
   // }
-  */
 }
 
 // Dedupe props in an object literal.

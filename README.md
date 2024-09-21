@@ -142,7 +142,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [x] `on:eventname`
   - [ ] `--style-props`
   - [x] `bind:property`
-  - [ ] `bind:this`
+  - [x] `bind:this`
 - [ ] Special elements
   - [ ] `<slot>`
     - [ ] default

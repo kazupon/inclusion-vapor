@@ -33,7 +33,8 @@ import type { NodeTransform, StructuralDirectiveTransform } from './types.ts'
 export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included
   // ',key,ref,ref_for,ref_key,'
-  ',key,'
+  // TODO: tweak for svelte-vapor
+  ',ref,'
 )
 
 export const EMPTY_EXPRESSION: ReturnType<typeof createSimpleExpression> = createSimpleExpression(
