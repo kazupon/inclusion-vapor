@@ -41,6 +41,9 @@ export const transformElement: NodeTransform = (_node, context) => {
     if (!isSvelteElement(node)) {
       return
     }
+    if (node.type === 'Slot') {
+      return
+    }
 
     const { name: tag } = node
     const isComponent = node.type === 'InlineComponent'

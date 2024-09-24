@@ -1,0 +1,229 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`default slot > expected 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", null)
+  return n0
+}"
+`;
+
+exports[`default slot > received 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", null)
+  return n0
+}"
+`;
+
+exports[`default slot with fallback > expected 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`default slot with fallback > received 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`default slot with fallback and props > expected 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", [
+    { foo: () => (bar) }
+  ], () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`default slot with fallback and props > received 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", [
+    { foo: () => (bar) }
+  ], () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`default slot with props > expected 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", [
+    {
+      foo: () => ("bar"), 
+      baz: () => (qux), 
+      fooBar: () => (fooBar)
+    }
+  ])
+  return n0
+}"
+`;
+
+exports[`default slot with props > received 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("default", [
+    {
+      foo: () => ("bar"), 
+      baz: () => (qux), 
+      fooBar: () => (fooBar)
+    }
+  ])
+  return n0
+}"
+`;
+
+exports[`named slot with fallback > expected 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`named slot with fallback > received 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`named slot with fallback and props > expected 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    { foo: () => (bar) }
+  ], () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`named slot with fallback and props > received 1`] = `
+"import { createSlot as _createSlot, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    { foo: () => (bar) }
+  ], () => {
+    const n2 = t0()
+    return n2
+  })
+  return n0
+}"
+`;
+
+exports[`statically named slot > expected 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", null)
+  return n0
+}"
+`;
+
+exports[`statically named slot > received 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", null)
+  return n0
+}"
+`;
+
+exports[`statically named slot with props > expected 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    {
+      baz: () => (qux), 
+      fooBar: () => (fooBar)
+    }
+  ])
+  return n0
+}"
+`;
+
+exports[`statically named slot with props > received 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    {
+      baz: () => (qux), 
+      fooBar: () => (fooBar)
+    }
+  ])
+  return n0
+}"
+`;
+
+exports[`statically named slot with spread props > expected 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    () => (things)
+  ])
+  return n0
+}"
+`;
+
+exports[`statically named slot with spread props > received 1`] = `
+"import { createSlot as _createSlot } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createSlot("foo", [
+    () => (things)
+  ])
+  return n0
+}"
+`;

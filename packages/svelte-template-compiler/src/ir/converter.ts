@@ -59,7 +59,7 @@ function isVaporDirectable(node: SvelteAttribute | SvelteSpreadAttribute): boole
   }
 }
 
-function convertSvelteAttribute(node: SvelteAttribute): AttributeNode {
+export function convertSvelteAttribute(node: SvelteAttribute): AttributeNode {
   let attrOnly = false
   let value: SvelteText
   if (typeof node.value === 'boolean') {
@@ -259,8 +259,9 @@ function convertVaporDirective(
   }
 }
 
-function convertVaporDirectiveExpression(
-  node: SvelteAttribute | SvelteBaseDirective
+export function convertVaporDirectiveExpression(
+  node: SvelteAttribute | SvelteBaseDirective,
+  options: { isStatic?: boolean } = {}
 ): SimpleExpressionNode | undefined {
   if (isSvelteAttribute(node) && Array.isArray(node.value)) {
     if (node.value.some(v => isSvelteSpreadAttribute(v) || isSvelteShorthandAttribute(v))) {
@@ -276,7 +277,8 @@ function convertVaporDirectiveExpression(
       }
     }
 
-    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+    const isStatic = !!options.isStatic
+    return createSimpleExpression(content, isStatic, convertSvelteLocation(node, content))
   } else if (isSvelteEventHandler(node)) {
     const content =
       node.expression == undefined ? `$emit('${node.name}')` : generate(node.expression)

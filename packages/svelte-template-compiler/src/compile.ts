@@ -14,6 +14,7 @@ import {
   transformChildren,
   transformComment,
   transformElement,
+  transformSlotOutlet,
   transformTemplateRef,
   transformText,
   transformVBind,
@@ -21,7 +22,8 @@ import {
   transformVHtml,
   transformVIf,
   transformVModel,
-  transformVOn
+  transformVOn,
+  transformVSlot
 } from './transforms/index.ts'
 
 import type { CompilerError, SourceLocation } from '@vue-vapor/compiler-dom'
@@ -155,11 +157,11 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
       // transformVOnce,
       transformVIf,
       transformVFor,
-      // transformSlotOutlet,
+      transformSlotOutlet,
       transformTemplateRef,
       transformText,
       transformElement,
-      // transformVSlot,
+      transformVSlot,
       transformComment,
       transformVHtml,
       transformChildren
