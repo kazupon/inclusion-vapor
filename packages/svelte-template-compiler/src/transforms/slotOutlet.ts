@@ -47,7 +47,7 @@ export const transformSlotOutlet: NodeTransform = (node, context) => {
   )
 
   // for fallback content
-  if ((node.children || []).length > 0) {
+  if (fallback && exitBlock) {
     processChildren(node, context, true)
   }
 
