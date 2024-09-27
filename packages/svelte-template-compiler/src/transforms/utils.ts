@@ -8,14 +8,14 @@
 import { parseExpression } from '@babel/parser'
 import { NodeTypes, createSimpleExpression, isLiteralWhitelisted } from '@vue-vapor/compiler-dom'
 import { isGloballyAllowed, isString, makeMap } from '@vue-vapor/shared'
-import { DynamicFlag, IRNodeTypes, convertToSourceLocation } from '../ir/index.ts'
+import { DynamicFlag, IRNodeTypes, convertToSourceLocation, isSvelteText } from '../ir/index.ts'
 
 import type { ParseResult as BabelParseResult } from '@babel/parser'
-import type {
-  Expression as BabelExpression,
-  BigIntLiteral,
-  NumericLiteral,
-  StringLiteral
+import {
+  type Expression as BabelExpression,
+  type BigIntLiteral,
+  type NumericLiteral,
+  type StringLiteral
 } from '@babel/types'
 import type { ExpressionNode, SimpleExpressionNode } from '@vue-vapor/compiler-dom'
 import type {
@@ -24,7 +24,8 @@ import type {
   SvelteBaseNode,
   SvelteEachBlock,
   SvelteIfBlock,
-  SvelteMustacheTag
+  SvelteMustacheTag,
+  SvelteTemplateNode
 } from '../ir/index.ts'
 import type { TransformContext } from './context.ts'
 import type { NodeTransform, StructuralDirectiveTransform } from './types.ts'
@@ -34,7 +35,7 @@ export const isReservedProp: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included
   // ',key,ref,ref_for,ref_key,'
   // TODO: tweak for svelte-vapor
-  ',ref,'
+  ',ref,slot'
 )
 
 export const EMPTY_EXPRESSION: ReturnType<typeof createSimpleExpression> = createSimpleExpression(
@@ -188,6 +189,10 @@ export function getLiteralExpressionValue(
   }
   // eslint-disable-next-line unicorn/no-null
   return exp.isStatic ? exp.content : null
+}
+
+export function isNonWhitespaceContent(node: SvelteTemplateNode): boolean {
+  return isSvelteText(node) ? !!node.data.trim() : true
 }
 
 export function createStructuralDirectiveTransform(

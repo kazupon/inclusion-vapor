@@ -13,8 +13,10 @@ const compileWithTextTransform = makeCompile({
 test('no consecutive text', () => {
   const { code, ir, vaporHelpers } = compileWithTextTransform('{ "hello world" }')
   const expectedResult = vaporCompile('{{ "hello world" }}', DEFAULT_VAPOR_COMPILER_OPTIONS)
+
   expect(code).toMatchSnapshot()
   expect(code).toEqual(expectedResult.code)
+
   expect(vaporHelpers).contains.all.keys('createTextNode')
   expect(ir.block.operation).toMatchObject([
     {
@@ -35,8 +37,10 @@ test('no consecutive text', () => {
 test('consecutive text', () => {
   const { code, ir, vaporHelpers } = compileWithTextTransform('{ msg }')
   const expectedResult = vaporCompile('{{ msg }}', DEFAULT_VAPOR_COMPILER_OPTIONS)
+
   expect(code).toMatchSnapshot()
   expect(code).toEqual(expectedResult.code)
+
   expect(vaporHelpers).contains.all.keys('createTextNode')
   expect(ir.block.operation).toMatchObject([
     {

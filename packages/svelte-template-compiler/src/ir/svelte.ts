@@ -104,6 +104,11 @@ export function isSvelteBindingDirective(node: unknown): node is SvelteBaseExpre
   return isObject(node) && 'type' in node && node.type === 'Binding'
 }
 
+// TODO: more refactor the above `isSvelteBindingDirective`
+export function isSvelteLetDirective(node: unknown): node is SvelteBaseExpressionDirective {
+  return isObject(node) && 'type' in node && node.type === 'Let'
+}
+
 export function findAttrs(node: SvelteBaseNode, name: string): SvelteAttribute | undefined {
   for (const attr of node.attributes) {
     if (isSvelteAttribute(attr) && attr.name === name) {

@@ -14,7 +14,10 @@ import type { NodeTransform } from './types.ts'
 
 export const transformChildren: NodeTransform = (node, context) => {
   const isFragment =
-    node.type === IRNodeTypes.ROOT || node.type === 'Fragment' || node.type === 'InlineComponent'
+    node.type === IRNodeTypes.ROOT ||
+    node.type === 'Fragment' ||
+    node.type === 'InlineComponent' ||
+    node.type === 'Slot'
   if (node.type !== 'Element' && !isFragment) {
     return
   }

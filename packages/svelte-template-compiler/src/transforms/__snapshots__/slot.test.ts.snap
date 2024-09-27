@@ -1,0 +1,251 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`dynamic slots name > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n2 = _createComponent(_component_Comp, null, [
+    () => ({
+      name: name, 
+      fn: () => {
+        const n0 = t0()
+        return n0
+      }
+    })
+  ], true)
+  return n2
+}"
+`;
+
+exports[`dynamic slots name > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    () => ({
+      name: name, 
+      fn: () => {
+        const n0 = t0()
+        return n0
+      }
+    })
+  ], true)
+  return n1
+}"
+`;
+
+exports[`dynamically named slot on component > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    () => ({
+      name: named, 
+      fn: ({ bar }) => {
+        const n0 = _createTextNode(() => [foo + bar])
+        return n0
+      }
+    })
+  ], true)
+  return n1
+}"
+`;
+
+exports[`dynamically named slot on component > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    () => ({
+      name: named, 
+      fn: ({ bar }) => {
+        const n0 = _createTextNode(() => [foo + bar])
+        return n0
+      }
+    })
+  ], true)
+  return n1
+}"
+`;
+
+exports[`implicit default slot on component > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      default: () => {
+        const n0 = t0()
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`implicit default slot on component > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      default: () => {
+        const n0 = t0()
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`named slot on component > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ bar }) => {
+        const n0 = _createTextNode(() => [foo + bar])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`named slot on component > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ bar }) => {
+        const n0 = _createTextNode(() => [foo + bar])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`named slots with implicit default slot > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+const t1 = _template("bar")
+const t2 = _template("<span></span>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      one: () => {
+        const n0 = t0()
+        return n0
+      }, 
+      default: () => {
+        const n2 = t1()
+        const n3 = t2()
+        return [n2, n3]
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`named slots with implicit default slot > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+const t1 = _template("bar")
+const t2 = _template("<span></span>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      one: () => {
+        const n0 = t0()
+        return n0
+      }, 
+      default: () => {
+        const n2 = t1()
+        const n3 = t2()
+        return [n2, n3]
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`nested slots scoping > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+
+export function render(_ctx) {
+  const _component_Inner = _resolveComponent("Inner")
+  const _component_Comp = _resolveComponent("Comp")
+  const n5 = _createComponent(_component_Comp, null, [
+    {
+      default: ({ foo }) => {
+        const n2 = t0()
+        const n1 = _createComponent(_component_Inner, null, [
+          {
+            default: ({ bar }) => {
+              const n0 = _createTextNode(() => [foo + bar + baz])
+              return n0
+            }
+          }
+        ])
+        const n3 = _createTextNode(() => [foo + bar + baz])
+        return [n1, n2, n3]
+      }
+    }
+  ], true)
+  return n5
+}"
+`;
+
+exports[`nested slots scoping > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+
+export function render(_ctx) {
+  const _component_Inner = _resolveComponent("Inner")
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      default: ({ foo }) => {
+        const n2 = t0()
+        const n1 = _createComponent(_component_Inner, null, [
+          {
+            default: ({ bar }) => {
+              const n0 = _createTextNode(() => [foo + bar + baz])
+              return n0
+            }
+          }
+        ])
+        const n3 = _createTextNode(() => [foo + bar + baz])
+        return [n1, n2, n3]
+      }
+    }
+  ], true)
+  return n4
+}"
+`;

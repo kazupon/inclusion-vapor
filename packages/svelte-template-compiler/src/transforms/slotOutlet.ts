@@ -13,9 +13,9 @@ import {
   IRNodeTypes,
   isSvelteAttribute,
   isSvelteDirective,
+  isSvelteElement,
   isSvelteSpreadAttribute
 } from '../ir/index.ts'
-import { processChildren } from './children.ts'
 import { buildProps } from './element.ts'
 import { newBlock } from './utils.ts'
 
@@ -38,6 +38,10 @@ export const transformSlotOutlet: NodeTransform = (node, context) => {
   if (node.type !== 'Slot') {
     return
   }
+  const { parent } = context
+  if (parent && isSvelteElement(parent.node) && parent.node.type === 'InlineComponent') {
+    return
+  }
 
   const id = context.reference()
   context.dynamic.flags |= DynamicFlag.INSERT | DynamicFlag.NON_TEMPLATE
@@ -45,11 +49,6 @@ export const transformSlotOutlet: NodeTransform = (node, context) => {
     node as SvelteElement,
     context as TransformContext<SvelteElement>
   )
-
-  // for fallback content
-  if (fallback && exitBlock) {
-    processChildren(node, context, true)
-  }
 
   let slotName: SimpleExpressionNode | undefined
   const slotProps: (SvelteAttribute | SvelteSpreadAttribute)[] = []

@@ -46,7 +46,7 @@ export const transformText: NodeTransform = (node, context) => {
   }
 
   const children = node.children || []
-  if (isSvelteElement(node) && isAllTextLike(children)) {
+  if (isSvelteElement(node) && node.type !== 'InlineComponent' && isAllTextLike(children)) {
     // TODO: should more tested for component
     processTextLikeContainer(children, context as TransformContext<SvelteElement>)
   } else if (isSvelteMustacheTag(node)) {
