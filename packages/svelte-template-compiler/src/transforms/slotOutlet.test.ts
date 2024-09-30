@@ -304,3 +304,18 @@ test('named slot with fallback and props', () => {
     }
   ])
 })
+
+test('multiple outlets', () => {
+  const source = `<div>
+  <slot name="header">No header was provided</slot>
+  <p>Some content between header and footer</p>
+  <slot name="footer" />
+</div>
+`
+
+  const { code } = compileWithSlotOutlet(source)
+  const expectedResult = vaporCompile(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+})

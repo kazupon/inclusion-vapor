@@ -104,6 +104,42 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`multiple outlets > expected 1`] = `
+"import { createSlot as _createSlot, prepend as _prepend, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("No header was provided")
+const t1 = _template("<div><p>Some content between header and footer</p></div>")
+
+export function render(_ctx) {
+  const n4 = t1()
+  const n0 = _createSlot("header", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  const n3 = _createSlot("footer", null)
+  _prepend(n4, n0)
+  _insert(n3, n4)
+  return n4
+}"
+`;
+
+exports[`multiple outlets > received 1`] = `
+"import { createSlot as _createSlot, prepend as _prepend, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("No header was provided")
+const t1 = _template("<div> <p>Some content between header and footer</p> </div>")
+
+export function render(_ctx) {
+  const n4 = t1()
+  const n0 = _createSlot("header", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  const n3 = _createSlot("footer", null)
+  _prepend(n4, n0)
+  _insert(n3, n4)
+  return n4
+}"
+`;
+
 exports[`named slot with fallback > expected 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
