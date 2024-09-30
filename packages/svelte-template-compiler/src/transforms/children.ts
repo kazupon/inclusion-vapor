@@ -13,11 +13,16 @@ import type { TransformContext } from './context.ts'
 import type { NodeTransform } from './types.ts'
 
 export const transformChildren: NodeTransform = (node, context) => {
+  if (__DEV__) {
+    console.log('transformChildren', node.type)
+  }
+
   const isFragment =
     node.type === IRNodeTypes.ROOT ||
     node.type === 'Fragment' ||
     node.type === 'InlineComponent' ||
-    node.type === 'Slot'
+    node.type === 'Slot' ||
+    node.type === 'SlotTemplate'
   if (node.type !== 'Element' && !isFragment) {
     return
   }

@@ -32,9 +32,15 @@ import type {
 import type { TransformContext } from './context.ts'
 import type { NodeTransform } from './types.ts'
 
-// TODO: transform vapor slot from svelte slot
-// https://svelte.dev/docs/special-elements#slot
+/**
+ * NOTE: transform vapor slot from svelte slot
+ * https://svelte.dev/docs/special-elements#slot
+ */
 export const transformSlotOutlet: NodeTransform = (node, context) => {
+  if (__DEV__) {
+    console.log('transformSlotOutlet', node.type)
+  }
+
   if (node.type !== 'Slot') {
     return
   }

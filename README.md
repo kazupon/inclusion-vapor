@@ -145,8 +145,8 @@ Based on Svelte v4 (maybe v3 compatible)
   - [x] `bind:this`
 - [ ] Special elements
   - [ ] `<slot>`
-    - [ ] default
-    - [ ] `<slot name="name">`
+    - [x] default (Basic implementation Done, `#each` and `#if is not implementaed yet)
+    - [x] `<slot name="name">` (Basic implementation Done, `#each` and `#if is not implementaed yet)
     - [ ] `$$slots`
     - [ ] `<slot key={value}>`
   - [ ] `<svelte:self>`
@@ -157,7 +157,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `<svelte:body>`
   - [ ] `<svelte:head>`
   - [ ] `<svelte:options>`
-  - [ ] `<svelte:fragment>`
+  - [x] `<svelte:fragment>`
 - [ ] Runtime
   - [ ] svelte
     - [ ] `onMount`

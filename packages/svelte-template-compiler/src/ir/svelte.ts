@@ -18,6 +18,7 @@ import type {
   SpreadAttribute as SvelteSpreadAttribute,
   Text as SvelteText
 } from 'svelte/types/compiler/interfaces'
+import type { SvelteTemplateNode } from './svelte'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO: add svelte built-in directives
@@ -109,8 +110,9 @@ export function isSvelteLetDirective(node: unknown): node is SvelteBaseExpressio
   return isObject(node) && 'type' in node && node.type === 'Let'
 }
 
-export function findAttrs(node: SvelteBaseNode, name: string): SvelteAttribute | undefined {
-  for (const attr of node.attributes) {
+export function findAttrs(node: SvelteTemplateNode, name: string): SvelteAttribute | undefined {
+  const attrs = node.attributes || [] // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+  for (const attr of attrs) {
     if (isSvelteAttribute(attr) && attr.name === name) {
       return attr
     }

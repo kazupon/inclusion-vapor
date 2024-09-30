@@ -36,12 +36,16 @@ import type { DirectiveTransformResult } from './index.ts'
 import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {
+  if (__DEV__) {
+    console.log('transformElement', context.node.type)
+  }
+
   return function postTransformElement() {
     const { node } = context
     if (!isSvelteElement(node)) {
       return
     }
-    if (node.type === 'Slot') {
+    if (node.type === 'Slot' || node.type === 'SlotTemplate') {
       return
     }
 

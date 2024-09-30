@@ -24,7 +24,7 @@ export default defineBuildConfig({
       values: {
         __COMMIT__: JSON.stringify(commit()),
         __BROWSER__: 'true',
-        __DEV__: 'true',
+        __DEV__: 'false',
         'process.env.NODE_ENV': '"production"'
       }
     },

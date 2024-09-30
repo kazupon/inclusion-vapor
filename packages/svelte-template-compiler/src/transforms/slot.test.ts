@@ -16,10 +16,10 @@ import { transformText } from './text.ts'
 const compileWithSlot = makeCompile({
   prefixIdentifiers: false,
   nodeTransforms: [
-    transformText,
     transformVIf,
     transformVFor,
     transformSlotOutlet,
+    transformText,
     transformElement,
     transformVSlot,
     transformChildren
@@ -68,10 +68,9 @@ test('implicit default slot on component', () => {
   })
 })
 
-// NOTE: not support svelte explicit default slot on component?
-test.todo('explicit default slot on component', () => {
+test('explicit default slot on component', () => {
   const source1 = `<Comp slot="default"><div /></Comp>`
-  const source2 = `<Comp v-slot="default"><div /></Comp>`
+  const source2 = `<Comp v-slot:default><div /></Comp>`
 
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
@@ -83,7 +82,6 @@ test.todo('explicit default slot on component', () => {
   expect(ir.block.operation).toMatchObject([
     {
       type: IRNodeTypes.CREATE_COMPONENT_NODE,
-      id: 1,
       tag: 'Comp',
       props: [[]],
       slots: [
@@ -105,6 +103,43 @@ test.todo('explicit default slot on component', () => {
   expect(ir.block.dynamic).toMatchObject({
     children: [{ id: 1 }]
   })
+})
+
+test('named slot on elements', () => {
+  const source1 = `<Comp>
+  <h1 slot="greeting">Hello</h1>
+</Comp>`
+  const source2 = `<Comp>
+  <template v-slot:greeting><h1>Hello</h1></template>
+</Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<h1>Hello</h1>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            greeting: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                children: [{ template: 0 }]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ])
 })
 
 test('named slot on component', () => {
@@ -142,6 +177,48 @@ test('named slot on component', () => {
   ])
 })
 
+test('dynamically named slot on elements', () => {
+  const source1 = `<Comp>
+  <h1 slot={named}>Hello</h1>
+</Comp>`
+  const source2 = `<Comp>
+  <template v-slot:[named]><h1>Hello</h1></template>
+</Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  // expect(vaporHelpers).contains('withDestructure')
+  expect(code).contains(`name: named,`)
+  expect(code).contains(`fn: () => {`)
+
+  expect(ir.template).toEqual(['<h1>Hello</h1>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.DYNAMIC,
+          name: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'named',
+            isStatic: false
+          },
+          fn: {
+            type: IRNodeTypes.BLOCK,
+            props: undefined
+          }
+        }
+      ]
+    }
+  ])
+})
+
 test('dynamically named slot on component', () => {
   const source1 = `<Comp slot={ named } let:bar={ bar }>{ foo + bar }</Comp>`
   const source2 = `<Comp v-slot:[named]="{ bar }">{{ foo + bar }}</Comp>`
@@ -161,8 +238,10 @@ test('dynamically named slot on component', () => {
     {
       type: IRNodeTypes.CREATE_COMPONENT_NODE,
       tag: 'Comp',
+      props: [[]],
       slots: [
         {
+          slotType: IRSlotType.DYNAMIC,
           name: {
             type: NodeTypes.SIMPLE_EXPRESSION,
             content: 'named',
@@ -182,7 +261,47 @@ test('dynamically named slot on component', () => {
 })
 
 test('named slots with implicit default slot', () => {
-  const source1 = `<Comp><slot name="one">foo</slot>bar<span /></Comp>`
+  const source1 = `<Comp><h1 slot="one">foo</h1>bar<span /></Comp>`
+  const source2 = `<Comp><template #one><h1>foo</h1></template>bar<span /></Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(ir.template).toEqual(['<h1>foo</h1>', 'bar', '<span></span>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      id: 4,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            one: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                children: [{ template: 0 }]
+              }
+            },
+            default: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                children: [{}, { template: 1 }, { template: 2 }]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
+
+test('<svelte:fragment>', () => {
+  const source1 = `<Comp><svelte:fragment slot="one">foo</svelte:fragment>bar<span /></Comp>`
   const source2 = `<Comp><template #one>foo</template>bar<span /></Comp>`
 
   const { code, ir } = compileWithSlot(source1)

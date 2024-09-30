@@ -18,6 +18,10 @@ import type { NodeTransform } from './types.ts'
  * https://svelte.dev/docs/logic-blocks#if
  */
 export const transformVIf: NodeTransform = (node, context) => {
+  if (__DEV__) {
+    console.log('transformVIf', node.type)
+  }
+
   if (node.type === 'IfBlock' && !node.elseif) {
     return processIf(node as SvelteIfBlock, context as TransformContext<SvelteIfBlock>, [])
   }
