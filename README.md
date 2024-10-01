@@ -145,10 +145,10 @@ Based on Svelte v4 (maybe v3 compatible)
   - [x] `bind:this`
 - [ ] Special elements
   - [ ] `<slot>`
-    - [x] default (Basic implementation Done, `#each` and `#if is not implementaed yet)
-    - [x] `<slot name="name">` (Basic implementation Done, `#each` and `#if is not implementaed yet)
+    - [x] default
+    - [x] `<slot name="name">`
     - [ ] `$$slots`
-    - [ ] `<slot key={value}>`
+    - [x] `<slot key={value}>`
   - [ ] `<svelte:self>`
   - [ ] `<svelte:component>`
   - [ ] `<svelte:element>`
