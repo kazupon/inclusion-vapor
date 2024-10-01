@@ -105,7 +105,7 @@ test('explicit default slot on component', () => {
   })
 })
 
-test('named slot on elements', () => {
+test('named slot on element', () => {
   const source1 = `<Comp>
   <h1 slot="greeting">Hello</h1>
 </Comp>`
@@ -142,8 +142,113 @@ test('named slot on elements', () => {
   ])
 })
 
+test('named slots on multiple elements', () => {
+  const source1 = `<Comp>
+  <h1 slot="header">Hello</h1>
+  <p slot="footer">copyright</p>
+</Comp>`
+  const source2 = `<Comp>
+	<template #header><h1>Hello</h1></template>
+	<template #footer><p>copyright</p></template>
+</Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  // TODO: white space
+  expect(ir.template).toEqual(['<h1>Hello</h1>', ' ', '<p>copyright</p>'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            header: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                children: [{ template: 0 }]
+              }
+            },
+            footer: {
+              type: IRNodeTypes.BLOCK,
+              dynamic: {
+                // TODO: white space
+                // children: [{ template: 1 }]
+                children: [{ template: 2 }]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
+
+test('complex named slots (mixed element, components and text)', () => {
+  const source1 = `<Comp>
+  <h1>title</h1>
+  <header slot="header">Header</header>
+  <div>contents: <span>content</span></div>
+  <Footer slot="footer" />
+</Comp>`
+  const source2 = `<Comp>
+  <h1>title</h1>
+	<template #header><header>Header</header></template>
+  <div>contents: <span>content</span></div>
+	<template #footer><Footer /></template>
+</Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  // TODO: white space
+  expect(ir.template).toEqual([
+    '<h1>title</h1>',
+    ' ',
+    '<header>Header</header>',
+    '<div>contents: <span>content</span></div>'
+  ])
+
+  expect(code).contains(`header: () => {`)
+  expect(code).contains(`footer: () => {`)
+  expect(code).contains(`_createComponent(_component_Footer)`)
+  expect(code).contains(`default: () => {`)
+
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            header: {
+              type: IRNodeTypes.BLOCK
+            },
+            footer: {
+              type: IRNodeTypes.BLOCK
+            },
+            default: {
+              type: IRNodeTypes.BLOCK
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
+
 test('named slot on component', () => {
-  const source1 = `<Comp slot="named" let:bar={ bar }>{ foo + bar }</Comp>`
+  const source1 = `<Comp slot="named" let:bar>{ foo + bar }</Comp>`
   const source2 = `<Comp v-slot:named="{ bar }">{{ foo + bar }}</Comp>`
 
   const { code, ir } = compileWithSlot(source1)
@@ -177,7 +282,50 @@ test('named slot on component', () => {
   ])
 })
 
-test('dynamically named slot on elements', () => {
+test('named slot on multiple components', () => {
+  const source1 = `<Comp>
+  <Hello slot="foo" />
+  <World slot="bar" />
+</Comp>`
+  const source2 = `<Comp>
+  <template #foo><Hello /></template>
+  <template #bar><World /></template>
+</Comp>`
+
+  const { code, ir } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(code).contains(`foo: () => {`)
+  expect(code).contains(`bar: () => {`)
+
+  // TOOD: white space
+  // expect(ir.template).toEqual([])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            foo: {
+              type: IRNodeTypes.BLOCK
+            },
+            bar: {
+              type: IRNodeTypes.BLOCK
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
+
+test('dynamically named slot on element', () => {
   const source1 = `<Comp>
   <h1 slot={named}>Hello</h1>
 </Comp>`
@@ -220,7 +368,7 @@ test('dynamically named slot on elements', () => {
 })
 
 test('dynamically named slot on component', () => {
-  const source1 = `<Comp slot={ named } let:bar={ bar }>{ foo + bar }</Comp>`
+  const source1 = `<Comp slot={ named } let:bar>{ foo + bar }</Comp>`
   const source2 = `<Comp v-slot:[named]="{ bar }">{{ foo + bar }}</Comp>`
 
   const { code, ir } = compileWithSlot(source1)
@@ -300,6 +448,37 @@ test('named slots with implicit default slot', () => {
   ])
 })
 
+test('slot outlets chain', () => {
+  const source = `<Comp><slot>outlets</slot></Comp>`
+
+  const { code, ir } = compileWithSlot(source)
+  const expectedResult = vaporCompile(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(code).contain(`_createSlot("default", null, () => {`)
+
+  expect(ir.template).toEqual(['outlets'])
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'Comp',
+      props: [[]],
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            default: {
+              type: IRNodeTypes.BLOCK
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
+
 test('<svelte:fragment>', () => {
   const source1 = `<Comp><svelte:fragment slot="one">foo</svelte:fragment>bar<span /></Comp>`
   const source2 = `<Comp><template #one>foo</template>bar<span /></Comp>`
@@ -341,8 +520,8 @@ test('<svelte:fragment>', () => {
 })
 
 test('nested slots scoping', () => {
-  const source1 = `<Comp let:foo={ foo }>
-  <Inner let:bar={ bar }>
+  const source1 = `<Comp let:foo>
+  <Inner let:bar>
     { foo + bar + baz }
   </Inner>
   { foo + bar + baz }
@@ -442,10 +621,59 @@ test('dynamic slots name', () => {
   ])
 })
 
+test('let alias', () => {
+  const source1 = `<Comp slot="named" let:bar={ foo }>{ foo }</Comp>`
+  const source2 = `<Comp v-slot:named="{ bar: foo }">{{ foo }}</Comp>`
+
+  const { code } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('received')
+  expect(expectedResult.code).toMatchSnapshot('expected')
+
+  expect(code).contains(`named: ({ bar: foo }) => {`)
+})
+
+test('let object destructuring', () => {
+  const source = `<Comp slot="named" let:item={{ id }}>{ id }</Comp>`
+
+  const { code } = compileWithSlot(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(code).contains(`named: ({ item: { id } }) => {`)
+})
+
+test('let array destructuring', () => {
+  const source = `<Comp slot="named" let:item={[a, b]}>{ a + b }</Comp>`
+
+  const { code } = compileWithSlot(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(code).contains(`named: ({ item: [ a, b ] }) => {`)
+})
+
+test.todo('let multiple', () => {
+  const source = `<Comp slot="named" let:item let:bar={ buz } let:dio={[a, b]}></Comp>`
+
+  const { code } = compileWithSlot(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(code).contains(`named: ({ item, bar: buz, dio: [ a, b ] }) => {`)
+})
+
+test('let on <svelte:fragment>', () => {
+  const source = `<Comp><svelte:fragment slot="one" let:foo>foo</svelte:fragment>bar<span /></Comp>`
+
+  const { code } = compileWithSlot(source)
+
+  expect(code).toMatchSnapshot('received')
+  expect(code).contains(`one: ({ foo }) => {`)
+})
+
 test.todo('dynamic slots name with #each', () => {
   const source1 = `<Comp>
   {#each items as item}
-  <Inner slot={ item } let:bar={ bar }>foo</Inner>
+  <Inner slot={ item } let:bar>foo</Inner>
   {/each}
 </Comp>`
   const source2 = `<Comp>
@@ -488,7 +716,7 @@ test.todo('dynamic slots name with #each', () => {
 test.todo('dynamic slots name with #each and provide absent key', () => {
   const source = `<Comp>
   {#each items as item, index}
-  <div slot={ index } let:text={ item }>foo</div>
+  <div slot={ index } let:text>foo</div>
   {/each}
 </Comp>`
   expect(source).toBe('todo')

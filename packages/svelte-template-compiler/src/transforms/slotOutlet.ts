@@ -13,7 +13,6 @@ import {
   IRNodeTypes,
   isSvelteAttribute,
   isSvelteDirective,
-  isSvelteElement,
   isSvelteSpreadAttribute
 } from '../ir/index.ts'
 import { buildProps } from './element.ts'
@@ -42,10 +41,6 @@ export const transformSlotOutlet: NodeTransform = (node, context) => {
   }
 
   if (node.type !== 'Slot') {
-    return
-  }
-  const { parent } = context
-  if (parent && isSvelteElement(parent.node) && parent.node.type === 'InlineComponent') {
     return
   }
 

@@ -105,7 +105,7 @@ function convertVaporDirectiveForSlot(node: SvelteElement): VaporDirectiveNode |
   if (slotScopeNodes.length > 0) {
     const firstSlotScopeNode = slotScopeNodes[0]
     const lastSlotScopeNode = slotScopeNodes[slotScopeNodes.length - 1] // eslint-disable-line unicorn/prefer-at
-    const expContent = `{ ${resolveSlotScopeExpression(slotScopeNodes)} }`
+    const expContent = resolveSlotScopeExpression(slotScopeNodes)
     exp = createSimpleExpression(
       expContent,
       false,
@@ -150,17 +150,45 @@ function resolveSlotVaporDirectiveArgValue(attr: SvelteAttribute): SlotDirective
 function resolveSlotScopeExpression(nodes: SvelteBaseExpressionDirective[]): string {
   const contents = []
   for (const node of nodes) {
-    contents.push(node.name)
-    // TODO: more complex expression handling
-    if (
-      node.expression &&
-      node.expression.type === 'Identifier' &&
-      node.name !== node.expression.name
-    ) {
+    if (node.expression) {
+      switch (node.expression.type) {
+        case 'Identifier': {
+          if (node.name === node.expression.name) {
+            contents.push(node.name)
+          } else {
+            contents.push(`${node.name}: ${node.expression.name}`)
+          }
+          break
+        }
+        case 'ObjectExpression': {
+          const keys = []
+          for (const prop of node.expression.properties) {
+            // TODO: more handling
+            if (prop.type === 'Property' && prop.shorthand && prop.key.type === 'Identifier') {
+              keys.push(prop.key.name)
+            }
+          }
+          contents.push(`${node.name}: { ${keys.join(', ')} }`)
+          break
+        }
+        case 'ArrayExpression': {
+          const items = []
+          for (const element of node.expression.elements) {
+            if (element && element.type === 'Identifier') {
+              items.push(element.name)
+            }
+          }
+          contents.push(`${node.name}: [ ${items.join(', ')} ]`)
+
+          break
+        }
+        // No default
+      }
+    } else {
       contents.push(node.name)
     }
   }
-  return contents.join(', ')
+  return `{ ${contents.join(', ')} }`
 }
 
 // <Foo slot="foo">, <Foo slot={foo}>
@@ -184,7 +212,6 @@ function transformComponentSlot(
     // }
     n => isNonWhitespaceContent(n) && !(isSvelteElement(n) && findAttrs(n, 'slot'))
   )
-  // console.log('transformComponentSlot:nonSlotAttrChildren', nonSlotAttrChildren)
 
   const [block, onExit] = createSlotBlock(node, dir, context)
   const { slots } = context
@@ -262,7 +289,7 @@ function createSlotBlock(
   context: TransformContext<SvelteElement>
 ): [SlotBlockIRNode, () => void] {
   slotNode.children = (slotNode.children || []).map(child => {
-    if (child.type === 'Element') {
+    if (child.type === 'Element' || child.type === 'InlineComponent') {
       const slotAttr = findAttrs(child, 'slot')
       if (slotAttr) {
         // wrap with svelte:fragment for Svelte Element, which has `slot` attribute
@@ -289,6 +316,7 @@ function createSlotBlock(
     }
   })
   slotNode.node = slotNode
+  // console.log('createSlotBlock mapped slotNode', slotNode)
 
   const block: SlotBlockIRNode = newBlock(slotNode)
   block.props = dir && dir.exp

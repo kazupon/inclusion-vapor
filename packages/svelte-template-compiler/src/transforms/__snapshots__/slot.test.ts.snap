@@ -50,6 +50,70 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`complex named slots (mixed element, components and text) > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>title</h1>")
+const t1 = _template("<header>Header</header>")
+const t2 = _template("<div>contents: <span>content</span></div>")
+
+export function render(_ctx) {
+  const _component_Footer = _resolveComponent("Footer")
+  const _component_Comp = _resolveComponent("Comp")
+  const n6 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n1 = t1()
+        return n1
+      }, 
+      footer: () => {
+        const n4 = _createComponent(_component_Footer)
+        return n4
+      }, 
+      default: () => {
+        const n0 = t0()
+        const n3 = t2()
+        return [n0, n3]
+      }
+    }
+  ], true)
+  return n6
+}"
+`;
+
+exports[`complex named slots (mixed element, components and text) > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>title</h1>")
+const t1 = _template(" ")
+const t2 = _template("<header>Header</header>")
+const t3 = _template("<div>contents: <span>content</span></div>")
+
+export function render(_ctx) {
+  const _component_Footer = _resolveComponent("Footer")
+  const _component_Comp = _resolveComponent("Comp")
+  const n9 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n2 = t2()
+        return n2
+      }, 
+      footer: () => {
+        const n7 = _createComponent(_component_Footer)
+        return n7
+      }, 
+      default: () => {
+        const n0 = t0()
+        const n1 = t1()
+        const n4 = t1()
+        const n5 = t3()
+        const n6 = t1()
+        return [n0, n1, n4, n5, n6]
+      }
+    }
+  ], true)
+  return n9
+}"
+`;
+
 exports[`dynamic slots name > expected 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("foo")
@@ -124,7 +188,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamically named slot on elements > expected 1`] = `
+exports[`dynamically named slot on element > expected 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -143,7 +207,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamically named slot on elements > received 1`] = `
+exports[`dynamically named slot on element > received 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -234,6 +298,99 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`let alias > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ bar: foo }) => {
+        const n0 = _createTextNode(() => [foo])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`let alias > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ bar: foo }) => {
+        const n0 = _createTextNode(() => [foo])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`let array destructuring > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ item: [ a, b ] }) => {
+        const n0 = _createTextNode(() => [a + b])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`let object destructuring > received 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    {
+      named: ({ item: { id } }) => {
+        const n0 = _createTextNode(() => [id])
+        return n0
+      }
+    }
+  ], true)
+  return n1
+}"
+`;
+
+exports[`let on <svelte:fragment> > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+const t1 = _template("bar")
+const t2 = _template("<span></span>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      one: ({ foo }) => {
+        const n0 = t0()
+        return n0
+      }, 
+      default: () => {
+        const n2 = t1()
+        const n3 = t2()
+        return [n2, n3]
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
 exports[`named slot on component > expected 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
@@ -268,7 +425,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on elements > expected 1`] = `
+exports[`named slot on element > expected 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -286,7 +443,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on elements > received 1`] = `
+exports[`named slot on element > received 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -301,6 +458,100 @@ export function render(_ctx) {
     }
   ], true)
   return n2
+}"
+`;
+
+exports[`named slot on multiple components > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const _component_Hello = _resolveComponent("Hello")
+  const _component_World = _resolveComponent("World")
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      foo: () => {
+        const n0 = _createComponent(_component_Hello)
+        return n0
+      }, 
+      bar: () => {
+        const n2 = _createComponent(_component_World)
+        return n2
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`named slot on multiple components > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+
+export function render(_ctx) {
+  const _component_Hello = _resolveComponent("Hello")
+  const _component_World = _resolveComponent("World")
+  const _component_Comp = _resolveComponent("Comp")
+  const n5 = _createComponent(_component_Comp, null, [
+    {
+      foo: () => {
+        const n0 = _createComponent(_component_Hello)
+        return n0
+      }, 
+      bar: () => {
+        const n3 = _createComponent(_component_World)
+        return n3
+      }
+    }
+  ], true)
+  return n5
+}"
+`;
+
+exports[`named slots on multiple elements > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>Hello</h1>")
+const t1 = _template("<p>copyright</p>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n0 = t0()
+        return n0
+      }, 
+      footer: () => {
+        const n2 = t1()
+        return n2
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`named slots on multiple elements > received 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>Hello</h1>")
+const t1 = _template(" ")
+const t2 = _template("<p>copyright</p>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n5 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n0 = t0()
+        return n0
+      }, 
+      footer: () => {
+        const n3 = t2()
+        return n3
+      }
+    }
+  ], true)
+  return n5
 }"
 `;
 
@@ -407,5 +658,47 @@ export function render(_ctx) {
     }
   ], true)
   return n4
+}"
+`;
+
+exports[`slot outlets chain > expected 1`] = `
+"import { resolveComponent as _resolveComponent, createSlot as _createSlot, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("outlets")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n3 = _createComponent(_component_Comp, null, [
+    {
+      default: () => {
+        const n0 = _createSlot("default", null, () => {
+          const n2 = t0()
+          return n2
+        })
+        return n0
+      }
+    }
+  ], true)
+  return n3
+}"
+`;
+
+exports[`slot outlets chain > received 1`] = `
+"import { resolveComponent as _resolveComponent, createSlot as _createSlot, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("outlets")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n3 = _createComponent(_component_Comp, null, [
+    {
+      default: () => {
+        const n0 = _createSlot("default", null, () => {
+          const n2 = t0()
+          return n2
+        })
+        return n0
+      }
+    }
+  ], true)
+  return n3
 }"
 `;
