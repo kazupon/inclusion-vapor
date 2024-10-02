@@ -162,27 +162,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > expected 1`] = `
-"import { template as _template } from 'vue/vapor';
-const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
-
-export function render(_ctx) {
-  const n0 = t0()
-  return n0
-}"
-`;
-
-exports[`native elements > received 1`] = `
-"import { template as _template } from 'vue/vapor';
-const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
-
-export function render(_ctx) {
-  const n0 = t0()
-  return n0
-}"
-`;
-
-exports[`props + children 1`] = `
+exports[`native elements > attributes + children > expected 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"><span></span></div>")
 
@@ -192,9 +172,69 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`static props 1`] = `
+exports[`native elements > attributes + children > received 1`] = `
 "import { template as _template } from 'vue/vapor';
-const t0 = _template("<div id=\\"foo\\" class=\\"bar\\"></div>")
+const t0 = _template("<div id=\\"foo\\"><span></span></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > basic > expected 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > basic > received 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static attributes > expected 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\"></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static attributes > received 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div id=\\"foo\\"></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static class > expected 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"foo\\">hello</div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static class > received 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"foo\\">hello</div>")
 
 export function render(_ctx) {
   const n0 = t0()

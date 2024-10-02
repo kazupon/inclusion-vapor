@@ -105,6 +105,10 @@ export function isSvelteBindingDirective(node: unknown): node is SvelteBaseExpre
   return isObject(node) && 'type' in node && node.type === 'Binding'
 }
 
+export function isSvelteClassDirective(node: unknown): node is SvelteBaseExpressionDirective {
+  return isObject(node) && 'type' in node && node.type === 'Class'
+}
+
 // TODO: more refactor the above `isSvelteBindingDirective`
 export function isSvelteLetDirective(node: unknown): node is SvelteBaseExpressionDirective {
   return isObject(node) && 'type' in node && node.type === 'Let'

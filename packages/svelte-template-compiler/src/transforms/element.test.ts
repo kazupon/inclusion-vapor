@@ -10,11 +10,12 @@ import { transformText } from './text.ts'
 import type { BindingMetadata } from '@vue-vapor/compiler-dom'
 
 const compileWithElementTransform = makeCompile({
-  nodeTransforms: [transformElement, transformChildren, transformText]
+  nodeTransforms: [transformText, transformElement, transformChildren]
 })
 
-test('native elements', () => {
-  const source = `
+describe('native elements', () => {
+  test('basic', () => {
+    const source = `
 <div class="container">
   <div class="header">
     <p style="color: red;">Hello</p>
@@ -26,15 +27,55 @@ test('native elements', () => {
   </div>
 </div>
 `
-  const { ir: _, code, vaporHelpers } = compileWithElementTransform(source)
-  const expectedResult = vaporCompile(source)
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
-  // NOTE:
-  // There are differences in the handling around spaces and line breaks between Vue compiler and Svelte compiler.
-  // about details, see the snapshot
-  // expect(code).toEqual(expectedResult.code)
-  expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
+    const { ir: _, code, vaporHelpers } = compileWithElementTransform(source)
+    const expectedResult = vaporCompile(source)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    // NOTE:
+    // There are differences in the handling around spaces and line breaks between Vue compiler and Svelte compiler.
+    // about details, see the snapshot
+    // expect(code).toEqual(expectedResult.code)
+    expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
+  })
+
+  test('static attributes', () => {
+    const source = `<div id="foo" />`
+    const { code, ir } = compileWithElementTransform(source)
+    const expectedResult = vaporCompile(source)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(ir.template).toEqual([`<div id="foo"></div>`])
+    expect(ir.block.effect).lengthOf(0)
+  })
+
+  test('attributes + children', () => {
+    const source = `<div id="foo"><span/></div>`
+
+    const { code, ir } = compileWithElementTransform(source)
+    const expectedResult = vaporCompile(source)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(ir.template).toEqual([`<div id="foo"><span></span></div>`])
+    expect(ir.block.effect).lengthOf(0)
+  })
+
+  test('static class', () => {
+    const source = `<div class="foo">hello</div>`
+
+    const { code, ir } = compileWithElementTransform(source)
+    const expectedResult = vaporCompile(source)
+
+    expect(code).toMatchSnapshot('received')
+    expect(expectedResult.code).toMatchSnapshot('expected')
+
+    expect(ir.template).toEqual([`<div class="foo">hello</div>`])
+  })
 })
 
 describe('component', () => {
@@ -46,16 +87,20 @@ describe('component', () => {
 `
     const { ir: _, code, vaporHelpers } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
+
     expect(code).toMatchSnapshot('received')
     expect(expectedResult.code).toMatchSnapshot('expected')
+
     expect(code).toEqual(expectedResult.code)
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
   })
 
   test('import + resolve component', () => {
     const { code, ir, vaporHelpers } = compileWithElementTransform(`<Foo/>`)
+
     expect(code).toMatchSnapshot()
     expect(vaporHelpers).contains.all.keys('resolveComponent', 'createComponent')
+
     expect(ir.block.operation).toMatchObject([
       {
         type: IRNodeTypes.CREATE_COMPONENT_NODE,
@@ -74,7 +119,9 @@ describe('component', () => {
         Example: BindingTypes.SETUP_MAYBE_REF
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(vaporHelpers).not.toContain('resolveComponent')
     expect(ir.block.operation).toMatchObject([
       {
@@ -92,7 +139,9 @@ describe('component', () => {
         Example: BindingTypes.SETUP_MAYBE_REF
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains(`unref(Example)`)
     expect(vaporHelpers).not.toContain('resolveComponent')
     expect(vaporHelpers).toContain('unref')
@@ -105,7 +154,9 @@ describe('component', () => {
         Example: BindingTypes.SETUP_CONST
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(vaporHelpers).not.toContain('resolveComponent')
   })
 
@@ -115,7 +166,9 @@ describe('component', () => {
         Foo: BindingTypes.SETUP_MAYBE_REF
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains(`_ctx.Foo.Example`)
     expect(vaporHelpers).not.toContain('resolveComponent')
   })
@@ -127,7 +180,9 @@ describe('component', () => {
         Foo: BindingTypes.SETUP_CONST
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains(`Foo.Example`)
     expect(vaporHelpers).not.toContain('resolveComponent')
   })
@@ -139,7 +194,9 @@ describe('component', () => {
         Foo: BindingTypes.PROPS
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains(`Foo.Example`)
     expect(vaporHelpers).not.toContain('resolveComponent')
   })
@@ -151,7 +208,9 @@ describe('component', () => {
         Foo: BindingTypes.PROPS
       }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains('_ctx.Foo.Example')
     expect(vaporHelpers).not.toContain('resolveComponent')
   })
@@ -166,7 +225,9 @@ describe('component', () => {
     const { code, ir, vaporHelpers } = compileWithElementTransform(`<Example/>`, {
       bindingMetadata
     })
+
     expect(code).toMatchSnapshot()
+
     expect(vaporHelpers).toContain('resolveComponent')
     expect(ir.block.operation).toMatchObject([
       {
@@ -182,7 +243,9 @@ describe('component', () => {
     const { code } = compileWithElementTransform(`<Comp/>`, {
       bindingMetadata: { Comp: BindingTypes.SETUP_CONST }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains('_createComponent(_ctx.Comp, null, null, true)')
   })
 
@@ -190,7 +253,9 @@ describe('component', () => {
     const { code } = compileWithElementTransform(`<Comp/>123`, {
       bindingMetadata: { Comp: BindingTypes.SETUP_CONST }
     })
+
     expect(code).toMatchSnapshot()
+
     expect(code).contains('_createComponent(_ctx.Comp)')
   })
 
@@ -198,10 +263,13 @@ describe('component', () => {
     const source = `
 <Foo id="foo" class="bar" />
 `
+
     const { code, ir } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
+
     expect(code).toMatchSnapshot('received')
     expect(expectedResult.code).toMatchSnapshot('expected')
+
     expect(code).toEqual(expectedResult.code)
 
     expect(ir.block.operation).toMatchObject([
@@ -247,53 +315,9 @@ describe('component', () => {
   })
 })
 
-test('static props', () => {
-  const { code, ir } = compileWithElementTransform(`<div id="foo" class="bar" />`)
-
-  const template = '<div id="foo" class="bar"></div>'
-  expect(code).toMatchSnapshot()
-  expect(code).contains(JSON.stringify(template))
-  expect(ir.template).toMatchObject([template])
-  expect(ir.block.effect).lengthOf(0)
-})
-
-test('props + children', () => {
-  const { code, ir } = compileWithElementTransform(`<div id="foo"><span/></div>`)
-
-  const template = '<div id="foo"><span></span></div>'
-  expect(code).toMatchSnapshot()
-  expect(code).contains(JSON.stringify(template))
-  expect(ir.template).toMatchObject([template])
-  expect(ir.block.effect).lengthOf(0)
-})
-
-test.skip('invalid html nesting', () => {
-  const source = `
-<p><div>123</div></p>
-<form><form/></form>
-`
-  const { ir, code, vaporHelpers: _ } = compileWithElementTransform(source)
-  const expectedResult = vaporCompile(source)
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
-  expect(code).toEqual(expectedResult.code)
-
-  expect(ir.template).toEqual(['<div>123</div>', '<p></p>', '<form></form>'])
-  expect(ir.block.dynamic).toMatchObject({
-    children: [
-      { id: 1, template: 1, children: [{ id: 0, template: 0 }] },
-      { id: 3, template: 2, children: [{ id: 2, template: 2 }] }
-    ]
-  })
-
-  expect(ir.block.operation).toMatchObject([
-    { type: IRNodeTypes.INSERT_NODE, parent: 1, elements: [0] },
-    { type: IRNodeTypes.INSERT_NODE, parent: 3, elements: [2] }
-  ])
-})
-
 test('empty template', () => {
   const { code } = compileWithElementTransform('')
+
   expect(code).toMatchSnapshot()
   expect(code).contain('return null')
 })

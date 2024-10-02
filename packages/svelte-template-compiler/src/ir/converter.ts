@@ -5,6 +5,7 @@ import {
   findAttrs,
   isSvelteAttribute,
   isSvelteBindingDirective,
+  isSvelteClassDirective,
   isSvelteEventHandler,
   isSvelteMustacheTag,
   isSvelteShorthandAttribute,
@@ -42,6 +43,9 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
       props.push(convertVaporDirective(attr, node))
     } else if (isSvelteBindingDirective(attr) && attr.name !== 'this') {
       // ignore `this:bind` converting on `convertProps`
+      props.push(convertVaporDirective(attr, node))
+    } else if (isSvelteClassDirective(attr)) {
+      // `class:xxx` converting on `convertProps`
       props.push(convertVaporDirective(attr, node))
     }
   }
@@ -253,6 +257,34 @@ function convertVaporDirective(
       exp,
       arg
     }
+  } else if (isSvelteClassDirective(node)) {
+    const start = node.start
+    const arg = createSimpleExpression(
+      'class',
+      true,
+      // TODO: align loc for svlete compiler
+      convertSvelteLocation({ start, end: node.end }, 'class')
+    )
+    const modifiers = [] as string[]
+    const exp = convertVaporDirectiveExpression(node)
+    if (exp) {
+      const ast = parseExpression(` ${exp.content}`, {
+        sourceType: 'module'
+        // TODO: use babel plugins
+        // plugins: context.options.expressionPlugins
+      })
+      exp.ast = ast
+    }
+    return {
+      type: NodeTypes.DIRECTIVE,
+      name: 'bind',
+      rawName: `:class`,
+      modifiers,
+      // loc: convertSvelteLocation(directiveLoc, directiveLocSource),
+      loc: convertSvelteLocation(node, `:class`),
+      arg,
+      exp
+    } as VaporDirectiveNode
   } else {
     // TODO: we should consider error strategy
     throw new Error('unexpected node type')
@@ -285,6 +317,13 @@ export function convertVaporDirectiveExpression(
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else if (isSvelteBindingDirective(node)) {
     const content = node.expression ? generate(node.expression) : ''
+    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  } else if (isSvelteClassDirective(node)) {
+    const content =
+      node.expression && node.expression.type === 'Identifier'
+        ? `{ ${node.name}: ${node.expression.name} }`
+        : ''
+    // TODO: align loc for svlete compiler
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else {
     return undefined
