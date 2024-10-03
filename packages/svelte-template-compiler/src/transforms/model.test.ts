@@ -30,7 +30,7 @@ describe('bind:property', () => {
       const expectedResult = vaporCompile(source2)
 
       expect(code).toMatchSnapshot('svelte')
-      expect(expectedResult.code).toMatchSnapshot('svelte')
+      expect(expectedResult.code).toMatchSnapshot('vue')
 
       expect(code).contains(`_withDirectives(n0, [[_vModelText, () => text]])`)
       expect(code).contains(`"update:modelValue", () => $event => (text = $event))`)
@@ -78,7 +78,7 @@ describe('bind:property', () => {
       const expectedResult = vaporCompile(source2)
 
       expect(code).toMatchSnapshot('svelte')
-      expect(expectedResult.code).toMatchSnapshot('svelte')
+      expect(expectedResult.code).toMatchSnapshot('vue')
 
       expect(code).contains(`_withDirectives(n0, [[_vModelText, () => text]])`)
       expect(code).contains(`"update:modelValue", () => $event => (text = $event))`)
@@ -94,7 +94,7 @@ describe('bind:property', () => {
       const expectedResult = vaporCompile(source2)
 
       expect(code).toMatchSnapshot('svelte')
-      expect(expectedResult.code).toMatchSnapshot('svelte')
+      expect(expectedResult.code).toMatchSnapshot('vue')
 
       expect(code).contains(`_withDirectives(n0, [[_vModelCheckbox, () => yes]])`)
       expect(code).contains(`"update:modelValue", () => $event => (yes = $event))`)
@@ -121,7 +121,7 @@ describe('bind:property', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(
       `_withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])`
@@ -136,7 +136,7 @@ describe('bind:property', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(
       `_withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])`
@@ -167,7 +167,7 @@ describe('Component binding', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contain(`{ modelValue: () => (pin)`)
     expect(code).contain(`"onUpdate:modelValue": () => $event => (pin = $event) }`)
@@ -208,7 +208,7 @@ describe('Component binding', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contain(`foo: () => (buz)`)
     expect(code).contain(`"onUpdate:foo": () => $event => (buz = $event)`)
@@ -264,7 +264,7 @@ describe('Binding <select> value', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(`_withDirectives(n3, [[_vModelSelect, () => selected]])`)
     expect(code).contains(`"update:modelValue", () => $event => (selected = $event))`)
@@ -295,7 +295,7 @@ describe('Binding <select> value', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(`_withDirectives(n0, [[_vModelSelect, () => fillings]])`)
     expect(code).contains(`"update:modelValue", () => $event => (fillings = $event))`)
@@ -395,7 +395,7 @@ describe('bind:group', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(`[[_vModelRadio, () => tortilla]]`)
     expect(code).contains(`"update:modelValue", () => $event => (tortilla = $event))`)
@@ -412,7 +412,7 @@ describe('bind:group', () => {
     const expectedResult = vaporCompile(source2)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(`[[_vModelCheckbox, () => tortilla]]`)
     expect(code).contains(`"update:modelValue", () => $event => (tortilla = $event))`)

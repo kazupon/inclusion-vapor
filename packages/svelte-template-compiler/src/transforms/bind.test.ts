@@ -20,7 +20,7 @@ test('mustache basic', () => {
   const expectedResult = vaporCompile('<div :id="id" />', { prefixIdentifiers: true })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
@@ -89,7 +89,7 @@ test('mustache shorthand', () => {
   const expectedResult = vaporCompile('<div :id />', { prefixIdentifiers: true })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
@@ -117,7 +117,7 @@ test('attribute camel case', () => {
   })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "camel-case", _ctx.value1)')
@@ -130,7 +130,7 @@ test('class expression binding', () => {
   })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : ''))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -183,7 +183,7 @@ test('class dynamic binding', () => {
   })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.isActive }))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -237,7 +237,7 @@ test('class shorthand binding', () => {
   })
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.active }))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -296,7 +296,7 @@ test.todo('multiple class binding', () => {
   )
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(
     `_renderEffect(() => _setClass(n2, ["static", { active, inactive: !active, isAdmin }]))`

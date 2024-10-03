@@ -48,7 +48,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`basic > svelte 2`] = `
+exports[`basic > vue 1`] = `
 "import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")

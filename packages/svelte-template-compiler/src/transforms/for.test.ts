@@ -38,7 +38,7 @@ test('basic', () => {
   const expectedResult = vaporCompile(source2)
 
   expect(code).toMatchSnapshot('svelte')
-  expect(expectedResult.code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)

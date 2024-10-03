@@ -18,7 +18,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Binding <select> value > basic > svelte 2`] = `
+exports[`Binding <select> value > basic > vue 1`] = `
 "import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<select><option>a</option><option>b</option><option>c</option></select>")
 
@@ -48,7 +48,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Binding <select> value > multiple > svelte 2`] = `
+exports[`Binding <select> value > multiple > vue 1`] = `
 "import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option><option value=\\"Beans\\">Beans</option><option value=\\"Cheese\\">Cheese</option><option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
 
@@ -85,7 +85,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > basic > svelte 2`] = `
+exports[`Component binding > basic > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -115,7 +115,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > multiple bindings > svelte 2`] = `
+exports[`Component binding > multiple bindings > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -155,7 +155,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:group > checkbox > svelte 2`] = `
+exports[`bind:group > checkbox > vue 1`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\" value=\\"Plain\\">")
 const t1 = _template("<input type=\\"checkbox\\" value=\\"Whole wheat\\">")
@@ -198,7 +198,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:group > radio > svelte 2`] = `
+exports[`bind:group > radio > vue 1`] = `
 "import { vModelRadio as _vModelRadio, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"radio\\" value=\\"Plain\\">")
 const t1 = _template("<input type=\\"radio\\" value=\\"Whole wheat\\">")
@@ -230,7 +230,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input number > svelte 2`] = `
+exports[`bind:property > input number > vue 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"number\\">")
 
@@ -254,7 +254,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input range > svelte 2`] = `
+exports[`bind:property > input range > vue 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"range\\">")
 
@@ -290,7 +290,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > checkbox > svelte 2`] = `
+exports[`bind:property > simple binding > checkbox > vue 1`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\">")
 
@@ -314,7 +314,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > input > svelte 2`] = `
+exports[`bind:property > simple binding > input > vue 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input>")
 
@@ -338,7 +338,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > textarea > svelte 2`] = `
+exports[`bind:property > simple binding > textarea > vue 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<textarea></textarea>")
 

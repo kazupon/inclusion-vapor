@@ -11,7 +11,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`attribute camel case > svelte 2`] = `
+exports[`attribute camel case > vue 1`] = `
 "import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -33,7 +33,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`class dynamic binding > svelte 2`] = `
+exports[`class dynamic binding > vue 1`] = `
 "import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -55,7 +55,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`class expression binding > svelte 2`] = `
+exports[`class expression binding > vue 1`] = `
 "import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -77,7 +77,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`class shorthand binding > svelte 2`] = `
+exports[`class shorthand binding > vue 1`] = `
 "import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -99,7 +99,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`mustache basic > svelte 2`] = `
+exports[`mustache basic > vue 1`] = `
 "import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -121,7 +121,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`mustache shorthand > svelte 2`] = `
+exports[`mustache shorthand > vue 1`] = `
 "import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 

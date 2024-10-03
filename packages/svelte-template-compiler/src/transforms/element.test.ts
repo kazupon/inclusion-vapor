@@ -31,7 +31,7 @@ describe('native elements', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     // NOTE:
     // There are differences in the handling around spaces and line breaks between Vue compiler and Svelte compiler.
@@ -46,7 +46,7 @@ describe('native elements', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(ir.template).toEqual([`<div id="foo"></div>`])
     expect(ir.block.effect).lengthOf(0)
@@ -59,7 +59,7 @@ describe('native elements', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(ir.template).toEqual([`<div id="foo"><span></span></div>`])
     expect(ir.block.effect).lengthOf(0)
@@ -72,7 +72,7 @@ describe('native elements', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(ir.template).toEqual([`<div class="foo">hello</div>`])
   })
@@ -89,7 +89,7 @@ describe('component', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).toEqual(expectedResult.code)
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
@@ -268,7 +268,7 @@ describe('component', () => {
     const expectedResult = vaporCompile(source)
 
     expect(code).toMatchSnapshot('svelte')
-    expect(expectedResult.code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).toEqual(expectedResult.code)
 
