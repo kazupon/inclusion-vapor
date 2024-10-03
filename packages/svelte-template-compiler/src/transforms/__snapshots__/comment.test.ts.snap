@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`line break > expected 1`] = `
+exports[`line break > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!--\\n  hello world\\n-->")
 
@@ -10,7 +10,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`line break > received 1`] = `
+exports[`line break > vue 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!--\\n  hello world\\n-->")
 
@@ -20,7 +20,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`simple comment > expected 1`] = `
+exports[`simple comment > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!-- hello world -->")
 
@@ -30,7 +30,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`simple comment > received 1`] = `
+exports[`simple comment > vue 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<!-- hello world -->")
 

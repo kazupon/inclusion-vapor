@@ -37,8 +37,8 @@ test('basic', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)
@@ -86,8 +86,8 @@ test('multi effect', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)
@@ -141,8 +141,8 @@ test('object de-structured value', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)
@@ -187,8 +187,8 @@ test('object spread value', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)
@@ -239,8 +239,8 @@ test('array spread value', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createFor')
   expect(helpers.size).toBe(0)
@@ -297,8 +297,8 @@ test('nested #each', () => {
   const { code, ir } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<span></span>', '<div></div>'])
   expect(ir.block.operation).toMatchObject([
@@ -340,8 +340,8 @@ test('complex expressions', () => {
   const { code } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`([{ foo = bar, baz: [qux = quux] }]) => {`)
   expect(code).contains(`foo + bar + baz + qux + quux`)
@@ -363,8 +363,8 @@ test('with else block', () => {
   const { code } = compileWithVFor(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(`_createIf(() => (Array.from(items).length), () => {`)
   expect(code).contain(`_createFor(() => (items), ([item]) => {`)
@@ -381,8 +381,8 @@ test('prefixIdentifiers: true', () => {
   })
   const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(
     `_createFor(() => (_ctx.items), _withDestructure(([item]) => [], (_ctx0) => {`

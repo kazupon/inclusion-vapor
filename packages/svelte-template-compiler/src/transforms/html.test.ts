@@ -26,8 +26,8 @@ test('basic', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVHtml(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('setHtml')
   expect(helpers.size).toBe(0)

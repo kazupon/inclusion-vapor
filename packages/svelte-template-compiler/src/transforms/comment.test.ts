@@ -14,8 +14,8 @@ test('simple comment', () => {
   const source = '<!-- hello world -->'
   const { code, ir: _, vaporHelpers } = compileWithCommentTransform(source)
   const expectedResult = vaporCompile(source)
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
   expect(code).toEqual(expectedResult.code)
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 })
@@ -28,8 +28,8 @@ test('line break', () => {
 `
   const { code, ir: _, vaporHelpers } = compileWithCommentTransform(source)
   const expectedResult = vaporCompile(source)
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
   expect(code).toEqual(expectedResult.code)
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 })

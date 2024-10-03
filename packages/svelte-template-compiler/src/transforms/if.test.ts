@@ -33,8 +33,8 @@ test('basic', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createIf')
   expect(helpers.size).toBe(0)
@@ -73,8 +73,8 @@ test('#if + :else', () => {
   const { code, ir, vaporHelpers, helpers } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div></div>', '<p></p>'])
   expect(vaporHelpers).contains('createIf')
@@ -113,8 +113,8 @@ test('#if + :else-if', () => {
   const { code, ir } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div></div>', '<p></p>'])
   expect(ir.block.operation).toMatchObject([
@@ -158,8 +158,8 @@ test('#if + :else-if + :else', () => {
   const { code, ir } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div></div>', '<p></p>', '<span>fine</span>'])
   expect(ir.block.returns).toEqual([0])
@@ -199,8 +199,8 @@ test('dedupe same template', () => {
   const { code, ir } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div>hello</div>'])
   expect(ir.block.returns).toEqual([0, 3])
@@ -225,8 +225,8 @@ test('comment between blocks', () => {
   const { code, ir } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // TODO: should normalize whitespace or line breaks for Svelte Text node
   for (const template of ['<div></div>', '<!--foo-->', '<p></p>', '<!--bar-->', 'fine']) {
@@ -256,8 +256,8 @@ test('nested #if', () => {
   const { code, ir } = compileWithVIf(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual([
     '<span>nested</span>',
@@ -338,8 +338,8 @@ test('prefixIdentifiers: true', () => {
   const { code, vaporHelpers, ir, helpers } = compileWithVIf(source1, { prefixIdentifiers: true })
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(vaporHelpers).contains('createIf')
   expect(helpers.size).toBe(0)

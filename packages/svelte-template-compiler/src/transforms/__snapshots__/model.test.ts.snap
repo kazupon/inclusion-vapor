@@ -1,24 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Binding <select> value > basic > expected 1`] = `
-"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
-const t0 = _template("<select><option>a</option><option>b</option><option>c</option></select>")
-
-export function render(_ctx) {
-  const n3 = t0()
-  _withDirectives(n3, [[_vModelSelect, () => selected]])
-  const n0 = n3.firstChild
-  const n1 = n0.nextSibling
-  const n2 = n1.nextSibling
-  _delegate(n3, "update:modelValue", () => $event => (selected = $event))
-  _renderEffect(() => _setDynamicProp(n0, "value", a))
-  _renderEffect(() => _setDynamicProp(n1, "value", b))
-  _renderEffect(() => _setDynamicProp(n2, "value", c))
-  return n3
-}"
-`;
-
-exports[`Binding <select> value > basic > received 1`] = `
+exports[`Binding <select> value > basic > svelte 1`] = `
 "import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, next as _next, delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<select><option>a</option> <option>b</option> <option>c</option></select>")
 
@@ -36,19 +18,25 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Binding <select> value > multiple > expected 1`] = `
-"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
-const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option><option value=\\"Beans\\">Beans</option><option value=\\"Cheese\\">Cheese</option><option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
+exports[`Binding <select> value > basic > svelte 2`] = `
+"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+const t0 = _template("<select><option>a</option><option>b</option><option>c</option></select>")
 
 export function render(_ctx) {
-  const n0 = t0()
-  _withDirectives(n0, [[_vModelSelect, () => fillings]])
-  _delegate(n0, "update:modelValue", () => $event => (fillings = $event))
-  return n0
+  const n3 = t0()
+  _withDirectives(n3, [[_vModelSelect, () => selected]])
+  const n0 = n3.firstChild
+  const n1 = n0.nextSibling
+  const n2 = n1.nextSibling
+  _delegate(n3, "update:modelValue", () => $event => (selected = $event))
+  _renderEffect(() => _setDynamicProp(n0, "value", a))
+  _renderEffect(() => _setDynamicProp(n1, "value", b))
+  _renderEffect(() => _setDynamicProp(n2, "value", c))
+  return n3
 }"
 `;
 
-exports[`Binding <select> value > multiple > received 1`] = `
+exports[`Binding <select> value > multiple > svelte 1`] = `
 "import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option> <option value=\\"Beans\\">Beans</option> <option value=\\"Cheese\\">Cheese</option> <option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
 
@@ -60,7 +48,19 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Binding <select> value > omit value > received 1`] = `
+exports[`Binding <select> value > multiple > svelte 2`] = `
+"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option><option value=\\"Beans\\">Beans</option><option value=\\"Cheese\\">Cheese</option><option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _withDirectives(n0, [[_vModelSelect, () => fillings]])
+  _delegate(n0, "update:modelValue", () => $event => (fillings = $event))
+  return n0
+}"
+`;
+
+exports[`Binding <select> value > omit value > svelte 1`] = `
 "import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option>Rice</option> <option>Beans</option> <option>Cheese</option> <option>Guac (extra)</option></select>")
 
@@ -72,7 +72,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > basic > expected 1`] = `
+exports[`Component binding > basic > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -85,7 +85,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > basic > received 1`] = `
+exports[`Component binding > basic > svelte 2`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -98,7 +98,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > multiple bindings > expected 1`] = `
+exports[`Component binding > multiple bindings > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -115,7 +115,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`Component binding > multiple bindings > received 1`] = `
+exports[`Component binding > multiple bindings > svelte 2`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -132,27 +132,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:group > checkbox > expected 1`] = `
-"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
-const t0 = _template("<input type=\\"checkbox\\" value=\\"Plain\\">")
-const t1 = _template("<input type=\\"checkbox\\" value=\\"Whole wheat\\">")
-const t2 = _template("<input type=\\"checkbox\\" value=\\"Spinach\\">")
-
-export function render(_ctx) {
-  const n0 = t0()
-  _withDirectives(n0, [[_vModelCheckbox, () => tortilla]])
-  const n1 = t1()
-  _withDirectives(n1, [[_vModelCheckbox, () => tortilla]])
-  const n2 = t2()
-  _withDirectives(n2, [[_vModelCheckbox, () => tortilla]])
-  _delegate(n0, "update:modelValue", () => $event => (tortilla = $event))
-  _delegate(n1, "update:modelValue", () => $event => (tortilla = $event))
-  _delegate(n2, "update:modelValue", () => $event => (tortilla = $event))
-  return [n0, n1, n2]
-}"
-`;
-
-exports[`bind:group > checkbox > received 1`] = `
+exports[`bind:group > checkbox > svelte 1`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\" value=\\"Plain\\">")
 const t1 = _template(" ")
@@ -175,19 +155,19 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:group > radio > expected 1`] = `
-"import { vModelRadio as _vModelRadio, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
-const t0 = _template("<input type=\\"radio\\" value=\\"Plain\\">")
-const t1 = _template("<input type=\\"radio\\" value=\\"Whole wheat\\">")
-const t2 = _template("<input type=\\"radio\\" value=\\"Spinach\\">")
+exports[`bind:group > checkbox > svelte 2`] = `
+"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+const t0 = _template("<input type=\\"checkbox\\" value=\\"Plain\\">")
+const t1 = _template("<input type=\\"checkbox\\" value=\\"Whole wheat\\">")
+const t2 = _template("<input type=\\"checkbox\\" value=\\"Spinach\\">")
 
 export function render(_ctx) {
   const n0 = t0()
-  _withDirectives(n0, [[_vModelRadio, () => tortilla]])
+  _withDirectives(n0, [[_vModelCheckbox, () => tortilla]])
   const n1 = t1()
-  _withDirectives(n1, [[_vModelRadio, () => tortilla]])
+  _withDirectives(n1, [[_vModelCheckbox, () => tortilla]])
   const n2 = t2()
-  _withDirectives(n2, [[_vModelRadio, () => tortilla]])
+  _withDirectives(n2, [[_vModelCheckbox, () => tortilla]])
   _delegate(n0, "update:modelValue", () => $event => (tortilla = $event))
   _delegate(n1, "update:modelValue", () => $event => (tortilla = $event))
   _delegate(n2, "update:modelValue", () => $event => (tortilla = $event))
@@ -195,7 +175,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:group > radio > received 1`] = `
+exports[`bind:group > radio > svelte 1`] = `
 "import { vModelRadio as _vModelRadio, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"radio\\" value=\\"Plain\\">")
 const t1 = _template(" ")
@@ -218,7 +198,27 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input number > expected 1`] = `
+exports[`bind:group > radio > svelte 2`] = `
+"import { vModelRadio as _vModelRadio, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+const t0 = _template("<input type=\\"radio\\" value=\\"Plain\\">")
+const t1 = _template("<input type=\\"radio\\" value=\\"Whole wheat\\">")
+const t2 = _template("<input type=\\"radio\\" value=\\"Spinach\\">")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _withDirectives(n0, [[_vModelRadio, () => tortilla]])
+  const n1 = t1()
+  _withDirectives(n1, [[_vModelRadio, () => tortilla]])
+  const n2 = t2()
+  _withDirectives(n2, [[_vModelRadio, () => tortilla]])
+  _delegate(n0, "update:modelValue", () => $event => (tortilla = $event))
+  _delegate(n1, "update:modelValue", () => $event => (tortilla = $event))
+  _delegate(n2, "update:modelValue", () => $event => (tortilla = $event))
+  return [n0, n1, n2]
+}"
+`;
+
+exports[`bind:property > input number > svelte 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"number\\">")
 
@@ -230,7 +230,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input number > received 1`] = `
+exports[`bind:property > input number > svelte 2`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"number\\">")
 
@@ -242,7 +242,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input range > expected 1`] = `
+exports[`bind:property > input range > svelte 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"range\\">")
 
@@ -254,7 +254,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > input range > received 1`] = `
+exports[`bind:property > input range > svelte 2`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"range\\">")
 
@@ -266,7 +266,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > omit property > received 1`] = `
+exports[`bind:property > omit property > svelte 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input>")
 
@@ -278,7 +278,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > checkbox > expected 1`] = `
+exports[`bind:property > simple binding > checkbox > svelte 1`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\">")
 
@@ -290,7 +290,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > checkbox > received 1`] = `
+exports[`bind:property > simple binding > checkbox > svelte 2`] = `
 "import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\">")
 
@@ -302,7 +302,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > input > expected 1`] = `
+exports[`bind:property > simple binding > input > svelte 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input>")
 
@@ -314,7 +314,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > input > received 1`] = `
+exports[`bind:property > simple binding > input > svelte 2`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<input>")
 
@@ -326,7 +326,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > textarea > expected 1`] = `
+exports[`bind:property > simple binding > textarea > svelte 1`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<textarea></textarea>")
 
@@ -338,7 +338,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`bind:property > simple binding > textarea > received 1`] = `
+exports[`bind:property > simple binding > textarea > svelte 2`] = `
 "import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
 const t0 = _template("<textarea></textarea>")
 

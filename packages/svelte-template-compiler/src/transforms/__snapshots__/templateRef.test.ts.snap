@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`component > expected 1`] = `
+exports[`component > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, setRef as _setRef } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -11,7 +11,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`component > received 1`] = `
+exports[`component > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, setRef as _setRef } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -22,7 +22,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native element > expected 1`] = `
+exports[`native element > svelte 1`] = `
 "import { setRef as _setRef, template as _template } from 'vue/vapor';
 const t0 = _template("<canvas></canvas>")
 
@@ -33,7 +33,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native element > received 1`] = `
+exports[`native element > vue 1`] = `
 "import { setRef as _setRef, template as _template } from 'vue/vapor';
 const t0 = _template("<canvas></canvas>")
 

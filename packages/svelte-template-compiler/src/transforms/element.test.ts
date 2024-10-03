@@ -30,8 +30,8 @@ describe('native elements', () => {
     const { ir: _, code, vaporHelpers } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     // NOTE:
     // There are differences in the handling around spaces and line breaks between Vue compiler and Svelte compiler.
@@ -45,8 +45,8 @@ describe('native elements', () => {
     const { code, ir } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     expect(ir.template).toEqual([`<div id="foo"></div>`])
     expect(ir.block.effect).lengthOf(0)
@@ -58,8 +58,8 @@ describe('native elements', () => {
     const { code, ir } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     expect(ir.template).toEqual([`<div id="foo"><span></span></div>`])
     expect(ir.block.effect).lengthOf(0)
@@ -71,8 +71,8 @@ describe('native elements', () => {
     const { code, ir } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     expect(ir.template).toEqual([`<div class="foo">hello</div>`])
   })
@@ -88,8 +88,8 @@ describe('component', () => {
     const { ir: _, code, vaporHelpers } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     expect(code).toEqual(expectedResult.code)
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
@@ -267,8 +267,8 @@ describe('component', () => {
     const { code, ir } = compileWithElementTransform(source)
     const expectedResult = vaporCompile(source)
 
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('svelte')
 
     expect(code).toEqual(expectedResult.code)
 

@@ -33,8 +33,8 @@ test('default slot', () => {
   const { code, ir, vaporHelpers } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(`_createSlot("default", null)`)
   expect(vaporHelpers).toContain('createSlot')
@@ -61,8 +61,8 @@ test('statically named slot', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(`_createSlot("foo", null)`)
   expect(ir.block.operation).toMatchObject([
@@ -86,8 +86,8 @@ test.todo('dynamically named slot', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(`_createSlot(() => (foo + bar), null)`)
   expect(ir.block.operation).toMatchObject([
@@ -110,8 +110,8 @@ test('default slot with props', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.block.operation).toMatchObject([
     {
@@ -135,8 +135,8 @@ test('statically named slot with props', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.block.operation).toMatchObject([
     {
@@ -159,8 +159,8 @@ test('statically named slot with spread props', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.block.operation).toMatchObject([
     {
@@ -179,8 +179,8 @@ test.todo('statically named slot with on:event', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.block.operation).toMatchObject([
     {
@@ -202,8 +202,8 @@ test('default slot with fallback', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template[0]).toBe('<div></div>')
   expect(ir.block.operation).toMatchObject([
@@ -229,8 +229,8 @@ test('named slot with fallback', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template[0]).toBe('<div></div>')
   expect(ir.block.operation).toMatchObject([
@@ -256,8 +256,8 @@ test('default slot with fallback and props', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template[0]).toBe('<div></div>')
   expect(ir.block.operation).toMatchObject([
@@ -284,8 +284,8 @@ test('named slot with fallback and props', () => {
   const { code, ir } = compileWithSlotOutlet(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template[0]).toBe('<div></div>')
   expect(ir.block.operation).toMatchObject([
@@ -316,6 +316,6 @@ test('multiple outlets', () => {
   const { code } = compileWithSlotOutlet(source)
   const expectedResult = vaporCompile(source)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 })

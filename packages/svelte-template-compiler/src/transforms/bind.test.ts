@@ -19,8 +19,8 @@ test('mustache basic', () => {
   const { ir, code, vaporHelpers } = compileWithVBind('<div id={id} />')
   const expectedResult = vaporCompile('<div :id="id" />', { prefixIdentifiers: true })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
@@ -88,8 +88,8 @@ test('mustache shorthand', () => {
   const { ir, code, vaporHelpers } = compileWithVBind('<div {id} />')
   const expectedResult = vaporCompile('<div :id />', { prefixIdentifiers: true })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
@@ -116,8 +116,8 @@ test('attribute camel case', () => {
     prefixIdentifiers: true
   })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
   expect(code).contains('_setDynamicProp(n0, "camel-case", _ctx.value1)')
@@ -129,8 +129,8 @@ test('class expression binding', () => {
     prefixIdentifiers: true
   })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : ''))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -182,8 +182,8 @@ test('class dynamic binding', () => {
     prefixIdentifiers: true
   })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.isActive }))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -236,8 +236,8 @@ test('class shorthand binding', () => {
     prefixIdentifiers: true
   })
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
 
   expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.active }))`)
   expect(ir.block.effect[0]).toMatchObject({
@@ -295,8 +295,8 @@ test.todo('multiple class binding', () => {
     }
   )
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('svelte')
 
   expect(code).contains(
     `_renderEffect(() => _setClass(n2, ["static", { active, inactive: !active, isAdmin }]))`

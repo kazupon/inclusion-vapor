@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`event binding > inline expression: <div on:click={x++}></div>\` > expected 1`] = `
+exports[`event binding > inline expression: <div on:click={x++}></div>\` > svelte 1`] = `
 "import { delegate as _delegate, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -12,7 +12,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`event binding > inline expression: <div on:click={x++}></div>\` > received 1`] = `
+exports[`event binding > inline expression: <div on:click={x++}></div>\` > vue 1`] = `
 "import { delegate as _delegate, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -24,7 +24,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`event binding > simple expression: <div on:click={handleClick}></div>\` > expected 1`] = `
+exports[`event binding > simple expression: <div on:click={handleClick}></div>\` > svelte 1`] = `
 "import { delegate as _delegate, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -36,7 +36,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`event binding > simple expression: <div on:click={handleClick}></div>\` > received 1`] = `
+exports[`event binding > simple expression: <div on:click={handleClick}></div>\` > vue 1`] = `
 "import { delegate as _delegate, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")

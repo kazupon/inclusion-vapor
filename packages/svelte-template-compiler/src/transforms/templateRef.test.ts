@@ -34,8 +34,8 @@ test('native element', () => {
   const { code, ir } = compileWithTransformRef(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`_setRef(n0, "el")`)
 
@@ -66,6 +66,6 @@ test('component', () => {
   const { code, ir: _ } = compileWithTransformRef(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 })

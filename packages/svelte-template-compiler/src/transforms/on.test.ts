@@ -21,8 +21,8 @@ describe('event binding', () => {
     const expectedResult = vaporCompile('<div @click="handleClick"></div>', {
       prefixIdentifiers: true
     })
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
     expect(vaporHelpers).contains('delegate')
@@ -54,8 +54,8 @@ describe('event binding', () => {
     const expectedResult = vaporCompile('<div @click="x++"></div>', {
       prefixIdentifiers: true
     })
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
     expect(vaporHelpers).contains('delegate')

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`default slot > expected 1`] = `
+exports[`default slot > svelte 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -9,7 +9,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot > received 1`] = `
+exports[`default slot > vue 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -18,7 +18,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with fallback > expected 1`] = `
+exports[`default slot with fallback > svelte 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -31,7 +31,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with fallback > received 1`] = `
+exports[`default slot with fallback > vue 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -44,7 +44,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with fallback and props > expected 1`] = `
+exports[`default slot with fallback and props > svelte 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -59,7 +59,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with fallback and props > received 1`] = `
+exports[`default slot with fallback and props > vue 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -74,7 +74,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with props > expected 1`] = `
+exports[`default slot with props > svelte 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -89,7 +89,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`default slot with props > received 1`] = `
+exports[`default slot with props > vue 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -104,25 +104,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`multiple outlets > expected 1`] = `
-"import { createSlot as _createSlot, prepend as _prepend, insert as _insert, template as _template } from 'vue/vapor';
-const t0 = _template("No header was provided")
-const t1 = _template("<div><p>Some content between header and footer</p></div>")
-
-export function render(_ctx) {
-  const n4 = t1()
-  const n0 = _createSlot("header", null, () => {
-    const n2 = t0()
-    return n2
-  })
-  const n3 = _createSlot("footer", null)
-  _prepend(n4, n0)
-  _insert(n3, n4)
-  return n4
-}"
-`;
-
-exports[`multiple outlets > received 1`] = `
+exports[`multiple outlets > svelte 1`] = `
 "import { createSlot as _createSlot, prepend as _prepend, insert as _insert, template as _template } from 'vue/vapor';
 const t0 = _template("No header was provided")
 const t1 = _template("<div> <p>Some content between header and footer</p> </div>")
@@ -140,7 +122,25 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot with fallback > expected 1`] = `
+exports[`multiple outlets > vue 1`] = `
+"import { createSlot as _createSlot, prepend as _prepend, insert as _insert, template as _template } from 'vue/vapor';
+const t0 = _template("No header was provided")
+const t1 = _template("<div><p>Some content between header and footer</p></div>")
+
+export function render(_ctx) {
+  const n4 = t1()
+  const n0 = _createSlot("header", null, () => {
+    const n2 = t0()
+    return n2
+  })
+  const n3 = _createSlot("footer", null)
+  _prepend(n4, n0)
+  _insert(n3, n4)
+  return n4
+}"
+`;
+
+exports[`named slot with fallback > svelte 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -153,7 +153,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot with fallback > received 1`] = `
+exports[`named slot with fallback > vue 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -166,7 +166,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot with fallback and props > expected 1`] = `
+exports[`named slot with fallback and props > svelte 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -181,7 +181,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot with fallback and props > received 1`] = `
+exports[`named slot with fallback and props > vue 1`] = `
 "import { createSlot as _createSlot, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -196,7 +196,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot > expected 1`] = `
+exports[`statically named slot > svelte 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -205,7 +205,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot > received 1`] = `
+exports[`statically named slot > vue 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -214,7 +214,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot with props > expected 1`] = `
+exports[`statically named slot with props > svelte 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -228,7 +228,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot with props > received 1`] = `
+exports[`statically named slot with props > vue 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -242,7 +242,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot with spread props > expected 1`] = `
+exports[`statically named slot with spread props > svelte 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -253,7 +253,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`statically named slot with spread props > received 1`] = `
+exports[`statically named slot with spread props > vue 1`] = `
 "import { createSlot as _createSlot } from 'vue/vapor';
 
 export function render(_ctx) {

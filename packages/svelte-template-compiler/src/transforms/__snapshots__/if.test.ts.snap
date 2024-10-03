@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`#if + :else > expected 1`] = `
+exports[`#if + :else > svelte 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template("<p></p>")
@@ -17,7 +17,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`#if + :else > received 1`] = `
+exports[`#if + :else > vue 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template("<p></p>")
@@ -34,28 +34,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`#if + :else-if + :else > expected 1`] = `
-"import { createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<div></div>")
-const t1 = _template("<p></p>")
-const t2 = _template("<span>fine</span>")
-
-export function render(_ctx) {
-  const n0 = _createIf(() => (ok), () => {
-    const n2 = t0()
-    return n2
-  }, () => _createIf(() => (orNot), () => {
-    const n4 = t1()
-    return n4
-  }, () => {
-    const n7 = t2()
-    return n7
-  }))
-  return n0
-}"
-`;
-
-exports[`#if + :else-if + :else > received 1`] = `
+exports[`#if + :else-if + :else > svelte 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template("<p></p>")
@@ -76,7 +55,28 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`#if + :else-if > expected 1`] = `
+exports[`#if + :else-if + :else > vue 1`] = `
+"import { createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+const t1 = _template("<p></p>")
+const t2 = _template("<span>fine</span>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (ok), () => {
+    const n2 = t0()
+    return n2
+  }, () => _createIf(() => (orNot), () => {
+    const n4 = t1()
+    return n4
+  }, () => {
+    const n7 = t2()
+    return n7
+  }))
+  return n0
+}"
+`;
+
+exports[`#if + :else-if > svelte 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template("<p></p>")
@@ -93,7 +93,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`#if + :else-if > received 1`] = `
+exports[`#if + :else-if > vue 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template("<p></p>")
@@ -110,21 +110,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`basic > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<div></div>")
-
-export function render(_ctx) {
-  const n0 = _createIf(() => (ok), () => {
-    const n2 = t0()
-    _renderEffect(() => _setText(n2, msg))
-    return n2
-  })
-  return n0
-}"
-`;
-
-exports[`basic > received 1`] = `
+exports[`basic > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -140,32 +126,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`comment between blocks > expected 1`] = `
-"import { createIf as _createIf, template as _template } from 'vue/vapor';
+exports[`basic > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
-const t1 = _template("<!--foo-->")
-const t2 = _template("<p></p>")
-const t3 = _template("<!--bar-->")
-const t4 = _template("fine")
 
 export function render(_ctx) {
   const n0 = _createIf(() => (ok), () => {
     const n2 = t0()
+    _renderEffect(() => _setText(n2, msg))
     return n2
-  }, () => _createIf(() => (orNot), () => {
-    const n5 = t1()
-    const n6 = t2()
-    return [n5, n6]
-  }, () => {
-    const n10 = t3()
-    const n11 = t4()
-    return [n10, n11]
-  }))
+  })
   return n0
 }"
 `;
 
-exports[`comment between blocks > received 1`] = `
+exports[`comment between blocks > svelte 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 const t1 = _template(" ")
@@ -193,69 +168,66 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dedupe same template > expected 1`] = `
+exports[`comment between blocks > vue 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<div>hello</div>")
+const t0 = _template("<div></div>")
+const t1 = _template("<!--foo-->")
+const t2 = _template("<p></p>")
+const t3 = _template("<!--bar-->")
+const t4 = _template("fine")
 
 export function render(_ctx) {
   const n0 = _createIf(() => (ok), () => {
     const n2 = t0()
     return n2
-  })
-  const n3 = _createIf(() => (ok), () => {
-    const n5 = t0()
-    return n5
-  })
-  return [n0, n3]
-}"
-`;
-
-exports[`dedupe same template > received 1`] = `
-"import { createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<div>hello</div>")
-
-export function render(_ctx) {
-  const n0 = _createIf(() => (ok), () => {
-    const n2 = t0()
-    return n2
-  })
-  const n3 = _createIf(() => (ok), () => {
-    const n5 = t0()
-    return n5
-  })
-  return [n0, n3]
-}"
-`;
-
-exports[`nested #if > expected 1`] = `
-"import { createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<span>nested</span>")
-const t1 = _template("<span>nestedElseIf</span>")
-const t2 = _template("<span>nestedElse</span>")
-const t3 = _template("fine")
-
-export function render(_ctx) {
-  const n0 = _createIf(() => (ok), () => {
-    const n2 = _createIf(() => (nested), () => {
-      const n4 = t0()
-      return n4
-    }, () => _createIf(() => (nestedElse), () => {
-      const n6 = t1()
-      return n6
-    }, () => {
-      const n9 = t2()
-      return n9
-    }))
-    return n2
+  }, () => _createIf(() => (orNot), () => {
+    const n5 = t1()
+    const n6 = t2()
+    return [n5, n6]
   }, () => {
-    const n12 = t3()
-    return n12
-  })
+    const n10 = t3()
+    const n11 = t4()
+    return [n10, n11]
+  }))
   return n0
 }"
 `;
 
-exports[`nested #if > received 1`] = `
+exports[`dedupe same template > svelte 1`] = `
+"import { createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<div>hello</div>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (ok), () => {
+    const n2 = t0()
+    return n2
+  })
+  const n3 = _createIf(() => (ok), () => {
+    const n5 = t0()
+    return n5
+  })
+  return [n0, n3]
+}"
+`;
+
+exports[`dedupe same template > vue 1`] = `
+"import { createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<div>hello</div>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (ok), () => {
+    const n2 = t0()
+    return n2
+  })
+  const n3 = _createIf(() => (ok), () => {
+    const n5 = t0()
+    return n5
+  })
+  return [n0, n3]
+}"
+`;
+
+exports[`nested #if > svelte 1`] = `
 "import { createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<span>nested</span>")
 const t1 = _template("<span>nestedElseIf</span>")
@@ -283,21 +255,35 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`prefixIdentifiers: true > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<div></div>")
+exports[`nested #if > vue 1`] = `
+"import { createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<span>nested</span>")
+const t1 = _template("<span>nestedElseIf</span>")
+const t2 = _template("<span>nestedElse</span>")
+const t3 = _template("fine")
 
 export function render(_ctx) {
   const n0 = _createIf(() => (ok), () => {
-    const n2 = t0()
-    _renderEffect(() => _setText(n2, msg))
+    const n2 = _createIf(() => (nested), () => {
+      const n4 = t0()
+      return n4
+    }, () => _createIf(() => (nestedElse), () => {
+      const n6 = t1()
+      return n6
+    }, () => {
+      const n9 = t2()
+      return n9
+    }))
     return n2
+  }, () => {
+    const n12 = t3()
+    return n12
   })
   return n0
 }"
 `;
 
-exports[`prefixIdentifiers: true > received 1`] = `
+exports[`prefixIdentifiers: true > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -308,6 +294,20 @@ export function render(_ctx) {
     _insert(n2, n3)
     _renderEffect(() => _setText(n3, _ctx.msg))
     return n3
+  })
+  return n0
+}"
+`;
+
+exports[`prefixIdentifiers: true > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (ok), () => {
+    const n2 = t0()
+    _renderEffect(() => _setText(n2, msg))
+    return n2
   })
   return n0
 }"

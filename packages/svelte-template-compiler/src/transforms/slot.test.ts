@@ -37,8 +37,8 @@ test('implicit default slot on component', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div></div>'])
   expect(ir.block.operation).toMatchObject([
@@ -75,8 +75,8 @@ test('explicit default slot on component', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<div></div>'])
   expect(ir.block.operation).toMatchObject([
@@ -116,8 +116,8 @@ test('named slot on element', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<h1>Hello</h1>'])
   expect(ir.block.operation).toMatchObject([
@@ -155,8 +155,8 @@ test('named slots on multiple elements', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // TODO: white space
   expect(ir.template).toEqual(['<h1>Hello</h1>', ' ', '<p>copyright</p>'])
@@ -207,8 +207,8 @@ test('complex named slots (mixed element, components and text)', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // TODO: white space
   expect(ir.template).toEqual([
@@ -254,8 +254,8 @@ test('named slot on component', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`named: ({ bar }) => {`)
   expect(code).contains(`const n0 = _createTextNode(() => [foo + bar])`)
@@ -295,8 +295,8 @@ test('named slot on multiple components', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`foo: () => {`)
   expect(code).contains(`bar: () => {`)
@@ -336,8 +336,8 @@ test('dynamically named slot on element', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // expect(vaporHelpers).contains('withDestructure')
   expect(code).contains(`name: named,`)
@@ -374,8 +374,8 @@ test('dynamically named slot on component', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // expect(vaporHelpers).contains('withDestructure')
   expect(code).contains(`name: named,`)
@@ -415,8 +415,8 @@ test('named slots with implicit default slot', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['<h1>foo</h1>', 'bar', '<span></span>'])
   expect(ir.block.operation).toMatchObject([
@@ -454,8 +454,8 @@ test('slot outlets chain', () => {
   const { code, ir } = compileWithSlot(source)
   const expectedResult = vaporCompile(source)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contain(`_createSlot("default", null, () => {`)
 
@@ -486,8 +486,8 @@ test('<svelte:fragment>', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.template).toEqual(['foo', 'bar', '<span></span>'])
   expect(ir.block.operation).toMatchObject([
@@ -538,8 +538,8 @@ test('nested slots scoping', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // expect(vaporHelpers).contains('withDestructure')
   expect(code).contains(`default: ({ foo }) => {`)
@@ -599,8 +599,8 @@ test('dynamic slots name', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(ir.block.operation[0].type).toBe(IRNodeTypes.CREATE_COMPONENT_NODE)
   expect(ir.block.operation).toMatchObject([
@@ -628,8 +628,8 @@ test('let alias', () => {
   const { code } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(`named: ({ bar: foo }) => {`)
 })
@@ -639,7 +639,7 @@ test('let object destructuring', () => {
 
   const { code } = compileWithSlot(source)
 
-  expect(code).toMatchSnapshot('received')
+  expect(code).toMatchSnapshot('svelte')
   expect(code).contains(`named: ({ item: { id } }) => {`)
 })
 
@@ -648,7 +648,7 @@ test('let array destructuring', () => {
 
   const { code } = compileWithSlot(source)
 
-  expect(code).toMatchSnapshot('received')
+  expect(code).toMatchSnapshot('svelte')
   expect(code).contains(`named: ({ item: [ a, b ] }) => {`)
 })
 
@@ -657,7 +657,7 @@ test.todo('let multiple', () => {
 
   const { code } = compileWithSlot(source)
 
-  expect(code).toMatchSnapshot('received')
+  expect(code).toMatchSnapshot('svelte')
   expect(code).contains(`named: ({ item, bar: buz, dio: [ a, b ] }) => {`)
 })
 
@@ -666,7 +666,7 @@ test('let on <svelte:fragment>', () => {
 
   const { code } = compileWithSlot(source)
 
-  expect(code).toMatchSnapshot('received')
+  expect(code).toMatchSnapshot('svelte')
   expect(code).contains(`one: ({ foo }) => {`)
 })
 
@@ -683,8 +683,8 @@ test.todo('dynamic slots name with #each', () => {
   const { code, ir } = compileWithSlot(source1)
   const expectedResult = vaporCompile(source2)
 
-  expect(code).toMatchSnapshot('received')
-  expect(expectedResult.code).toMatchSnapshot('expected')
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
 
   // expect(vaporHelpers).contains('withDestructure')
   expect(code).contains(`({ bar }) => [bar]`)

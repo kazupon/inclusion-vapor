@@ -22,8 +22,8 @@ describe('compiler: children transform', () => {
 </div>`
     const { ir: _, code, vaporHelpers } = compile(source)
     const expectedResult = vaporCompile(source)
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
     // NOTE:
     // There are differences in the handling around spaces and line breaks between Vue compiler and Svelte compiler.
     // about details, see the snapshot
@@ -46,8 +46,8 @@ describe('compiler: children transform', () => {
   <p>{{ forth }}</p>
 </div>`
     const expectedResult = vaporCompile(source2)
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
     expect(code).toEqual(expectedResult.code)
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
   })
@@ -58,8 +58,8 @@ describe('compiler: children transform', () => {
 </div>`
     const { ir: _, code, vaporHelpers } = compile(source)
     const expectedResult = vaporCompile(source)
-    expect(code).toMatchSnapshot('received')
-    expect(expectedResult.code).toMatchSnapshot('expected')
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
     expect(code).toEqual(expectedResult.code)
     expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
   })

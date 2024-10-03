@@ -1,20 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`array spread value > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
-const t0 = _template("<div></div>")
-
-export function render(_ctx) {
-  const n0 = _createFor(() => (list), ([[id, ...other], index]) => {
-    const n2 = t0()
-    _renderEffect(() => _setText(n2, id + other + index))
-    return n2
-  }, ([id, ...other], index) => (id))
-  return n0
-}"
-`;
-
-exports[`array spread value > received 1`] = `
+exports[`array spread value > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -30,23 +16,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`basic > expected 1`] = `
-"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+exports[`array spread value > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
-_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (items), ([item]) => {
+  const n0 = _createFor(() => (list), ([[id, ...other], index]) => {
     const n2 = t0()
-    _delegate(n2, "click", () => $event => (remove(item)))
-    _renderEffect(() => _setText(n2, item.name))
+    _renderEffect(() => _setText(n2, id + other + index))
     return n2
-  }, (item) => (item.id))
+  }, ([id, ...other], index) => (id))
   return n0
 }"
 `;
 
-exports[`basic > received 1`] = `
+exports[`basic > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -64,21 +48,23 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`complex expressions > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+exports[`basic > svelte 2`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
+_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (list), ([{ foo = bar, baz: [qux = quux] }]) => {
+  const n0 = _createFor(() => (items), ([item]) => {
     const n2 = t0()
-    _renderEffect(() => _setText(n2, foo + bar + baz + qux + quux))
+    _delegate(n2, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setText(n2, item.name))
     return n2
-  })
+  }, (item) => (item.id))
   return n0
 }"
 `;
 
-exports[`complex expressions > received 1`] = `
+exports[`complex expressions > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -94,24 +80,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`multi effect > expected 1`] = `
-"import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+exports[`complex expressions > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
-_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (items), ([item, index]) => {
+  const n0 = _createFor(() => (list), ([{ foo = bar, baz: [qux = quux] }]) => {
     const n2 = t0()
-    _delegate(n2, "click", () => $event => (remove(item)))
-    _renderEffect(() => _setDynamicProp(n2, "item", item))
-    _renderEffect(() => _setDynamicProp(n2, "index", index))
+    _renderEffect(() => _setText(n2, foo + bar + baz + qux + quux))
     return n2
-  }, (item, index) => (item.id))
+  })
   return n0
 }"
 `;
 
-exports[`multi effect > received 1`] = `
+exports[`multi effect > svelte 1`] = `
 "import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -128,27 +111,24 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`nested #each > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, insert as _insert, template as _template } from 'vue/vapor';
-const t0 = _template("<span></span>")
-const t1 = _template("<div></div>")
+exports[`multi effect > vue 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (list), ([i]) => {
-    const n5 = t1()
-    const n2 = _createFor(() => (i), ([j]) => {
-      const n4 = t0()
-      _renderEffect(() => _setText(n4, j + i))
-      return n4
-    })
-    _insert(n2, n5)
-    return n5
-  })
+  const n0 = _createFor(() => (items), ([item, index]) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (remove(item)))
+    _renderEffect(() => _setDynamicProp(n2, "item", item))
+    _renderEffect(() => _setDynamicProp(n2, "index", index))
+    return n2
+  }, (item, index) => (item.id))
   return n0
 }"
 `;
 
-exports[`nested #each > received 1`] = `
+exports[`nested #each > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<span></span>")
 const t1 = _template("<div></div>")
@@ -170,21 +150,27 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`object de-structured value > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
+exports[`nested #each > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, insert as _insert, template as _template } from 'vue/vapor';
 const t0 = _template("<span></span>")
+const t1 = _template("<div></div>")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (items), ([{ id, value }]) => {
-    const n2 = t0()
-    _renderEffect(() => _setText(n2, id, value))
-    return n2
+  const n0 = _createFor(() => (list), ([i]) => {
+    const n5 = t1()
+    const n2 = _createFor(() => (i), ([j]) => {
+      const n4 = t0()
+      _renderEffect(() => _setText(n4, j + i))
+      return n4
+    })
+    _insert(n2, n5)
+    return n5
   })
   return n0
 }"
 `;
 
-exports[`object de-structured value > received 1`] = `
+exports[`object de-structured value > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<span></span>")
 
@@ -200,21 +186,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`object spread value > expected 1`] = `
+exports[`object de-structured value > vue 1`] = `
 "import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
-const t0 = _template("<div></div>")
+const t0 = _template("<span></span>")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (list), ([{ id, ...other }, index]) => {
+  const n0 = _createFor(() => (items), ([{ id, value }]) => {
     const n2 = t0()
-    _renderEffect(() => _setText(n2, id + other + index))
+    _renderEffect(() => _setText(n2, id, value))
     return n2
-  }, ({ id, ...other }, index) => (id))
+  })
   return n0
 }"
 `;
 
-exports[`object spread value > received 1`] = `
+exports[`object spread value > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -230,23 +216,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`prefixIdentifiers: true > expected 1`] = `
-"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+exports[`object spread value > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
-_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createFor(() => (_ctx.items), (_ctx0) => {
+  const n0 = _createFor(() => (list), ([{ id, ...other }, index]) => {
     const n2 = t0()
-    _delegate(n2, "click", () => $event => (_ctx.remove(_ctx0[0])))
-    _renderEffect(() => _setText(n2, _ctx0[0].name))
+    _renderEffect(() => _setText(n2, id + other + index))
     return n2
-  }, (item) => (item.id))
+  }, ({ id, ...other }, index) => (id))
   return n0
 }"
 `;
 
-exports[`prefixIdentifiers: true > received 1`] = `
+exports[`prefixIdentifiers: true > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, delegate as _delegate, renderEffect as _renderEffect, setText as _setText, withDestructure as _withDestructure, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
@@ -264,28 +248,23 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`with else block > expected 1`] = `
-"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, createIf as _createIf, template as _template } from 'vue/vapor';
-const t0 = _template("<p></p>")
-const t1 = _template("<p>no item</p>")
+exports[`prefixIdentifiers: true > vue 1`] = `
+"import { delegate as _delegate, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+_delegateEvents("click")
 
 export function render(_ctx) {
-  const n0 = _createIf(() => (items.length), () => {
-    const n2 = _createFor(() => (items), ([item]) => {
-      const n4 = t0()
-      _renderEffect(() => _setText(n4, item))
-      return n4
-    })
+  const n0 = _createFor(() => (_ctx.items), (_ctx0) => {
+    const n2 = t0()
+    _delegate(n2, "click", () => $event => (_ctx.remove(_ctx0[0])))
+    _renderEffect(() => _setText(n2, _ctx0[0].name))
     return n2
-  }, () => {
-    const n6 = t1()
-    return n6
-  })
+  }, (item) => (item.id))
   return n0
 }"
 `;
 
-exports[`with else block > received 1`] = `
+exports[`with else block > svelte 1`] = `
 "import { createTextNode as _createTextNode, insert as _insert, renderEffect as _renderEffect, setText as _setText, createFor as _createFor, createIf as _createIf, template as _template } from 'vue/vapor';
 const t0 = _template("<p></p>")
 const t1 = _template("<p>no item</p>")
@@ -303,6 +282,27 @@ export function render(_ctx) {
   }, () => {
     const n7 = t1()
     return n7
+  })
+  return n0
+}"
+`;
+
+exports[`with else block > vue 1`] = `
+"import { renderEffect as _renderEffect, setText as _setText, createFor as _createFor, createIf as _createIf, template as _template } from 'vue/vapor';
+const t0 = _template("<p></p>")
+const t1 = _template("<p>no item</p>")
+
+export function render(_ctx) {
+  const n0 = _createIf(() => (items.length), () => {
+    const n2 = _createFor(() => (items), ([item]) => {
+      const n4 = t0()
+      _renderEffect(() => _setText(n4, item))
+      return n4
+    })
+    return n2
+  }, () => {
+    const n6 = t1()
+    return n6
   })
   return n0
 }"

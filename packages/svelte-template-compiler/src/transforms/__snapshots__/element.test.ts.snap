@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`component > basic > expected 1`] = `
+exports[`component > basic > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"></div>")
 
@@ -15,7 +15,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`component > basic > received 1`] = `
+exports[`component > basic > svelte 2`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"></div>")
 
@@ -125,7 +125,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`component > static props > expected 1`] = `
+exports[`component > static props > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -140,7 +140,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`component > static props > received 1`] = `
+exports[`component > static props > svelte 2`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -162,7 +162,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > attributes + children > expected 1`] = `
+exports[`native elements > attributes + children > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"><span></span></div>")
 
@@ -172,7 +172,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > attributes + children > received 1`] = `
+exports[`native elements > attributes + children > svelte 2`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"><span></span></div>")
 
@@ -182,17 +182,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > basic > expected 1`] = `
-"import { template as _template } from 'vue/vapor';
-const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
-
-export function render(_ctx) {
-  const n0 = t0()
-  return n0
-}"
-`;
-
-exports[`native elements > basic > received 1`] = `
+exports[`native elements > basic > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
 
@@ -202,7 +192,17 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > static attributes > expected 1`] = `
+exports[`native elements > basic > svelte 2`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static attributes > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"></div>")
 
@@ -212,7 +212,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > static attributes > received 1`] = `
+exports[`native elements > static attributes > svelte 2`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"></div>")
 
@@ -222,7 +222,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > static class > expected 1`] = `
+exports[`native elements > static class > svelte 1`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"foo\\">hello</div>")
 
@@ -232,7 +232,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`native elements > static class > received 1`] = `
+exports[`native elements > static class > svelte 2`] = `
 "import { template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"foo\\">hello</div>")
 

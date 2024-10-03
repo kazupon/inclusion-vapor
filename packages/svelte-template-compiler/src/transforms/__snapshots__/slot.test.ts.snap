@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<svelte:fragment> > expected 1`] = `
+exports[`<svelte:fragment> > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("foo")
 const t1 = _template("bar")
@@ -25,7 +25,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`<svelte:fragment> > received 1`] = `
+exports[`<svelte:fragment> > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("foo")
 const t1 = _template("bar")
@@ -50,37 +50,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`complex named slots (mixed element, components and text) > expected 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
-const t0 = _template("<h1>title</h1>")
-const t1 = _template("<header>Header</header>")
-const t2 = _template("<div>contents: <span>content</span></div>")
-
-export function render(_ctx) {
-  const _component_Footer = _resolveComponent("Footer")
-  const _component_Comp = _resolveComponent("Comp")
-  const n6 = _createComponent(_component_Comp, null, [
-    {
-      header: () => {
-        const n1 = t1()
-        return n1
-      }, 
-      footer: () => {
-        const n4 = _createComponent(_component_Footer)
-        return n4
-      }, 
-      default: () => {
-        const n0 = t0()
-        const n3 = t2()
-        return [n0, n3]
-      }
-    }
-  ], true)
-  return n6
-}"
-`;
-
-exports[`complex named slots (mixed element, components and text) > received 1`] = `
+exports[`complex named slots (mixed element, components and text) > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>title</h1>")
 const t1 = _template(" ")
@@ -114,7 +84,56 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamic slots name > expected 1`] = `
+exports[`complex named slots (mixed element, components and text) > vue 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>title</h1>")
+const t1 = _template("<header>Header</header>")
+const t2 = _template("<div>contents: <span>content</span></div>")
+
+export function render(_ctx) {
+  const _component_Footer = _resolveComponent("Footer")
+  const _component_Comp = _resolveComponent("Comp")
+  const n6 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n1 = t1()
+        return n1
+      }, 
+      footer: () => {
+        const n4 = _createComponent(_component_Footer)
+        return n4
+      }, 
+      default: () => {
+        const n0 = t0()
+        const n3 = t2()
+        return [n0, n3]
+      }
+    }
+  ], true)
+  return n6
+}"
+`;
+
+exports[`dynamic slots name > svelte 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("foo")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n1 = _createComponent(_component_Comp, null, [
+    () => ({
+      name: name, 
+      fn: () => {
+        const n0 = t0()
+        return n0
+      }
+    })
+  ], true)
+  return n1
+}"
+`;
+
+exports[`dynamic slots name > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("foo")
 
@@ -133,26 +152,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamic slots name > received 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
-const t0 = _template("foo")
-
-export function render(_ctx) {
-  const _component_Comp = _resolveComponent("Comp")
-  const n1 = _createComponent(_component_Comp, null, [
-    () => ({
-      name: name, 
-      fn: () => {
-        const n0 = t0()
-        return n0
-      }
-    })
-  ], true)
-  return n1
-}"
-`;
-
-exports[`dynamically named slot on component > expected 1`] = `
+exports[`dynamically named slot on component > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -170,7 +170,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamically named slot on component > received 1`] = `
+exports[`dynamically named slot on component > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -188,7 +188,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamically named slot on element > expected 1`] = `
+exports[`dynamically named slot on element > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -207,7 +207,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`dynamically named slot on element > received 1`] = `
+exports[`dynamically named slot on element > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -226,7 +226,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`explicit default slot on component > expected 1`] = `
+exports[`explicit default slot on component > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -244,7 +244,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`explicit default slot on component > received 1`] = `
+exports[`explicit default slot on component > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -262,7 +262,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`implicit default slot on component > expected 1`] = `
+exports[`implicit default slot on component > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -280,7 +280,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`implicit default slot on component > received 1`] = `
+exports[`implicit default slot on component > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
@@ -298,7 +298,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`let alias > expected 1`] = `
+exports[`let alias > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -315,7 +315,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`let alias > received 1`] = `
+exports[`let alias > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -332,7 +332,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`let array destructuring > received 1`] = `
+exports[`let array destructuring > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -349,7 +349,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`let object destructuring > received 1`] = `
+exports[`let object destructuring > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -366,7 +366,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`let on <svelte:fragment> > received 1`] = `
+exports[`let on <svelte:fragment> > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("foo")
 const t1 = _template("bar")
@@ -391,7 +391,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on component > expected 1`] = `
+exports[`named slot on component > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -408,7 +408,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on component > received 1`] = `
+exports[`named slot on component > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
@@ -425,7 +425,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on element > expected 1`] = `
+exports[`named slot on element > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -443,7 +443,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on element > received 1`] = `
+exports[`named slot on element > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 
@@ -461,30 +461,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slot on multiple components > expected 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
-
-export function render(_ctx) {
-  const _component_Hello = _resolveComponent("Hello")
-  const _component_World = _resolveComponent("World")
-  const _component_Comp = _resolveComponent("Comp")
-  const n4 = _createComponent(_component_Comp, null, [
-    {
-      foo: () => {
-        const n0 = _createComponent(_component_Hello)
-        return n0
-      }, 
-      bar: () => {
-        const n2 = _createComponent(_component_World)
-        return n2
-      }
-    }
-  ], true)
-  return n4
-}"
-`;
-
-exports[`named slot on multiple components > received 1`] = `
+exports[`named slot on multiple components > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template(" ")
 
@@ -508,21 +485,21 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slots on multiple elements > expected 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
-const t0 = _template("<h1>Hello</h1>")
-const t1 = _template("<p>copyright</p>")
+exports[`named slot on multiple components > vue 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
 export function render(_ctx) {
+  const _component_Hello = _resolveComponent("Hello")
+  const _component_World = _resolveComponent("World")
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      header: () => {
-        const n0 = t0()
+      foo: () => {
+        const n0 = _createComponent(_component_Hello)
         return n0
       }, 
-      footer: () => {
-        const n2 = t1()
+      bar: () => {
+        const n2 = _createComponent(_component_World)
         return n2
       }
     }
@@ -531,7 +508,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slots on multiple elements > received 1`] = `
+exports[`named slots on multiple elements > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>Hello</h1>")
 const t1 = _template(" ")
@@ -555,7 +532,30 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slots with implicit default slot > expected 1`] = `
+exports[`named slots on multiple elements > vue 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1>Hello</h1>")
+const t1 = _template("<p>copyright</p>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      header: () => {
+        const n0 = t0()
+        return n0
+      }, 
+      footer: () => {
+        const n2 = t1()
+        return n2
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`named slots with implicit default slot > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>foo</h1>")
 const t1 = _template("bar")
@@ -580,7 +580,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`named slots with implicit default slot > received 1`] = `
+exports[`named slots with implicit default slot > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("<h1>foo</h1>")
 const t1 = _template("bar")
@@ -605,7 +605,35 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`nested slots scoping > expected 1`] = `
+exports[`nested slots scoping > svelte 1`] = `
+"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template(" ")
+
+export function render(_ctx) {
+  const _component_Inner = _resolveComponent("Inner")
+  const _component_Comp = _resolveComponent("Comp")
+  const n4 = _createComponent(_component_Comp, null, [
+    {
+      default: ({ foo }) => {
+        const n2 = t0()
+        const n1 = _createComponent(_component_Inner, null, [
+          {
+            default: ({ bar }) => {
+              const n0 = _createTextNode(() => [foo + bar + baz])
+              return n0
+            }
+          }
+        ])
+        const n3 = _createTextNode(() => [foo + bar + baz])
+        return [n1, n2, n3]
+      }
+    }
+  ], true)
+  return n4
+}"
+`;
+
+exports[`nested slots scoping > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template(" ")
 
@@ -633,35 +661,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`nested slots scoping > received 1`] = `
-"import { resolveComponent as _resolveComponent, createTextNode as _createTextNode, createComponent as _createComponent, template as _template } from 'vue/vapor';
-const t0 = _template(" ")
-
-export function render(_ctx) {
-  const _component_Inner = _resolveComponent("Inner")
-  const _component_Comp = _resolveComponent("Comp")
-  const n4 = _createComponent(_component_Comp, null, [
-    {
-      default: ({ foo }) => {
-        const n2 = t0()
-        const n1 = _createComponent(_component_Inner, null, [
-          {
-            default: ({ bar }) => {
-              const n0 = _createTextNode(() => [foo + bar + baz])
-              return n0
-            }
-          }
-        ])
-        const n3 = _createTextNode(() => [foo + bar + baz])
-        return [n1, n2, n3]
-      }
-    }
-  ], true)
-  return n4
-}"
-`;
-
-exports[`slot outlets chain > expected 1`] = `
+exports[`slot outlets chain > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createSlot as _createSlot, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("outlets")
 
@@ -682,7 +682,7 @@ export function render(_ctx) {
 }"
 `;
 
-exports[`slot outlets chain > received 1`] = `
+exports[`slot outlets chain > vue 1`] = `
 "import { resolveComponent as _resolveComponent, createSlot as _createSlot, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("outlets")
 
