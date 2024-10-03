@@ -302,3 +302,80 @@ test.todo('multiple class binding', () => {
     `_renderEffect(() => _setClass(n2, ["static", { active, inactive: !active, isAdmin }]))`
   )
 })
+
+test('style expression binding', () => {
+  const source1 = `<div style:color={myColor}>color</div>`
+  const source2 = `<div :style="{ color: myColor }">color</div>`
+
+  const { code, ir } = compileWithVBind(source1)
+  const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
+  expect(ir.template).toEqual(['<div>color</div>'])
+
+  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.myColor }))`)
+})
+
+test('style shorthand binding', () => {
+  const source1 = `<div style:color>color</div>`
+  const source2 = `<div :style="{ color }">color</div>`
+
+  const { code, ir } = compileWithVBind(source1)
+  const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
+  expect(ir.template).toEqual(['<div>color</div>'])
+
+  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.color }))`)
+})
+
+test.todo('style `imporant` modifier', () => {
+  const source1 = `<div style:color|important="red">modifier</div>`
+  const source2 = `<div :style="{ color: 'red !important' }">modifier</div>`
+
+  const { code, ir } = compileWithVBind(source1)
+  const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
+  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: 'red !important' }))`)
+
+  expect(ir.template).toEqual(['<div>modifier</div>'])
+})
+
+test.todo('multiple style binding', () => {
+  const source1 = `<div style:color style:width="12rem" style:background-color={darkMode ? 'black' : 'white'}>multiple</div>`
+  const source2 = `<div :style="{ color, width: '12rem', 'background-color': { darkMode ? 'black' : 'white' }">multiple</div>`
+
+  const { code, ir } = compileWithVBind(source1)
+  const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
+  expect(code).contains(
+    `_renderEffect(() => _setStyle(n1, { color, width: '12rem', 'background-color': { darkMode ? 'black' : 'white' }))`
+  )
+
+  expect(ir.template).toEqual(['<div>multiple</div>'])
+})
+
+test.todo('style override', () => {
+  const source1 = `<div style="color: blue;" style:color="red">This will be red</div>`
+  const source2 = `<div style="color: blue;" :style="{ color: 'red' }">This will be red</div>`
+
+  const { code, ir } = compileWithVBind(source1)
+  const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
+  expect(code).contains(`_renderEffect(() => _setStyle(n3, ["color: blue;", { color: 'red' }]))`)
+
+  expect(ir.template).toEqual(['<div>This will be red</div>'])
+})

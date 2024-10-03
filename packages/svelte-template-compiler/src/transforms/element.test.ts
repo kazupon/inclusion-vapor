@@ -76,6 +76,18 @@ describe('native elements', () => {
 
     expect(ir.template).toEqual([`<div class="foo">hello</div>`])
   })
+
+  test('static style', () => {
+    const source = `<div style="color: red;">hello</div>`
+
+    const { code, ir } = compileWithElementTransform(source)
+    const expectedResult = vaporCompile(source)
+
+    expect(code).toMatchSnapshot('svelte')
+    expect(expectedResult.code).toMatchSnapshot('vue')
+
+    expect(ir.template).toEqual([`<div style="color: red;">hello</div>`])
+  })
 })
 
 describe('component', () => {

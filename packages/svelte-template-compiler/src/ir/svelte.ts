@@ -16,6 +16,7 @@ import type {
   MustacheTag as SvelteMustacheTag,
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
+  StyleDirective as SvelteStyleDirective,
   Text as SvelteText
 } from 'svelte/types/compiler/interfaces'
 import type { SvelteTemplateNode } from './svelte'
@@ -107,6 +108,10 @@ export function isSvelteBindingDirective(node: unknown): node is SvelteBaseExpre
 
 export function isSvelteClassDirective(node: unknown): node is SvelteBaseExpressionDirective {
   return isObject(node) && 'type' in node && node.type === 'Class'
+}
+
+export function isSvelteStyleDirective(node: unknown): node is SvelteStyleDirective {
+  return isObject(node) && 'type' in node && node.type === 'StyleDirective'
 }
 
 // TODO: more refactor the above `isSvelteBindingDirective`
@@ -214,6 +219,7 @@ export type {
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   Style as SvelteStyle,
+  StyleDirective as SvelteStyleDirective,
   TemplateNode as SvelteTemplateNode,
   Text as SvelteText
 } from 'svelte/types/compiler/interfaces'

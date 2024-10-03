@@ -10,6 +10,7 @@ import {
   isSvelteMustacheTag,
   isSvelteShorthandAttribute,
   isSvelteSpreadAttribute,
+  isSvelteStyleDirective,
   isSvelteText
 } from './svelte.ts'
 
@@ -40,13 +41,16 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
         props.push(convertSvelteAttribute(attr))
       }
     } else if (isSvelteSpreadAttribute(attr) || isSvelteEventHandler(attr)) {
-      props.push(convertVaporDirective(attr, node))
+      props.push(convertVaporDirective(attr, node)) // TODO: more refactor for if-lese condition
     } else if (isSvelteBindingDirective(attr) && attr.name !== 'this') {
       // ignore `this:bind` converting on `convertProps`
-      props.push(convertVaporDirective(attr, node))
+      props.push(convertVaporDirective(attr, node)) // TODO: more refactor for if-lese condition
     } else if (isSvelteClassDirective(attr)) {
       // `class:xxx` converting on `convertProps`
-      props.push(convertVaporDirective(attr, node))
+      props.push(convertVaporDirective(attr, node)) // TODO: more refactor for if-lese condition
+    } else if (isSvelteStyleDirective(attr)) {
+      // `style:xxx` converting on `convertProps`
+      props.push(convertVaporDirective(attr, node)) // TODO: more refactor for if-lese condition
     }
   }
 
@@ -285,6 +289,34 @@ function convertVaporDirective(
       arg,
       exp
     } as VaporDirectiveNode
+  } else if (isSvelteStyleDirective(node)) {
+    const start = node.start
+    const arg = createSimpleExpression(
+      'style',
+      true,
+      // TODO: align loc for svlete compiler
+      convertSvelteLocation({ start, end: node.end }, 'style')
+    )
+    const modifiers = [] as string[]
+    const exp = convertVaporDirectiveExpression(node)
+    if (exp) {
+      const ast = parseExpression(` ${exp.content}`, {
+        sourceType: 'module'
+        // TODO: use babel plugins
+        // plugins: context.options.expressionPlugins
+      })
+      exp.ast = ast
+    }
+    return {
+      type: NodeTypes.DIRECTIVE,
+      name: 'bind',
+      rawName: `:style`,
+      modifiers,
+      // loc: convertSvelteLocation(directiveLoc, directiveLocSource),
+      loc: convertSvelteLocation(node, `:style`),
+      arg,
+      exp
+    } as VaporDirectiveNode
   } else {
     // TODO: we should consider error strategy
     throw new Error('unexpected node type')
@@ -323,6 +355,27 @@ export function convertVaporDirectiveExpression(
       node.expression && node.expression.type === 'Identifier'
         ? `{ ${node.name}: ${node.expression.name} }`
         : ''
+    // TODO: align loc for svlete compiler
+    return createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  } else if (isSvelteStyleDirective(node)) {
+    let content = ''
+    // TODO: `important` modifier implenentation
+    const importantModifier =
+      node.modifiers && node.modifiers.includes('important') ? ' !important' : ''
+    if (Array.isArray(node.value) && node.value.length === 1) {
+      if (isSvelteText(node.value[0])) {
+        content = `{ ${node.name}: '${node.value[0].data}${importantModifier}' }`
+      } else if (isSvelteMustacheTag(node.value[0])) {
+        const expression = node.value[0].expression
+        content =
+          expression && expression.type === 'Identifier'
+            ? `{ ${node.name}: ${expression.name} }`
+            : ''
+      }
+    } else if (typeof node.value === 'boolean') {
+      // shorthand `style:xxx
+      content = `{ ${node.name}: ${node.name} }`
+    }
     // TODO: align loc for svlete compiler
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else {

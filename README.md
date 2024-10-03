@@ -127,8 +127,8 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] Block-level element bindings
   - [x] `bind:group`
   - [x] `bind:this`
-  - [x] `class:name` (multiple class hasn't supported yet)
-  - [ ] `style:property`
+  - [x] `class:name` (multiple classes hasn't supported yet)
+  - [x] `style:property` (mulple styles, modifier has'nt supported yes)
   - [ ] `use:action`
   - [ ] `transition:fn`
   - [ ] Transition parameters

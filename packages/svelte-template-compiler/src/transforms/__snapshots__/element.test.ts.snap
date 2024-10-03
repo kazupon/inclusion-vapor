@@ -241,3 +241,23 @@ export function render(_ctx) {
   return n0
 }"
 `;
+
+exports[`native elements > static style > svelte 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div style=\\"color: red;\\">hello</div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
+
+exports[`native elements > static style > vue 1`] = `
+"import { template as _template } from 'vue/vapor';
+const t0 = _template("<div style=\\"color: red;\\">hello</div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  return n0
+}"
+`;
