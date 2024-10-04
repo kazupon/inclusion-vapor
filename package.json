@@ -51,13 +51,14 @@
     "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
-    "@kazupon/eslint-config": "^0.17.0",
+    "@eslint/markdown": "^6.2.0",
+    "@kazupon/eslint-config": "^0.18.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.14.10",
     "bumpp": "^9.5.2",
-    "eslint": "^9.9.0",
+    "eslint": "^9.11.0",
     "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import-x": "^4.1.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsonc": "^2.16.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
@@ -79,7 +80,7 @@
     "prettier-plugin-toml": "^2.0.1",
     "serve": "^14.2.3",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^8.6.0",
+    "typescript-eslint": "^8.8.0",
     "vitest": "^2.1.1",
     "vue-tsc": "^2.1.2"
   },

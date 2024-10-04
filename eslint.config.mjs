@@ -4,6 +4,7 @@ import {
   imports,
   javascript,
   jsonc,
+  markdown,
   react,
   regexp,
   toml,
@@ -49,8 +50,8 @@ export default defineConfig(
   imports({
     typescript: true,
     rules: {
-      'import-x/first': 'error',
-      'import-x/extensions': ['error', 'always', { ignorePackages: true }]
+      'import/first': 'error',
+      'import/extensions': ['error', 'always', { ignorePackages: true }]
     }
   }),
   jsonc({
@@ -94,6 +95,7 @@ export default defineConfig(
       }
     }
   },
+  markdown(),
   {
     name: 'ignores',
     ignores: [
