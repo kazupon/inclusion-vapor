@@ -162,7 +162,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] svelte
     - [x] `onMount` (not still support return unmount fn)
     - [x] `beforeUpdate`
-    - [ ] `afterUpdate`
+    - [x] `afterUpdate`
     - [ ] `onDestroy`
     - [ ] `tick`
     - [ ] `setContext`
