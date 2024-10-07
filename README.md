@@ -160,7 +160,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [x] `<svelte:fragment>`
 - [ ] Runtime
   - [ ] svelte
-    - [ ] `onMount`
+    - [x] `onMount` (not still support return unmount fn)
     - [ ] `beforeUpdate`
     - [ ] `afterUpdate`
     - [ ] `onDestroy`

@@ -75,7 +75,7 @@ export function makeRender<Component = ObjectComponent | SetupFn>(
   return define
 }
 
-export function triggerEvent(type: string, el: Element) {
+export function triggerEvent(type: string, el: Element): void {
   const event = new Event(type, { bubbles: true })
   el.dispatchEvent(event)
 }
