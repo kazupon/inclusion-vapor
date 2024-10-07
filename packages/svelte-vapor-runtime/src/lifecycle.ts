@@ -5,7 +5,7 @@
 // Repository url: https://github.com/sveltejs/svelte
 // Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/types/index.d.ts
 
-import { getCurrentInstance, onMounted, onUnmounted } from '@vue-vapor/vapor'
+import { getCurrentInstance, onBeforeUpdate, onMounted, onUnmounted } from '@vue-vapor/vapor'
 
 import type { EventDispatcher } from './types.ts'
 
@@ -17,8 +17,12 @@ import type { EventDispatcher } from './types.ts'
  * https://svelte.dev/docs/svelte#beforeupdate
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function beforeUpdate(_fn: () => any): void {
-  throw new Error('TODO: implement beforeUpdate')
+export function beforeUpdate(fn: () => any): void {
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`beforeUpdate` must be called during component initialization.')
+  }
+  onBeforeUpdate(fn, instance)
 }
 
 /**
@@ -38,17 +42,17 @@ export function onMount<T>(
 ): void {
   const instance = getCurrentInstance()
   if (!instance) {
-    throw new Error('onMount must be called during component initialization.')
+    throw new Error('`onMount` must be called during component initialization.')
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let unmount: (() => any) | undefined
   onMounted(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     unmount = fn() as () => any
-  })
+  }, instance)
   onUnmounted(() => {
     unmount?.()
-  })
+  }, instance)
 }
 
 /**
