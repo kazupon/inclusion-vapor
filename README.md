@@ -163,7 +163,7 @@ Based on Svelte v4 (maybe v3 compatible)
     - [x] `onMount` (not still support return unmount fn)
     - [x] `beforeUpdate`
     - [x] `afterUpdate`
-    - [ ] `onDestroy`
+    - [x] `onDestroy` (vapor not still support)
     - [ ] `tick`
     - [ ] `setContext`
     - [ ] `getContext`

@@ -13,7 +13,7 @@ import {
 } from '@vue-vapor/vapor'
 import { describe, expect, test, vi } from 'vitest'
 import { makeRender, triggerEvent } from './_helper.ts'
-import { afterUpdate, beforeUpdate, onMount } from './lifecycle.ts'
+import { afterUpdate, beforeUpdate, onDestroy, onMount } from './lifecycle.ts'
 
 const define = makeRender()
 
@@ -156,5 +156,43 @@ describe('afterUpdate', () => {
     await nextTick()
 
     expect(mockAfterUpdate).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('onDestroy', () => {
+  // NOTE: currently, vapor does not work `onBeforeUnmount` lifecycle hook
+  test.todo('basic', async () => {
+    const toggle = ref(true)
+    const mockOnDestroy = vi.fn()
+
+    const Child = {
+      setup() {
+        onDestroy(mockOnDestroy)
+        return (() => {
+          const t0 = template('<div></div>')
+          const n0 = t0()
+          return n0
+        })()
+      }
+    }
+
+    const { render } = define({
+      setup() {
+        return (() => {
+          const n0 = createIf(
+            () => toggle.value,
+            () => createComponent(Child)
+          )
+          return n0
+        })()
+      }
+    })
+    render()
+    await nextTick()
+
+    toggle.value = false
+    await nextTick()
+
+    expect(mockOnDestroy).toHaveBeenCalledTimes(1)
   })
 })

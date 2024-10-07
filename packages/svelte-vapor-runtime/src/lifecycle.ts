@@ -7,6 +7,7 @@
 
 import {
   getCurrentInstance,
+  onBeforeUnmount,
   onBeforeUpdate,
   onMounted,
   onUnmounted,
@@ -86,8 +87,12 @@ export function afterUpdate(fn: () => any): void {
  * https://svelte.dev/docs/svelte#ondestroy
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function onDestroy(_fn: () => any): void {
-  throw new Error('TODO: implement onDestroy')
+export function onDestroy(fn: () => any): void {
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`onDestroy` must be called in setup func.')
+  }
+  onBeforeUnmount(fn, instance)
 }
 
 /**
