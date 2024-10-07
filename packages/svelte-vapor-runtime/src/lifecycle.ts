@@ -7,6 +7,7 @@
 
 import {
   getCurrentInstance,
+  nextTick,
   onBeforeUnmount,
   onBeforeUpdate,
   onMounted,
@@ -171,7 +172,7 @@ export function hasContext(_key: any): boolean {
 }
 
 export function tick(): Promise<void> {
-  throw new Error('TODO: implement tick')
+  return nextTick()
 }
 
 /**

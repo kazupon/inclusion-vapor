@@ -13,7 +13,7 @@ import {
 } from '@vue-vapor/vapor'
 import { describe, expect, test, vi } from 'vitest'
 import { makeRender, triggerEvent } from './_helper.ts'
-import { afterUpdate, beforeUpdate, onDestroy, onMount } from './lifecycle.ts'
+import { afterUpdate, beforeUpdate, onDestroy, onMount, tick } from './lifecycle.ts'
 
 const define = makeRender()
 
@@ -195,4 +195,36 @@ describe('onDestroy', () => {
 
     expect(mockOnDestroy).toHaveBeenCalledTimes(1)
   })
+})
+
+test('tick', async () => {
+  const { render, host } = define({
+    setup() {
+      const count = ref(0)
+      const increment = () => {
+        count.value++
+      }
+      return { count, increment }
+    },
+    render(ctx: { count: number; increment: () => void }) {
+      const t = template('<button></button>')
+      delegateEvents('click')
+      const button = t()
+      // eslint-disable-next-line unicorn/consistent-function-scoping
+      delegate(button as HTMLElement, 'click', () => _$event => ctx.increment())
+      renderEffect(() => {
+        setText(button, `count is `, ctx.count)
+      })
+      return button
+    }
+  })
+  render()
+
+  await tick()
+  const button = host.querySelector('button') as HTMLButtonElement
+  expect(button.textContent).toBe('count is 0')
+
+  triggerEvent('click', button)
+  await tick()
+  expect(button.textContent).toBe('count is 1')
 })
