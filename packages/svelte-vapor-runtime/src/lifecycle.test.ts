@@ -3,6 +3,7 @@
 import {
   createComponent,
   createIf,
+  createTextNode,
   delegate,
   delegateEvents,
   nextTick,
@@ -13,7 +14,17 @@ import {
 } from '@vue-vapor/vapor'
 import { describe, expect, test, vi } from 'vitest'
 import { makeRender, triggerEvent } from './_helper.ts'
-import { afterUpdate, beforeUpdate, onDestroy, onMount, tick } from './lifecycle.ts'
+import {
+  afterUpdate,
+  beforeUpdate,
+  getAllContexts,
+  getContext,
+  hasContext,
+  onDestroy,
+  onMount,
+  setContext,
+  tick
+} from './lifecycle.ts'
 
 const define = makeRender()
 
@@ -227,4 +238,46 @@ test('tick', async () => {
   triggerEvent('click', button)
   await tick()
   expect(button.textContent).toBe('count is 1')
+})
+
+describe('setContext, getContext, hasContext, getAllContexts', () => {
+  test('basic', () => {
+    const Parent = define({
+      setup() {
+        setContext('key1', 1)
+        return createComponent(Middle)
+      }
+    })
+
+    const Middle = {
+      setup() {
+        setContext('key2', 'key2-value')
+        return createComponent(Child)
+      }
+    }
+
+    let hasKey1 = false
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let _contexts = new Map<any, any>()
+    const Child = {
+      setup() {
+        hasKey1 = hasContext('key1')
+        const key1 = getContext<number>('key1')
+        _contexts = getAllContexts()
+        return (() => {
+          const n0 = createTextNode()
+          setText(n0, key1)
+          return n0
+        })()
+      }
+    }
+
+    Parent.render()
+
+    expect(Parent.host.textContent).toBe('1')
+    expect(hasKey1).toBe(true)
+    // TODO: expect(contexts.size).toBe(2)
+    // TODO: expect(contexts.get('key1')).toBe(1)
+    // TODO: expect(contexts.get('key2')).toBe('key2-value')
+  })
 })

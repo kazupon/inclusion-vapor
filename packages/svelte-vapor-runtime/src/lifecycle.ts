@@ -7,14 +7,17 @@
 
 import {
   getCurrentInstance,
+  inject,
   nextTick,
   onBeforeUnmount,
   onBeforeUpdate,
   onMounted,
   onUnmounted,
-  onUpdated
+  onUpdated,
+  provide
 } from '@vue-vapor/vapor'
 
+import type { InjectionKey } from '@vue-vapor/vapor'
 import type { EventDispatcher } from './types.ts'
 
 /**
@@ -134,8 +137,13 @@ export function createEventDispatcher<
  * https://svelte.dev/docs/svelte#setcontext
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function setContext<T>(_key: any, _context: T): T {
-  throw new Error('TODO: implement setContext')
+export function setContext<T>(key: any, context: T): T {
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`setContext` must be called in setup func.')
+  }
+  provide(key, context)
+  return context
 }
 /**
  * Retrieves the context that belongs to the closest parent component with the specified `key`.
@@ -144,8 +152,12 @@ export function setContext<T>(_key: any, _context: T): T {
  * https://svelte.dev/docs/svelte#getcontext
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getContext<T>(_key: any): T {
-  throw new Error('TODO: implement getContext')
+export function getContext<T>(key: any): T {
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`getContext` must be called in setup func.')
+  }
+  return inject(key as string | InjectionKey<T>) as T
 }
 
 /**
@@ -157,7 +169,22 @@ export function getContext<T>(_key: any): T {
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getAllContexts<T extends Map<any, any> = Map<any, any>>(): T {
-  throw new Error('TODO: implement getAllContexts')
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`getAllContexts` must be called in setup func.')
+  }
+  const provides = instance.provides
+  // instance.parent == null
+  //   ? instance.appContext && instance.appContext.provides
+  //   : instance.parent.provides == null
+  //     ? instance.provides
+  //     : instance.parent.provides
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const contexts = new Map<any, any>()
+  Object.keys(provides).forEach(key => {
+    contexts.set(key, provides[key])
+  })
+  return contexts as T
 }
 
 /**
@@ -167,8 +194,12 @@ export function getAllContexts<T extends Map<any, any> = Map<any, any>>(): T {
  * https://svelte.dev/docs/svelte#hascontext
  * */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function hasContext(_key: any): boolean {
-  throw new Error('TODO: implement hasContext')
+export function hasContext(key: any): boolean {
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`hasContext` must be called in setup func.')
+  }
+  return !!inject(key as string | InjectionKey<unknown>)
 }
 
 export function tick(): Promise<void> {
