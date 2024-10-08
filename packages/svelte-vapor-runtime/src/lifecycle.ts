@@ -174,14 +174,10 @@ export function getAllContexts<T extends Map<any, any> = Map<any, any>>(): T {
     throw new Error('`getAllContexts` must be called in setup func.')
   }
   const provides = instance.provides
-  // instance.parent == null
-  //   ? instance.appContext && instance.appContext.provides
-  //   : instance.parent.provides == null
-  //     ? instance.provides
-  //     : instance.parent.provides
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const contexts = new Map<any, any>()
-  Object.keys(provides).forEach(key => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  Object.keys(Object.assign({}, provides, Object.getPrototypeOf(provides))).forEach(key => {
     contexts.set(key, provides[key])
   })
   return contexts as T

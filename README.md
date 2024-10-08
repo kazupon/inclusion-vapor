@@ -165,10 +165,10 @@ Based on Svelte v4 (maybe v3 compatible)
     - [x] `afterUpdate`
     - [x] `onDestroy` (vapor not still support)
     - [x] `tick`
-    - [ ] `setContext`
-    - [ ] `getContext`
-    - [ ] `hasContext`
-    - [ ] `getAllContext`
+    - [x] `setContext`
+    - [x] `getContext`
+    - [x] `hasContext`
+    - [x] `getAllContext`
     - [ ] `createEventDispatcher`
   - [ ] store
   - [ ] motion

@@ -258,12 +258,12 @@ describe('setContext, getContext, hasContext, getAllContexts', () => {
 
     let hasKey1 = false
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let _contexts = new Map<any, any>()
+    let contexts = new Map<any, any>()
     const Child = {
       setup() {
         hasKey1 = hasContext('key1')
         const key1 = getContext<number>('key1')
-        _contexts = getAllContexts()
+        contexts = getAllContexts()
         return (() => {
           const n0 = createTextNode()
           setText(n0, key1)
@@ -276,8 +276,8 @@ describe('setContext, getContext, hasContext, getAllContexts', () => {
 
     expect(Parent.host.textContent).toBe('1')
     expect(hasKey1).toBe(true)
-    // TODO: expect(contexts.size).toBe(2)
-    // TODO: expect(contexts.get('key1')).toBe(1)
-    // TODO: expect(contexts.get('key2')).toBe('key2-value')
+    expect(contexts.size).toBe(2)
+    expect(contexts.get('key1')).toBe(1)
+    expect(contexts.get('key2')).toBe('key2-value')
   })
 })
