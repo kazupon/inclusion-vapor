@@ -17,8 +17,8 @@ import {
   provide
 } from '@vue-vapor/vapor'
 
-import type { InjectionKey } from '@vue-vapor/vapor'
-import type { EventDispatcher } from './types.ts'
+import type { ComponentInternalInstance, InjectionKey } from '@vue-vapor/vapor'
+import type { DispatchOptions, EventDispatcher } from './types.ts'
 
 /**
  * Schedules a callback to run immediately before the component is updated after any state change.
@@ -124,7 +124,184 @@ export function createEventDispatcher<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   EventMap extends Record<string, any> = any
 >(): EventDispatcher<EventMap> {
-  throw new Error('TODO: implement createEventDispatcher')
+  const instance = getCurrentInstance()
+  if (!instance) {
+    throw new Error('`setContext` must be called in setup func.')
+  }
+
+  function dispatcher(
+    type: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parameter: Record<string, any> | null | undefined,
+    { cancelable = false }: DispatchOptions = {}
+  ): boolean {
+    return dispatch(instance!, type, parameter, cancelable)
+  }
+
+  return dispatcher as EventDispatcher<EventMap>
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+const isFunction = (val: unknown): val is Function => typeof val === 'function'
+
+const cacheStringFunction = <T extends (str: string) => string>(fn: T): T => {
+  const cache: Record<string, string> = Object.create(null) as Record<string, string>
+  return ((str: string) => {
+    const hit = cache[str]
+    return hit || (cache[str] = fn(str))
+  }) as T
+}
+
+const camelizeRE = /-(\w)/g
+const camelize: (str: string) => string = cacheStringFunction((str: string): string => {
+  // eslint-disable-next-line unicorn/prefer-string-replace-all
+  return str.replace(camelizeRE, (_, c: string) => (c ? c.toUpperCase() : ''))
+})
+
+const capitalize: <T extends string>(str: T) => Capitalize<T> = cacheStringFunction(
+  <T extends string>(str: T) => {
+    return (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>
+  }
+)
+
+const hyphenateRE = /\B([A-Z])/g
+const hyphenate: (str: string) => string = cacheStringFunction(
+  // eslint-disable-next-line unicorn/prefer-string-replace-all
+  (str: string) => str.replace(hyphenateRE, '-$1').toLowerCase()
+)
+
+type StaticProps = Record<string, () => unknown>
+type Data = Record<string, unknown>
+type DynamicProps = () => Data
+type NormalizedRawProps = Array<StaticProps | DynamicProps>
+type DynamicPropResult = [value: unknown, absent: boolean]
+
+function getRawKey(obj: Data, key: string) {
+  return Object.keys(obj).find(k => camelize(k) === key)
+}
+
+const toHandlerKey: <T extends string>(str: T) => T extends '' ? '' : `on${Capitalize<T>}` =
+  cacheStringFunction(<T extends string>(str: T) => {
+    const s = str ? `on${capitalize(str)}` : ``
+    return s as T extends '' ? '' : `on${Capitalize<T>}`
+  })
+
+export function addEventListener(
+  el: Element,
+  type: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,
+  handler: (...args: any) => any,
+  options?: AddEventListenerOptions
+) {
+  el.addEventListener(type, handler, options)
+  return (): void => el.removeEventListener(type, handler, options)
+}
+
+// NOTE: we might need to re-implementation of this function, because svelte component event handling is different from vapor
+function invokeHandle(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  fn: Function,
+  type: string,
+  instance: ComponentInternalInstance,
+  event: CustomEvent
+): boolean {
+  let fired = false
+  const el: Element = (instance.container as Element) || document
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,
+  const cleanEvent = addEventListener(el, type, fn as (...args: any) => any)
+  try {
+    fired = el.dispatchEvent(event)
+  } catch (error) {
+    // TODO: error handling with svelte error handling mechanism
+    console.error(error)
+  } finally {
+    cleanEvent()
+  }
+  return fired
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+function fireHandle<F extends Function | Function[]>(
+  fn: F,
+  type: string,
+  instance: ComponentInternalInstance,
+  event: CustomEvent
+): boolean | boolean[] {
+  if (isFunction(fn)) {
+    return invokeHandle(fn, type, instance, event)
+  }
+
+  const values: boolean[] = []
+  // eslint-disable-next-line unicorn/no-for-loop
+  for (let i = 0; i < fn.length; i++) {
+    values.push(invokeHandle(fn[i], type, instance, event))
+  }
+  return values
+}
+
+function getDynamicPropValue(rawProps: NormalizedRawProps, key: string): DynamicPropResult {
+  for (const props of [...rawProps].reverse()) {
+    if (isFunction(props)) {
+      const resolved = props()
+      const rawKey = getRawKey(resolved, key)
+      if (rawKey) {
+        return [resolved[rawKey], false]
+      }
+    } else {
+      const rawKey = getRawKey(props, key)
+      if (rawKey) {
+        return [props[rawKey](), false]
+      }
+    }
+  }
+  return [undefined, true]
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getHandler(event: string, getter: (key: string) => any): any {
+  return (
+    getter(toHandlerKey(event)) ||
+    getter(toHandlerKey(camelize(event))) ||
+    getter(toHandlerKey(hyphenate(event)))
+  )
+}
+
+function dispatch(
+  instance: ComponentInternalInstance,
+  event: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: Record<string, any> | null | undefined,
+  cancelable: boolean = false
+): boolean {
+  if (instance.isUnmounted) {
+    return true
+  }
+
+  const { rawProps } = instance
+  // eslint-disable-next-line unicorn/no-array-callback-reference
+  const hasDynamicProps = rawProps.some(isFunction)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let handler: any
+
+  // has v-bind or :[eventName]
+  if (hasDynamicProps) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    handler = getHandler(event, key => getDynamicPropValue(rawProps, key)[0])
+  } else {
+    const staticProps = rawProps[0] as StaticProps
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    handler = getHandler(event, key => staticProps[key] && staticProps[key]())
+  }
+
+  // call handler
+  if (handler) {
+    const ev = new CustomEvent(event, { detail: params, cancelable, bubbles: false })
+    fireHandle(handler, event, instance, ev)
+    return !ev.defaultPrevented
+  } else {
+    return true
+  }
 }
 
 /**

@@ -5,7 +5,7 @@
 // Repository url: https://github.com/sveltejs/svelte
 // Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/types/index.d.ts
 
-interface DispatchOptions {
+export interface DispatchOptions {
   cancelable?: boolean
 }
 

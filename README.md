@@ -159,7 +159,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `<svelte:options>`
   - [x] `<svelte:fragment>`
 - [ ] Runtime
-  - [ ] svelte
+  - [x] svelte
     - [x] `onMount` (not still support return unmount fn)
     - [x] `beforeUpdate`
     - [x] `afterUpdate`
@@ -169,7 +169,7 @@ Based on Svelte v4 (maybe v3 compatible)
     - [x] `getContext`
     - [x] `hasContext`
     - [x] `getAllContext`
-    - [ ] `createEventDispatcher`
+    - [x] `createEventDispatcher`
   - [ ] store
   - [ ] motion
   - [ ] transition

@@ -17,6 +17,7 @@ import { makeRender, triggerEvent } from './_helper.ts'
 import {
   afterUpdate,
   beforeUpdate,
+  createEventDispatcher,
   getAllContexts,
   getContext,
   hasContext,
@@ -279,5 +280,47 @@ describe('setContext, getContext, hasContext, getAllContexts', () => {
     expect(contexts.size).toBe(2)
     expect(contexts.get('key1')).toBe(1)
     expect(contexts.get('key2')).toBe('key2-value')
+  })
+})
+
+describe('createEventDispatcher', () => {
+  test('basic', () => {
+    let noPrevent = false
+    const { render } = define({
+      setup() {
+        const dispatcher = createEventDispatcher()
+        noPrevent = dispatcher('foo', { a: 1 })
+      }
+    })
+
+    const onFoo = vi.fn()
+    render({
+      onFoo: () => onFoo
+    })
+
+    expect(noPrevent).toBe(true)
+    expect(onFoo).toHaveBeenCalledTimes(1)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(onFoo.mock.calls[0][0].detail).toStrictEqual({ a: 1 })
+  })
+
+  test('cancel', () => {
+    let noPrevent = false
+    const { render } = define({
+      setup() {
+        const dispatcher = createEventDispatcher()
+        noPrevent = dispatcher('foo', { a: 1 }, { cancelable: true })
+      }
+    })
+
+    const onFoo = vi.fn().mockImplementation((e: CustomEvent) => {
+      e.preventDefault()
+    })
+    render({
+      onFoo: () => onFoo
+    })
+
+    expect(noPrevent).toBe(false)
+    expect(onFoo).toHaveBeenCalledTimes(1)
   })
 })
