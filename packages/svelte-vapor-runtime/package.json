@@ -30,15 +30,55 @@
   },
   "type": "module",
   "files": [
-    "dist/index.cjs",
-    "dist/index.js"
+    "dist"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./action": {
+      "types": "./dist/action.d.ts",
+      "import": "./dist/action.js",
+      "require": "./dist/action.cjs"
+    },
+    "./animate": {
+      "types": "./dist/animate.d.ts",
+      "import": "./dist/animate.js",
+      "require": "./dist/animate.cjs"
+    },
+    "./easing": {
+      "types": "./dist/easing.d.ts",
+      "import": "./dist/easing.js",
+      "require": "./dist/easing.cjs"
+    },
+    "./motion": {
+      "types": "./dist/motion.d.ts",
+      "import": "./dist/motion.js",
+      "require": "./dist/motion.cjs"
+    },
+    "./store": {
+      "types": "./dist/store.d.ts",
+      "import": "./dist/store.js",
+      "require": "./dist/store.cjs"
+    },
+    "./transition": {
+      "types": "./dist/transition.d.ts",
+      "import": "./dist/transition.js",
+      "require": "./dist/transition.cjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
     }
   },
   "scripts": {
