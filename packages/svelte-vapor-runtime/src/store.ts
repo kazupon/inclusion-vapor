@@ -5,6 +5,10 @@
 // Repository url: https://github.com/sveltejs/svelte
 // Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/types/index.d.ts
 
+import { ref } from '@vue-vapor/vapor'
+
+import type { Ref } from '@vue-vapor/vapor'
+
 /** Callback to inform of a value updates. */
 export type Subscriber<T> = (value: T) => void
 
@@ -13,6 +17,8 @@ export type Unsubscriber = () => void
 
 /** Callback to update a value. */
 export type Updater<T> = (value: T) => T
+
+type SubscribeInvalidateTuple<T> = [Subscriber<T>, Invalidator<T>]
 
 /**
  * Start and stop notification callbacks.
@@ -65,14 +71,22 @@ type Stores =
 type StoresValues<T> =
   T extends Readable<infer U> ? U : { [K in keyof T]: T[K] extends Readable<infer U> ? U : never }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SUBSCRIBER_QUEUE: any[] = []
+
+ 
+const NOOP = () => {}
+
 /**
  * Creates a `Readable` store that allows reading by subscription.
  *
  * https://svelte.dev/docs/svelte-store#readable
  * @param value initial value
  * */
-export function readable<T>(_value?: T, _start?: StartStopNotifier<T>): Readable<T> {
-  throw new Error('TODO: implement readable')
+export function readable<T>(value?: T, start?: StartStopNotifier<T>): Readable<T> {
+  return {
+    subscribe: writable(value, start).subscribe
+  }
 }
 
 /**
@@ -81,8 +95,58 @@ export function readable<T>(_value?: T, _start?: StartStopNotifier<T>): Readable
  * https://svelte.dev/docs/svelte-store#writable
  * @param value initial value
  * */
-export function writable<T>(_value?: T, _start?: StartStopNotifier<T>): Writable<T> {
-  throw new Error('TODO: implement writable')
+export function writable<T>(value?: T, start: StartStopNotifier<T> = NOOP): Writable<T> {
+  let stop: Unsubscriber | undefined | null
+  const subscribers: Set<SubscribeInvalidateTuple<T>> = new Set<SubscribeInvalidateTuple<T>>()
+
+  function set(newValue: T): void {
+    // @ts-expect-error -- FIXME:
+    if (safeNotEqual(value, newValue)) {
+      value = newValue
+      if (stop) {
+        // store is ready
+        const runQueue = !SUBSCRIBER_QUEUE.length // eslint-disable-line unicorn/explicit-length-check
+        for (const subscriber of subscribers) {
+          subscriber[1]()
+          SUBSCRIBER_QUEUE.push(subscriber, value)
+        }
+        if (runQueue) {
+          for (let i = 0; i < SUBSCRIBER_QUEUE.length; i += 2) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+            SUBSCRIBER_QUEUE[i][0](SUBSCRIBER_QUEUE[i + 1])
+          }
+          SUBSCRIBER_QUEUE.length = 0
+        }
+      }
+    }
+  }
+
+  function update(fn: Updater<T>): void {
+    set(fn(value as T))
+  }
+
+  function subscribe(run: Subscriber<T>, invalidate: Invalidator<T> = NOOP): Unsubscriber {
+    const subscriber: SubscribeInvalidateTuple<T> = [run, invalidate]
+    subscribers.add(subscriber)
+    if (subscribers.size === 1) {
+      stop = start(set, update) || NOOP
+    }
+    run(value as T)
+    return () => {
+      subscribers.delete(subscriber)
+      if (subscribers.size === 0 && stop) {
+        stop()
+        stop = null // eslint-disable-line unicorn/no-null
+      }
+    }
+  }
+
+  return { set, update, subscribe }
+}
+
+function safeNotEqual(a: unknown, b: undefined): boolean {
+  // eslint-disable-next-line unicorn/no-negated-condition
+  return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function'
 }
 
 /**
@@ -118,6 +182,23 @@ export function readonly<T>(_store: Readable<T>): Readable<T> {
  *
  * https://svelte.dev/docs/svelte-store#get
  * */
-export function get<T>(_store: Readable<T>): T {
-  throw new Error('TODO: implement get')
+export function get<T>(store: Readable<T>): Ref<T> {
+  const value: Ref<T | undefined> = ref(undefined)
+  subscribe(store, _ => {
+    value.value = _
+  })()
+  return value as Ref<T>
+}
+
+function subscribe<T>(store: Readable<T> | undefined, ...callbacks: Subscriber<T>[]): Unsubscriber {
+  if (store == undefined) {
+     
+    for (const callback of callbacks) {
+      callback(undefined as T)
+    }
+    return NOOP
+  }
+  // @ts-expect-error -- IGNORE
+  return store.subscribe(...callbacks)
+  //return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
