@@ -170,7 +170,7 @@ Based on Svelte v4 (maybe v3 compatible)
     - [x] `hasContext`
     - [x] `getAllContext`
     - [x] `createEventDispatcher`
-  - [ ] store
+  - [x] store
   - [ ] motion
   - [ ] transition
   - [ ] animate

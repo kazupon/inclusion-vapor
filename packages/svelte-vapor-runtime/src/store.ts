@@ -3,11 +3,19 @@
 // Forked from `sveltejs/svelte`
 // Author: Rich Harris (https://github.com/Rich-Harris) and Svelte community
 // Repository url: https://github.com/sveltejs/svelte
-// Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/types/index.d.ts
+// Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/src/runtime/store/index.js
 
-import { ref } from '@vue-vapor/vapor'
+import { computed, onScopeDispose, ref, readonly as vaporReadonly } from '@vue-vapor/vapor'
+import { isFunction } from './utils.ts'
 
+import type { DeepReadonly } from '@vue-vapor/reactivity'
 import type { Ref } from '@vue-vapor/vapor'
+
+/**
+ * NOTE:
+ * This implementation is a ported from `svelte/store`.
+ * Because `svelte/store` cannot tree-shake fully, if we use `svelte/store` directly. it will be bundled SvelteCompoment implemntation code...
+ */
 
 /** Callback to inform of a value updates. */
 export type Subscriber<T> = (value: T) => void
@@ -41,7 +49,7 @@ export interface Readable<T> {
    * @param run subscription callback
    * @param invalidate cleanup callback
    */
-  subscribe(this: void, run: Subscriber<T>, invalidate?: Invalidator<T>): Unsubscriber
+  subscribe(run: Subscriber<T>, invalidate?: Invalidator<T>): Unsubscriber
 }
 
 /** Writable interface for both updating and subscribing. */
@@ -50,31 +58,20 @@ export interface Writable<T> extends Readable<T> {
    * Set value and inform subscribers.
    * @param value to set
    */
-  set(this: void, value: T): void
+  set(value: T): void
 
   /**
    * Update value using callback and inform subscribers.
    * @param updater callback
    */
-  update(this: void, updater: Updater<T>): void
+  update(updater: Updater<T>): void
 }
 /** Cleanup logic callback. */
 type Invalidator<T> = (value?: T) => void
 
-/** One or more `Readable`s. */
-type Stores =
-  | Readable<any> // eslint-disable-line @typescript-eslint/no-explicit-any
-  | [Readable<any>, ...Array<Readable<any>>] // eslint-disable-line @typescript-eslint/no-explicit-any
-  | Array<Readable<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
-
-/** One or more values from `Readable` stores. */
-type StoresValues<T> =
-  T extends Readable<infer U> ? U : { [K in keyof T]: T[K] extends Readable<infer U> ? U : never }
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SUBSCRIBER_QUEUE: any[] = []
 
- 
 const NOOP = () => {}
 
 /**
@@ -84,9 +81,7 @@ const NOOP = () => {}
  * @param value initial value
  * */
 export function readable<T>(value?: T, start?: StartStopNotifier<T>): Readable<T> {
-  return {
-    subscribe: writable(value, start).subscribe
-  }
+  return readonly(writable(value, start))
 }
 
 /**
@@ -149,6 +144,26 @@ function safeNotEqual(a: unknown, b: undefined): boolean {
   return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function'
 }
 
+/** One or more `Readable`s. */
+type Stores =
+  | Readable<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+  | [Readable<any>, ...Array<Readable<any>>] // eslint-disable-line @typescript-eslint/no-explicit-any
+  | Array<Readable<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
+
+/** One or more values from `Readable` stores. */
+type StoresValues<T> =
+  T extends Readable<infer U> ? U : { [K in keyof T]: T[K] extends Readable<infer U> ? U : never }
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any
+function run(fn: Function): any {
+  return fn() // eslint-disable-line @typescript-eslint/no-unsafe-call
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+function runAll(fns: Function[]): void {
+  fns.forEach(run) // eslint-disable-line unicorn/no-array-callback-reference
+}
+
 /**
  * Derived value store by synchronizing one or more readable stores and
  * applying an aggregation function over its input values.
@@ -156,15 +171,75 @@ function safeNotEqual(a: unknown, b: undefined): boolean {
  * https://svelte.dev/docs/svelte-store#derived
  * */
 export function derived<S extends Stores, T>(
-  _stores: S,
-  _fn: (
+  stores: S,
+  fn: (
     values: StoresValues<S>,
     set?: (value: T) => void,
     update?: (fn: Updater<T>) => void
-  ) => Unsubscriber | void,
-  _initial_value?: T
+  ) => T | Unsubscriber | void,
+  initialValue?: T
 ): Readable<T> {
-  throw new Error('TODO: implement derived')
+  const single = !Array.isArray(stores)
+  const storesArray = single ? [stores] : stores
+  if (!storesArray.every(Boolean)) {
+    throw new Error('derived() expects stores as input, got a falsy value')
+  }
+  const auto = fn.length < 2
+  return readable(initialValue, (set, update) => {
+    let started = false
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const values: any[] = []
+    let pending = 0
+    let cleanup: T | (() => void) = NOOP
+
+    const sync = () => {
+      if (pending) {
+        return
+      }
+      // @ts-expect-error -- FIXME:
+      cleanup()
+      const result = fn(
+        single ? (values[0] as StoresValues<S>) : (values as StoresValues<S>),
+        set,
+        update
+      ) as T
+      if (auto) {
+        set(result)
+      } else {
+        cleanup = isFunction(result) ? result : NOOP
+      }
+    }
+
+    // @ts-expect-error -- FIXME:
+    const unsubscribers = storesArray.map((store: Readable<T>, i: number) =>
+      subscribe(
+        store,
+        value => {
+          values[i] = value
+          pending &= ~(1 << i)
+          if (started) {
+            sync()
+          }
+        },
+        () => {
+          pending |= 1 << i
+        }
+      )
+    ) as Unsubscriber[]
+
+    started = true
+    sync()
+
+    return function stop() {
+      runAll(unsubscribers)
+      // @ts-expect-error -- FIXME:
+      cleanup()
+      // We need to set this to false because callbacks can still happen despite having unsubscribed:
+      // Callbacks might already be placed in the queue which doesn't know it should no longer
+      // invoke this derived store.
+      started = false
+    }
+  })
 }
 
 /**
@@ -173,8 +248,10 @@ export function derived<S extends Stores, T>(
  * https://svelte.dev/docs/svelte-store#readonly
  * @param store  - store to make readonly
  * */
-export function readonly<T>(_store: Readable<T>): Readable<T> {
-  throw new Error('TODO: implement readonly')
+export function readonly<T>(store: Readable<T>): Readable<T> {
+  return {
+    subscribe: store.subscribe.bind(store)
+  }
 }
 
 /**
@@ -182,23 +259,96 @@ export function readonly<T>(_store: Readable<T>): Readable<T> {
  *
  * https://svelte.dev/docs/svelte-store#get
  * */
-export function get<T>(store: Readable<T>): Ref<T> {
-  const value: Ref<T | undefined> = ref(undefined)
-  subscribe(store, _ => {
-    value.value = _
-  })()
-  return value as Ref<T>
+export function get<T>(store: Readable<T>): T {
+  let value = ref() as T
+  subscribe(store, _ => (value = _))()
+  return value
 }
 
 function subscribe<T>(store: Readable<T> | undefined, ...callbacks: Subscriber<T>[]): Unsubscriber {
   if (store == undefined) {
-     
     for (const callback of callbacks) {
       callback(undefined as T)
     }
     return NOOP
   }
   // @ts-expect-error -- IGNORE
-  return store.subscribe(...callbacks)
-  //return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+  const unsub = store.subscribe(...callbacks)
+
+  // @ts-expect-error -- IGNORE
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+  return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub
+}
+
+/**
+ * vapor composable for svelte writable store
+ *
+ * @description
+ * This composable is a wrapper for svelte writable store.
+ * This composable will be injected by unplugin-svelte on transform phase, after analisys for prefixed with `$`
+ * see about: https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
+ *
+ * usecase
+ * ```ts
+ * import { writable } from 'svelte/store'
+ * const count = writable(0)
+ * console.log($count)
+ * count.set(1)
+ * $count = 2
+ * ```
+ *
+ * The above code will be transformed to:
+ * ```ts
+ * import { writable, useWritableStore } from 'svelte-vapor-runtime/store' // replace import source path, and export `useWritableStore`
+ * const count = writable(0)
+ * const $count = useWritableStore(count) // injected by unplugin-svelte
+ * console.log($count.value) // modified by unplugin-svelte
+ * count.set(1)
+ * $count.value = 2 // modified by unplugin-svelte
+ * ```
+ */
+export function useWritableStore<T>(store: Writable<T>): Ref<T> {
+  const refValue: Ref<T> = ref() as Ref<T>
+  onScopeDispose(
+    store.subscribe(v => {
+      refValue.value = v
+    })
+  )
+  return computed({
+    get: () => refValue.value,
+    set: v => store.set(v)
+  })
+}
+
+/**
+ * vapor composable for svelte readable store
+ *
+ * @description
+ * This composable is a wrapper for svelte readable store.
+ * This composable will be injected by unplugin-svelte on transform phase, after analisys for prefixed with `$`
+ * see about: https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
+ *
+ * usecase
+ * ```ts
+ * import { readable } from 'svelte/store'
+ * const count = readable(0)
+ * console.log($count)
+ * ```
+ *
+ * The above code will be transformed to:
+ * ```ts
+ * import { readable, useReadableStore } from 'svelte-vapor-runtime/store' // replace import source path, and export `useReadableStore`
+ * const count = readable(0)
+ * const $count = useReadableStore(count) // injected by unplugin-svelte
+ * console.log($count.value) // modified by unplugin-svelte
+ * ```
+ */
+export function useReadableStore<T>(store: Readable<T>): Readonly<Ref<DeepReadonly<T>>> {
+  const refValue: Ref<T> = ref() as Ref<T>
+  onScopeDispose(
+    store.subscribe(v => {
+      refValue.value = v
+    })
+  )
+  return vaporReadonly(refValue)
 }

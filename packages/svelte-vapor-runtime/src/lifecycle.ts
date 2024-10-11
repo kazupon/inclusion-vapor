@@ -3,7 +3,7 @@
 // Forked from `sveltejs/svelte`
 // Author: Rich Harris (https://github.com/Rich-Harris) and Svelte community
 // Repository url: https://github.com/sveltejs/svelte
-// Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/types/index.d.ts
+// Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/src/runtime/internal/lifecycle.js
 
 import {
   getCurrentInstance,
@@ -16,6 +16,7 @@ import {
   onUpdated,
   provide
 } from '@vue-vapor/vapor'
+import { isFunction } from './utils.ts'
 
 import type { ComponentInternalInstance, InjectionKey } from '@vue-vapor/vapor'
 import type { DispatchOptions, EventDispatcher } from './types.ts'
@@ -140,9 +141,6 @@ export function createEventDispatcher<
 
   return dispatcher as EventDispatcher<EventMap>
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-const isFunction = (val: unknown): val is Function => typeof val === 'function'
 
 const cacheStringFunction = <T extends (str: string) => string>(fn: T): T => {
   const cache: Record<string, string> = Object.create(null) as Record<string, string>
