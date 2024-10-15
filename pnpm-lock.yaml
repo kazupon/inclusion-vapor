@@ -186,6 +186,9 @@ importers:
       react-vapor-hooks:
         specifier: workspace:*
         version: link:../react-vapor-hooks
+      svelte-vapor-runtime:
+        specifier: workspace:*
+        version: link:../svelte-vapor-runtime
       vue:
         specifier: npm:@vue-vapor/vue@latest
         version: '@vue-vapor/vue@3.20240714.0-6608bb3(@vue-vapor/vue@3.20240714.0-6608bb3)(typescript@5.6.3)'
@@ -494,6 +497,9 @@ importers:
       svelte:
         specifier: 'catalog:'
         version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+      svelte-vapor-runtime:
+        specifier: workspace:*
+        version: link:../svelte-vapor-runtime
       svelte-vapor-sfc-compiler:
         specifier: workspace:*
         version: link:../svelte-sfc-compiler
