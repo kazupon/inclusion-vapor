@@ -37,3 +37,9 @@ const increment = () => {
   "version": 3,
 }
 `;
+
+exports[`transformSvelteScript > replace svelte import > svelte 1`] = `
+"import { onMount } from 'svelte-vapor-runtime'
+onMount(() => { console.log('mounted') })
+"
+`;

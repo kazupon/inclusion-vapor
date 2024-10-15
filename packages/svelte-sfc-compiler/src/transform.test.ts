@@ -53,4 +53,27 @@ describe('transformSvelteScript', () => {
       expect(map).toMatchSnapshot()
     })
   })
+
+  describe('replace svelte import', () => {
+    test('svelte', () => {
+      const code = transformSvelteScript(`import { onMount } from 'svelte'
+onMount(() => { console.log('mounted') })
+`)
+      expect(code).toMatchSnapshot()
+      expect(code).contains(`import { onMount } from 'svelte-vapor-runtime'`)
+    })
+
+    test.todo('svelte/store', () => {
+      const code = transformSvelteScript(`import { readable } from 'svelte/store'
+const count = readable(0)
+console.log($count)
+`)
+      expect(code).toMatchSnapshot()
+      expect(code).contains(
+        `import { readable, useRedableStore } from 'svelte-vapor-runtime/store'`
+      )
+      expect(code).contains(`const $count = useRedableStore(count)`)
+      expect(code).contains(`console.log($count.value)`)
+    })
+  })
 })

@@ -61,12 +61,14 @@ export function transformSvelteScript(
     ? options.ast.content
     : parseBabel(code, { sourceType: 'module', plugins: ['estree'] })
   const jsAst = babelFileNode.program as unknown as TSESLintNode
+  let strAst = new MagicStringAST(code)
   enableParentableNodes(jsAst)
 
   const scopeManager = analyze(jsAst, { sourceType: 'module' })
   const scope = getScope(scopeManager, jsAst)
   const refVariables = getCanBeVaporRefVariables(scope)
-  const jsStr = rewriteToVaporRef(refVariables, code, babelFileNode)
+  strAst = rewriteImportDeclaration(strAst, jsAst)
+  strAst = rewriteToVaporRef(refVariables, strAst, babelFileNode)
 
   // NOTE: avoid Maximum call stack size exceeded error with `code-red` print
   disableParentableNodes(jsAst)
@@ -77,22 +79,39 @@ export function transformSvelteScript(
     if (!id) {
       throw new Error('`id` is required when `sourcemap` is enabled')
     }
-    const gen = generateTransform(jsStr, id)
+    const gen = generateTransform(strAst, id)
     if (gen == undefined) {
       throw new Error('Failed to generate source map')
     }
     return gen
   } else {
-    return jsStr.toString()
+    return strAst.toString()
   }
+}
+
+function rewriteImportDeclaration(s: MagicStringAST, program: TSESLintNode): MagicStringAST {
+  for (const node of program.body) {
+    switch (node.type) {
+      case AST_NODE_TYPES.ImportDeclaration: {
+        if (node.source.value === 'svelte') {
+          const source = node.source as unknown as BabelNode
+          s.overwrite(source.start!, source.end!, `'svelte-vapor-runtime'`)
+        } else if (node.source.value === 'svelte/store') {
+          // TOOD:
+        }
+        break
+      }
+    }
+  }
+
+  return s
 }
 
 function rewriteToVaporRef(
   variables: Variable[],
-  source: string,
+  s: MagicStringAST,
   fileNode: BabelFile
 ): MagicStringAST {
-  const s = new MagicStringAST(source)
   const offset = fileNode.start!
   for (const variable of variables) {
     const def = variable.defs[0]
