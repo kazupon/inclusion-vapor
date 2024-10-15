@@ -35,6 +35,24 @@ h1 {
   line-height: 1.1;
 }
 
+div.box {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.25s;
+}
+div#react {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.25s;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -46,17 +64,14 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #61dafb;
-}
-button.vue:hover {
-  border-color: #35eb9a;
-}
-button.react:hover {
-  border-color: #61dafb;
-}
-button.svelte:hover {
+div#svelte:hover {
   border-color: #ff3e00;
+}
+div#react:hover {
+  border-color: #61dafb;
+}
+div#vue:hover {
+  border-color: #35eb9a;
 }
 button:focus,
 button:focus-visible {

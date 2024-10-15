@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "react-vapor-hooks": "workspace:*",
+    "svelte-vapor-runtime": "workspace:*",
     "vue": "npm:@vue-vapor/vue@latest"
   },
   "devDependencies": {
