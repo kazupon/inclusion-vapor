@@ -21,7 +21,7 @@ const increment = () => {
 exports[`transformSvelteScript > MVP: counter case > with ast 2`] = `
 SourceMap {
   "file": undefined,
-  "mappings": ";AAAA;AACA,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,MAAC;AACb,KAAK,CAAC,SAAS,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACzB,CAAC,CAAC,WAAK,CAAC,CAAC,CAAC,CAAC,CAAC;AACZ,CAAC;",
+  "mappings": ";;AACA,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC;AACZ,KAAK,CAAC,SAAS,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACxB,CAAC,CAAC,WAAK,CAAC,CAAC,CAAC,CAAC;AACX;",
   "names": [],
   "sources": [
     "test.svelte",
