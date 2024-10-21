@@ -4,13 +4,19 @@
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
 import { parse as parseBabel } from '@babel/parser'
-import type { Scope, Variable } from '@typescript-eslint/scope-manager'
 import { analyze, DefinitionType, ScopeType } from '@typescript-eslint/scope-manager'
-import type { parse as _parseTsEslint } from '@typescript-eslint/typescript-estree'
 import { AST_NODE_TYPES, simpleTraverse } from '@typescript-eslint/typescript-estree'
+import { walkImportDeclaration } from 'ast-kit'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
-import type { File as BabelFile, Node as BabelNode } from '@babel/types'
+import type {
+  File as BabelFile,
+  ImportDeclaration as BabelImportDeclaration,
+  Node as BabelNode
+} from '@babel/types'
+import type { Reference, Scope, Variable } from '@typescript-eslint/scope-manager'
+import type { parse as _parseTsEslint, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { ImportBinding } from 'ast-kit'
 import type { SvelteScript } from 'svelte-vapor-template-compiler'
 
 type TSESLintNode = ReturnType<typeof _parseTsEslint>
@@ -66,8 +72,8 @@ export function transformSvelteScript(
 
   const scopeManager = analyze(jsAst, { sourceType: 'module' })
   const scope = getScope(scopeManager, jsAst)
-  const refVariables = getCanBeVaporRefVariables(scope)
-  strAst = rewriteImportDeclaration(strAst, jsAst)
+  const refVariables = getVaporRefVariables(scope)
+  strAst = rewriteStore(scope, strAst, jsAst)
   strAst = rewriteToVaporRef(refVariables, strAst, babelFileNode)
 
   // NOTE: avoid Maximum call stack size exceeded error with `code-red` print
@@ -89,7 +95,7 @@ export function transformSvelteScript(
   }
 }
 
-function rewriteImportDeclaration(s: MagicStringAST, program: TSESLintNode): MagicStringAST {
+function rewriteStore(scope: Scope, s: MagicStringAST, program: TSESLintNode): MagicStringAST {
   for (const node of program.body) {
     switch (node.type) {
       case AST_NODE_TYPES.ImportDeclaration: {
@@ -97,7 +103,25 @@ function rewriteImportDeclaration(s: MagicStringAST, program: TSESLintNode): Mag
           const source = node.source as unknown as BabelNode
           s.overwrite(source.start!, source.end!, `'svelte-vapor-runtime'`)
         } else if (node.source.value === 'svelte/store') {
-          // TOOD:
+          const declarationNode = node as unknown as BabelImportDeclaration
+          const imports: Record<string, ImportBinding> = {}
+          walkImportDeclaration(imports, declarationNode)
+          const specifiers = Object.keys(imports)
+          if (specifiers.includes('writable')) {
+            specifiers.push('useWritableStore')
+          }
+          if (specifiers.includes('readable')) {
+            specifiers.push('useReadableStore')
+          }
+          const variables = getVaporStoreVariables(scope, imports)
+          const references = getVaporStoreConvertableVariables(scope, variables)
+          insertStoreComposable(s, variables)
+          replaceStoreIdentifier(s, references)
+          s.overwrite(
+            declarationNode.start!,
+            declarationNode.end!,
+            `import { ${specifiers.join(', ')} } from 'svelte-vapor-runtime/store'`
+          )
         }
         break
       }
@@ -153,7 +177,66 @@ function normalizeBabelNodeOffset(node: BabelNode, offset: number): BabelNode {
   }
 }
 
-function getCanBeVaporRefVariables(scope: Scope): Variable[] {
+function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBinding>): Variable[] {
+  const variables = [] as Variable[]
+  for (const [name] of Object.entries(imports)) {
+    for (const variable of scope.variables) {
+      if (
+        variable.name !== name &&
+        variable.references[0] &&
+        variable.references[0].writeExpr &&
+        variable.references[0].writeExpr.type === AST_NODE_TYPES.CallExpression &&
+        variable.references[0].writeExpr.callee.type === AST_NODE_TYPES.Identifier &&
+        variable.references[0].writeExpr.callee.name === name
+      ) {
+        variables.push(variable)
+      }
+    }
+  }
+  return variables
+}
+
+function getVaporStoreConvertableVariables(scope: Scope, variables: Variable[]): Reference[] {
+  let ret = [] as Reference[]
+  for (const variable of variables) {
+    const targets = scope.references.filter(
+      ref =>
+        ref.identifier.type === AST_NODE_TYPES.Identifier &&
+        ref.identifier.name === `$${variable.name}`
+    )
+    if (targets.length > 0) {
+      ret = [...ret, ...targets]
+    }
+  }
+  return ret
+}
+
+function insertStoreComposable(s: MagicStringAST, variables: Variable[]): void {
+  function makeComposable(variable: Variable, node: TSESTree.Identifier): string {
+    return `\nconst $${variable.name} = ${node.name === 'writable' ? 'useWritableStore' : 'useReadableStore'}(${variable.name})`
+  }
+  for (const variable of variables) {
+    for (const ref of variable.references) {
+      if (
+        ref.writeExpr &&
+        ref.writeExpr.type === AST_NODE_TYPES.CallExpression &&
+        ref.writeExpr.callee.type === AST_NODE_TYPES.Identifier
+      ) {
+        const source = ref.writeExpr as unknown as BabelNode
+        s.appendRight(source.end!, makeComposable(variable, ref.writeExpr.callee))
+      }
+    }
+  }
+}
+
+function replaceStoreIdentifier(s: MagicStringAST, references: Reference[]): void {
+  for (const ref of references) {
+    const source = ref.identifier as unknown as BabelNode
+    s.overwrite(source.start!, source.end!, `${ref.identifier.name}.value`)
+  }
+}
+
+function getVaporRefVariables(scope: Scope): Variable[] {
   return scope.variables.filter(variable => {
     if (variable.defs[0]) {
       const def = variable.defs[0]

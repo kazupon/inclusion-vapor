@@ -43,3 +43,15 @@ exports[`transformSvelteScript > replace svelte import > svelte 1`] = `
 onMount(() => { console.log('mounted') })
 "
 `;
+
+exports[`transformSvelteScript > replace svelte import > svelte/store 1`] = `
+"import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'
+const count = readable(0)
+const $count = useReadableStore(count)
+const flag = writable(false)
+const $flag = useWritableStore(flag)
+flag.set(true)
+console.log($count.value, $flag.value)
+$flag.value = false
+"
+`;

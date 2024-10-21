@@ -63,17 +63,22 @@ onMount(() => { console.log('mounted') })
       expect(code).contains(`import { onMount } from 'svelte-vapor-runtime'`)
     })
 
-    test.todo('svelte/store', () => {
-      const code = transformSvelteScript(`import { readable } from 'svelte/store'
+    test('svelte/store', () => {
+      const code = transformSvelteScript(`import { readable, writable } from 'svelte/store'
 const count = readable(0)
-console.log($count)
+const flag = writable(false)
+flag.set(true)
+console.log($count, $flag)
+$flag = false
 `)
       expect(code).toMatchSnapshot()
       expect(code).contains(
-        `import { readable, useRedableStore } from 'svelte-vapor-runtime/store'`
+        `import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'`
       )
-      expect(code).contains(`const $count = useRedableStore(count)`)
-      expect(code).contains(`console.log($count.value)`)
+      expect(code).contains(`const $count = useReadableStore(count)`)
+      expect(code).contains(`const $flag = useWritableStore(flag)`)
+      expect(code).contains(`console.log($count.value, $flag.value)`)
+      expect(code).contains(`$flag.value = false`)
     })
   })
 })
