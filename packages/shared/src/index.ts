@@ -2,3 +2,4 @@
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
 export * from './compiler.ts'
+export * from './scope.ts'

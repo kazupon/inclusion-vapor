@@ -45,6 +45,11 @@
       "types": "./dist/compiler.d.ts",
       "import": "./dist/compiler.js",
       "require": "./dist/compiler.cjs"
+    },
+    "./scope": {
+      "types": "./dist/scope.d.ts",
+      "import": "./dist/scope.js",
+      "require": "./dist/scope.cjs"
     }
   },
   "types": "./dist/index.d.ts",
@@ -55,7 +60,8 @@
     "@babel/types": "catalog:",
     "@vue-vapor/compiler-dom": "latest",
     "@vue-vapor/compiler-vapor": "latest",
-    "@vue-vapor/shared": "latest"
+    "@vue-vapor/shared": "latest",
+    "ast-kit": "^1.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.7",
