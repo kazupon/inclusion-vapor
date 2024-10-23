@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+
 import type { Node } from '@babel/types'
 
 export function isReference(node: Node, parent?: Node): boolean {

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+
 import { walkAST } from 'ast-kit'
 import { isReference } from './reference.ts'
 
@@ -165,7 +168,6 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         case 'ExportNamedDeclaration': {
           if (node.source) {
             push(node, true)
-            // map.set(node, (currentScope = new Scope(currentScope, true)))
             for (const specifier of node.specifiers) {
               if (specifier.type === 'ExportSpecifier') {
                 currentScope.declarations.set(specifier.local.name, specifier)
