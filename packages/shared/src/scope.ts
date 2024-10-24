@@ -1,67 +1,126 @@
 // SPDX-License-Identifier: MIT
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
-import { walkAST } from 'ast-kit'
-import { isReference } from './reference.ts'
+import { walkAST as walk } from 'ast-kit'
 
 import type { Identifier, Node } from '@babel/types'
 
+export interface Variable {
+  name: string
+  node: Node
+  references: Set<Identifier>
+}
+
 export interface Scope {
   parent: Scope | null
-  block: boolean
-  declarations: Map<string, Node>
-  initDeclarations: Set<string>
-  references: Set<string>
-  addDeclaration(node: Node): void
-  has(name: string): boolean
+  block: Node
+  variables: Map<string, Variable>
+  initVariables: Set<string>
+  references: Identifier[]
+  addVariable(node: Node, name?: string): void
+  hasVariable(name: string, ancestor?: boolean): boolean
+  getVariable(name: string): Variable | undefined
   findOwner(name: string): Scope | null
 }
 
-function createScope(parent: Scope | null, block: boolean): Readonly<Scope> {
-  const declarations = new Map<string, Node>()
-  const initDeclarations = new Set<string>()
-  const references = new Set<string>()
+function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
+  const variables = new Map<string, Variable>()
+  const initVariables = new Set<string>()
+  const references = [] as Identifier[]
 
   const scope = {
     parent,
     block,
-    declarations,
     references,
-    initDeclarations
+    variables,
+    initVariables
   } as Scope
 
-  function addDeclaration(node: Node): void {
-    if (node.type === 'VariableDeclaration') {
-      if (node.kind === 'var' && scope.block && scope.parent) {
-        scope.parent.addDeclaration(node)
-      } else {
-        for (const declarator of node.declarations) {
-          for (const name of extractNames(declarator.id)) {
-            declarations.set(name, node)
-            if (declarator.init) {
-              initDeclarations.add(name)
+  function createVariable(name: string, node: Identifier): Variable {
+    const references = new Set<Identifier>()
+    return { name, node, references }
+  }
+
+  function addVariable(node: Node, name?: string): void {
+    if (name) {
+      scope.variables.set(name, createVariable(name, node as Identifier))
+      return
+    }
+
+    switch (node.type) {
+      case 'VariableDeclaration': {
+        if (node.kind === 'var' && scope.block && scope.parent) {
+          scope.parent.addVariable(node)
+        } else {
+          for (const declarator of node.declarations) {
+            for (const extract of extractNames(declarator.id)) {
+              scope.variables.set(
+                extract.name,
+                createVariable(extract.name, extract.node as Identifier)
+              )
+              if (declarator.init) {
+                scope.initVariables.add(extract.name)
+              }
             }
           }
         }
+        break
       }
-    } else if (hasNameInId(node)) {
-      declarations.set(node.id.name, node)
+      case 'ImportDefaultSpecifier':
+      case 'ImportSpecifier': {
+        scope.variables.set(node.local.name, createVariable(node.local.name, node.local))
+        break
+      }
+      case 'ExportDefaultDeclaration': {
+        // TODO:
+        break
+      }
+      case 'ExportNamedDeclaration': {
+        for (const specifier of node.specifiers) {
+          if (specifier.type === 'ExportSpecifier') {
+            scope.variables.set(
+              specifier.local.name,
+              createVariable(specifier.local.name, specifier.local)
+            )
+          }
+        }
+        break
+      }
+      case 'FunctionDeclaration':
+      case 'FunctionExpression': {
+        if (node.id) {
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id))
+        }
+        break
+      }
+      default: {
+        if (hasNameInId(node)) {
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id))
+        }
+        break
+      }
     }
   }
 
-  function has(name: string): boolean {
-    return declarations.has(name) || (!!scope.parent && scope.parent.has(name))
+  function hasVariable(name: string, ancestor?: boolean): boolean {
+    const track = typeof ancestor === 'boolean' ? ancestor : true
+    return scope.variables.has(name) || (track && !!scope.parent && scope.parent.hasVariable(name))
+  }
+
+  function getVariable(name: string): Variable | undefined {
+    return scope.variables.get(name)
   }
 
   function findOwner(name: string): Scope | null {
-    if (declarations.has(name)) {
+    if (scope.variables.has(name)) {
       return scope
     }
     return scope.parent && scope.parent.findOwner(name)
   }
 
-  scope.addDeclaration = addDeclaration
-  scope.has = has
+  scope.addVariable = addVariable
+  scope.hasVariable = hasVariable
+  scope.getVariable = getVariable
   scope.findOwner = findOwner
 
   return scope
@@ -73,8 +132,61 @@ function hasNameInId(node: any): node is { id: { name: string } } {
   return 'id' in node && node.id && 'name' in node.id
 }
 
-function extractNames(param: Node): string[] {
-  return extractIdentifiers(param).map(node => node.name)
+function extractNames(param: Node): { node: Node; name: string }[] {
+  return extractIdentifiers(param).map(node => ({ node, name: node.name }))
+}
+
+function isReference(node: Node, parent?: Node): boolean {
+  if (node.type === 'MemberExpression') {
+    return !node.computed && isReference(node.object, node)
+  }
+
+  if (node.type === 'Identifier') {
+    if (!parent) {
+      return true
+    }
+
+    switch (parent.type) {
+      // disregard `bar` in `foo.bar`
+      case 'MemberExpression': {
+        return parent.computed || node === parent.object
+      }
+
+      // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
+      case 'ClassMethod': {
+        return parent.computed
+      }
+
+      // disregard the `foo` in `class {foo=bar}` but keep it in `class {[foo]=bar}` and `class {bar=foo}`
+      case 'ClassProperty': {
+        return parent.computed || node === parent.value
+      }
+
+      // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
+      case 'ObjectProperty': {
+        return parent.computed || node === parent.value
+      }
+
+      // disregard the `bar` in `export { foo as bar }` or
+      // the foo in `import { foo as bar }`
+      case 'ExportSpecifier':
+      case 'ImportSpecifier': {
+        return node === parent.local
+      }
+
+      // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
+      case 'LabeledStatement':
+      case 'BreakStatement':
+      case 'ContinueStatement': {
+        return false
+      }
+      default: {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 function extractIdentifiers(
@@ -135,23 +247,20 @@ type ReturnAnalyzedScope = {
 export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
   const map = new WeakMap<Node, Scope>()
   const globals = new Map<string, Node>()
-  const scope = createScope(null, false) // eslint-disable-line unicorn/no-null
+  const scope = createScope(null, ast) // eslint-disable-line unicorn/no-null
 
   const references: [Scope, Identifier][] = []
   let currentScope = scope
 
-  function push(node: Node, block: boolean): void {
-    map.set(node, (currentScope = createScope(currentScope, block)))
+  function push(node: Node): void {
+    map.set(node, (currentScope = createScope(currentScope, node)))
   }
 
-  function addReference(scope: Scope, name: string): void {
-    scope.references.add(name)
-    if (scope.parent) {
-      addReference(scope.parent, name)
-    }
+  function addReference(scope: Scope, node: Identifier): void {
+    scope.references.push(node)
   }
 
-  walkAST(ast, {
+  walk(ast, {
     enter(node, parent) {
       // console.log('enter', node.type, parent == undefined ? '(null)' : parent.type)
       switch (node.type) {
@@ -161,39 +270,33 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           }
           break
         }
+        case 'ImportDefaultSpecifier':
         case 'ImportSpecifier': {
-          currentScope.declarations.set(node.local.name, node)
+          currentScope.addVariable(node)
+          break
+        }
+        case 'ExportDefaultDeclaration': {
+          // TODO:
           break
         }
         case 'ExportNamedDeclaration': {
-          if (node.source) {
-            push(node, true)
-            for (const specifier of node.specifiers) {
-              if (specifier.type === 'ExportSpecifier') {
-                currentScope.declarations.set(specifier.local.name, specifier)
-              }
-            }
-            return
-          }
+          push(node)
+          currentScope.addVariable(node)
           break
         }
         case 'FunctionExpression':
         case 'FunctionDeclaration':
         case 'ArrowFunctionExpression': {
           if (node.type === 'FunctionDeclaration') {
-            if (node.id) {
-              currentScope.declarations.set(node.id.name, node)
-            }
-            push(node, false)
+            currentScope.addVariable(node)
+            push(node)
           } else {
-            push(node, false)
-            if (node.type === 'FunctionExpression' && node.id) {
-              currentScope.declarations.set(node.id.name, node)
-            }
+            push(node)
+            currentScope.addVariable(node)
           }
           for (const param of node.params) {
-            for (const name of extractNames(param)) {
-              currentScope.declarations.set(name, node)
+            for (const { node, name } of extractNames(param)) {
+              currentScope.addVariable(node, name)
             }
           }
           break
@@ -203,20 +306,20 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         case 'ForOfStatement':
         case 'BlockStatement':
         case 'SwitchStatement': {
-          push(node, true)
+          push(node)
           break
         }
         case 'ClassDeclaration':
         case 'VariableDeclaration': {
-          currentScope.addDeclaration(node)
+          currentScope.addVariable(node)
           break
         }
         case 'CatchClause': {
-          push(node, true)
+          push(node)
           if (node.param) {
-            for (const name of extractNames(node.param)) {
-              if (node.param) {
-                currentScope.declarations.set(name, node.param)
+            for (const extract of extractNames(node.param as Node)) {
+              if (extract.node) {
+                currentScope.addVariable(extract.node, extract.name)
               }
             }
           }
@@ -226,7 +329,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
     },
 
     leave(node, _parent) {
-      // console.log('leave', node.type, parent == undefined ? '(null)' : parent.type)
+      // console.log('leave', node.type, _parent == undefined ? '(null)' : _parent.type)
       if (map.has(node) && currentScope.parent) {
         currentScope = currentScope.parent
       }
@@ -235,10 +338,15 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
 
   for (let i = references.length - 1; i >= 0; --i) {
     const [scope, reference] = references[i]
-    if (!scope.references.has(reference.name)) {
-      addReference(scope, reference.name)
-    }
-    if (!scope.findOwner(reference.name)) {
+    addReference(scope, reference)
+
+    const owner = scope.findOwner(reference.name)
+    if (owner) {
+      const variable = owner.getVariable(reference.name)
+      if (variable && variable.name === reference.name) {
+        variable.references.add(reference)
+      }
+    } else {
       globals.set(reference.name, reference)
     }
   }
