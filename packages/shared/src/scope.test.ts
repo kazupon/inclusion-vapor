@@ -32,28 +32,75 @@ describe('anaylze', () => {
     expect(a?.references.size).toBe(1)
   })
 
-  test.todo('ImportDefaultSpecifier, ImportSpecifier', () => {})
-
-  test.todo('ExportDefaultDeclaration', () => {})
-
-  test.todo('ExportNamedDeclaration', () => {})
-
-  test.todo('ExportSpecifier', () => {})
-
-  test.todo('FunctionDeclaration', () => {})
-
-  test.todo('FunctionExpression', () => {})
-
-  test.todo('ArrowFunctionExpression', () => {})
-
-  test('extracts all references', () => {
+  test('ImportDefaultSpecifier, ImportSpecifier', () => {
     const program = babelParse(`
-    function foo() {
-      const bar = 1
-      baz()
-    }
+      import { a, b as c } from 'foo'
+      import { default as d } from 'bar'
+      import e from 'baz'
+      console.log(a, c, d, e)
     `)
-    const { map, scope: _rootScope } = analyze(program)
+    const { scope } = analyze(program)
+    expect(scope.variables.size).toBe(4)
+    expect(scope.variables.has('a')).toBe(true)
+    expect(scope.variables.has('c')).toBe(true)
+    expect(scope.variables.has('d')).toBe(true)
+    expect(scope.variables.has('e')).toBe(true)
+    expect(scope.variables.get('a')?.references.size).toBe(2)
+    expect(scope.variables.get('c')?.references.size).toBe(2)
+    expect(scope.variables.get('d')?.references.size).toBe(2)
+    expect(scope.variables.get('e')?.references.size).toBe(2)
+    expect(scope.references.length).toBe(9)
+  })
+
+  test('ExportDefaultDeclaration', () => {
+    const program = babelParse(`
+      const foo = 1
+      export default foo
+    `)
+    const { scope } = analyze(program)
+    expect(scope.variables.size).toBe(1)
+    expect(scope.variables.has('foo')).toBe(true)
+    expect(scope.variables.get('foo')?.references.size).toBe(2)
+    expect(scope.references.length).toBe(2)
+  })
+
+  test('ExportNamedDeclaration', () => {
+    const program = babelParse(`
+      const foo = 1
+      export const bar = 1
+      export { foo }
+    `)
+    const { map, scope: rootScope } = analyze(program)
+    const scopes = [] as Scope[]
+    walkAST(program, {
+      enter(node) {
+        if (map.has(node)) {
+          scopes.push(map.get(node) as Scope)
+        }
+      }
+    })
+
+    const last = scopes.at(-1) as Scope
+    expect(last.variables.size).toBe(0)
+    expect(last.references.length).toBe(1)
+
+    expect(rootScope.variables.size).toBe(2)
+    expect(rootScope.variables.has('foo')).toBe(true)
+    expect(rootScope.variables.has('bar')).toBe(true)
+    expect(rootScope.variables.get('foo')?.references.size).toBe(2)
+    expect(rootScope.variables.get('bar')?.references.size).toBe(1)
+    expect(rootScope.references.length).toBe(2)
+  })
+
+  test('FunctionDeclaration', () => {
+    const program = babelParse(`
+      const foo = 1
+      function bar(a, b, c) {
+        const d = foo
+        console.log(d, b, c)
+      }
+    `)
+    const { map, scope: rootScope } = analyze(program)
 
     const scopes = [] as Scope[]
     walkAST(program, {
@@ -63,8 +110,106 @@ describe('anaylze', () => {
         }
       }
     })
-    const scope = scopes.at(-1) as Scope
-    expect(scope.references.map(node => node.name).sort()).toEqual(['bar', 'baz'].sort())
+    expect(scopes.length).toBe(1)
+
+    const last = scopes.at(-1) as Scope
+    expect(last.variables.size).toBe(4)
+    expect(last.variables.has('a')).toBe(true)
+    expect(last.variables.has('b')).toBe(true)
+    expect(last.variables.has('c')).toBe(true)
+    expect(last.variables.has('d')).toBe(true)
+    expect(last.variables.get('a')?.references.size).toBe(1)
+    expect(last.variables.get('b')?.references.size).toBe(2)
+    expect(last.variables.get('c')?.references.size).toBe(2)
+    expect(last.variables.get('d')?.references.size).toBe(2)
+    expect(last.references.length).toBe(9)
+
+    expect(rootScope.variables.size).toBe(2)
+    expect(rootScope.variables.has('foo')).toBe(true)
+    expect(rootScope.variables.has('bar')).toBe(true)
+    expect(rootScope.variables.get('foo')?.references.size).toBe(2)
+    expect(rootScope.variables.get('bar')?.references.size).toBe(0)
+    expect(rootScope.references.length).toBe(1)
+  })
+
+  test('FunctionExpression', () => {
+    const program = babelParse(`
+      const foo = 1
+      const bar = function (a, b, c) {
+        const d = foo
+        console.log(d, b, c)
+      }
+    `)
+    const { map, scope: rootScope } = analyze(program)
+
+    const scopes = [] as Scope[]
+    walkAST(program, {
+      enter(node) {
+        if (map.has(node)) {
+          scopes.push(map.get(node) as Scope)
+        }
+      }
+    })
+    expect(scopes.length).toBe(1)
+
+    const last = scopes.at(-1) as Scope
+    expect(last.variables.size).toBe(4)
+    expect(last.variables.has('a')).toBe(true)
+    expect(last.variables.has('b')).toBe(true)
+    expect(last.variables.has('c')).toBe(true)
+    expect(last.variables.has('d')).toBe(true)
+    expect(last.variables.get('a')?.references.size).toBe(1)
+    expect(last.variables.get('b')?.references.size).toBe(2)
+    expect(last.variables.get('c')?.references.size).toBe(2)
+    expect(last.variables.get('d')?.references.size).toBe(2)
+    expect(last.references.length).toBe(9)
+
+    expect(rootScope.variables.size).toBe(2)
+    expect(rootScope.variables.has('foo')).toBe(true)
+    expect(rootScope.variables.has('bar')).toBe(true)
+    expect(rootScope.variables.get('foo')?.references.size).toBe(2)
+    expect(rootScope.variables.get('bar')?.references.size).toBe(1)
+    expect(rootScope.references.length).toBe(2)
+  })
+
+  test('ArrowFunctionExpression', () => {
+    const program = babelParse(`
+      const foo = 1
+      const bar = (a, b, c) => {
+        const d = foo
+        console.log(d, b, c)
+      }
+    `)
+    const { map, scope: rootScope } = analyze(program)
+
+    const scopes = [] as Scope[]
+    walkAST(program, {
+      enter(node) {
+        if (map.has(node)) {
+          scopes.push(map.get(node) as Scope)
+        }
+      }
+    })
+    expect(scopes.length).toBe(1)
+
+    const last = scopes.at(-1) as Scope
+    expect(last.variables.size).toBe(4)
+    expect(last.variables.has('a')).toBe(true)
+    expect(last.variables.has('b')).toBe(true)
+    expect(last.variables.has('c')).toBe(true)
+    expect(last.variables.has('d')).toBe(true)
+    expect(last.variables.get('a')?.references.size).toBe(1)
+    expect(last.variables.get('b')?.references.size).toBe(2)
+    expect(last.variables.get('c')?.references.size).toBe(2)
+    expect(last.variables.get('d')?.references.size).toBe(2)
+    expect(last.references.length).toBe(9)
+
+    expect(rootScope.variables.size).toBe(2)
+    expect(rootScope.variables.has('foo')).toBe(true)
+    expect(rootScope.variables.has('bar')).toBe(true)
+    expect(rootScope.variables.get('foo')?.references.size).toBe(2)
+    expect(rootScope.variables.get('bar')?.references.size).toBe(1)
+    expect(rootScope.references.length).toBe(2)
   })
 
   test('tracks all scopes', () => {
@@ -85,7 +230,6 @@ describe('anaylze', () => {
     }`)
 
     const { map, scope: _scope } = analyze(program)
-
     const scopes = []
     walkAST(program, {
       enter(node) {
@@ -95,10 +239,10 @@ describe('anaylze', () => {
       }
     })
 
-    expect(scopes.length).toBe(17)
+    expect(scopes.length).toBe(14)
   })
 
-  test('escope example', () => {
+  test('escope example case', () => {
     // NOTE: https://mazurov.github.io/escope-demo/
     const program = babelParse(`
 const calculateAmortization = (principal, years, rate) => {
@@ -120,7 +264,6 @@ const calculateAmortization = (principal, years, rate) => {
     return {monthlyPayment, monthlyRate, amortization};
 }`)
     const { map, scope: top, globals } = analyze(program)
-
     const scopes: Scope[] = []
     walkAST(program, {
       enter(node) {
@@ -166,14 +309,25 @@ const calculateAmortization = (principal, years, rate) => {
     expect(topForScope.variables.get('y')?.references.size).toBe(3)
     expect(topForScope.references.length).toBe(4)
 
-    // TODO: fix this
-    // const functionScope = topForScope.parent as Scope
-    // const p = functionScope.parent as Scope
-    // console.log(functionScope.variables)
-    // console.log(p.variables)
-    // expect(functionScope.variables.size).toBe(7)
-    // expect(functionScope.variables.has('y')).toBe(true)
-    // expect(functionScope.variables.get('y')?.references.size).toBe(3)
-    // expect(functionScope.references.length).toBe(4)
+    const functionScope = topForScope.parent as Scope
+    expect(functionScope.variables.size).toBe(7)
+    expect(functionScope.variables.has('principal')).toBe(true)
+    expect(functionScope.variables.get('principal')?.references.size).toBe(3)
+    expect(functionScope.variables.has('years')).toBe(true)
+    expect(functionScope.variables.get('years')?.references.size).toBe(3)
+    expect(functionScope.variables.has('rate')).toBe(true)
+    expect(functionScope.variables.get('rate')?.references.size).toBe(2)
+    expect(functionScope.variables.has('monthlyRate')).toBe(true)
+    expect(functionScope.variables.get('monthlyRate')?.references.size).toBe(3)
+    expect(functionScope.variables.has('monthlyPayment')).toBe(true)
+    expect(functionScope.variables.get('monthlyPayment')?.references.size).toBe(3)
+    expect(functionScope.variables.has('balance')).toBe(true)
+    expect(functionScope.variables.get('balance')?.references.size).toBe(5)
+    expect(functionScope.variables.has('amortization')).toBe(true)
+    expect(functionScope.variables.get('amortization')?.references.size).toBe(3)
+    expect(functionScope.references.length).toBe(15)
+
+    const root = functionScope.parent as Scope
+    expect(root).toBe(top)
   })
 })

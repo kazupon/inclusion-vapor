@@ -71,21 +71,6 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
         scope.variables.set(node.local.name, createVariable(node.local.name, node.local))
         break
       }
-      case 'ExportDefaultDeclaration': {
-        // TODO:
-        break
-      }
-      case 'ExportNamedDeclaration': {
-        for (const specifier of node.specifiers) {
-          if (specifier.type === 'ExportSpecifier') {
-            scope.variables.set(
-              specifier.local.name,
-              createVariable(specifier.local.name, specifier.local)
-            )
-          }
-        }
-        break
-      }
       case 'FunctionDeclaration':
       case 'FunctionExpression': {
         if (node.id) {
@@ -167,11 +152,19 @@ function isReference(node: Node, parent?: Node): boolean {
         return parent.computed || node === parent.value
       }
 
-      // disregard the `bar` in `export { foo as bar }` or
-      // the foo in `import { foo as bar }`
-      case 'ExportSpecifier':
+      // disregard the foo in `import { foo as bar }`
       case 'ImportSpecifier': {
         return node === parent.local
+      }
+
+      // disregard the `bar` in `export { foo as bar }`
+      case 'ExportSpecifier': {
+        return node === parent.local
+      }
+
+      // disregard the `function foo() { ... }`
+      case 'FunctionDeclaration': {
+        return node !== parent.id
       }
 
       // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
@@ -275,25 +268,18 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           currentScope.addVariable(node)
           break
         }
-        case 'ExportDefaultDeclaration': {
-          // TODO:
-          break
-        }
         case 'ExportNamedDeclaration': {
-          push(node)
+          if (node.specifiers.length > 0) {
+            push(node)
+          }
           currentScope.addVariable(node)
           break
         }
-        case 'FunctionExpression':
         case 'FunctionDeclaration':
+        case 'FunctionExpression':
         case 'ArrowFunctionExpression': {
-          if (node.type === 'FunctionDeclaration') {
-            currentScope.addVariable(node)
-            push(node)
-          } else {
-            push(node)
-            currentScope.addVariable(node)
-          }
+          currentScope.addVariable(node)
+          push(node)
           for (const param of node.params) {
             for (const { node, name } of extractNames(param)) {
               currentScope.addVariable(node, name)
@@ -304,7 +290,19 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         case 'ForStatement':
         case 'ForInStatement':
         case 'ForOfStatement':
-        case 'BlockStatement':
+        case 'BlockStatement': {
+          // skip under function
+          if (
+            parent &&
+            (parent.type === 'FunctionDeclaration' ||
+              parent.type === 'FunctionExpression' ||
+              parent.type === 'ArrowFunctionExpression')
+          ) {
+            return
+          }
+          push(node)
+          break
+        }
         case 'SwitchStatement': {
           push(node)
           break
