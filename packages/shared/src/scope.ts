@@ -16,7 +16,6 @@ export interface Scope {
   children: Scope[]
   block: Node
   variables: Map<string, Variable>
-  initVariables: Set<string>
   references: Identifier[]
   addVariable(node: Node, name?: string): void
   hasVariable(name: string, ancestor?: boolean): boolean
@@ -26,7 +25,6 @@ export interface Scope {
 
 function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
   const variables = new Map<string, Variable>()
-  const initVariables = new Set<string>()
   const references = [] as Identifier[]
   const children = [] as Scope[]
 
@@ -35,8 +33,7 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
     children,
     block,
     references,
-    variables,
-    initVariables
+    variables
   } as Scope
 
   function createVariable(name: string, node: Identifier): Variable {
@@ -61,9 +58,6 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
                 extract.name,
                 createVariable(extract.name, extract.node as Identifier)
               )
-              if (declarator.init) {
-                scope.initVariables.add(extract.name)
-              }
             }
           }
         }
