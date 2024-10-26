@@ -18,6 +18,7 @@ describe('anaylze', () => {
     expect(globals.size).toBe(1)
     expect(globals.has('b')).toBe(true)
     expect(scope.parent).toBeNull()
+    expect(scope.children.length).toBe(0)
     expect(scope.block).toBe(program)
     expect(scope.variables.size).toBe(1)
     expect(scope.variables.has('a')).toBe(true)
@@ -84,6 +85,7 @@ describe('anaylze', () => {
     expect(last.variables.size).toBe(0)
     expect(last.references.length).toBe(1)
 
+    expect(rootScope.children.length).toBe(1)
     expect(rootScope.variables.size).toBe(2)
     expect(rootScope.variables.has('foo')).toBe(true)
     expect(rootScope.variables.has('bar')).toBe(true)
@@ -124,6 +126,7 @@ describe('anaylze', () => {
     expect(last.variables.get('d')?.references.size).toBe(2)
     expect(last.references.length).toBe(9)
 
+    expect(rootScope.children.length).toBe(1)
     expect(rootScope.variables.size).toBe(2)
     expect(rootScope.variables.has('foo')).toBe(true)
     expect(rootScope.variables.has('bar')).toBe(true)
@@ -164,6 +167,7 @@ describe('anaylze', () => {
     expect(last.variables.get('d')?.references.size).toBe(2)
     expect(last.references.length).toBe(9)
 
+    expect(rootScope.children.length).toBe(1)
     expect(rootScope.variables.size).toBe(2)
     expect(rootScope.variables.has('foo')).toBe(true)
     expect(rootScope.variables.has('bar')).toBe(true)
@@ -204,6 +208,7 @@ describe('anaylze', () => {
     expect(last.variables.get('d')?.references.size).toBe(2)
     expect(last.references.length).toBe(9)
 
+    expect(rootScope.children.length).toBe(1)
     expect(rootScope.variables.size).toBe(2)
     expect(rootScope.variables.has('foo')).toBe(true)
     expect(rootScope.variables.has('bar')).toBe(true)
@@ -229,7 +234,7 @@ describe('anaylze', () => {
       }
     }`)
 
-    const { map, scope: _scope } = analyze(program)
+    const { map, scope } = analyze(program)
     const scopes = []
     walkAST(program, {
       enter(node) {
@@ -240,6 +245,8 @@ describe('anaylze', () => {
     })
 
     expect(scopes.length).toBe(14)
+    // TODO: should more tweak scopes
+    expect(scope.children.length).toBe(9)
   })
 
   test('escope example case', () => {
@@ -276,12 +283,14 @@ const calculateAmortization = (principal, years, rate) => {
     expect(globals.size).toBe(1)
     expect(globals.has('calculateMonthlyPayment')).toBe(true)
 
+    expect(top.children.length).toBe(1)
     expect(top.variables.size).toBe(1)
     expect(top.variables.has('calculateAmortization')).toBe(true)
     expect(top.variables.get('calculateAmortization')?.references.size).toBe(1)
     expect(top.references.length).toBe(1)
 
     const last = scopes.at(-1) as Scope
+    expect(last.children.length).toBe(0)
     expect(last.variables.size).toBe(2)
     expect(last.variables.has('interestM')).toBe(true)
     expect(last.variables.has('principalM')).toBe(true)
@@ -290,12 +299,14 @@ const calculateAmortization = (principal, years, rate) => {
     expect(last.references.length).toBe(15)
 
     const bottomForScope = last.parent as Scope
+    expect(bottomForScope.children.length).toBe(1)
     expect(bottomForScope.variables.size).toBe(1)
     expect(bottomForScope.variables.has('m')).toBe(true)
     expect(bottomForScope.variables.get('m')?.references.size).toBe(3)
     expect(bottomForScope.references.length).toBe(3)
 
     const blockScopeOnFor = bottomForScope.parent as Scope
+    expect(blockScopeOnFor.children.length).toBe(1)
     expect(blockScopeOnFor.variables.size).toBe(2)
     expect(blockScopeOnFor.variables.has('interestY')).toBe(true)
     expect(blockScopeOnFor.variables.has('principalY')).toBe(true)
@@ -304,12 +315,14 @@ const calculateAmortization = (principal, years, rate) => {
     expect(blockScopeOnFor.references.length).toBe(6)
 
     const topForScope = blockScopeOnFor.parent as Scope
+    expect(topForScope.children.length).toBe(1)
     expect(topForScope.variables.size).toBe(1)
     expect(topForScope.variables.has('y')).toBe(true)
     expect(topForScope.variables.get('y')?.references.size).toBe(3)
     expect(topForScope.references.length).toBe(4)
 
     const functionScope = topForScope.parent as Scope
+    expect(functionScope.children.length).toBe(1)
     expect(functionScope.variables.size).toBe(7)
     expect(functionScope.variables.has('principal')).toBe(true)
     expect(functionScope.variables.get('principal')?.references.size).toBe(3)
@@ -329,5 +342,6 @@ const calculateAmortization = (principal, years, rate) => {
 
     const root = functionScope.parent as Scope
     expect(root).toBe(top)
+    expect(root.children.length).toBe(top.children.length)
   })
 })

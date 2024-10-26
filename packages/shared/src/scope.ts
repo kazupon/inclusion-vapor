@@ -13,6 +13,7 @@ export interface Variable {
 
 export interface Scope {
   parent: Scope | null
+  children: Scope[]
   block: Node
   variables: Map<string, Variable>
   initVariables: Set<string>
@@ -27,9 +28,11 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
   const variables = new Map<string, Variable>()
   const initVariables = new Set<string>()
   const references = [] as Identifier[]
+  const children = [] as Scope[]
 
   const scope = {
     parent,
+    children,
     block,
     references,
     variables,
@@ -245,8 +248,10 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
   const references: [Scope, Identifier][] = []
   let currentScope = scope
 
-  function push(node: Node): void {
-    map.set(node, (currentScope = createScope(currentScope, node)))
+  function addScope(node: Node): void {
+    const scope = createScope(currentScope, node)
+    currentScope.children.push(scope)
+    map.set(node, (currentScope = scope))
   }
 
   function addReference(scope: Scope, node: Identifier): void {
@@ -270,7 +275,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         }
         case 'ExportNamedDeclaration': {
           if (node.specifiers.length > 0) {
-            push(node)
+            addScope(node)
           }
           currentScope.addVariable(node)
           break
@@ -279,7 +284,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         case 'FunctionExpression':
         case 'ArrowFunctionExpression': {
           currentScope.addVariable(node)
-          push(node)
+          addScope(node)
           for (const param of node.params) {
             for (const { node, name } of extractNames(param)) {
               currentScope.addVariable(node, name)
@@ -300,11 +305,11 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           ) {
             return
           }
-          push(node)
+          addScope(node)
           break
         }
         case 'SwitchStatement': {
-          push(node)
+          addScope(node)
           break
         }
         case 'ClassDeclaration':
@@ -313,7 +318,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           break
         }
         case 'CatchClause': {
-          push(node)
+          addScope(node)
           if (node.param) {
             for (const extract of extractNames(node.param as Node)) {
               if (extract.node) {
