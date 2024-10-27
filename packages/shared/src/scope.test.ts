@@ -1,6 +1,6 @@
 import { babelParse, walkAST } from 'ast-kit'
 import { describe, expect, test } from 'vitest'
-import { analyze } from './scope.ts'
+import { analyze, getReferences } from './scope.ts'
 
 import type { Scope } from './scope.ts'
 
@@ -26,9 +26,16 @@ describe('anaylze', () => {
     expect(scope.references.map(node => node.name).sort()).toEqual(['a', 'b'].sort())
 
     const a = scope.getVariable('a')
-    expect(pojo(a?.node)).toMatchObject({
+    expect(pojo(a?.identifier)).toMatchObject({
       type: 'Identifier',
       name: 'a'
+    })
+    expect(a?.definition).toMatchObject({
+      type: 'VariableDeclarator',
+      init: {
+        type: 'Identifier',
+        name: 'b'
+      }
     })
     expect(a?.references.size).toBe(1)
   })
@@ -46,7 +53,9 @@ describe('anaylze', () => {
     expect(scope.variables.has('c')).toBe(true)
     expect(scope.variables.has('d')).toBe(true)
     expect(scope.variables.has('e')).toBe(true)
-    expect(scope.variables.get('a')?.references.size).toBe(2)
+    const a = scope.getVariable('a')
+    expect(a?.definition.type).toBe('ImportDeclaration')
+    expect(a?.references.size).toBe(2)
     expect(scope.variables.get('c')?.references.size).toBe(2)
     expect(scope.variables.get('d')?.references.size).toBe(2)
     expect(scope.variables.get('e')?.references.size).toBe(2)
@@ -133,6 +142,9 @@ describe('anaylze', () => {
     expect(rootScope.variables.get('foo')?.references.size).toBe(2)
     expect(rootScope.variables.get('bar')?.references.size).toBe(0)
     expect(rootScope.references.length).toBe(1)
+
+    const bar = rootScope.getVariable('bar')
+    expect(bar?.definition.type).toBe('FunctionDeclaration')
   })
 
   test('FunctionExpression', () => {
@@ -174,6 +186,9 @@ describe('anaylze', () => {
     expect(rootScope.variables.get('foo')?.references.size).toBe(2)
     expect(rootScope.variables.get('bar')?.references.size).toBe(1)
     expect(rootScope.references.length).toBe(2)
+
+    const bar = rootScope.getVariable('bar')
+    expect(bar?.definition.type).toBe('VariableDeclarator')
   })
 
   test('ArrowFunctionExpression', () => {
@@ -215,6 +230,9 @@ describe('anaylze', () => {
     expect(rootScope.variables.get('foo')?.references.size).toBe(2)
     expect(rootScope.variables.get('bar')?.references.size).toBe(1)
     expect(rootScope.references.length).toBe(2)
+
+    const bar = rootScope.getVariable('bar')
+    expect(bar?.definition.type).toBe('VariableDeclarator')
   })
 
   test('tracks all scopes', () => {
@@ -304,6 +322,8 @@ const calculateAmortization = (principal, years, rate) => {
     expect(bottomForScope.variables.has('m')).toBe(true)
     expect(bottomForScope.variables.get('m')?.references.size).toBe(3)
     expect(bottomForScope.references.length).toBe(3)
+    const m = bottomForScope.getVariable('m')
+    expect(m?.definition.type).toBe('VariableDeclarator')
 
     const blockScopeOnFor = bottomForScope.parent as Scope
     expect(blockScopeOnFor.children.length).toBe(1)
@@ -320,6 +340,8 @@ const calculateAmortization = (principal, years, rate) => {
     expect(topForScope.variables.has('y')).toBe(true)
     expect(topForScope.variables.get('y')?.references.size).toBe(3)
     expect(topForScope.references.length).toBe(4)
+    const y = topForScope.getVariable('y')
+    expect(y?.definition.type).toBe('VariableDeclarator')
 
     const functionScope = topForScope.parent as Scope
     expect(functionScope.children.length).toBe(1)
@@ -343,5 +365,27 @@ const calculateAmortization = (principal, years, rate) => {
     const root = functionScope.parent as Scope
     expect(root).toBe(top)
     expect(root.children.length).toBe(top.children.length)
+  })
+})
+
+describe('getReferences', () => {
+  const program = babelParse(`
+    const a = 1
+    const foo = (b) => {
+      const c = a
+      console.log(c, b)
+    }
+  `)
+  const { scope } = analyze(program)
+
+  test('basic', () => {
+    const refs = getReferences(scope.getVariable('a')!)
+    expect(refs.length).toBe(1)
+    expect(refs[0]).not.toEqual(scope.getVariable('a')?.identifier)
+  })
+
+  test('not exclude', () => {
+    const refs = getReferences(scope.getVariable('a')!, false)
+    expect(refs.length).toBe(2)
   })
 })

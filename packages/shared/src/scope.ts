@@ -7,7 +7,8 @@ import type { Identifier, Node } from '@babel/types'
 
 export interface Variable {
   name: string
-  node: Node
+  identifier: Identifier
+  definition: Node
   references: Set<Identifier>
 }
 
@@ -17,7 +18,7 @@ export interface Scope {
   block: Node
   variables: Map<string, Variable>
   references: Identifier[]
-  addVariable(node: Node, name?: string): void
+  addVariable(node: Node, def?: Node, name?: string): void
   hasVariable(name: string, ancestor?: boolean): boolean
   getVariable(name: string): Variable | undefined
   findOwner(name: string): Scope | null
@@ -36,14 +37,14 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
     variables
   } as Scope
 
-  function createVariable(name: string, node: Identifier): Variable {
+  function createVariable(name: string, id: Identifier, def: Node): Variable {
     const references = new Set<Identifier>()
-    return { name, node, references }
+    return { name, identifier: id, definition: def, references }
   }
 
-  function addVariable(node: Node, name?: string): void {
-    if (name) {
-      scope.variables.set(name, createVariable(name, node as Identifier))
+  function addVariable(node: Node, def?: Node, name?: string): void {
+    if (name && def && node.type === 'Identifier') {
+      scope.variables.set(name, createVariable(name, node, def))
       return
     }
 
@@ -56,7 +57,7 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
             for (const extract of extractNames(declarator.id)) {
               scope.variables.set(
                 extract.name,
-                createVariable(extract.name, extract.node as Identifier)
+                createVariable(extract.name, extract.node as Identifier, declarator)
               )
             }
           }
@@ -65,19 +66,22 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
       }
       case 'ImportDefaultSpecifier':
       case 'ImportSpecifier': {
-        scope.variables.set(node.local.name, createVariable(node.local.name, node.local))
+        scope.variables.set(
+          node.local.name,
+          createVariable(node.local.name, node.local, def || node)
+        )
         break
       }
       case 'FunctionDeclaration':
       case 'FunctionExpression': {
         if (node.id) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id))
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, node))
         }
         break
       }
       default: {
         if (hasNameInId(node)) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id))
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, node))
         }
         break
       }
@@ -264,7 +268,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         }
         case 'ImportDefaultSpecifier':
         case 'ImportSpecifier': {
-          currentScope.addVariable(node)
+          currentScope.addVariable(node, parent!)
           break
         }
         case 'ExportNamedDeclaration': {
@@ -280,8 +284,8 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           currentScope.addVariable(node)
           addScope(node)
           for (const param of node.params) {
-            for (const { node, name } of extractNames(param)) {
-              currentScope.addVariable(node, name)
+            for (const extract of extractNames(param)) {
+              currentScope.addVariable(extract.node, node, extract.name)
             }
           }
           break
@@ -316,7 +320,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           if (node.param) {
             for (const extract of extractNames(node.param as Node)) {
               if (extract.node) {
-                currentScope.addVariable(extract.node, extract.name)
+                currentScope.addVariable(extract.node, node, extract.name)
               }
             }
           }
@@ -353,4 +357,9 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
     globals,
     scope
   }
+}
+
+export function getReferences(variable: Variable, exclude = true): Identifier[] {
+  const references = [...variable.references]
+  return exclude ? references.filter(ref => ref !== variable.identifier) : references
 }
