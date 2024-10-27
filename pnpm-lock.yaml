@@ -30,7 +30,7 @@ overrides:
 
 patchedDependencies:
   svelte@4.2.18:
-    hash: euqmv226b2y3s6jes7u46wedv4
+    hash: dd6jvfvrs65p2cucc3yv66o2qi
     path: patches/svelte@4.2.18.patch
 
 importers:
@@ -42,7 +42,7 @@ importers:
         version: 6.2.0
       '@kazupon/eslint-config':
         specifier: ^0.18.0
-        version: 0.18.0(lhe2npb3yvfs4pz62enrq3wcfm)
+        version: 0.18.0(l7encw7aiqtrgyikggyapbdgnm)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -78,7 +78,7 @@ importers:
         version: 2.6.0(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-svelte:
         specifier: ^2.43.0
-        version: 2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4))
+        version: 2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi))
       eslint-plugin-toml:
         specifier: ^0.11.1
         version: 0.11.1(eslint@9.12.0(jiti@2.3.3))
@@ -114,7 +114,7 @@ importers:
         version: 3.3.3
       prettier-plugin-svelte:
         specifier: ^3.2.6
-        version: 3.2.7(prettier@3.3.3)(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4))
+        version: 3.2.7(prettier@3.3.3)(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi))
       prettier-plugin-toml:
         specifier: ^2.0.1
         version: 2.0.1(prettier@3.3.3)
@@ -303,12 +303,6 @@ importers:
       '@babel/parser':
         specifier: 'catalog:'
         version: 7.25.8
-      '@typescript-eslint/scope-manager':
-        specifier: ^8.6.0
-        version: 8.9.0
-      '@typescript-eslint/typescript-estree':
-        specifier: ^8.6.0
-        version: 8.9.0(typescript@5.6.3)
       '@vue-vapor/compiler-dom':
         specifier: latest
         version: 3.20240714.0-6608bb3
@@ -324,6 +318,9 @@ importers:
       hash-sum:
         specifier: ^2.0.0
         version: 2.0.0
+      inclusion-vapor-shared:
+        specifier: workspace:*
+        version: link:../shared
       magic-string-ast:
         specifier: ^0.6.2
         version: 0.6.2
@@ -332,7 +329,7 @@ importers:
         version: 1.2.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+        version: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
       svelte-vapor-template-compiler:
         specifier: workspace:*
         version: link:../svelte-template-compiler
@@ -366,7 +363,7 @@ importers:
         version: 1.9.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+        version: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
     devDependencies:
       '@babel/types':
         specifier: 'catalog:'
@@ -389,7 +386,7 @@ importers:
         version: 1.2.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+        version: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
       svelte-vapor-template-compiler:
         specifier: workspace:*
         version: link:../svelte-template-compiler
@@ -411,7 +408,7 @@ importers:
     devDependencies:
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+        version: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
       tsdown:
         specifier: 'catalog:'
         version: 0.2.17(rollup@4.24.0)(typescript@5.6.3)(webpack-sources@3.2.3)
@@ -502,7 +499,7 @@ importers:
         version: 0.24.0
       svelte:
         specifier: 'catalog:'
-        version: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+        version: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
       svelte-vapor-runtime:
         specifier: workspace:*
         version: link:../svelte-vapor-runtime
@@ -1583,63 +1580,63 @@ packages:
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
 
-  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-a8VS9ITduGeNS/NQWUMaqKKrGxqZP9b5Wc0V5FfFX3b147JMr+XNG3Br7jFbhHhDEtDEeRgOY3mo0S8mhbP1/Q==}
+  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-oLYRKqZ6WZk8zL8YdelfVIC4xatDiYX6uYM73bHfKeEliKkKhregSmmrZ2r0ov4b7v16BZ94sNLa5/v8ThgaOw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-injvJdZdUNqh+7BZfY1Ld9BKZGkAUvg5EgeYJDarrPsFum2Qv65fiKrQ/WmX316vGT0Umqwu+SV+HOPrO4BONA==}
+  '@rolldown/binding-darwin-x64@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-E9Z/uJVWVtVMnbOPFgDXaa0hZJ+NmXIPcSXHVLXoEN+qlXN5gE+IhrNHqPfaCTmkJLRwG3GE7t1EWvbC3jtAJw==}
     cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-EsKXUW6uAeGqiqEd5k2s3dtNHA3wMUjH3wssEv0XxAH4/oQAGVbeTPPgtfqwxjgIPsXtdWaB1v9DNgpNsrkVhg==}
+  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-YfOw13kmFuTGPrOAUSX2DkFVYRidsiFUVbNgPeq10jELAtSn9FXVWT7gSS1v9m9o0L5KjyCulFzhBd9Nssu2nQ==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-NbziB+rAm7SAkVHdcPQyS4vb9cd+lpgtUy70rTFTnaWmvEQjcqqkY7Jr50eFv6SOXRm0Vwd+w43OWN193o6KtA==}
+  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-f9vOrmUfbWFWdGhToD2gDpT1KAMWN3BKV3GfqK8RlYyp8OLW1G5xBiJ0DT6ymKHJfVT57Em6Q25AFJU2IzaW6A==}
     cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-fE2S4v2d5CfqV9Bup1Y2JacnxdLRF/xQAlXslm5AQ4FYvOX6FAysZ/zPCLQqIC9ba09PMaOcBUYot2rxOv/M3w==}
+  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-IfzlTlvB8cxqJ4ixwh5Lnw39t2JOcIMpjvsQzVnrdWERjJa5LqM6qDHnrf/E8S8TGvWjUCDT2jr2Yjt8Wy/VWA==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-x/QG5cPGjv+c5BX30dGodU8bGr1s9561X+1ko6BxR+e9McMd5rNLAKrTNdzJyIjgTYEg4q1PDy6uH43A47Dang==}
+  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-al7jF6+nrkmpNfhskvFF5C5C2rUqevjyYi2CCP/q+/8G1kVJzyO0eSUeqIaReKVdQbZ1vDnuVa0SmcNy4P0hYQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-s/bOj4U2dZlWG9xX+P4keWW0/NwLyTe41kaJqDbVKgRZ6f7lzGlD3wX/UQ/kkRPUelRmyRhiPypXFx+A+pR8GA==}
+  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-nK9102FtrBegvB/LvUtFbrGfY/xvHgXFWPKSNCE3aBez6ZEmB1C8dXWu1qzIaG4sFMOAKmyhvWD0p06CSFhnTA==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-ICc3PbS2Ingt6uW7e64kMfeCluQ+5b8cELgiS7bUwvUwwaJ6OtZJvFE5kK3NTdwJnblNsN4N8/3JMRqmZwzeaA==}
+  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-/b3LTHnMaFv/gULaZF1p64GkUL5PbM94ke7xPpf3uCH7oDdnimAT4s/fkQ0N4kYmRanpj9r8JXP8URirIxe0ng==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-fIfA23cpzvohJJ+tcPzzKo1OrZ8xB83wByHaOqfanG7lz5BQf/6plOv8L37fGP/gNCcXzkB19ibTfgg5hjjHJQ==}
+  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-aCfMIFhBRVfccqkiHBsRc245b9KsUfPq83PTFxrU4MBs3+XHqT/8EbWFEYFlR3MsOYj5LL3fMXpVN6bUL8yjUg==}
     engines: {node: '>=14.21.3'}
     cpu: [wasm32]
 
-  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-5bpbr0uDKPU0iZG2XBr2aFOBO+YRifbU8busdGOycePSZ7prh8LB0bqTJWQOLbcj1CQA6iUJf+mXq8CnGyih+A==}
+  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-+pozhs4cCM7A9txHb6hJe45c8CBsZ0l434f8wakfe677SPgnsxKnoNM7vfoi5MqSD/J+SNAOI/e2YtjA7dd6Gw==}
     cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-w+1dy0wUhV/mS6uiBe7ySA3ZlbBGdct+zHagPhDty+fT/oI4sddkCSLIhufu8iOcY9msJYYVDFVgXWdTfJdqqg==}
+  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-dxE0mJUk/rC70NbGawUNKUETf9bsCMx0qjBVAFcAXyw2FQ9r9Hl0278RPNQOqiEDO94J6+DX4sxrDgLRkscmkA==}
     cpu: [ia32]
     os: [win32]
 
-  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
-    resolution: {integrity: sha512-zdj4BEgAzNDm53xPdzbrDkySBINGQSnGHmHqdCylHtDJep9yiDDIArvlKSZAWpHq+WPI/UpXUksqswLJvtUBpQ==}
+  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-75f1f88-20241027003605':
+    resolution: {integrity: sha512-34c/CVlq3U36J8XiaWgXv065JpRjeVtRcV+iz5VSqukvAsIYaIrm7/ZkhvSosVS5ufAKbuSZ8Mc+Z1l9I8Q4Tw==}
     cpu: [x64]
     os: [win32]
 
@@ -4611,8 +4608,8 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rolldown@0.13.2-snapshot-22bf6b5-20241023003702:
-    resolution: {integrity: sha512-xUB4iOqLpQDkSV0zy8yrB1ne7Cm49i7eMV9K4QX/7zTQsi6giDAOzpT5gSwmk2is4TbHJQABQtHB2Fw1rnvLEw==}
+  rolldown@0.13.2-snapshot-75f1f88-20241027003605:
+    resolution: {integrity: sha512-7eONqOzJEFzGomS/bFuEVkB+vF7+fB/Rt76Cf8wZ5dXsilNSUEo8eRuZx78Yxn7NPQimoBmffEbcNtezDxqiMw==}
     hasBin: true
 
   rollup-plugin-dts@6.1.1:
@@ -6141,7 +6138,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.18.0(lhe2npb3yvfs4pz62enrq3wcfm)':
+  '@kazupon/eslint-config@0.18.0(l7encw7aiqtrgyikggyapbdgnm)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.4.0(eslint@9.12.0(jiti@2.3.3))
       '@eslint/js': 9.12.0
@@ -6158,13 +6155,13 @@ snapshots:
       eslint-plugin-react-hooks: 4.6.2(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-react-refresh: 0.4.12(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-regexp: 2.6.0(eslint@9.12.0(jiti@2.3.3))
-      eslint-plugin-svelte: 2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4))
+      eslint-plugin-svelte: 2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi))
       eslint-plugin-toml: 0.11.1(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-unicorn: 54.0.0(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.9.0(@typescript-eslint/parser@8.9.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-vue: 9.29.0(eslint@9.12.0(jiti@2.3.3))
       eslint-plugin-yml: 1.14.0(eslint@9.12.0(jiti@2.3.3))
-      svelte: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+      svelte: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
       typescript-eslint: 8.9.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.3)
     transitivePeerDependencies:
       - '@vue/reactivity'
@@ -6344,42 +6341,42 @@ snapshots:
 
   '@polka/url@1.0.0-next.28': {}
 
-  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-darwin-x64@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-darwin-x64@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-75f1f88-20241027003605':
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.5
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-22bf6b5-20241023003702':
+  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-75f1f88-20241027003605':
     optional: true
 
   '@rollup/plugin-alias@5.1.1(rollup@3.29.5)':
@@ -7990,7 +7987,7 @@ snapshots:
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
 
-  eslint-plugin-svelte@2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)):
+  eslint-plugin-svelte@2.44.1(eslint@9.12.0(jiti@2.3.3))(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.12.0(jiti@2.3.3))
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -8003,9 +8000,9 @@ snapshots:
       postcss-safe-parser: 6.0.0(postcss@8.4.47)
       postcss-selector-parser: 6.1.2
       semver: 7.6.3
-      svelte-eslint-parser: 0.41.1(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4))
+      svelte-eslint-parser: 0.41.1(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi))
     optionalDependencies:
-      svelte: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+      svelte: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
     transitivePeerDependencies:
       - ts-node
 
@@ -9722,10 +9719,10 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-svelte@3.2.7(prettier@3.3.3)(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)):
+  prettier-plugin-svelte@3.2.7(prettier@3.3.3)(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)):
     dependencies:
       prettier: 3.3.3
-      svelte: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+      svelte: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
 
   prettier-plugin-toml@2.0.1(prettier@3.3.3):
     dependencies:
@@ -9900,22 +9897,22 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown@0.13.2-snapshot-22bf6b5-20241023003702:
+  rolldown@0.13.2-snapshot-75f1f88-20241027003605:
     dependencies:
       zod: 3.23.8
     optionalDependencies:
-      '@rolldown/binding-darwin-arm64': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-darwin-x64': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-freebsd-x64': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-linux-arm-gnueabihf': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-linux-arm64-gnu': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-linux-arm64-musl': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-linux-x64-gnu': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-linux-x64-musl': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-wasm32-wasi': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-win32-arm64-msvc': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-win32-ia32-msvc': 0.13.2-snapshot-22bf6b5-20241023003702
-      '@rolldown/binding-win32-x64-msvc': 0.13.2-snapshot-22bf6b5-20241023003702
+      '@rolldown/binding-darwin-arm64': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-darwin-x64': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-freebsd-x64': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-linux-arm-gnueabihf': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-linux-arm64-gnu': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-linux-arm64-musl': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-linux-x64-gnu': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-linux-x64-musl': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-wasm32-wasi': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-win32-arm64-msvc': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-win32-ia32-msvc': 0.13.2-snapshot-75f1f88-20241027003605
+      '@rolldown/binding-win32-x64-msvc': 0.13.2-snapshot-75f1f88-20241027003605
 
   rollup-plugin-dts@6.1.1(rollup@3.29.5)(typescript@5.6.3):
     dependencies:
@@ -10252,7 +10249,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-eslint-parser@0.41.1(svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)):
+  svelte-eslint-parser@0.41.1(svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)):
     dependencies:
       eslint-scope: 7.2.2
       eslint-visitor-keys: 3.4.3
@@ -10260,9 +10257,9 @@ snapshots:
       postcss: 8.4.47
       postcss-scss: 4.0.9(postcss@8.4.47)
     optionalDependencies:
-      svelte: 4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4)
+      svelte: 4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi)
 
-  svelte@4.2.18(patch_hash=euqmv226b2y3s6jes7u46wedv4):
+  svelte@4.2.18(patch_hash=dd6jvfvrs65p2cucc3yv66o2qi):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -10400,7 +10397,7 @@ snapshots:
       consola: 3.2.3
       picocolors: 1.1.0
       pkg-types: 1.2.1
-      rolldown: 0.13.2-snapshot-22bf6b5-20241023003702
+      rolldown: 0.13.2-snapshot-75f1f88-20241027003605
       tinyglobby: 0.2.9
       unconfig: 0.6.0
       unplugin-isolated-decl: 0.6.7(rollup@4.24.0)(typescript@5.6.3)(webpack-sources@3.2.3)

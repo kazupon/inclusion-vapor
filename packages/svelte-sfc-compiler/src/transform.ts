@@ -4,22 +4,20 @@
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
 import { parse as parseBabel } from '@babel/parser'
-import { analyze, DefinitionType, ScopeType } from '@typescript-eslint/scope-manager'
-import { AST_NODE_TYPES, simpleTraverse } from '@typescript-eslint/typescript-estree'
 import { walkImportDeclaration } from 'ast-kit'
+import { analyze, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
 import type {
   File as BabelFile,
-  ImportDeclaration as BabelImportDeclaration,
-  Node as BabelNode
+  Identifier as BabelIdentifier,
+  Node as BabelNode,
+  Program as BabelProgram
 } from '@babel/types'
-import type { Reference, Scope, Variable } from '@typescript-eslint/scope-manager'
-import type { parse as _parseTsEslint, TSESTree } from '@typescript-eslint/typescript-estree'
 import type { ImportBinding } from 'ast-kit'
+import type { Scope, Variable } from 'inclusion-vapor-shared'
 import type { SvelteScript } from 'svelte-vapor-template-compiler'
 
-type TSESLintNode = ReturnType<typeof _parseTsEslint>
 type GenerateMap = ReturnType<typeof MagicStringAST.prototype.generateMap>
 
 export function transformSvelteVapor(code: string): { code: string; map: GenerateMap } {
@@ -65,19 +63,16 @@ export function transformSvelteScript(
 ): string | { code: string; map: GenerateMap } {
   const babelFileNode = options.ast
     ? options.ast.content
-    : parseBabel(code, { sourceType: 'module', plugins: ['estree'] })
-  const jsAst = babelFileNode.program as unknown as TSESLintNode
+    : parseBabel(code, { sourceType: 'module' })
+  const jsAst = babelFileNode.program
   let strAst = new MagicStringAST(code)
-  enableParentableNodes(jsAst)
 
-  const scopeManager = analyze(jsAst, { sourceType: 'module' })
-  const scope = getScope(scopeManager, jsAst)
+  const { scope } = analyze(jsAst)
+
   const refVariables = getVaporRefVariables(scope)
+  strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode)
+  // strAst = rewriteToVaporRef(code, refVariables, strAst, jsAst)
   strAst = rewriteStore(scope, strAst, jsAst)
-  strAst = rewriteToVaporRef(refVariables, strAst, babelFileNode)
-
-  // NOTE: avoid Maximum call stack size exceeded error with `code-red` print
-  disableParentableNodes(jsAst)
 
   const sourceMap = !!options.sourcemap
   const id = options.id
@@ -95,15 +90,15 @@ export function transformSvelteScript(
   }
 }
 
-function rewriteStore(scope: Scope, s: MagicStringAST, program: TSESLintNode): MagicStringAST {
+function rewriteStore(scope: Scope, s: MagicStringAST, program: BabelProgram): MagicStringAST {
   for (const node of program.body) {
     switch (node.type) {
-      case AST_NODE_TYPES.ImportDeclaration: {
+      case 'ImportDeclaration': {
         if (node.source.value === 'svelte') {
-          const source = node.source as unknown as BabelNode
+          const source = node.source
           s.overwrite(source.start!, source.end!, `'svelte-vapor-runtime'`)
         } else if (node.source.value === 'svelte/store') {
-          const declarationNode = node as unknown as BabelImportDeclaration
+          const declarationNode = node
           const imports: Record<string, ImportBinding> = {}
           walkImportDeclaration(imports, declarationNode)
           const specifiers = Object.keys(imports)
@@ -132,41 +127,57 @@ function rewriteStore(scope: Scope, s: MagicStringAST, program: TSESLintNode): M
 }
 
 function rewriteToVaporRef(
+  code: string,
   variables: Variable[],
   s: MagicStringAST,
   fileNode: BabelFile
 ): MagicStringAST {
   const offset = fileNode.start!
+
+  let importRef = false
   for (const variable of variables) {
-    const def = variable.defs[0]
-    let importRef = false
+    const def = variable.definition
     if (
-      def.node.type === AST_NODE_TYPES.VariableDeclarator &&
-      def.node.init &&
-      def.node.init.type === AST_NODE_TYPES.Literal
+      def.type === 'VariableDeclarator' &&
+      def.init != undefined &&
+      validateNodeTypeForVaporRef(def.init)
     ) {
       s.overwriteNode(
-        normalizeBabelNodeOffset(def.node.init as unknown as BabelNode, offset),
-        `ref(${def.node.init.raw})`
+        normalizeBabelNodeOffset(def.init, offset),
+        `ref(${code.slice(def.init.start! - offset, def.init.end! - offset)})`
       )
       importRef = true
+    } else {
+      continue
     }
-    if (importRef) {
-      s.prepend(`import { ref } from 'vue/vapor'\n`)
-    }
-    const refs = variable.references.filter(
-      ref =>
-        ref.identifier !== variable.identifiers[0] &&
-        ref.resolved?.identifiers[0] === variable.identifiers[0]
-    )
+
+    const refs = getReferences(variable)
     for (const ref of refs) {
-      s.overwriteNode(
-        normalizeBabelNodeOffset(ref.identifier as unknown as BabelNode, offset),
-        `${ref.identifier.name}.value`
-      )
+      s.overwriteNode(normalizeBabelNodeOffset(ref, offset), `${ref.name}.value`)
     }
   }
+
+  if (importRef) {
+    s.prepend(`import { ref } from 'vue/vapor'\n`)
+  }
+
   return s
+}
+
+function validateNodeTypeForVaporRef(node: BabelNode): boolean {
+  return (
+    node.type === 'NumericLiteral' ||
+    node.type === 'StringLiteral' ||
+    node.type === 'BooleanLiteral' ||
+    node.type === 'NullLiteral' ||
+    node.type === 'BigIntLiteral' ||
+    node.type === 'DecimalLiteral' ||
+    node.type === 'RegExpLiteral' ||
+    node.type === 'TemplateLiteral' ||
+    node.type === 'ArrayExpression' ||
+    node.type === 'ObjectExpression' ||
+    node.type === 'NewExpression'
+  )
 }
 
 function normalizeBabelNodeOffset(node: BabelNode, offset: number): BabelNode {
@@ -177,17 +188,23 @@ function normalizeBabelNodeOffset(node: BabelNode, offset: number): BabelNode {
   }
 }
 
+function getVaporRefVariables(scope: Scope): Variable[] {
+  return [...scope.variables.values()].filter(variable => {
+    return variable.definition.type === 'VariableDeclarator'
+  })
+}
+
 function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBinding>): Variable[] {
   const variables = [] as Variable[]
   for (const [name] of Object.entries(imports)) {
-    for (const variable of scope.variables) {
+    for (const variable of scope.variables.values()) {
       if (
         variable.name !== name &&
-        variable.references[0] &&
-        variable.references[0].writeExpr &&
-        variable.references[0].writeExpr.type === AST_NODE_TYPES.CallExpression &&
-        variable.references[0].writeExpr.callee.type === AST_NODE_TYPES.Identifier &&
-        variable.references[0].writeExpr.callee.name === name
+        variable.definition.type === 'VariableDeclarator' &&
+        variable.definition.init &&
+        variable.definition.init.type === 'CallExpression' &&
+        variable.definition.init.callee.type === 'Identifier' &&
+        variable.definition.init.callee.name === name
       ) {
         variables.push(variable)
       }
@@ -196,91 +213,45 @@ function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBind
   return variables
 }
 
-function getVaporStoreConvertableVariables(scope: Scope, variables: Variable[]): Reference[] {
-  let ret = [] as Reference[]
-  for (const variable of variables) {
-    const targets = scope.references.filter(
-      ref =>
-        ref.identifier.type === AST_NODE_TYPES.Identifier &&
-        ref.identifier.name === `$${variable.name}`
-    )
-    if (targets.length > 0) {
-      ret = [...ret, ...targets]
-    }
-  }
-  return ret
+function getVaporStoreConvertableVariables(scope: Scope, variables: Variable[]): BabelIdentifier[] {
+  // eslint-disable-next-line unicorn/no-array-reduce
+  return variables.reduce((acc, variable) => {
+    return [...acc, ...collectReferences(scope, `$${variable.name}`)]
+  }, [] as BabelIdentifier[])
+}
+
+function collectReferences(scope: Scope, name: string): BabelIdentifier[] {
+  const refs = scope.references.filter(ref => ref.name === name) || []
+  // eslint-disable-next-line unicorn/no-array-reduce
+  return scope.children.reduce(
+    (acc, child) => {
+      return [...acc, ...collectReferences(child, name)]
+    },
+    [...refs] as BabelIdentifier[]
+  )
 }
 
 function insertStoreComposable(s: MagicStringAST, variables: Variable[]): void {
-  function makeComposable(variable: Variable, node: TSESTree.Identifier): string {
+  function makeComposable(variable: Variable, node: BabelIdentifier): string {
     return `\nconst $${variable.name} = ${node.name === 'writable' ? 'useWritableStore' : 'useReadableStore'}(${variable.name})`
   }
   for (const variable of variables) {
-    for (const ref of variable.references) {
-      if (
-        ref.writeExpr &&
-        ref.writeExpr.type === AST_NODE_TYPES.CallExpression &&
-        ref.writeExpr.callee.type === AST_NODE_TYPES.Identifier
-      ) {
-        const source = ref.writeExpr as unknown as BabelNode
-        s.appendRight(source.end!, makeComposable(variable, ref.writeExpr.callee))
-      }
+    if (
+      variable.definition.type === 'VariableDeclarator' &&
+      variable.definition.init &&
+      variable.definition.init.type === 'CallExpression' &&
+      variable.definition.init.callee.type === 'Identifier'
+    ) {
+      s.appendRight(
+        variable.definition.end!,
+        makeComposable(variable, variable.definition.init.callee)
+      )
     }
   }
 }
 
-function replaceStoreIdentifier(s: MagicStringAST, references: Reference[]): void {
+function replaceStoreIdentifier(s: MagicStringAST, references: BabelIdentifier[]): void {
   for (const ref of references) {
-    const source = ref.identifier as unknown as BabelNode
-    s.overwrite(source.start!, source.end!, `${ref.identifier.name}.value`)
+    s.overwrite(ref.start!, ref.end!, `${ref.name}.value`)
   }
-}
-
-function getVaporRefVariables(scope: Scope): Variable[] {
-  return scope.variables.filter(variable => {
-    if (variable.defs[0]) {
-      const def = variable.defs[0]
-      if (
-        def.type === DefinitionType.Variable &&
-        def.name.type === AST_NODE_TYPES.Identifier &&
-        def.node.type === AST_NODE_TYPES.VariableDeclarator &&
-        def.node.init &&
-        def.node.init.type === AST_NODE_TYPES.Literal
-      ) {
-        return variable
-      }
-    }
-  })
-}
-
-function enableParentableNodes(node: TSESLintNode) {
-  simpleTraverse(node, {
-    enter(node, parent) {
-      if (parent) {
-        node.parent = parent
-      }
-    }
-  })
-}
-
-function disableParentableNodes(node: TSESLintNode) {
-  simpleTraverse(node, {
-    enter(node) {
-      if (node.parent) {
-        // @ts-expect-error -- NOTE
-        delete node.parent
-      }
-    }
-  })
-}
-
-function getScope(manager: ReturnType<typeof analyze>, node: TSESLintNode): Scope {
-  const scope = manager.acquire(node, true)
-  if (scope) {
-    if (scope.type === ScopeType.functionExpressionName) {
-      return scope.childScopes[0]
-    }
-    return scope
-  }
-  return manager.scopes[0]
 }

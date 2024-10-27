@@ -39,6 +39,8 @@
       "svelte-vapor-sfc-compiler": ["packages/svelte-sfc-compiler/src"],
       "jsx-vapor-compiler": ["packages/jsx-compiler/src"],
       "react-vapor-hooks": ["packages/react-vapor-hooks/src"],
+      "inclusion-vapor-shared": ["packages/inclusion-vapor-shared/src"],
+      "inclusion-vapor-shared/scope": ["packages/inclusion-vapor-shared/src/scope"],
       "svelte-vapor-runtime": ["packages/svelte-vapor-runtime/src"],
       "vue/vapor": ["packages/playground/node_modules/vue/vapor"]
     },
