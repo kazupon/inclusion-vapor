@@ -9,7 +9,6 @@ import { analyze, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
 import type {
-  File as BabelFile,
   Identifier as BabelIdentifier,
   Node as BabelNode,
   Program as BabelProgram
@@ -70,8 +69,7 @@ export function transformSvelteScript(
   const { scope } = analyze(jsAst)
 
   const refVariables = getVaporRefVariables(scope)
-  strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode)
-  // strAst = rewriteToVaporRef(code, refVariables, strAst, jsAst)
+  strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode.start!)
   strAst = rewriteStore(scope, strAst, jsAst)
 
   const sourceMap = !!options.sourcemap
@@ -130,10 +128,8 @@ function rewriteToVaporRef(
   code: string,
   variables: Variable[],
   s: MagicStringAST,
-  fileNode: BabelFile
+  offset: number
 ): MagicStringAST {
-  const offset = fileNode.start!
-
   let importRef = false
   for (const variable of variables) {
     const def = variable.definition
