@@ -1,11 +1,12 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const resolveEntryForPkg = (p: string) =>
-  path.resolve(fileURLToPath(import.meta.url), `../../packages/${p}/src/index.ts`)
+const resolveEntryForPkg = (p: string, entry = 'index') =>
+  path.resolve(fileURLToPath(import.meta.url), `../../packages/${p}/src/${entry}.ts`)
 
 const entries: Record<string, string> = {
   'inclusion-vapor-shared': resolveEntryForPkg('shared'),
+  'inclusion-vapor-shared/scope': resolveEntryForPkg('shared', 'scope'),
   'jsx-vapor-compiler': resolveEntryForPkg('jsx-compiler'),
   'react-vapor-hooks': resolveEntryForPkg('react-vapor-hooks'),
   'svete-vapor-sfc-compiler': resolveEntryForPkg('svelte-sfc-compiler'),
