@@ -132,7 +132,7 @@ function rewriteToVaporRef(
 ): MagicStringAST {
   let importRef = false
   for (const variable of variables) {
-    const def = variable.definition
+    const def = variable.definition.node
     if (
       def.type === 'VariableDeclarator' &&
       def.init != undefined &&
@@ -186,7 +186,7 @@ function normalizeBabelNodeOffset(node: BabelNode, offset: number): BabelNode {
 
 function getVaporRefVariables(scope: Scope): Variable[] {
   return [...scope.variables.values()].filter(variable => {
-    return variable.definition.type === 'VariableDeclarator'
+    return variable.definition.node.type === 'VariableDeclarator'
   })
 }
 
@@ -194,13 +194,14 @@ function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBind
   const variables = [] as Variable[]
   for (const [name] of Object.entries(imports)) {
     for (const variable of scope.variables.values()) {
+      const def = variable.definition.node
       if (
         variable.name !== name &&
-        variable.definition.type === 'VariableDeclarator' &&
-        variable.definition.init &&
-        variable.definition.init.type === 'CallExpression' &&
-        variable.definition.init.callee.type === 'Identifier' &&
-        variable.definition.init.callee.name === name
+        def.type === 'VariableDeclarator' &&
+        def.init &&
+        def.init.type === 'CallExpression' &&
+        def.init.callee.type === 'Identifier' &&
+        def.init.callee.name === name
       ) {
         variables.push(variable)
       }
@@ -232,16 +233,14 @@ function insertStoreComposable(s: MagicStringAST, variables: Variable[]): void {
     return `\nconst $${variable.name} = ${node.name === 'writable' ? 'useWritableStore' : 'useReadableStore'}(${variable.name})`
   }
   for (const variable of variables) {
+    const def = variable.definition.node
     if (
-      variable.definition.type === 'VariableDeclarator' &&
-      variable.definition.init &&
-      variable.definition.init.type === 'CallExpression' &&
-      variable.definition.init.callee.type === 'Identifier'
+      def.type === 'VariableDeclarator' &&
+      def.init &&
+      def.init.type === 'CallExpression' &&
+      def.init.callee.type === 'Identifier'
     ) {
-      s.appendRight(
-        variable.definition.end!,
-        makeComposable(variable, variable.definition.init.callee)
-      )
+      s.appendRight(def.end!, makeComposable(variable, def.init.callee))
     }
   }
 }
