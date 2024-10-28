@@ -5,10 +5,17 @@ import { walkAST as walk } from 'ast-kit'
 
 import type { Identifier, Node } from '@babel/types'
 
+export type DefinitionKind = 'var' | 'let' | 'const' | 'import' | 'function' | 'class' | 'catch'
+
+export interface Definition {
+  node: Node
+  kind: DefinitionKind
+}
+
 export interface Variable {
   name: string
   identifier: Identifier
-  definition: Node
+  definition: Definition
   references: Set<Identifier>
 }
 
@@ -18,7 +25,7 @@ export interface Scope {
   block: Node
   variables: Map<string, Variable>
   references: Identifier[]
-  addVariable(node: Node, def?: Node, name?: string): void
+  addVariable(node: Node, def?: Definition, name?: string): void
   hasVariable(name: string, ancestor?: boolean): boolean
   getVariable(name: string): Variable | undefined
   findOwner(name: string): Scope | null
@@ -37,12 +44,12 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
     variables
   } as Scope
 
-  function createVariable(name: string, id: Identifier, def: Node): Variable {
+  function createVariable(name: string, id: Identifier, def: Definition): Variable {
     const references = new Set<Identifier>()
     return { name, identifier: id, definition: def, references }
   }
 
-  function addVariable(node: Node, def?: Node, name?: string): void {
+  function addVariable(node: Node, def?: Definition, name?: string): void {
     if (name && def && node.type === 'Identifier') {
       scope.variables.set(name, createVariable(name, node, def))
       return
@@ -50,6 +57,7 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
 
     switch (node.type) {
       case 'VariableDeclaration': {
+        // TODO: more strictly handle `var` case
         if (node.kind === 'var' && scope.block && scope.parent) {
           scope.parent.addVariable(node)
         } else {
@@ -57,7 +65,10 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
             for (const extract of extractNames(declarator.id)) {
               scope.variables.set(
                 extract.name,
-                createVariable(extract.name, extract.node as Identifier, declarator)
+                createVariable(extract.name, extract.node as Identifier, {
+                  node: declarator,
+                  kind: node.kind as DefinitionKind
+                })
               )
             }
           }
@@ -66,22 +77,19 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
       }
       case 'ImportDefaultSpecifier':
       case 'ImportSpecifier': {
-        scope.variables.set(
-          node.local.name,
-          createVariable(node.local.name, node.local, def || node)
-        )
+        scope.variables.set(node.local.name, createVariable(node.local.name, node.local, def!))
         break
       }
       case 'FunctionDeclaration':
       case 'FunctionExpression': {
         if (node.id) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, node))
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, def!))
         }
         break
       }
       default: {
         if (hasNameInId(node)) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, node))
+          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, def!))
         }
         break
       }
@@ -268,7 +276,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         }
         case 'ImportDefaultSpecifier':
         case 'ImportSpecifier': {
-          currentScope.addVariable(node, parent!)
+          currentScope.addVariable(node, { node: parent!, kind: 'import' })
           break
         }
         case 'ExportNamedDeclaration': {
@@ -281,11 +289,11 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         case 'FunctionDeclaration':
         case 'FunctionExpression':
         case 'ArrowFunctionExpression': {
-          currentScope.addVariable(node)
+          currentScope.addVariable(node, { node, kind: 'function' })
           addScope(node)
           for (const param of node.params) {
             for (const extract of extractNames(param)) {
-              currentScope.addVariable(extract.node, node, extract.name)
+              currentScope.addVariable(extract.node, { node, kind: 'function' }, extract.name)
             }
           }
           break
@@ -310,9 +318,12 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           addScope(node)
           break
         }
-        case 'ClassDeclaration':
+        case 'ClassDeclaration': {
+          currentScope.addVariable(node, { node, kind: 'class' })
+          break
+        }
         case 'VariableDeclaration': {
-          currentScope.addVariable(node)
+          currentScope.addVariable(node, { node, kind: node.kind as DefinitionKind })
           break
         }
         case 'CatchClause': {
@@ -320,7 +331,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           if (node.param) {
             for (const extract of extractNames(node.param as Node)) {
               if (extract.node) {
-                currentScope.addVariable(extract.node, node, extract.name)
+                currentScope.addVariable(extract.node, { node, kind: 'catch' }, extract.name)
               }
             }
           }

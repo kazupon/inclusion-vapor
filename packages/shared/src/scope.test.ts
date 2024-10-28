@@ -30,7 +30,8 @@ describe('anaylze', () => {
       type: 'Identifier',
       name: 'a'
     })
-    expect(a?.definition).toMatchObject({
+    expect(a?.definition.kind).toBe('const')
+    expect(a?.definition.node).toMatchObject({
       type: 'VariableDeclarator',
       init: {
         type: 'Identifier',
@@ -54,7 +55,8 @@ describe('anaylze', () => {
     expect(scope.variables.has('d')).toBe(true)
     expect(scope.variables.has('e')).toBe(true)
     const a = scope.getVariable('a')
-    expect(a?.definition.type).toBe('ImportDeclaration')
+    expect(a?.definition.kind).toBe('import')
+    expect(a?.definition.node.type).toBe('ImportDeclaration')
     expect(a?.references.size).toBe(2)
     expect(scope.variables.get('c')?.references.size).toBe(2)
     expect(scope.variables.get('d')?.references.size).toBe(2)
@@ -64,13 +66,15 @@ describe('anaylze', () => {
 
   test('ExportDefaultDeclaration', () => {
     const program = babelParse(`
-      const foo = 1
+      let foo = 1
       export default foo
     `)
     const { scope } = analyze(program)
     expect(scope.variables.size).toBe(1)
     expect(scope.variables.has('foo')).toBe(true)
     expect(scope.variables.get('foo')?.references.size).toBe(2)
+    const foo = scope.getVariable('foo')
+    expect(foo?.definition.kind).toBe('let')
     expect(scope.references.length).toBe(2)
   })
 
@@ -144,7 +148,8 @@ describe('anaylze', () => {
     expect(rootScope.references.length).toBe(1)
 
     const bar = rootScope.getVariable('bar')
-    expect(bar?.definition.type).toBe('FunctionDeclaration')
+    expect(bar?.definition.kind).toBe('function')
+    expect(bar?.definition.node.type).toBe('FunctionDeclaration')
   })
 
   test('FunctionExpression', () => {
@@ -188,7 +193,8 @@ describe('anaylze', () => {
     expect(rootScope.references.length).toBe(2)
 
     const bar = rootScope.getVariable('bar')
-    expect(bar?.definition.type).toBe('VariableDeclarator')
+    expect(bar?.definition.kind).toBe('const')
+    expect(bar?.definition.node.type).toBe('VariableDeclarator')
   })
 
   test('ArrowFunctionExpression', () => {
@@ -232,7 +238,8 @@ describe('anaylze', () => {
     expect(rootScope.references.length).toBe(2)
 
     const bar = rootScope.getVariable('bar')
-    expect(bar?.definition.type).toBe('VariableDeclarator')
+    expect(bar?.definition.kind).toBe('const')
+    expect(bar?.definition.node.type).toBe('VariableDeclarator')
   })
 
   test('tracks all scopes', () => {
@@ -265,6 +272,58 @@ describe('anaylze', () => {
     expect(scopes.length).toBe(14)
     // TODO: should more tweak scopes
     expect(scope.children.length).toBe(9)
+  })
+
+  test('definintion kind', () => {
+    const program = babelParse(`
+    const a = 1
+    let b = 2
+    var c = 3
+    function foo(a) {
+      const b = 21
+    }
+    const bar = function inner(c) {
+      let d = 42
+    }
+    const baz = (g) => {
+      const gg = 42
+    }
+    class Qux {}
+    try { const t = 1 } catch (e) { const f = 2 }
+    switch (baz) {
+      case 1:
+        break;
+      case 2: {
+        break;
+      }
+    }`)
+
+    const { scope } = analyze(program)
+
+    expect(scope.getVariable('a')?.definition.kind).toBe('const')
+    expect(scope.getVariable('b')?.definition.kind).toBe('let')
+    expect(scope.getVariable('c')?.definition.kind).toBe('var')
+    expect(scope.getVariable('foo')?.definition.kind).toBe('function')
+    const funcDefScope = scope.children[0]
+    expect(funcDefScope.getVariable('a')?.definition.kind).toBe('function')
+    expect(funcDefScope.getVariable('b')?.definition.kind).toBe('const')
+    expect(scope.getVariable('bar')?.definition.kind).toBe('const')
+    const funcExpScope = scope.children[1]
+    expect(funcExpScope.getVariable('c')?.definition.kind).toBe('function')
+    expect(funcExpScope.getVariable('d')?.definition.kind).toBe('let')
+    const funcArrowScope = scope.children[2]
+    expect(funcArrowScope.getVariable('g')?.definition.kind).toBe('function')
+    expect(funcArrowScope.getVariable('gg')?.definition.kind).toBe('const')
+    expect(scope.getVariable('Qux')?.definition.kind).toBe('class')
+    const tryScope = scope.children[3]
+    expect(tryScope.getVariable('t')?.definition.kind).toBe('const')
+    const catchScope = scope.children[4]
+    expect(catchScope.getVariable('e')?.definition.kind).toBe('catch')
+    // FIXME: should be const in catch scope block
+    // expect(catchScope.getVariable('g')?.definition.kind).toBe('const')
+    // FIXME: should scope switch and switch case
+    // const swtichBlock = scope.children[5]
+    // console.log(swtichBlock)
   })
 
   test('escope example case', () => {
@@ -323,7 +382,7 @@ const calculateAmortization = (principal, years, rate) => {
     expect(bottomForScope.variables.get('m')?.references.size).toBe(3)
     expect(bottomForScope.references.length).toBe(3)
     const m = bottomForScope.getVariable('m')
-    expect(m?.definition.type).toBe('VariableDeclarator')
+    expect(m?.definition.node.type).toBe('VariableDeclarator')
 
     const blockScopeOnFor = bottomForScope.parent as Scope
     expect(blockScopeOnFor.children.length).toBe(1)
@@ -341,7 +400,7 @@ const calculateAmortization = (principal, years, rate) => {
     expect(topForScope.variables.get('y')?.references.size).toBe(3)
     expect(topForScope.references.length).toBe(4)
     const y = topForScope.getVariable('y')
-    expect(y?.definition.type).toBe('VariableDeclarator')
+    expect(y?.definition.node.type).toBe('VariableDeclarator')
 
     const functionScope = topForScope.parent as Scope
     expect(functionScope.children.length).toBe(1)
