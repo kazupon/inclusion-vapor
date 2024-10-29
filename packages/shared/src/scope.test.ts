@@ -269,7 +269,7 @@ describe('anaylze', () => {
       }
     })
 
-    expect(scopes.length).toBe(14)
+    expect(scopes.length).toBe(13)
     // TODO: should more tweak scopes
     expect(scope.children.length).toBe(9)
   })
@@ -318,9 +318,9 @@ describe('anaylze', () => {
     const tryScope = scope.children[3]
     expect(tryScope.getVariable('t')?.definition.kind).toBe('const')
     const catchScope = scope.children[4]
+    console.log(catchScope)
     expect(catchScope.getVariable('e')?.definition.kind).toBe('catch')
-    // FIXME: should be const in catch scope block
-    // expect(catchScope.getVariable('g')?.definition.kind).toBe('const')
+    expect(catchScope.getVariable('f')?.definition.kind).toBe('const')
     // FIXME: should scope switch and switch case
     // const swtichBlock = scope.children[5]
     // console.log(swtichBlock)

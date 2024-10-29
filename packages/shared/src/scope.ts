@@ -307,7 +307,8 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
             parent &&
             (parent.type === 'FunctionDeclaration' ||
               parent.type === 'FunctionExpression' ||
-              parent.type === 'ArrowFunctionExpression')
+              parent.type === 'ArrowFunctionExpression' ||
+              parent.type === 'CatchClause')
           ) {
             return
           }
