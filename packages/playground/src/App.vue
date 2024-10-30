@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue/vapor'
 
-import VueCounter from './components/Counter.vue'
-import ReactCounter from './components/Counter.tsx'
 import SvelteCounter from './components/Counter.svelte'
+import ReactCounter from './components/Counter.tsx'
+import VueCounter from './components/Counter.vue'
 
 const svelteCounter = ref(0)
 const vueCounter = ref(0)
@@ -21,10 +21,16 @@ function onVueIncrement(e: number) {
 
 <template>
   <VueCounter @increment="onVueIncrement">
+    <span>slot content</span>
+    <br>
     <span>Svelte counter value via event: {{ svelteCounter }}</span>
   </VueCounter>
+
   <ReactCounter />
+
   <SvelteCounter @increment="onSvelteIncrement">
+    <span>slot content</span>
+    <br>
     <span>Vue counter value via event: {{ vueCounter }}</span>
   </SvelteCounter>
 </template>

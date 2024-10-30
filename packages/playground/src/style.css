@@ -39,6 +39,7 @@ div.box {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -48,10 +49,24 @@ div#react {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   transition: border-color 0.25s;
+  /*
+  border-color: #61dafb;
+  */
+}
+div#vue {
+  /*
+  border-color: #35eb9a;
+  */
+}
+div#svelte {
+  /*
+  border-color: #ff3e00;
+  */
 }
 button {
   border-radius: 8px;
