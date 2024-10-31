@@ -38,6 +38,9 @@ describe('anaylze', () => {
         name: 'b'
       }
     })
+    expect(a?.declaration).toMatchObject({
+      type: 'VariableDeclaration'
+    })
     expect(a?.references.size).toBe(1)
   })
 
@@ -57,10 +60,18 @@ describe('anaylze', () => {
     const a = scope.getVariable('a')
     expect(a?.definition.kind).toBe('import')
     expect(a?.definition.node.type).toBe('ImportDeclaration')
+    expect(a?.declaration).toEqual(a?.definition.node)
     expect(a?.references.size).toBe(2)
+    const c = scope.getVariable('c')
+    expect(c?.definition.kind).toBe('import')
+    expect(c?.definition.node.type).toBe('ImportDeclaration')
+    expect(c?.declaration).toEqual(c?.definition.node)
+    expect(c?.references.size).toBe(2)
     expect(scope.variables.get('c')?.references.size).toBe(2)
     expect(scope.variables.get('d')?.references.size).toBe(2)
     expect(scope.variables.get('e')?.references.size).toBe(2)
+    const e = scope.getVariable('e')
+    expect(e?.declaration).toEqual(e?.definition.node)
     expect(scope.references.length).toBe(9)
   })
 
@@ -75,6 +86,8 @@ describe('anaylze', () => {
     expect(scope.variables.get('foo')?.references.size).toBe(2)
     const foo = scope.getVariable('foo')
     expect(foo?.definition.kind).toBe('let')
+    expect(foo?.export?.type).toBe('ExportDefaultDeclaration')
+    expect(foo?.declaration?.type).toBe('VariableDeclaration')
     expect(scope.references.length).toBe(2)
   })
 
@@ -82,9 +95,13 @@ describe('anaylze', () => {
     const program = babelParse(`
       const foo = 1
       export const bar = 1
-      export { foo }
+      export const { f1, f2: f3 } = { f1: 1, f2: 2 }
+      export let [f4, _, f5] = [0, 1, 2]
+      let buz
+      let qux
+      export { foo, buz as baz }
     `)
-    const { map, scope: rootScope } = analyze(program)
+    const { map, scope: root } = analyze(program)
     const scopes = [] as Scope[]
     walkAST(program, {
       enter(node) {
@@ -96,15 +113,69 @@ describe('anaylze', () => {
 
     const last = scopes.at(-1) as Scope
     expect(last.variables.size).toBe(0)
-    expect(last.references.length).toBe(1)
+    expect(last.references.length).toBe(2)
 
-    expect(rootScope.children.length).toBe(1)
-    expect(rootScope.variables.size).toBe(2)
-    expect(rootScope.variables.has('foo')).toBe(true)
-    expect(rootScope.variables.has('bar')).toBe(true)
-    expect(rootScope.variables.get('foo')?.references.size).toBe(2)
-    expect(rootScope.variables.get('bar')?.references.size).toBe(1)
-    expect(rootScope.references.length).toBe(2)
+    expect(root.children.length).toBe(1)
+    expect(root.variables.size).toBe(9)
+    expect(root.references.length).toBe(9)
+
+    const foo = root.getVariable('foo')
+    expect(foo?.definition.kind).toBe('const')
+    expect(foo?.export?.type).toBe('ExportNamedDeclaration')
+    expect(foo?.declaration?.type).toBe('VariableDeclaration')
+    expect(foo?.references.size).toBe(2)
+
+    const bar = root.getVariable('bar')
+    expect(bar?.definition.kind).toBe('const')
+    expect(bar?.export?.type).toBe('ExportNamedDeclaration')
+    expect(bar?.declaration?.type).toBe('VariableDeclaration')
+    expect(bar?.references.size).toBe(1)
+
+    const buz = root.getVariable('buz')
+    expect(buz?.definition.kind).toBe('let')
+    expect(buz?.export?.type).toBe('ExportNamedDeclaration')
+    expect(buz?.declaration?.type).toBe('VariableDeclaration')
+    expect(buz?.references.size).toBe(2)
+
+    const qux = root.getVariable('qux')
+    expect(qux?.definition.kind).toBe('let')
+    expect(qux?.declaration?.type).toBe('VariableDeclaration')
+    expect(qux?.export).toBeUndefined()
+
+    const f1 = root.getVariable('f1')
+    expect(f1?.definition.kind).toBe('const')
+    expect(f1?.export?.type).toBe('ExportNamedDeclaration')
+    expect(f1?.declaration?.type).toBe('VariableDeclaration')
+    expect(f1?.references.size).toBe(1)
+
+    expect(root.getVariable('f2')).toBeUndefined()
+
+    const f3 = root.getVariable('f1')
+    expect(f3?.definition.kind).toBe('const')
+    expect(f3?.export?.type).toBe('ExportNamedDeclaration')
+    expect(f3?.declaration?.type).toBe('VariableDeclaration')
+    expect(f3?.declaration).toEqual(f1?.declaration)
+    expect(f3?.references.size).toBe(1)
+
+    const f4 = root.getVariable('f4')
+    expect(f4?.definition.kind).toBe('let')
+    expect(f4?.export?.type).toBe('ExportNamedDeclaration')
+    expect(f4?.declaration?.type).toBe('VariableDeclaration')
+    expect(f4?.references.size).toBe(1)
+
+    const _ = root.getVariable('_')
+    expect(_?.definition.kind).toBe('let')
+    expect(_?.export?.type).toBe('ExportNamedDeclaration')
+    expect(_?.declaration?.type).toBe('VariableDeclaration')
+    expect(_?.declaration).toEqual(f4?.declaration)
+    expect(_?.references.size).toBe(1)
+
+    const f5 = root.getVariable('f5')
+    expect(f5?.definition.kind).toBe('let')
+    expect(f5?.export?.type).toBe('ExportNamedDeclaration')
+    expect(f5?.declaration?.type).toBe('VariableDeclaration')
+    expect(f5?.declaration).toEqual(_?.declaration)
+    expect(f5?.references.size).toBe(1)
   })
 
   test('FunctionDeclaration', () => {
@@ -150,6 +221,11 @@ describe('anaylze', () => {
     const bar = rootScope.getVariable('bar')
     expect(bar?.definition.kind).toBe('function')
     expect(bar?.definition.node.type).toBe('FunctionDeclaration')
+    expect(bar?.declaration?.type).toBe('FunctionDeclaration')
+    expect(bar?.declaration).toEqual(bar?.definition.node)
+
+    const a = last.getVariable('a')
+    expect(a?.declaration).toEqual(bar?.declaration)
   })
 
   test('FunctionExpression', () => {
@@ -304,23 +380,35 @@ describe('anaylze', () => {
     expect(scope.getVariable('b')?.definition.kind).toBe('let')
     expect(scope.getVariable('c')?.definition.kind).toBe('var')
     expect(scope.getVariable('foo')?.definition.kind).toBe('function')
+
     const funcDefScope = scope.children[0]
     expect(funcDefScope.getVariable('a')?.definition.kind).toBe('function')
     expect(funcDefScope.getVariable('b')?.definition.kind).toBe('const')
     expect(scope.getVariable('bar')?.definition.kind).toBe('const')
+
     const funcExpScope = scope.children[1]
     expect(funcExpScope.getVariable('c')?.definition.kind).toBe('function')
     expect(funcExpScope.getVariable('d')?.definition.kind).toBe('let')
+
     const funcArrowScope = scope.children[2]
     expect(funcArrowScope.getVariable('g')?.definition.kind).toBe('function')
     expect(funcArrowScope.getVariable('gg')?.definition.kind).toBe('const')
-    expect(scope.getVariable('Qux')?.definition.kind).toBe('class')
+
+    const qux = scope.getVariable('Qux')
+    expect(qux?.definition.kind).toBe('class')
+    expect(qux?.declaration).toEqual(qux?.definition.node)
+
     const tryScope = scope.children[3]
     expect(tryScope.getVariable('t')?.definition.kind).toBe('const')
+
     const catchScope = scope.children[4]
-    console.log(catchScope)
     expect(catchScope.getVariable('e')?.definition.kind).toBe('catch')
     expect(catchScope.getVariable('f')?.definition.kind).toBe('const')
+    const e = catchScope.getVariable('e')
+    expect(e?.declaration).toEqual(catchScope.block)
+    const f = catchScope.getVariable('f')
+    expect(f?.declaration?.type).toBe('VariableDeclaration')
+
     // FIXME: should scope switch and switch case
     // const swtichBlock = scope.children[5]
     // console.log(swtichBlock)
@@ -424,6 +512,35 @@ const calculateAmortization = (principal, years, rate) => {
     const root = functionScope.parent as Scope
     expect(root).toBe(top)
     expect(root.children.length).toBe(top.children.length)
+  })
+
+  describe('firstNodeAfterImportDeclaration', () => {
+    test('basic', () => {
+      const program = babelParse(`import { a, b as c } from 'foo'
+        import { default as d } from 'bar'
+    const e = 1
+  `)
+      const { firstNodeAfterImportDeclaration } = analyze(program)
+      expect(firstNodeAfterImportDeclaration).not.toBeUndefined()
+      expect(firstNodeAfterImportDeclaration?.type).toBe('VariableDeclaration')
+      // @ts-expect-error -- ignore
+      expect(firstNodeAfterImportDeclaration?.kind).toBe('const')
+    })
+
+    test('no import', () => {
+      const program = babelParse(`const a = 1`)
+      const { firstNodeAfterImportDeclaration } = analyze(program)
+      expect(firstNodeAfterImportDeclaration).not.toBeUndefined()
+      expect(firstNodeAfterImportDeclaration?.type).toBe('VariableDeclaration')
+      // @ts-expect-error -- ignore
+      expect(firstNodeAfterImportDeclaration?.kind).toBe('const')
+    })
+
+    test('no code', () => {
+      const program = babelParse(``)
+      const { firstNodeAfterImportDeclaration } = analyze(program)
+      expect(firstNodeAfterImportDeclaration).toBeUndefined()
+    })
   })
 })
 

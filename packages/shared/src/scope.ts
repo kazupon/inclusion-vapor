@@ -3,7 +3,13 @@
 
 import { walkAST as walk } from 'ast-kit'
 
-import type { Identifier, Node } from '@babel/types'
+import type {
+  ExportDeclaration,
+  ExportDefaultDeclaration,
+  ExportNamedDeclaration,
+  Identifier,
+  Node
+} from '@babel/types'
 
 export type DefinitionKind = 'var' | 'let' | 'const' | 'import' | 'function' | 'class' | 'catch'
 
@@ -16,6 +22,8 @@ export interface Variable {
   name: string
   identifier: Identifier
   definition: Definition
+  export?: ExportDefaultDeclaration | ExportNamedDeclaration
+  declaration: Node
   references: Set<Identifier>
 }
 
@@ -25,11 +33,19 @@ export interface Scope {
   block: Node
   variables: Map<string, Variable>
   references: Identifier[]
-  addVariable(node: Node, def?: Definition, name?: string): void
+  addVariable(node: Node, context: AddVariableContext): void
   hasVariable(name: string, ancestor?: boolean): boolean
   getVariable(name: string): Variable | undefined
   findOwner(name: string): Scope | null
 }
+
+export interface AddVariableContext {
+  name?: string
+  definition?: Definition
+  declaration?: Node
+}
+
+const NULL_ADD_VARIABLE_CONTEXT = {} satisfies AddVariableContext
 
 function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
   const variables = new Map<string, Variable>()
@@ -44,14 +60,22 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
     variables
   } as Scope
 
-  function createVariable(name: string, id: Identifier, def: Definition): Variable {
+  function createVariable(
+    name: string,
+    id: Identifier,
+    def: Definition,
+    declaration: Node
+  ): Variable {
     const references = new Set<Identifier>()
-    return { name, identifier: id, definition: def, references }
+    return { name, identifier: id, definition: def, declaration, references }
   }
 
-  function addVariable(node: Node, def?: Definition, name?: string): void {
-    if (name && def && node.type === 'Identifier') {
-      scope.variables.set(name, createVariable(name, node, def))
+  function addVariable(node: Node, context: AddVariableContext = {}): void {
+    if (context.name && context.definition && node.type === 'Identifier') {
+      scope.variables.set(
+        context.name,
+        createVariable(context.name, node, context.definition, context.declaration!)
+      )
       return
     }
 
@@ -59,16 +83,21 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
       case 'VariableDeclaration': {
         // TODO: more strictly handle `var` case
         if (node.kind === 'var' && scope.block && scope.parent) {
-          scope.parent.addVariable(node)
+          scope.parent.addVariable(node, { ...NULL_ADD_VARIABLE_CONTEXT, declaration: node })
         } else {
           for (const declarator of node.declarations) {
             for (const extract of extractNames(declarator.id)) {
               scope.variables.set(
                 extract.name,
-                createVariable(extract.name, extract.node as Identifier, {
-                  node: declarator,
-                  kind: node.kind as DefinitionKind
-                })
+                createVariable(
+                  extract.name,
+                  extract.node as Identifier,
+                  {
+                    node: declarator,
+                    kind: node.kind as DefinitionKind
+                  },
+                  node
+                )
               )
             }
           }
@@ -77,19 +106,28 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
       }
       case 'ImportDefaultSpecifier':
       case 'ImportSpecifier': {
-        scope.variables.set(node.local.name, createVariable(node.local.name, node.local, def!))
+        scope.variables.set(
+          node.local.name,
+          createVariable(node.local.name, node.local, context.definition!, context.declaration!)
+        )
         break
       }
       case 'FunctionDeclaration':
       case 'FunctionExpression': {
         if (node.id) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, def!))
+          scope.variables.set(
+            node.id.name,
+            createVariable(node.id.name, node.id, context.definition!, context.declaration!)
+          )
         }
         break
       }
       default: {
         if (hasNameInId(node)) {
-          scope.variables.set(node.id.name, createVariable(node.id.name, node.id, def!))
+          scope.variables.set(
+            node.id.name,
+            createVariable(node.id.name, node.id, context.definition!, context.declaration!)
+          )
         }
         break
       }
@@ -244,6 +282,7 @@ type ReturnAnalyzedScope = {
   map: WeakMap<Node, Scope>
   globals: Map<string, Node>
   scope: Scope
+  firstNodeAfterImportDeclaration?: Node
 }
 
 export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
@@ -251,8 +290,9 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
   const globals = new Map<string, Node>()
   const scope = createScope(null, ast) // eslint-disable-line unicorn/no-null
 
-  const references: [Scope, Identifier][] = []
   let currentScope = scope
+  const references: [Scope, Identifier][] = []
+  const exportDeclarations: ExportDeclaration[] = []
 
   function addScope(node: Node): void {
     const scope = createScope(currentScope, node)
@@ -263,6 +303,10 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
   function addReference(scope: Scope, node: Identifier): void {
     scope.references.push(node)
   }
+
+  /**
+   * analyze main
+   */
 
   walk(ast, {
     enter(node, parent) {
@@ -276,24 +320,36 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
         }
         case 'ImportDefaultSpecifier':
         case 'ImportSpecifier': {
-          currentScope.addVariable(node, { node: parent!, kind: 'import' })
+          currentScope.addVariable(node, {
+            definition: { node: parent!, kind: 'import' },
+            declaration: parent!
+          })
           break
         }
+        case 'ExportDefaultDeclaration':
         case 'ExportNamedDeclaration': {
-          if (node.specifiers.length > 0) {
+          exportDeclarations.push(node)
+          if (node.type === 'ExportNamedDeclaration' && node.specifiers.length > 0) {
             addScope(node)
           }
-          currentScope.addVariable(node)
+          currentScope.addVariable(node, { ...NULL_ADD_VARIABLE_CONTEXT, declaration: node })
           break
         }
         case 'FunctionDeclaration':
         case 'FunctionExpression':
         case 'ArrowFunctionExpression': {
-          currentScope.addVariable(node, { node, kind: 'function' })
+          currentScope.addVariable(node, {
+            definition: { node, kind: 'function' },
+            declaration: node
+          })
           addScope(node)
           for (const param of node.params) {
             for (const extract of extractNames(param)) {
-              currentScope.addVariable(extract.node, { node, kind: 'function' }, extract.name)
+              currentScope.addVariable(extract.node, {
+                definition: { node, kind: 'function' },
+                name: extract.name,
+                declaration: node
+              })
             }
           }
           break
@@ -320,11 +376,14 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           break
         }
         case 'ClassDeclaration': {
-          currentScope.addVariable(node, { node, kind: 'class' })
+          currentScope.addVariable(node, { definition: { node, kind: 'class' }, declaration: node })
           break
         }
         case 'VariableDeclaration': {
-          currentScope.addVariable(node, { node, kind: node.kind as DefinitionKind })
+          currentScope.addVariable(node, {
+            definition: { node, kind: node.kind as DefinitionKind },
+            declaration: node
+          })
           break
         }
         case 'CatchClause': {
@@ -332,7 +391,11 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
           if (node.param) {
             for (const extract of extractNames(node.param as Node)) {
               if (extract.node) {
-                currentScope.addVariable(extract.node, { node, kind: 'catch' }, extract.name)
+                currentScope.addVariable(extract.node, {
+                  definition: { node, kind: 'catch' },
+                  name: extract.name,
+                  declaration: node
+                })
               }
             }
           }
@@ -349,6 +412,10 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
     }
   })
 
+  /**
+   * anaylze references
+   */
+
   for (let i = references.length - 1; i >= 0; --i) {
     const [scope, reference] = references[i]
     addReference(scope, reference)
@@ -364,10 +431,75 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
     }
   }
 
+  /**
+   * analyze exports
+   */
+
+  function setExportDeclaration(
+    scope: Scope,
+    node: ExportDefaultDeclaration | ExportNamedDeclaration,
+    name: string
+  ): void {
+    const variable = scope.getVariable(name)
+    if (variable) {
+      variable.export = node
+    }
+  }
+
+  for (let i = exportDeclarations.length - 1; i >= 0; --i) {
+    const exportDeclaration = exportDeclarations[i]
+    switch (exportDeclaration.type) {
+      case 'ExportDefaultDeclaration': {
+        if (exportDeclaration.declaration.type === 'Identifier') {
+          setExportDeclaration(scope, exportDeclaration, exportDeclaration.declaration.name)
+        }
+        break
+      }
+      case 'ExportNamedDeclaration': {
+        if (
+          exportDeclaration.declaration &&
+          exportDeclaration.declaration.type === 'VariableDeclaration'
+        ) {
+          for (const declarator of exportDeclaration.declaration.declarations) {
+            for (const extract of extractNames(declarator.id)) {
+              setExportDeclaration(scope, exportDeclaration, extract.name)
+            }
+          }
+        } else if (exportDeclaration.specifiers.length > 0) {
+          for (const specifier of exportDeclaration.specifiers) {
+            if (
+              specifier.type === 'ExportSpecifier' &&
+              specifier.exported.type === 'Identifier' &&
+              specifier.local.type === 'Identifier'
+            ) {
+              setExportDeclaration(scope, exportDeclaration, specifier.local.name)
+            }
+          }
+        }
+        break
+      }
+    }
+  }
+
+  /**
+   * analyze first node after import declaration
+   */
+
+  let firstNodeAfterImportDeclaration: Node | undefined
+  if (ast.type === 'Program' && ast.body.length > 0) {
+    for (const node of ast.body) {
+      firstNodeAfterImportDeclaration = node
+      if (node.type !== 'ImportDeclaration') {
+        break
+      }
+    }
+  }
+
   return {
     map,
     globals,
-    scope
+    scope,
+    firstNodeAfterImportDeclaration
   }
 }
 
