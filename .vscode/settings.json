@@ -7,6 +7,12 @@
     "source.organizeImports": "always",
     "source.fixAll.eslint": "explicit"
   },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
+  },
   "eslint.useFlatConfig": true,
   "eslint.validate": [
     "javascript",

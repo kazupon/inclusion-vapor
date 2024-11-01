@@ -3,6 +3,8 @@ node_modules
 .idea
 dist
 
+target
+
 *.log
 *.swp
 *.tgz

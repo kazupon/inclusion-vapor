@@ -2,3 +2,11 @@ pnpm-lock.yaml
 .*
 *.log
 *.swp
+
+target
+crates
+Cargo.lock
+Cargo.toml
+rust-toolchain.toml
+rustfmt.toml
+Makefile
