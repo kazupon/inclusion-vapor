@@ -66,11 +66,12 @@ export function transformSvelteScript(
   const jsAst = babelFileNode.program
   let strAst = new MagicStringAST(code)
 
-  const { scope } = analyze(jsAst)
+  const { scope, firstNodeAfterImportDeclaration } = analyze(jsAst)
 
   const refVariables = getVaporRefVariables(scope)
   strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode.start!)
   strAst = rewriteStore(scope, strAst, jsAst)
+  strAst = rewriteProps(code, scope, strAst, firstNodeAfterImportDeclaration)
 
   const sourceMap = !!options.sourcemap
   const id = options.id
@@ -86,6 +87,87 @@ export function transformSvelteScript(
   } else {
     return strAst.toString()
   }
+}
+
+function rewriteProps(
+  code: string,
+  scope: Scope,
+  s: MagicStringAST,
+  firstNodeAfterImportDeclaration?: BabelNode
+): MagicStringAST {
+  /**
+   * collect export and remove variables
+   */
+  const removableDeclarations = new Set<BabelNode>()
+  const exportWritableVariables: Variable[] = []
+  const exportReadableVariables: Variable[] = []
+  for (const variable of scope.variables.values()) {
+    if (variable.export == undefined) {
+      continue
+    } else {
+      removableDeclarations.add(variable.export)
+      removableDeclarations.add(variable.declaration)
+      if (variable.definition.kind === 'let') {
+        exportWritableVariables.push(variable)
+      } else if (variable.definition.kind === 'const') {
+        exportReadableVariables.push(variable)
+      }
+    }
+  }
+
+  /**
+   * adjust order by definition node start position
+   */
+  for (const variables of [exportWritableVariables, exportReadableVariables]) {
+    variables.sort((a, b) => a.definition.node.start! - b.definition.node.start!)
+  }
+
+  /**
+   * generate code
+   */
+  const codes: string[] = []
+  if (exportWritableVariables.length > 0) {
+    for (const variable of exportWritableVariables) {
+      let defaultValue = ''
+      if (variable.definition.node.type === 'VariableDeclarator' && variable.definition.node.init) {
+        defaultValue = code.slice(
+          variable.definition.node.init.start!,
+          variable.definition.node.init.end!
+        )
+      }
+      codes.push(
+        `const ${variable.name} = defineModel('${variable.name}'${defaultValue ? `, { default: ${defaultValue} }` : ''})`
+      )
+    }
+  }
+  if (exportReadableVariables.length > 0) {
+    // eslint-disable-next-line unicorn/no-array-reduce
+    const exportReadableProps = exportReadableVariables.reduce((acc, variable) => {
+      return variable.definition.node.type === 'VariableDeclarator' && variable.definition.node.init
+        ? [
+            ...acc,
+            `${variable.name} = ${code.slice(variable.definition.node.init.start!, variable.definition.node.init.end!)}`
+          ]
+        : [...acc, variable.name]
+    }, [] as string[])
+    codes.push(
+      `const { ${exportReadableProps.join(', ')} } = defineProps([${exportReadableVariables.map(variable => `'${variable.name}'`).join(', ')}])`
+    )
+  }
+
+  /**
+   * remove unnecessary variables
+   */
+  removableDeclarations.forEach(declaration => s.removeNode(declaration))
+
+  /**
+   * insert code to the first node after import declaration
+   */
+  if (firstNodeAfterImportDeclaration) {
+    s.prepend(codes.join('\n'))
+  }
+
+  return s
 }
 
 function rewriteStore(scope: Scope, s: MagicStringAST, program: BabelProgram): MagicStringAST {
@@ -134,6 +216,7 @@ function rewriteToVaporRef(
   for (const variable of variables) {
     const def = variable.definition.node
     if (
+      variable.export == undefined &&
       def.type === 'VariableDeclarator' &&
       def.init != undefined &&
       validateNodeTypeForVaporRef(def.init)

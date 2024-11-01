@@ -54,31 +54,63 @@ describe('transformSvelteScript', () => {
     })
   })
 
-  describe('replace svelte import', () => {
-    test('svelte', () => {
-      const code = transformSvelteScript(`import { onMount } from 'svelte'
+  test(`replace import 'svelte'`, () => {
+    const code = transformSvelteScript(`import { onMount } from 'svelte'
 onMount(() => { console.log('mounted') })
 `)
-      expect(code).toMatchSnapshot()
-      expect(code).contains(`import { onMount } from 'svelte-vapor-runtime'`)
-    })
+    expect(code).toMatchSnapshot()
+    expect(code).contains(`import { onMount } from 'svelte-vapor-runtime'`)
+  })
 
-    test('svelte/store', () => {
-      const code = transformSvelteScript(`import { readable, writable } from 'svelte/store'
+  test(`replace import 'svelte/store'`, () => {
+    const code = transformSvelteScript(`import { readable, writable } from 'svelte/store'
 const count = readable(0)
 const flag = writable(false)
 flag.set(true)
 console.log($count, $flag)
 $flag = false
 `)
+    expect(code).toMatchSnapshot()
+    expect(code).contains(
+      `import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'`
+    )
+    expect(code).contains(`const $count = useReadableStore(count)`)
+    expect(code).contains(`const $flag = useWritableStore(flag)`)
+    expect(code).contains(`console.log($count.value, $flag.value)`)
+    expect(code).contains(`$flag.value = false`)
+  })
+
+  describe('replace svelte props definition', () => {
+    test('basic', () => {
+      const code = transformSvelteScript(`export let foo
+let bar
+console.log(foo, bar)
+export { bar }
+`)
       expect(code).toMatchSnapshot()
-      expect(code).contains(
-        `import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'`
-      )
-      expect(code).contains(`const $count = useReadableStore(count)`)
-      expect(code).contains(`const $flag = useWritableStore(flag)`)
-      expect(code).contains(`console.log($count.value, $flag.value)`)
-      expect(code).contains(`$flag.value = false`)
+      expect(code).contains(`const foo = defineModel('foo')`)
+      expect(code).contains(`const bar = defineModel('bar')`)
+      expect(code).contains(`console.log(foo, bar)`)
+      expect(code).not.contains(`export let foo`)
+      expect(code).not.contains(`let bar`)
+      expect(code).not.contains(`export { bar }`)
+    })
+
+    test('default', () => {
+      const code = transformSvelteScript(`export const foo = 'readonly'
+export const bar = 1
+let baz = 2
+console.log(foo, bar, baz)
+export { baz }
+`)
+      expect(code).toMatchSnapshot()
+      expect(code).contains(`const baz = defineModel('baz', { default: 2 })`)
+      expect(code).contains(`const { foo = 'readonly', bar = 1 } = defineProps(['foo', 'bar'])`)
+      expect(code).contains(`console.log(foo, bar, baz)`)
+      expect(code).not.contains(`export const foo = 'readonly'`)
+      expect(code).not.contains(`export const bar = 1`)
+      expect(code).not.contains(`let baz = 2`)
+      expect(code).not.contains(`export { baz }`)
     })
   })
 })

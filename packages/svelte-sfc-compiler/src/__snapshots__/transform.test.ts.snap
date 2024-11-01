@@ -38,13 +38,13 @@ const increment = () => {
 }
 `;
 
-exports[`transformSvelteScript > replace svelte import > svelte 1`] = `
+exports[`transformSvelteScript > replace import 'svelte' 1`] = `
 "import { onMount } from 'svelte-vapor-runtime'
 onMount(() => { console.log('mounted') })
 "
 `;
 
-exports[`transformSvelteScript > replace svelte import > svelte/store 1`] = `
+exports[`transformSvelteScript > replace import 'svelte/store' 1`] = `
 "import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'
 const count = readable(0)
 const $count = useReadableStore(count)
@@ -53,5 +53,24 @@ const $flag = useWritableStore(flag)
 flag.set(true)
 console.log($count.value, $flag.value)
 $flag.value = false
+"
+`;
+
+exports[`transformSvelteScript > replace svelte props definition > basic 1`] = `
+"const foo = defineModel('foo')
+const bar = defineModel('bar')
+
+console.log(foo, bar)
+
+"
+`;
+
+exports[`transformSvelteScript > replace svelte props definition > default 1`] = `
+"const baz = defineModel('baz', { default: 2 })
+const { foo = 'readonly', bar = 1 } = defineProps(['foo', 'bar'])
+
+
+console.log(foo, bar, baz)
+
 "
 `;
