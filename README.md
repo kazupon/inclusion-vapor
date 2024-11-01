@@ -104,7 +104,7 @@ Based on Svelte v4 (maybe v3 compatible)
 - [ ] Svelte Component
   - [x] prop
   - [x] attrs
-  - [ ] prop export
+  - [x] prop export
   - [ ] `$$props`
   - [ ] `$$restProps`
   - [ ] `$`
