@@ -8,6 +8,7 @@ import type {
   ExportDefaultDeclaration,
   ExportNamedDeclaration,
   Identifier,
+  LabeledStatement,
   Node
 } from '@babel/types'
 
@@ -33,6 +34,7 @@ export interface Scope {
   block: Node
   variables: Map<string, Variable>
   references: Identifier[]
+  labels: LabeledStatement[]
   addVariable(node: Node, context: AddVariableContext): void
   hasVariable(name: string, ancestor?: boolean): boolean
   getVariable(name: string): Variable | undefined
@@ -51,12 +53,14 @@ function createScope(parent: Scope | null, block: Node): Readonly<Scope> {
   const variables = new Map<string, Variable>()
   const references = [] as Identifier[]
   const children = [] as Scope[]
+  const labels = [] as LabeledStatement[]
 
   const scope = {
     parent,
     children,
     block,
     references,
+    labels,
     variables
   } as Scope
 
@@ -304,6 +308,10 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
     scope.references.push(node)
   }
 
+  function addLabel(scope: Scope, node: LabeledStatement): void {
+    scope.labels.push(node)
+  }
+
   /**
    * analyze main
    */
@@ -399,6 +407,10 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
               }
             }
           }
+          break
+        }
+        case 'LabeledStatement': {
+          addLabel(currentScope, node)
           break
         }
       }

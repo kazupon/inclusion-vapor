@@ -350,6 +350,67 @@ describe('anaylze', () => {
     expect(scope.children.length).toBe(9)
   })
 
+  test('tracks all LabelStatement', () => {
+    const program = babelParse(`
+    function foo(obj) {
+      labelInFunc: ({ a, b } = obj)
+      console.log(a, b)
+    }
+    block: {
+      // BlockStatement
+    }
+    exp: document.title = 'title1'
+    for (let i = 0; i < 10; ++i) {
+      labelInFor: {
+        // BlocksStatement
+      }
+    }
+    try {
+      lableInTry: {
+        // BlockStatement
+      }
+    } catch (e) {
+      labelInCatch: {
+        // BlockStatement
+      }
+    }
+    switch (baz) {
+      case 2: {
+        labelInSwitchCase: {
+          // BlockStatement
+        }
+        console.log('case 2')
+        break;
+      }
+    }`)
+
+    const { scope } = analyze(program)
+
+    expect(scope.labels.length).toBe(2)
+    expect(scope.labels[0].label.name).toBe('block')
+    expect(scope.labels[1].label.name).toBe('exp')
+
+    const funcScope = scope.children[0]
+    expect(funcScope.labels.length).toBe(1)
+    expect(funcScope.labels[0].label.name).toBe('labelInFunc')
+
+    const forBlockScope = scope.children[2].children[0]
+    expect(forBlockScope.labels.length).toBe(1)
+    expect(forBlockScope.labels[0].label.name).toBe('labelInFor')
+
+    const tryBlockScope = scope.children[3]
+    expect(tryBlockScope.labels.length).toBe(1)
+    expect(tryBlockScope.labels[0].label.name).toBe('lableInTry')
+
+    const catchBlockScope = scope.children[4]
+    expect(catchBlockScope.labels.length).toBe(1)
+    expect(catchBlockScope.labels[0].label.name).toBe('labelInCatch')
+
+    const swtichBlockScope = scope.children[5].children[0]
+    expect(swtichBlockScope.labels.length).toBe(1)
+    expect(swtichBlockScope.labels[0].label.name).toBe('labelInSwitchCase')
+  })
+
   test('definintion kind', () => {
     const program = babelParse(`
     const a = 1
