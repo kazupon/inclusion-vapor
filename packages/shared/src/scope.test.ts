@@ -1,8 +1,8 @@
 import { babelParse, walkAST } from 'ast-kit'
 import { describe, expect, test } from 'vitest'
-import { analyze, getReferences } from './scope.ts'
+import { analyze, getExportVariables, getReferences } from './scope.ts'
 
-import type { Scope } from './scope.ts'
+import type { Scope, Variable } from './scope.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function pojo(obj: any): any {
@@ -625,4 +625,29 @@ describe('getReferences', () => {
     const refs = getReferences(scope.getVariable('a')!, false)
     expect(refs.length).toBe(2)
   })
+})
+
+test('getExportedVariables', () => {
+  const program = babelParse(`
+    export const a = 1
+    export let b
+    const c = 1
+    let d = 2
+    function foo() {
+      return a + b + c + d
+    }
+    export { c, d }
+  `)
+
+  const { scope } = analyze(program)
+
+  const collected = new Set<Variable>()
+  const exportedVariables = getExportVariables(scope, variable => collected.add(variable))
+  expect(exportedVariables.readable.length).toBe(2)
+  expect(exportedVariables.readable[0].name).toBe('a')
+  expect(exportedVariables.readable[1].name).toBe('c')
+  expect(exportedVariables.writable.length).toBe(2)
+  expect(exportedVariables.writable[0].name).toBe('b')
+  expect(exportedVariables.writable[1].name).toBe('d')
+  expect(collected.size).toBe(4)
 })

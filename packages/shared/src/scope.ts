@@ -519,3 +519,29 @@ export function getReferences(variable: Variable, exclude = true): Identifier[] 
   const references = [...variable.references]
   return exclude ? references.filter(ref => ref !== variable.identifier) : references
 }
+
+export type ExportVariables = {
+  readable: Variable[]
+  writable: Variable[]
+}
+
+export function getExportVariables(
+  scope: Scope,
+  cb?: (variable: Variable) => void
+): ExportVariables {
+  const readable: Variable[] = []
+  const writable: Variable[] = []
+  for (const variable of scope.variables.values()) {
+    if (variable.export == undefined) {
+      continue
+    } else {
+      cb?.(variable)
+      if (variable.definition.kind === 'let') {
+        writable.push(variable)
+      } else if (variable.definition.kind === 'const') {
+        readable.push(variable)
+      }
+    }
+  }
+  return { readable, writable }
+}
