@@ -527,7 +527,7 @@ export type ExportVariables = {
 
 export function getExportVariables(
   scope: Scope,
-  cb?: (variable: Variable) => void
+  cb?: (variable: Required<Variable>) => void
 ): ExportVariables {
   const readable: Variable[] = []
   const writable: Variable[] = []
@@ -535,7 +535,7 @@ export function getExportVariables(
     if (variable.export == undefined) {
       continue
     } else {
-      cb?.(variable)
+      cb?.(variable as Required<Variable>)
       if (variable.definition.kind === 'let') {
         writable.push(variable)
       } else if (variable.definition.kind === 'const') {
