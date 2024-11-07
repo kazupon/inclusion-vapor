@@ -34,6 +34,6 @@
     "unplugin-react-vapor": "workspace:*",
     "unplugin-svelte-vapor": "workspace:*",
     "vite": "catalog:",
-    "vite-plugin-vue-devtools": "^7.0.25"
+    "vite-plugin-vue-devtools": "^7.6.3"
   }
 }

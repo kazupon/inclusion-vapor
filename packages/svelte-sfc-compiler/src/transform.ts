@@ -5,7 +5,7 @@
 // import { print as _generate } from 'code-red'
 import { parse as parseBabel } from '@babel/parser'
 import { walkImportDeclaration } from 'ast-kit'
-import { analyze, getReferences } from 'inclusion-vapor-shared'
+import { analyze, getExportVariables, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
 import type {
@@ -14,7 +14,7 @@ import type {
   Program as BabelProgram
 } from '@babel/types'
 import type { ImportBinding } from 'ast-kit'
-import type { Scope, Variable } from 'inclusion-vapor-shared'
+import type { ExportVariables, Scope, Variable } from 'inclusion-vapor-shared'
 import type { SvelteScript } from 'svelte-vapor-template-compiler'
 
 type GenerateMap = ReturnType<typeof MagicStringAST.prototype.generateMap>
@@ -69,9 +69,19 @@ export function transformSvelteScript(
   const { scope, firstNodeAfterImportDeclaration } = analyze(jsAst)
 
   const refVariables = getVaporRefVariables(scope)
+  const removableExportDeclarations = new Set<BabelNode>()
+  const exportVariables = getExportVariables(scope, variable => {
+    removableExportDeclarations.add(variable.export!)
+    removableExportDeclarations.add(variable.declaration)
+  })
+
   strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode.start!)
   strAst = rewriteStore(scope, strAst, jsAst)
-  strAst = rewriteProps(code, scope, strAst, firstNodeAfterImportDeclaration)
+  strAst = rewriteProps(code, strAst, {
+    removableDeclarations: removableExportDeclarations,
+    exportVariables,
+    firstNodeAfterImportDeclaration
+  })
 
   const sourceMap = !!options.sourcemap
   const id = options.id
@@ -91,29 +101,18 @@ export function transformSvelteScript(
 
 function rewriteProps(
   code: string,
-  scope: Scope,
   s: MagicStringAST,
-  firstNodeAfterImportDeclaration?: BabelNode
-): MagicStringAST {
-  /**
-   * collect export and remove variables
-   */
-  const removableDeclarations = new Set<BabelNode>()
-  const exportWritableVariables: Variable[] = []
-  const exportReadableVariables: Variable[] = []
-  for (const variable of scope.variables.values()) {
-    if (variable.export == undefined) {
-      continue
-    } else {
-      removableDeclarations.add(variable.export)
-      removableDeclarations.add(variable.declaration)
-      if (variable.definition.kind === 'let') {
-        exportWritableVariables.push(variable)
-      } else if (variable.definition.kind === 'const') {
-        exportReadableVariables.push(variable)
-      }
-    }
+  context: {
+    removableDeclarations: Set<BabelNode>
+    exportVariables: ExportVariables
+    firstNodeAfterImportDeclaration?: BabelNode
   }
+): MagicStringAST {
+  const {
+    removableDeclarations,
+    exportVariables: { readable: exportReadableVariables, writable: exportWritableVariables },
+    firstNodeAfterImportDeclaration
+  } = context
 
   /**
    * adjust order by definition node start position
