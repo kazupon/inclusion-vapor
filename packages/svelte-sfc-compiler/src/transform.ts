@@ -68,20 +68,26 @@ export function transformSvelteScript(
 
   const { scope, firstNodeAfterImportDeclaration } = analyze(jsAst)
 
+  const vaporImports = new Set<string>()
   const refVariables = getVaporRefVariables(scope)
   const removableExportDeclarations = new Set<BabelNode>()
   const exportVariables = getExportVariables(scope, variable => {
-    removableExportDeclarations.add(variable.export!)
+    removableExportDeclarations.add(variable.export)
     removableExportDeclarations.add(variable.declaration)
   })
 
-  strAst = rewriteToVaporRef(code, refVariables, strAst, babelFileNode.start!)
+  strAst = rewriteToVaporRef(code, strAst, babelFileNode.start!, {
+    vaporImports,
+    variables: refVariables
+  })
+  strAst = rewriteEffect(code, strAst, { scope, exportVariables, vaporImports })
   strAst = rewriteStore(scope, strAst, jsAst)
   strAst = rewriteProps(code, strAst, {
     removableDeclarations: removableExportDeclarations,
     exportVariables,
     firstNodeAfterImportDeclaration
   })
+  strAst = prependVaporImports(strAst, vaporImports)
 
   const sourceMap = !!options.sourcemap
   const id = options.id
@@ -97,6 +103,39 @@ export function transformSvelteScript(
   } else {
     return strAst.toString()
   }
+}
+
+function rewriteEffect(
+  code: string,
+  s: MagicStringAST,
+  context: { scope: Scope; exportVariables: ExportVariables; vaporImports: Set<string> }
+): MagicStringAST {
+  const effectLableStmts = context.scope.labels.filter(node => node.label.name === '$')
+
+  for (const labelStmt of effectLableStmts) {
+    if (labelStmt.body.type === 'BlockStatement') {
+      // `$: { ... }`
+      s.overwrite(
+        labelStmt.start!,
+        labelStmt.end!,
+        `watchEffect(() => ${code.slice(labelStmt.body.start!, labelStmt.body.end!)})\n`
+      )
+      context.vaporImports.add('watchEffect')
+    } else if (labelStmt.body.type === 'ExpressionStatement') {
+      // `$: x = 1`, `$: setCount(count + 1)` and etc
+      switch (labelStmt.body.expression.type) {
+        case 'CallExpression': {
+          break
+        }
+        case 'AssignmentExpression': {
+          break
+        }
+        // No default
+      }
+    }
+  }
+
+  return s
 }
 
 function rewriteProps(
@@ -207,12 +246,15 @@ function rewriteStore(scope: Scope, s: MagicStringAST, program: BabelProgram): M
 
 function rewriteToVaporRef(
   code: string,
-  variables: Variable[],
   s: MagicStringAST,
-  offset: number
+  offset: number,
+  context: {
+    vaporImports: Set<string>
+    variables: Variable[]
+  }
 ): MagicStringAST {
   let importRef = false
-  for (const variable of variables) {
+  for (const variable of context.variables) {
     const def = variable.definition.node
     if (
       variable.export == undefined &&
@@ -236,9 +278,16 @@ function rewriteToVaporRef(
   }
 
   if (importRef) {
-    s.prepend(`import { ref } from 'vue/vapor'\n`)
+    context.vaporImports.add('ref')
   }
 
+  return s
+}
+
+function prependVaporImports(s: MagicStringAST, imports: Set<string>): MagicStringAST {
+  if (imports.size > 0) {
+    s.prepend(`import { ${[...imports].join(', ')} } from 'vue/vapor'\n`)
+  }
   return s
 }
 

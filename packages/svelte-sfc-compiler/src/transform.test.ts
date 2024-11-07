@@ -84,13 +84,14 @@ $flag = false
     test('basic', () => {
       const code = transformSvelteScript(`export let foo
 let bar
-console.log(foo, bar)
+const baz = 1
+console.log(foo, bar, baz)
 export { bar }
 `)
       expect(code).toMatchSnapshot()
       expect(code).contains(`const foo = defineModel('foo')`)
       expect(code).contains(`const bar = defineModel('bar')`)
-      expect(code).contains(`console.log(foo, bar)`)
+      expect(code).contains(`console.log(foo, bar, baz.value)`)
       expect(code).not.contains(`export let foo`)
       expect(code).not.contains(`let bar`)
       expect(code).not.contains(`export { bar }`)
@@ -112,5 +113,13 @@ export { baz }
       expect(code).not.contains(`let baz = 2`)
       expect(code).not.contains(`export { baz }`)
     })
+  })
+
+  test('rereplace svelte $ label block', () => {
+    const code = transformSvelteScript(`const a = 1
+$: {
+  console.log('a', a)
+}`)
+    expect(code).toMatchSnapshot()
   })
 })

@@ -57,10 +57,12 @@ $flag.value = false
 `;
 
 exports[`transformSvelteScript > replace svelte props definition > basic 1`] = `
-"const foo = defineModel('foo')
+"import { ref } from 'vue/vapor'
+const foo = defineModel('foo')
 const bar = defineModel('bar')
 
-console.log(foo, bar)
+const baz = ref(1)
+console.log(foo, bar, baz.value)
 
 "
 `;
@@ -72,5 +74,14 @@ const { foo = 'readonly', bar = 1 } = defineProps(['foo', 'bar'])
 
 console.log(foo, bar, baz)
 
+"
+`;
+
+exports[`transformSvelteScript > rereplace svelte $ label block 1`] = `
+"import { ref, watchEffect } from 'vue/vapor'
+const a = ref(1)
+watchEffect(() => {
+  console.log('a', a)
+})
 "
 `;
