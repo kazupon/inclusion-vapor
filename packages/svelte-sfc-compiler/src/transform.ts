@@ -5,16 +5,18 @@
 // import { print as _generate } from 'code-red'
 import { parse as parseBabel } from '@babel/parser'
 import { walkImportDeclaration } from 'ast-kit'
-import { analyze, getExportVariables, getReferences } from 'inclusion-vapor-shared'
+import { analyze as analyzeAst, getExportVariables, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
 import type {
   Identifier as BabelIdentifier,
+  ImportDeclaration as BabelImportDeclaration,
+  LabeledStatement as BabelLabeledStatement,
   Node as BabelNode,
   Program as BabelProgram
 } from '@babel/types'
 import type { ImportBinding } from 'ast-kit'
-import type { ExportVariables, Scope, Variable } from 'inclusion-vapor-shared'
+import type { Scope, Variable } from 'inclusion-vapor-shared'
 import type { SvelteScript } from 'svelte-vapor-template-compiler'
 
 type GenerateMap = ReturnType<typeof MagicStringAST.prototype.generateMap>
@@ -63,64 +65,245 @@ export function transformSvelteScript(
   const babelFileNode = options.ast
     ? options.ast.content
     : parseBabel(code, { sourceType: 'module' })
-  const jsAst = babelFileNode.program
-  let strAst = new MagicStringAST(code)
+  const ast = babelFileNode.program
+  const s = new MagicStringAST(code, { offset: -babelFileNode.start! })
 
-  const { scope, firstNodeAfterImportDeclaration } = analyze(jsAst)
+  const analyzed = analyze(ast)
+  rewrite({ ...analyzed, code, ast, s })
 
+  return generate(s, options)
+}
+
+function analyze(ast: BabelProgram) {
+  const { scope, firstNodeAfterImportDeclaration } = analyzeAst(ast)
+
+  // keep vapor imports (`import { ... } from 'vue/vapor'`) to generate
   const vaporImports = new Set<string>()
-  const refVariables = getVaporRefVariables(scope)
+
+  /**
+   * collect variables that are declared with `let` to be used as `ref()`
+   */
+
+  const refVariables = [...scope.variables.values()].filter(variable => {
+    return (
+      variable.definition.node.type === 'VariableDeclarator' &&
+      variable.declaration.type === 'VariableDeclaration' &&
+      variable.declaration.kind === 'let' &&
+      variable.export == undefined
+    )
+  })
+
+  if (refVariables.length > 0) {
+    vaporImports.add('ref')
+  }
+
+  /**
+   * collect export variables (`export let ...`) to be used as props
+   */
+
   const removableExportDeclarations = new Set<BabelNode>()
   const exportVariables = getExportVariables(scope, variable => {
     removableExportDeclarations.add(variable.export)
     removableExportDeclarations.add(variable.declaration)
   })
 
-  strAst = rewriteToVaporRef(code, strAst, babelFileNode.start!, {
-    vaporImports,
-    variables: refVariables
-  })
-  strAst = rewriteEffect(code, strAst, { scope, exportVariables, vaporImports })
-  strAst = rewriteStore(scope, strAst, jsAst)
-  strAst = rewriteProps(code, strAst, {
-    removableDeclarations: removableExportDeclarations,
-    exportVariables,
-    firstNodeAfterImportDeclaration
-  })
-  strAst = prependVaporImports(strAst, vaporImports)
+  function hasReactivityVariable(name: string): boolean {
+    for (const variable of refVariables) {
+      if (variable.name === name) {
+        return true
+      }
+    }
+    for (const variable of [...exportVariables.readable, ...exportVariables.writable]) {
+      if (variable.name === name) {
+        return true
+      }
+    }
+    return false
+  }
 
-  const sourceMap = !!options.sourcemap
-  const id = options.id
-  if (sourceMap) {
-    if (!id) {
-      throw new Error('`id` is required when `sourcemap` is enabled')
+  /**
+   * collect effectable references and label statements
+   */
+
+  // keep effectable references to use as `computed()`
+  const effectables = new Set<string>()
+  // keep label statements to replace with `computed`, `watchEffect` and etc
+  const transformableEffectLabels = new Set<BabelLabeledStatement>()
+
+  function collectRecusiveEffectables(node: BabelNode) {
+    switch (node.type) {
+      case 'Identifier': {
+        if (!hasReactivityVariable(node.name)) {
+          effectables.add(node.name)
+          vaporImports.add('computed')
+        }
+        break
+      }
+      case 'ObjectPattern': {
+        for (const property of node.properties) {
+          if (property.type === 'ObjectProperty') {
+            collectRecusiveEffectables(property.value)
+          }
+        }
+        break
+      }
+      case 'ArrayPattern': {
+        for (const element of node.elements) {
+          if (element) {
+            collectRecusiveEffectables(element)
+          }
+        }
+        break
+      }
+      // No default
     }
-    const gen = generateTransform(strAst, id)
-    if (gen == undefined) {
-      throw new Error('Failed to generate source map')
+  }
+
+  for (const labelStmt of scope.labels.filter(node => node.label.name === '$')) {
+    if (labelStmt.body.type === 'BlockStatement') {
+      // `$: { ... }`
+      // TODO: strictly collect block statement
+      transformableEffectLabels.add(labelStmt)
+      vaporImports.add('watchEffect')
+    } else if (labelStmt.body.type === 'ExpressionStatement') {
+      // `$: x = 1`, `$: setCount(count + 1)` and etc
+      const expression = labelStmt.body.expression
+      switch (expression.type) {
+        case 'CallExpression': {
+          for (const arg of expression.arguments) {
+            if (arg.type === 'Identifier' && hasReactivityVariable(arg.name)) {
+              transformableEffectLabels.add(labelStmt)
+              vaporImports.add('watchEffect')
+            }
+          }
+          break
+        }
+        case 'AssignmentExpression': {
+          if (expression.operator === '=') {
+            collectRecusiveEffectables(expression.left)
+            if (expression.right.type === 'Identifier') {
+              if (hasReactivityVariable(expression.right.name)) {
+                transformableEffectLabels.add(labelStmt)
+              }
+            } else if (expression.right.type === 'CallExpression') {
+              for (const arg of expression.right.arguments) {
+                if (arg.type === 'Identifier' && hasReactivityVariable(arg.name)) {
+                  transformableEffectLabels.add(labelStmt)
+                }
+              }
+            }
+          }
+          break
+        }
+        // No default
+      }
     }
-    return gen
-  } else {
-    return strAst.toString()
+  }
+
+  /**
+   * collect store imports
+   */
+
+  const storeImportBindings = new Map<string, ImportBinding>()
+  const storeImports = new Map<BabelImportDeclaration, string>()
+  for (const node of ast.body) {
+    switch (node.type) {
+      case 'ImportDeclaration': {
+        if (node.source.value === 'svelte') {
+          storeImports.set(node, 'svelte')
+        } else if (node.source.value === 'svelte/store') {
+          storeImports.set(node, 'svelte/store')
+          const imports: Record<string, ImportBinding> = {}
+          walkImportDeclaration(imports, node)
+          for (const [name, binding] of Object.entries(imports)) {
+            if (!storeImportBindings.has(name)) {
+              storeImportBindings.set(name, binding)
+            }
+          }
+        } else {
+          // TODO: svelte/animate, svelte/transition and etc
+        }
+        break
+      }
+    }
+  }
+  const storeVariables = getVaporStoreVariables(scope, Object.fromEntries(storeImportBindings))
+  const storeReferences = getVaporStoreConvertableVariables(scope, storeVariables)
+
+  return {
+    scope,
+    firstNodeAfterImportDeclaration,
+    vaporImports,
+    refVariables,
+    removableExportDeclarations,
+    exportVariables,
+    effectables,
+    transformableEffectLabels,
+    storeImports,
+    storeVariables,
+    storeReferences
   }
 }
 
-function rewriteEffect(
-  code: string,
-  s: MagicStringAST,
-  context: { scope: Scope; exportVariables: ExportVariables; vaporImports: Set<string> }
-): MagicStringAST {
-  const effectLableStmts = context.scope.labels.filter(node => node.label.name === '$')
+type RewriteContext = ReturnType<typeof analyze> & {
+  code: string
+  ast: BabelProgram
+  s: MagicStringAST
+}
 
-  for (const labelStmt of effectLableStmts) {
+function rewrite(context: RewriteContext): void {
+  rewriteRef(context)
+  rewriteProps(context)
+  rewriteStore(context)
+  rewriteEffect(context)
+  prependVaporImports(context)
+}
+
+function rewriteRef(context: RewriteContext): void {
+  const { s, refVariables, code } = context
+
+  /**
+   * rewrite define variables and reference variables
+   */
+  for (const variable of refVariables) {
+    // rewrite to `ref()`
+    if (
+      variable.export == undefined &&
+      variable.definition.node.type === 'VariableDeclarator' &&
+      variable.definition.node.init != undefined &&
+      validateNodeTypeForVaporRef(variable.definition.node.init)
+    ) {
+      s.overwriteNode(
+        variable.declaration,
+        `const ${variable.name} = ref(${sliceCode(code, variable.definition.node.init, s.offset)})`
+      )
+    } else {
+      continue
+    }
+
+    // rewrite to `.value`
+    const refs = getReferences(variable)
+    for (const ref of refs) {
+      s.overwriteNode(ref, `${ref.name}.value`)
+    }
+  }
+}
+
+function sliceCode(code: string, node: BabelNode, offset?: number): string {
+  return offset == undefined
+    ? code.slice(node.start!, node.end!)
+    : code.slice(node.start! + offset, node.end! + offset)
+}
+
+function rewriteEffect(context: RewriteContext): void {
+  const { s, transformableEffectLabels } = context
+  /**
+   * rewrite effect label statements
+   */
+  for (const labelStmt of transformableEffectLabels) {
     if (labelStmt.body.type === 'BlockStatement') {
       // `$: { ... }`
-      s.overwrite(
-        labelStmt.start!,
-        labelStmt.end!,
-        `watchEffect(() => ${code.slice(labelStmt.body.start!, labelStmt.body.end!)})\n`
-      )
-      context.vaporImports.add('watchEffect')
+      s.overwriteNode(labelStmt, `watchEffect(() => ${s.sliceNode(labelStmt.body)})\n`)
     } else if (labelStmt.body.type === 'ExpressionStatement') {
       // `$: x = 1`, `$: setCount(count + 1)` and etc
       switch (labelStmt.body.expression.type) {
@@ -134,21 +317,13 @@ function rewriteEffect(
       }
     }
   }
-
-  return s
 }
 
-function rewriteProps(
-  code: string,
-  s: MagicStringAST,
-  context: {
-    removableDeclarations: Set<BabelNode>
-    exportVariables: ExportVariables
-    firstNodeAfterImportDeclaration?: BabelNode
-  }
-): MagicStringAST {
+function rewriteProps(context: RewriteContext): void {
   const {
-    removableDeclarations,
+    s,
+    code,
+    removableExportDeclarations,
     exportVariables: { readable: exportReadableVariables, writable: exportWritableVariables },
     firstNodeAfterImportDeclaration
   } = context
@@ -168,10 +343,7 @@ function rewriteProps(
     for (const variable of exportWritableVariables) {
       let defaultValue = ''
       if (variable.definition.node.type === 'VariableDeclarator' && variable.definition.node.init) {
-        defaultValue = code.slice(
-          variable.definition.node.init.start!,
-          variable.definition.node.init.end!
-        )
+        defaultValue = sliceCode(code, variable.definition.node.init)
       }
       codes.push(
         `const ${variable.name} = defineModel('${variable.name}'${defaultValue ? `, { default: ${defaultValue} }` : ''})`
@@ -182,116 +354,63 @@ function rewriteProps(
     // eslint-disable-next-line unicorn/no-array-reduce
     const exportReadableProps = exportReadableVariables.reduce((acc, variable) => {
       return variable.definition.node.type === 'VariableDeclarator' && variable.definition.node.init
-        ? [
-            ...acc,
-            `${variable.name} = ${code.slice(variable.definition.node.init.start!, variable.definition.node.init.end!)}`
-          ]
+        ? [...acc, `${variable.name} = ${sliceCode(code, variable.definition.node.init)}`]
         : [...acc, variable.name]
     }, [] as string[])
     codes.push(
-      `const { ${exportReadableProps.join(', ')} } = defineProps([${exportReadableVariables.map(variable => `'${variable.name}'`).join(', ')}])`
+      `const { ${exportReadableProps.join(
+        ', '
+      )} } = defineProps([${exportReadableVariables.map(variable => `'${variable.name}'`).join(', ')}])`
     )
   }
 
   /**
    * remove unnecessary variables
    */
-  removableDeclarations.forEach(declaration => s.removeNode(declaration))
+  removableExportDeclarations.forEach(declaration => s.removeNode(declaration))
 
   /**
    * insert code to the first node after import declaration
    */
   if (firstNodeAfterImportDeclaration) {
-    s.prepend(codes.join('\n'))
+    s.prependRight(firstNodeAfterImportDeclaration.start! + s.offset, codes.join('\n'))
   }
-
-  return s
 }
 
-function rewriteStore(scope: Scope, s: MagicStringAST, program: BabelProgram): MagicStringAST {
-  for (const node of program.body) {
-    switch (node.type) {
-      case 'ImportDeclaration': {
-        if (node.source.value === 'svelte') {
-          const source = node.source
-          s.overwrite(source.start!, source.end!, `'svelte-vapor-runtime'`)
-        } else if (node.source.value === 'svelte/store') {
-          const declarationNode = node
-          const imports: Record<string, ImportBinding> = {}
-          walkImportDeclaration(imports, declarationNode)
-          const specifiers = Object.keys(imports)
-          if (specifiers.includes('writable')) {
-            specifiers.push('useWritableStore')
-          }
-          if (specifiers.includes('readable')) {
-            specifiers.push('useReadableStore')
-          }
-          const variables = getVaporStoreVariables(scope, imports)
-          const references = getVaporStoreConvertableVariables(scope, variables)
-          insertStoreComposable(s, variables)
-          replaceStoreIdentifier(s, references)
-          s.overwrite(
-            declarationNode.start!,
-            declarationNode.end!,
-            `import { ${specifiers.join(', ')} } from 'svelte-vapor-runtime/store'`
-          )
+function rewriteStore(context: RewriteContext): void {
+  const { s, storeImports, storeVariables, storeReferences } = context
+
+  for (const [node, source] of storeImports) {
+    if (source === 'svelte') {
+      s.overwriteNode(node.source, `'svelte-vapor-runtime'`)
+    } else if (source === 'svelte/store') {
+      const additionalSpecifiers: string[] = []
+      for (const specifier of node.specifiers) {
+        if (specifier.local.name === 'writable') {
+          additionalSpecifiers.push('writable', 'useWritableStore')
+        } else if (specifier.local.name === 'readable') {
+          additionalSpecifiers.push('readable', 'useWritableStore')
         }
-        break
       }
-    }
-  }
-
-  return s
-}
-
-function rewriteToVaporRef(
-  code: string,
-  s: MagicStringAST,
-  offset: number,
-  context: {
-    vaporImports: Set<string>
-    variables: Variable[]
-  }
-): MagicStringAST {
-  let importRef = false
-  for (const variable of context.variables) {
-    const def = variable.definition.node
-    if (
-      variable.export == undefined &&
-      def.type === 'VariableDeclarator' &&
-      def.init != undefined &&
-      validateNodeTypeForVaporRef(def.init)
-    ) {
+      insertStoreComposable(s, storeVariables)
+      replaceStoreIdentifier(s, storeReferences)
       s.overwriteNode(
-        normalizeBabelNodeOffset(def.init, offset),
-        `ref(${code.slice(def.init.start! - offset, def.init.end! - offset)})`
+        node,
+        `import { ${[...additionalSpecifiers].join(', ')} } from 'svelte-vapor-runtime/store'`
       )
-      importRef = true
-    } else {
-      continue
-    }
-
-    const refs = getReferences(variable)
-    for (const ref of refs) {
-      s.overwriteNode(normalizeBabelNodeOffset(ref, offset), `${ref.name}.value`)
     }
   }
-
-  if (importRef) {
-    context.vaporImports.add('ref')
-  }
-
-  return s
 }
 
-function prependVaporImports(s: MagicStringAST, imports: Set<string>): MagicStringAST {
+function prependVaporImports(context: RewriteContext): void {
+  const { s, vaporImports: imports } = context
   if (imports.size > 0) {
     s.prepend(`import { ${[...imports].join(', ')} } from 'vue/vapor'\n`)
   }
-  return s
 }
 
 function validateNodeTypeForVaporRef(node: BabelNode): boolean {
+  // TODO: more validation, binary expression, call expression and etc ...
   return (
     node.type === 'NumericLiteral' ||
     node.type === 'StringLiteral' ||
@@ -305,20 +424,6 @@ function validateNodeTypeForVaporRef(node: BabelNode): boolean {
     node.type === 'ObjectExpression' ||
     node.type === 'NewExpression'
   )
-}
-
-function normalizeBabelNodeOffset(node: BabelNode, offset: number): BabelNode {
-  return {
-    ...node,
-    start: node.start! - offset,
-    end: node.end! - offset
-  }
-}
-
-function getVaporRefVariables(scope: Scope): Variable[] {
-  return [...scope.variables.values()].filter(variable => {
-    return variable.definition.node.type === 'VariableDeclarator'
-  })
 }
 
 function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBinding>): Variable[] {
@@ -371,13 +476,34 @@ function insertStoreComposable(s: MagicStringAST, variables: Variable[]): void {
       def.init.type === 'CallExpression' &&
       def.init.callee.type === 'Identifier'
     ) {
-      s.appendRight(def.end!, makeComposable(variable, def.init.callee))
+      s.appendRight(def.end! + s.offset, makeComposable(variable, def.init.callee))
     }
   }
 }
 
 function replaceStoreIdentifier(s: MagicStringAST, references: BabelIdentifier[]): void {
   for (const ref of references) {
-    s.overwrite(ref.start!, ref.end!, `${ref.name}.value`)
+    s.overwriteNode(ref, `${s.sliceNode(ref)}.value`)
+  }
+}
+
+function generate(
+  s: MagicStringAST,
+  options: TransformSvelteScriptOptions = {}
+): string | { code: string; map: GenerateMap } {
+  const sourceMap = !!options.sourcemap
+  const id = options.id
+
+  if (sourceMap) {
+    if (!id) {
+      throw new Error('`id` is required when `sourcemap` is enabled')
+    }
+    const gen = generateTransform(s, id)
+    if (gen == undefined) {
+      throw new Error('Failed to generate source map')
+    }
+    return gen
+  } else {
+    return s.toString()
   }
 }

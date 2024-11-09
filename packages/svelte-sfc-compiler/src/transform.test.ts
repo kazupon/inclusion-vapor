@@ -31,8 +31,9 @@ describe('transformSvelteScript', () => {
       const code = transformSvelteScript(jsCode)
       expect(code).toMatchSnapshot()
       expect(code).contains(`import { ref } from 'vue/vapor'`)
-      expect(code).contains('let count = ref(0)')
+      expect(code).contains('const count = ref(0)')
       expect(code).contains('count.value += 1')
+      expect(code).not.contains(`let`)
     })
 
     test('with ast', () => {
@@ -48,8 +49,9 @@ describe('transformSvelteScript', () => {
       }) as { code: string; map: ReturnType<MagicStringAST['generateMap']> }
       expect(code).toMatchSnapshot()
       expect(code).contains(`import { ref } from 'vue/vapor'`)
-      expect(code).contains('let count = ref(0)')
+      expect(code).contains('const count = ref(0)')
       expect(code).contains('count.value += 1')
+      expect(code).not.contains(`let`)
       expect(map).toMatchSnapshot()
     })
   })
@@ -72,7 +74,7 @@ $flag = false
 `)
     expect(code).toMatchSnapshot()
     expect(code).contains(
-      `import { readable, writable, useWritableStore, useReadableStore } from 'svelte-vapor-runtime/store'`
+      `import { readable, useWritableStore, writable, useWritableStore } from 'svelte-vapor-runtime/store'`
     )
     expect(code).contains(`const $count = useReadableStore(count)`)
     expect(code).contains(`const $flag = useWritableStore(flag)`)
@@ -84,7 +86,7 @@ $flag = false
     test('basic', () => {
       const code = transformSvelteScript(`export let foo
 let bar
-const baz = 1
+let baz = 1
 console.log(foo, bar, baz)
 export { bar }
 `)
@@ -98,13 +100,16 @@ export { bar }
     })
 
     test('default', () => {
-      const code = transformSvelteScript(`export const foo = 'readonly'
+      const code = transformSvelteScript(`import a1 from 'foo'
+export const foo = 'readonly'
 export const bar = 1
+a1()
 let baz = 2
 console.log(foo, bar, baz)
 export { baz }
 `)
       expect(code).toMatchSnapshot()
+      expect(code).contains(`import a1 from 'foo'`)
       expect(code).contains(`const baz = defineModel('baz', { default: 2 })`)
       expect(code).contains(`const { foo = 'readonly', bar = 1 } = defineProps(['foo', 'bar'])`)
       expect(code).contains(`console.log(foo, bar, baz)`)
@@ -115,11 +120,20 @@ export { baz }
     })
   })
 
-  test('rereplace svelte $ label block', () => {
-    const code = transformSvelteScript(`const a = 1
+  describe('$ label statement', () => {
+    test('block Statement', () => {
+      const code = transformSvelteScript(`const a = 1
+let b = 2
 $: {
-  console.log('a', a)
+  console.log(a, b)
 }`)
-    expect(code).toMatchSnapshot()
+      expect(code).toMatchSnapshot()
+      expect(code).contains(`import { ref, watchEffect } from 'vue/vapor'`)
+      expect(code).contains(`const b = ref(2)`)
+      expect(code).contains(`watchEffect(() =>`)
+      expect(code).contains(`console.log(a, b.value)`)
+      expect(code).not.contains(`let`)
+      expect(code).not.contains(`$: {`)
+    })
   })
 })
