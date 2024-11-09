@@ -1,6 +1,25 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`transformSvelteScript > $ label statement > block Statement 1`] = `
+exports[`transformSvelteScript > $ label statement > assign expression 1`] = `
+"import { ref, computed, watchEffect } from 'vue/vapor'
+const a = ref(1)
+function foo(v) {
+  a.value = v
+}
+const b = computed(() => a.value)
+
+const c = computed(() => bar(b.value))
+
+watchEffect(() => foo(c.value))
+
+function bar(d) {
+  return b.value + c.value + d
+}
+console.log(b.value, c.value, bar(1))
+"
+`;
+
+exports[`transformSvelteScript > $ label statement > block statement 1`] = `
 "import { ref, watchEffect } from 'vue/vapor'
 const a = 1
 const b = ref(2)

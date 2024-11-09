@@ -107,7 +107,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [x] prop export
   - [ ] `$$props`
   - [ ] `$$restProps`
-  - [ ] `$`
+  - [x] `$`
   - [ ] `context="module"`
 - [ ] Logic blocks
   - [x] `{#if}` / `{:else}` / `{:else if}`

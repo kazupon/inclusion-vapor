@@ -121,7 +121,7 @@ export { baz }
   })
 
   describe('$ label statement', () => {
-    test('block Statement', () => {
+    test('block statement', () => {
       const code = transformSvelteScript(`const a = 1
 let b = 2
 $: {
@@ -134,6 +134,31 @@ $: {
       expect(code).contains(`console.log(a, b.value)`)
       expect(code).not.contains(`let`)
       expect(code).not.contains(`$: {`)
+    })
+
+    test('assign expression', () => {
+      const code = transformSvelteScript(`let a = 1
+function foo(v) {
+  a = v
+}
+$: b = a
+$: c = bar(b)
+$: foo(c)
+function bar(d) {
+  return b + c + d
+}
+console.log(b, c, bar(1))
+`)
+      expect(code).toMatchSnapshot()
+      expect(code).contains(`import { ref, computed, watchEffect } from 'vue/vapor'`)
+      expect(code).contains(`const a = ref(1)`)
+      expect(code).contains(`const b = computed(() => a.value)`)
+      expect(code).contains(`const c = computed(() => bar(b.value))`)
+      expect(code).contains(`watchEffect(() => foo(c.value))`)
+      expect(code).contains(`return b.value + c.value + d`)
+      expect(code).contains(`console.log(b.value, c.value, bar(1))`)
+      expect(code).not.contains(`let`)
+      expect(code).not.contains(`$: `)
     })
   })
 })

@@ -107,6 +107,15 @@ function analyze(ast: BabelProgram) {
     removableExportDeclarations.add(variable.declaration)
   })
 
+  /**
+   * collect effectable references and label statements
+   */
+
+  // keep effectable references to use as `computed()`
+  const effectables = new Set<string>()
+  // keep label statements to replace with `computed`, `watchEffect` and etc
+  const transformableEffectLabels = new Set<[BabelLabeledStatement, BabelIdentifier | undefined]>()
+
   function hasReactivityVariable(name: string): boolean {
     for (const variable of refVariables) {
       if (variable.name === name) {
@@ -118,44 +127,44 @@ function analyze(ast: BabelProgram) {
         return true
       }
     }
+
+    if (effectables.has(name)) {
+      return true
+    }
+
     return false
   }
 
-  /**
-   * collect effectable references and label statements
-   */
-
-  // keep effectable references to use as `computed()`
-  const effectables = new Set<string>()
-  // keep label statements to replace with `computed`, `watchEffect` and etc
-  const transformableEffectLabels = new Set<BabelLabeledStatement>()
-
-  function collectRecusiveEffectables(node: BabelNode) {
+  function collectRecusiveEffectables(node: BabelNode): BabelIdentifier | undefined {
     switch (node.type) {
       case 'Identifier': {
         if (!hasReactivityVariable(node.name)) {
           effectables.add(node.name)
           vaporImports.add('computed')
+          return node
         }
         break
       }
-      case 'ObjectPattern': {
-        for (const property of node.properties) {
-          if (property.type === 'ObjectProperty') {
-            collectRecusiveEffectables(property.value)
-          }
-        }
-        break
+      // TODO: spread pattern
+      // case 'ObjectPattern': {
+      //   for (const property of node.properties) {
+      //     if (property.type === 'ObjectProperty') {
+      //       collectRecusiveEffectables(property.value)
+      //     }
+      //   }
+      //   break
+      // }
+      // case 'ArrayPattern': {
+      //   for (const element of node.elements) {
+      //     if (element) {
+      //       collectRecusiveEffectables(element)
+      //     }
+      //   }
+      //   break
+      // }
+      default: {
+        return undefined
       }
-      case 'ArrayPattern': {
-        for (const element of node.elements) {
-          if (element) {
-            collectRecusiveEffectables(element)
-          }
-        }
-        break
-      }
-      // No default
     }
   }
 
@@ -163,7 +172,7 @@ function analyze(ast: BabelProgram) {
     if (labelStmt.body.type === 'BlockStatement') {
       // `$: { ... }`
       // TODO: strictly collect block statement
-      transformableEffectLabels.add(labelStmt)
+      transformableEffectLabels.add([labelStmt, undefined])
       vaporImports.add('watchEffect')
     } else if (labelStmt.body.type === 'ExpressionStatement') {
       // `$: x = 1`, `$: setCount(count + 1)` and etc
@@ -172,23 +181,25 @@ function analyze(ast: BabelProgram) {
         case 'CallExpression': {
           for (const arg of expression.arguments) {
             if (arg.type === 'Identifier' && hasReactivityVariable(arg.name)) {
-              transformableEffectLabels.add(labelStmt)
+              transformableEffectLabels.add([labelStmt, undefined])
               vaporImports.add('watchEffect')
+              break
             }
           }
           break
         }
         case 'AssignmentExpression': {
           if (expression.operator === '=') {
-            collectRecusiveEffectables(expression.left)
+            const id = collectRecusiveEffectables(expression.left)
             if (expression.right.type === 'Identifier') {
               if (hasReactivityVariable(expression.right.name)) {
-                transformableEffectLabels.add(labelStmt)
+                transformableEffectLabels.add([labelStmt, id])
               }
             } else if (expression.right.type === 'CallExpression') {
               for (const arg of expression.right.arguments) {
                 if (arg.type === 'Identifier' && hasReactivityVariable(arg.name)) {
-                  transformableEffectLabels.add(labelStmt)
+                  transformableEffectLabels.add([labelStmt, id])
+                  break
                 }
               }
             }
@@ -300,23 +311,50 @@ function rewriteEffect(context: RewriteContext): void {
   /**
    * rewrite effect label statements
    */
-  for (const labelStmt of transformableEffectLabels) {
+  for (const [labelStmt, id] of transformableEffectLabels) {
     if (labelStmt.body.type === 'BlockStatement') {
       // `$: { ... }`
       s.overwriteNode(labelStmt, `watchEffect(() => ${s.sliceNode(labelStmt.body)})\n`)
     } else if (labelStmt.body.type === 'ExpressionStatement') {
-      // `$: x = 1`, `$: setCount(count + 1)` and etc
-      switch (labelStmt.body.expression.type) {
+      // `$: x = y`, `$: setCount(count + 1)` and etc
+      const expression = labelStmt.body.expression
+      switch (expression.type) {
         case 'CallExpression': {
+          s.overwriteNode(labelStmt, `watchEffect(() => ${s.sliceNode(labelStmt.body)})\n`)
           break
         }
         case 'AssignmentExpression': {
+          if (
+            expression.operator === '=' &&
+            (expression.right.type === 'Identifier' ||
+              expression.right.type === 'CallExpression') &&
+            id
+          ) {
+            s.overwriteNode(
+              labelStmt,
+              `const ${id.name} = computed(() => ${s.sliceNode(expression.right)})\n`
+            )
+            replaceLabelEffectableReferences(context.scope, id, context)
+          }
           break
         }
         // No default
       }
     }
   }
+}
+
+function replaceLabelEffectableReferences(
+  scope: Scope,
+  id: BabelIdentifier,
+  context: RewriteContext
+): void {
+  const { s } = context
+  const refs = scope.references.filter(ref => ref.start! > id.start! && ref.name === id.name)
+  for (const ref of refs) {
+    s.overwriteNode(ref, `${s.sliceNode(ref)}.value`)
+  }
+  scope.children.forEach(child => replaceLabelEffectableReferences(child, id, context))
 }
 
 function rewriteProps(context: RewriteContext): void {
