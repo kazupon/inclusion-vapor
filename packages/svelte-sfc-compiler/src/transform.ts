@@ -263,16 +263,16 @@ type TransformContext = ReturnType<typeof analyze> & {
 }
 
 function transform(context: TransformContext): void {
-  transformRef(context)
+  transformReactivity(context)
   transformProps(context)
   transformStore(context)
   transformEffect(context)
   prependVaporImports(context)
 }
 
-function transformRef({ s, refVariables, code }: TransformContext): void {
+function transformReactivity({ s, refVariables, code }: TransformContext): void {
   /**
-   * transform define variables and reference variables
+   * transform `let` define variables and reference variables
    */
   for (const variable of refVariables) {
     // transform to `ref()`
