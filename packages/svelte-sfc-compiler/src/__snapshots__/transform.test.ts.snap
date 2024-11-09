@@ -8,7 +8,7 @@ function foo(v) {
 }
 const b = computed(() => a.value)
 
-const c = computed(() => bar(b.value))
+const c = computed(() => bar(b.value) * 2)
 
 watchEffect(() => foo(c.value))
 

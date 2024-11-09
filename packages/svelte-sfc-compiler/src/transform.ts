@@ -4,7 +4,7 @@
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
 import { parse as parseBabel } from '@babel/parser'
-import { walkImportDeclaration } from 'ast-kit'
+import { walkAST, walkImportDeclaration } from 'ast-kit'
 import { analyze as analyzeAst, getExportVariables, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
 
@@ -191,18 +191,14 @@ function analyze(ast: BabelProgram) {
         case 'AssignmentExpression': {
           if (expression.operator === '=') {
             const id = collectRecusiveEffectables(expression.left)
-            if (expression.right.type === 'Identifier') {
-              if (hasReactivityVariable(expression.right.name)) {
-                transformableEffectLabels.add([labelStmt, id])
-              }
-            } else if (expression.right.type === 'CallExpression') {
-              for (const arg of expression.right.arguments) {
-                if (arg.type === 'Identifier' && hasReactivityVariable(arg.name)) {
+            walkAST(expression.right, {
+              enter(node) {
+                if (node.type === 'Identifier' && hasReactivityVariable(node.name)) {
                   transformableEffectLabels.add([labelStmt, id])
-                  break
+                  this.remove()
                 }
               }
-            }
+            })
           }
           break
         }
@@ -322,12 +318,7 @@ function transformEffect(context: TransformContext): void {
           break
         }
         case 'AssignmentExpression': {
-          if (
-            expression.operator === '=' &&
-            (expression.right.type === 'Identifier' ||
-              expression.right.type === 'CallExpression') &&
-            id
-          ) {
+          if (expression.operator === '=' && id) {
             s.overwriteNode(
               labelStmt,
               `const ${id.name} = computed(() => ${s.sliceNode(expression.right)})\n`

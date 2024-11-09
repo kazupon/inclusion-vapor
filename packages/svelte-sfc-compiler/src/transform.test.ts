@@ -142,7 +142,7 @@ function foo(v) {
   a = v
 }
 $: b = a
-$: c = bar(b)
+$: c = bar(b) * 2
 $: foo(c)
 function bar(d) {
   return b + c + d
@@ -153,7 +153,7 @@ console.log(b, c, bar(1))
       expect(code).contains(`import { ref, computed, watchEffect } from 'vue/vapor'`)
       expect(code).contains(`const a = ref(1)`)
       expect(code).contains(`const b = computed(() => a.value)`)
-      expect(code).contains(`const c = computed(() => bar(b.value))`)
+      expect(code).contains(`const c = computed(() => bar(b.value) * 2)`)
       expect(code).contains(`watchEffect(() => foo(c.value))`)
       expect(code).contains(`return b.value + c.value + d`)
       expect(code).contains(`console.log(b.value, c.value, bar(1))`)
