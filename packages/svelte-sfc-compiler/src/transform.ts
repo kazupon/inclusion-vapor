@@ -69,7 +69,7 @@ export function transformSvelteScript(
   const s = new MagicStringAST(code, { offset: -babelFileNode.start! })
 
   const analyzed = analyze(ast)
-  rewrite({ ...analyzed, code, ast, s })
+  transform({ ...analyzed, code, ast, s })
 
   return generate(s, options)
 }
@@ -256,28 +256,26 @@ function analyze(ast: BabelProgram) {
   }
 }
 
-type RewriteContext = ReturnType<typeof analyze> & {
+type TransformContext = ReturnType<typeof analyze> & {
   code: string
   ast: BabelProgram
   s: MagicStringAST
 }
 
-function rewrite(context: RewriteContext): void {
-  rewriteRef(context)
-  rewriteProps(context)
-  rewriteStore(context)
-  rewriteEffect(context)
+function transform(context: TransformContext): void {
+  transformRef(context)
+  transformProps(context)
+  transformStore(context)
+  transformEffect(context)
   prependVaporImports(context)
 }
 
-function rewriteRef(context: RewriteContext): void {
-  const { s, refVariables, code } = context
-
+function transformRef({ s, refVariables, code }: TransformContext): void {
   /**
-   * rewrite define variables and reference variables
+   * transform define variables and reference variables
    */
   for (const variable of refVariables) {
-    // rewrite to `ref()`
+    // transform to `ref()`
     if (
       variable.export == undefined &&
       variable.definition.node.type === 'VariableDeclarator' &&
@@ -292,7 +290,7 @@ function rewriteRef(context: RewriteContext): void {
       continue
     }
 
-    // rewrite to `.value`
+    // transform to `.value`
     const refs = getReferences(variable)
     for (const ref of refs) {
       s.overwriteNode(ref, `${ref.name}.value`)
@@ -306,10 +304,10 @@ function sliceCode(code: string, node: BabelNode, offset?: number): string {
     : code.slice(node.start! + offset, node.end! + offset)
 }
 
-function rewriteEffect(context: RewriteContext): void {
+function transformEffect(context: TransformContext): void {
   const { s, transformableEffectLabels } = context
   /**
-   * rewrite effect label statements
+   * transform effect label statements
    */
   for (const [labelStmt, id] of transformableEffectLabels) {
     if (labelStmt.body.type === 'BlockStatement') {
@@ -347,17 +345,14 @@ function rewriteEffect(context: RewriteContext): void {
 function replaceLabelEffectableReferences(
   scope: Scope,
   id: BabelIdentifier,
-  context: RewriteContext
+  context: TransformContext
 ): void {
-  const { s } = context
   const refs = scope.references.filter(ref => ref.start! > id.start! && ref.name === id.name)
-  for (const ref of refs) {
-    s.overwriteNode(ref, `${s.sliceNode(ref)}.value`)
-  }
+  refs.forEach(ref => context.s.overwriteNode(ref, `${context.s.sliceNode(ref)}.value`))
   scope.children.forEach(child => replaceLabelEffectableReferences(child, id, context))
 }
 
-function rewriteProps(context: RewriteContext): void {
+function transformProps(context: TransformContext): void {
   const {
     s,
     code,
@@ -415,7 +410,7 @@ function rewriteProps(context: RewriteContext): void {
   }
 }
 
-function rewriteStore(context: RewriteContext): void {
+function transformStore(context: TransformContext): void {
   const { s, storeImports, storeVariables, storeReferences } = context
 
   for (const [node, source] of storeImports) {
@@ -440,8 +435,7 @@ function rewriteStore(context: RewriteContext): void {
   }
 }
 
-function prependVaporImports(context: RewriteContext): void {
-  const { s, vaporImports: imports } = context
+function prependVaporImports({ s, vaporImports: imports }: TransformContext): void {
   if (imports.size > 0) {
     s.prepend(`import { ${[...imports].join(', ')} } from 'vue/vapor'\n`)
   }
