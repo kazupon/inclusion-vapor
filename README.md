@@ -1,4 +1,4 @@
-# Inclusion Vapor
+# 🫶 Inclusion Vapor
 
 This Research & Development project is for running various components in [vapor](https://github.com/vuejs/core-vapor).
 
@@ -181,7 +181,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] template
   - [ ] script
   - [ ] styles
-- [ ] Vite plugin with unplugin (Poc Done)
+- [ ] Vite plugin with unplugin (PoC Done)
   - [ ] analysis dependencies
   - [ ] runtime transform
   - [ ] reactivity transform
@@ -192,6 +192,28 @@ Based on Svelte v4 (maybe v3 compatible)
 - [ ] TODO-MVC App
 
 </details>
+
+## 🛣️ Roadmap
+
+This is the roadmap for inclusion-vapor. Currently, we are focusing on our day jobs, so the roadmap only includes svelte-vapor. If needed, we will continue implementing react-vapor, but we want to go with it in a community.
+
+**This roadmap depends on [vapor project](https://github.com/vuejs/core-vapor) so that the milestones may change.**
+
+### Milestone 1: svelte-vapor basic implementation
+
+- Goal: To be able to use svelte-vapor instead of svelte 3 and 4 **as experimental**
+- Key Tasks:
+  - [ ] Basic implementation for svelte 3 and 4 features in [day job](https://plaid.co.jp/en/) project (see more task details [here](./README.md#svelte-vapor))
+  - [ ] Building with unplugin-svelte
+  - [ ] E2E testing (Snapshot consistency) based on svelte 4 testing
+
+### Milestone 2: svelte-vapor advanced implementation
+
+- Goal: To be able to use svelte-vapor instead of svelte 5, 3, and 4
+- Key Tasks:
+  - [ ] Implementation of svelte 3 and 4 remaining features to make them available for use by external projects
+  - [ ] Rust compiler implementation for Svelte template
+  - [ ] Implementation for svelte 5 (Support for runes)
 
 ## 💖 Credits
 
