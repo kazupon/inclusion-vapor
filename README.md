@@ -98,9 +98,9 @@ Based on Svelte v4 (maybe v3 compatible)
 
 <details>
 
-- [ ] transform
-  - [x] NodeTransform (Basic implementation done)
-  - [x] DirectiveTransform (Basic implementation done)
+- [x] transform
+  - [x] NodeTransform
+  - [x] DirectiveTransform
 - [ ] Svelte Component
   - [x] prop
   - [x] attrs
