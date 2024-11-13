@@ -726,3 +726,16 @@ test.todo('dynamic slots name with #if, #else-if, #else', () => {
   const source = ''
   expect(source).toBe('todo')
 })
+
+// NOTE: if we can update vue-vapor deps latest version, we should enable this test
+test.todo('quote slot name', () => {
+  const source1 = `<Comp><h1 slot="nav-bar-title-before"></h1></Comp>`
+  const source2 = `<Comp><template #nav-bar-title-before></template></Comp>`
+
+  const { code } = compileWithSlot(source1)
+  const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(code).contain('"nav-bar-title-before"')
+  expect(expectedResult.code).contains(`"nav-bar-title-before"`)
+})
