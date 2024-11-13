@@ -739,3 +739,39 @@ test.todo('quote slot name', () => {
   expect(code).contain('"nav-bar-title-before"')
   expect(expectedResult.code).contains(`"nav-bar-title-before"`)
 })
+
+test('nested component slot', () => {
+  const source1 = `<A><B/></A>`
+  // const source2 = `<A><B/></A>`
+
+  const { code, ir } = compileWithSlot(source1)
+  // const expectedResult = vaporCompile(source2)
+
+  expect(code).toMatchSnapshot('svelte')
+  /*
+  expect(expectedResult).toMatchSnapshot('vue')
+  */
+  expect(ir.block.operation).toMatchObject([
+    {
+      type: IRNodeTypes.CREATE_COMPONENT_NODE,
+      tag: 'A',
+      slots: [
+        {
+          slotType: IRSlotType.STATIC,
+          slots: {
+            default: {
+              type: IRNodeTypes.BLOCK,
+              operation: [
+                {
+                  type: IRNodeTypes.CREATE_COMPONENT_NODE,
+                  tag: 'B',
+                  slots: []
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ])
+})
