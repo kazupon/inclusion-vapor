@@ -6,6 +6,7 @@ import {
   isSvelteAttribute,
   isSvelteBindingDirective,
   isSvelteClassDirective,
+  isSvelteComponentTag,
   isSvelteEventHandler,
   isSvelteMustacheTag,
   isSvelteShorthandAttribute,
@@ -24,6 +25,7 @@ import type { VaporDirectiveNode } from './nodes'
 import type {
   SvelteAttribute,
   SvelteBaseDirective,
+  SvelteComponentTag,
   SvelteElement,
   SvelteSpreadAttribute,
   SvelteText
@@ -52,6 +54,10 @@ export function convertProps(node: SvelteElement): (VaporDirectiveNode | Attribu
       // `style:xxx` converting on `convertProps`
       props.push(convertVaporDirective(attr, node)) // TODO: more refactor for if-lese condition
     }
+  }
+
+  if (isSvelteComponentTag(node)) {
+    props.push(convertVaporDirectiveComponentExpression(node))
   }
 
   return props
@@ -380,6 +386,22 @@ export function convertVaporDirectiveExpression(
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else {
     return undefined
+  }
+}
+
+export function convertVaporDirectiveComponentExpression(
+  node: SvelteComponentTag
+): VaporDirectiveNode {
+  const content = generate(node.expression)
+  return {
+    type: NodeTypes.DIRECTIVE,
+    name: 'bind',
+    rawName: ':this',
+    modifiers: [],
+    // TODO: align loc for svlete compiler
+    loc: convertSvelteLocation(node, `this="${content}"`),
+    exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
+    arg: undefined
   }
 }
 

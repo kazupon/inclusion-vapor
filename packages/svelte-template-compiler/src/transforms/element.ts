@@ -9,15 +9,18 @@ import {
   createCompilerError,
   createSimpleExpression,
   ErrorCodes,
+  isStaticArgOf,
   NodeTypes
 } from '@vue-vapor/compiler-dom'
 import { camelize, capitalize, extend, isVoidTag } from '@vue-vapor/shared'
 import { isValidHTMLNesting } from '../htmlNesting.ts'
 import {
   convertProps,
+  convertVaporDirectiveComponentExpression,
   DynamicFlag,
   IRDynamicPropsKind,
   IRNodeTypes,
+  isSvelteComponentTag,
   isSvelteElement
 } from '../ir/index.ts'
 import { EMPTY_EXPRESSION, isReservedProp } from './utils.ts'
@@ -28,6 +31,7 @@ import type {
   IRProps,
   IRPropsDynamicAttribute,
   IRPropsStatic,
+  SvelteComponentTag,
   SvelteElement,
   VaporDirectiveNode
 } from '../ir/index.ts'
@@ -49,32 +53,43 @@ export const transformElement: NodeTransform = (_node, context) => {
       return
     }
 
-    const { name: tag } = node
     const isComponent = node.type === 'InlineComponent'
-    const propsResult = buildProps(node, context as TransformContext<SvelteElement>, isComponent)
+    const isDynamicComponent = isSvelteComponentTag(node)
+    const propsResult = buildProps(
+      node,
+      context as TransformContext<SvelteElement>,
+      isComponent,
+      isDynamicComponent
+    )
 
     ;(isComponent ? transformComponentElement : transformNativeElement)(
-      tag,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+      node as any,
       propsResult,
-      context as TransformContext<SvelteElement>
+      context as TransformContext<SvelteElement>,
+      isDynamicComponent
     )
   }
 }
 
 function transformComponentElement(
-  tag: string,
+  node: SvelteComponentTag,
   propsResult: PropsResult,
-  context: TransformContext<SvelteElement>
+  context: TransformContext<SvelteElement>,
+  isDynamicComponent: boolean
 ) {
+  const dynamicComponent = isDynamicComponent ? resolveDynamicComponent(node) : undefined
+
+  let { name: tag } = node
   let asset = true
 
-  if (!__BROWSER__) {
-    // NOTE: do we need to handle for svlete?
+  if (!dynamicComponent) {
     const fromSetup = resolveSetupReference(tag, context)
     if (fromSetup) {
       tag = fromSetup
       asset = false
     }
+
     const dotIndex = tag.indexOf('.')
     if (dotIndex > 0) {
       const ns = resolveSetupReference(tag.slice(0, dotIndex), context)
@@ -83,9 +98,10 @@ function transformComponentElement(
         asset = false
       }
     }
-  }
-  if (asset) {
-    context.component.add(tag)
+
+    if (asset) {
+      context.component.add(tag)
+    }
   }
 
   context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
@@ -99,9 +115,19 @@ function transformComponentElement(
     asset,
     root,
     slots: [...context.slots],
-    once: context.inVOnce
+    once: context.inVOnce,
+    // @ts-expect-error -- NOTE: if we will update vue-vapor, this error will be fixed
+    dynamic: dynamicComponent
   })
   context.slots = []
+}
+
+function resolveDynamicComponent(node: SvelteComponentTag) {
+  const expression = node.expression
+  if (!expression) {
+    return
+  }
+  return convertVaporDirectiveComponentExpression(node)
 }
 
 function resolveSetupReference(name: string, context: TransformContext): string | undefined {
@@ -122,10 +148,11 @@ function resolveSetupReference(name: string, context: TransformContext): string 
 }
 
 function transformNativeElement(
-  tag: string,
+  node: SvelteElement,
   propsResult: PropsResult,
   context: TransformContext<SvelteElement>
 ) {
+  const { name: tag } = node
   const { scopeId } = context.options
 
   let template = ''
@@ -181,7 +208,8 @@ export type PropsResult =
 export function buildProps(
   node: SvelteElement,
   context: TransformContext<SvelteElement>,
-  isComponent: boolean
+  isComponent: boolean,
+  isDynamicComponent: boolean
 ): PropsResult {
   // convert from svelte props to vapor props
   const props = convertProps(node)
@@ -242,6 +270,18 @@ export function buildProps(
         }
         continue
       }
+    }
+
+    // TODO:
+    // do we need to handle for svelte dynamic component ?
+    // svelte dynamic component is not supported statically...
+
+    // exclude `this` prop for <component>
+    if (
+      (isDynamicComponent && prop.type === NodeTypes.ATTRIBUTE && prop.name === 'this') ||
+      (prop.type === NodeTypes.DIRECTIVE && prop.name === 'bind' && isStaticArgOf(prop.arg, 'this'))
+    ) {
+      continue
     }
 
     const result = transformProp(prop, node, context)

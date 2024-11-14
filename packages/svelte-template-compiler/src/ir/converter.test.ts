@@ -651,6 +651,69 @@ describe('convertProps', () => {
     })
   })
 
+  describe.todo('Svelte ComponentTag Node', () => {
+    test('basic: <svelte:component this={Comp1} foo={bar} />', () => {
+      const el = getSvelteElement(`<svelte:component this={Comp1} foo={bar} />`)
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'bind',
+          rawName: ':foo',
+          modifiers: [],
+          loc: {
+            // TODO: we want to map for svelte code correctly...
+            source: 'foo="bar"'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'foo',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'foo'
+            }
+          },
+          exp: {
+            // TODO:
+            // ast: undefined,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            // TODO: we want to map for svelte code correctly...
+            content: 'bar',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              // TODO: we want to map for svelte code correctly...
+              // source: 'foo',
+            }
+          }
+        },
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'bind',
+          rawName: ':this',
+          modifiers: [],
+          loc: {
+            source: 'this="Comp1"'
+          },
+          arg: undefined,
+          exp: {
+            // TODO:
+            // ast: undefined,
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            // TODO: we want to map for svelte code correctly...
+            content: 'Comp1',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              // TODO: we want to map for svelte code correctly...
+              source: 'Comp1'
+            }
+          }
+        }
+      ])
+    })
+  })
+
   test('no attribute', () => {
     const el = getSvelteElement('<div />')
     expect(convertProps(el!)).toMatchObject([])

@@ -9,6 +9,7 @@ import type {
   Attribute as SvelteAttribute,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
+  ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
   Element as SvelteElement,
   ElseBlock as SvelteElseBlock,
@@ -68,6 +69,16 @@ export function isSvelteMustacheTag(node: unknown): node is SvelteMustacheTag {
 
 export function isSvelteText(node: unknown): node is SvelteText {
   return isObject(node) && 'type' in node && node.type === 'Text'
+}
+
+export function isSvelteComponentTag(node: unknown): node is SvelteComponentTag {
+  return (
+    isObject(node) &&
+    'type' in node &&
+    node.type === 'InlineComponent' &&
+    'name' in node &&
+    node.name === 'svelte:component'
+  )
 }
 
 export function isSvelteComment(node: unknown): node is SveletComment {
@@ -209,6 +220,7 @@ export type {
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
   Comment as SvelteComment,
+  ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
   EachBlock as SvelteEachBlock,
   Element as SvelteElement,

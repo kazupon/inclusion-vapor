@@ -184,6 +184,7 @@ export interface CreateComponentIRNode extends BaseIRNode {
   asset: boolean
   root: boolean
   once: boolean
+  dynamic?: SimpleExpressionNode
 }
 
 export interface DeclareOldRefIRNode extends BaseIRNode {
