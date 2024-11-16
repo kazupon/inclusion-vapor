@@ -94,6 +94,7 @@ function processFor(
   const index = resolveForIndex(node, context)
   const key = resolveForKey(node, context)
   const keyProp = resolveForKeyProp(node, context)
+  const memo = resolveForMemo(node, context)
 
   context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
   const id = context.reference()
@@ -113,7 +114,8 @@ function processFor(
       index,
       keyProp,
       render,
-      once: context.inVOnce
+      once: context.inVOnce,
+      memo
     })
   })
 
@@ -219,6 +221,16 @@ function resolveForSource(
   context: TransformContext<SvelteEachBlock>
 ): SimpleExpressionNode {
   return resolveSimpleExpression(node, context)
+}
+
+// TODO:
+// do we need to support memo for svelte?
+
+function resolveForMemo(
+  _node: SvelteEachBlock,
+  _context: TransformContext<SvelteEachBlock>
+): SimpleExpressionNode | undefined {
+  return undefined
 }
 
 function createForRender(
