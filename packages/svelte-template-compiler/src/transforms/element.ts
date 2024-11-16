@@ -188,6 +188,7 @@ function transformNativeElement(
   }
 
   let _staticProps = false
+  const dynamicProps: string[] = []
   if (propsResult[0] /* dynamic props */) {
     // TODO:
     // ...
@@ -201,6 +202,7 @@ function transformNativeElement(
           template += `="${values[0].content}"`
         }
       } else {
+        dynamicProps.push(key.content)
         context.registerEffect(values, {
           type: IRNodeTypes.SET_PROP,
           element: context.reference(),
