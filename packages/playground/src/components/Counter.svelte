@@ -2,6 +2,7 @@
   import { createEventDispatcher, onMount } from 'svelte'
   import { writable } from 'svelte/store'
 
+  export const msg = 'Hello from Svelte'
   let count = 1
   const store = writable(count)
   const dispatch = createEventDispatcher()
@@ -28,6 +29,8 @@
   <button on:click={increment}>
     Svelte Vapor count is {count}
   </button>
+  <br />
+  <span>Props msg: {msg}</span>
   <br />
   <span>Double: {double}</span>
   <br />

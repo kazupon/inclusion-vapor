@@ -45,6 +45,11 @@ describe('event binding', () => {
         modifiers: { keys: [], nonKeys: [], options: [] },
         keyOverride: undefined,
         delegate: true
+      },
+      {
+        type: IRNodeTypes.SET_INHERIT_ATTRS,
+        staticProps: false,
+        dynamicProps: []
       }
     ])
   })
@@ -71,6 +76,11 @@ describe('event binding', () => {
           isStatic: false
         },
         delegate: true
+      },
+      {
+        type: IRNodeTypes.SET_INHERIT_ATTRS,
+        staticProps: false,
+        dynamicProps: []
       }
     ])
     expect(code).contains(`_delegate(n0, "click", () => $event => (_ctx.x++))`)

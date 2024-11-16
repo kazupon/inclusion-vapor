@@ -85,8 +85,8 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@vue-vapor/reactivity": "latest",
-    "@vue-vapor/vapor": "latest"
+    "@vue-vapor/reactivity": "https://pkg.pr.new/vuejs/vue-vapor/@vue/reactivity@3f6ce96",
+    "vue": "https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96"
   },
   "devDependencies": {
     "svelte": "catalog:",

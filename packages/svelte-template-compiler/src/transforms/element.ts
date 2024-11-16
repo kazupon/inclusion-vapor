@@ -141,7 +141,6 @@ function transformComponentElement(
     root: singleRoot,
     slots: [...context.slots],
     once: context.inVOnce,
-    // @ts-expect-error -- NOTE: if we will update vue-vapor, this error will be fixed
     dynamic: dynamicComponent
   })
   context.slots = []
@@ -152,7 +151,7 @@ function resolveDynamicComponent(node: SvelteComponentTag) {
   if (!expression) {
     return
   }
-  return convertVaporDirectiveComponentExpression(node)
+  return convertVaporDirectiveComponentExpression(node).exp
 }
 
 function resolveSetupReference(name: string, context: TransformContext): string | undefined {
@@ -187,16 +186,21 @@ function transformNativeElement(
     template += ` ${scopeId}`
   }
 
-  let _staticProps = false
+  let staticProps = false
   const dynamicProps: string[] = []
   if (propsResult[0] /* dynamic props */) {
-    // TODO:
-    // ...
+    const [, dynamicArgs, expressions] = propsResult
+    context.registerEffect(expressions, {
+      type: IRNodeTypes.SET_DYNAMIC_PROPS,
+      element: context.reference(),
+      props: dynamicArgs,
+      root: singleRoot
+    })
   } else {
     for (const prop of propsResult[1]) {
       const { key, values } = prop
       if (key.isStatic && values.length === 1 && values[0].isStatic) {
-        _staticProps = true
+        staticProps = true
         template += ` ${key.content}`
         if (values[0].content) {
           template += `="${values[0].content}"`
@@ -213,14 +217,13 @@ function transformNativeElement(
     }
   }
 
-  // TOOD:
-  // if (singleRoot) {
-  //   context.registerOperation({
-  //     type: IRNodeTypes.SET_INHERIT_ATTRS,
-  //     staticProps: staticProps,
-  //     dynamicProps: propsResult[0] ? true : dynamicProps,
-  //   })
-  // }
+  if (singleRoot) {
+    context.registerOperation({
+      type: IRNodeTypes.SET_INHERIT_ATTRS,
+      staticProps: staticProps,
+      dynamicProps: propsResult[0] ? true : dynamicProps
+    })
+  }
 
   template += `>` + context.childrenTemplate.join('')
   // TODO remove unnecessary close tag, e.g. if it's the last element of the template

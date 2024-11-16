@@ -2,10 +2,10 @@
  * Helper module for unit tests
  */
 
-import { createVaporApp, defineComponent } from '@vue-vapor/vapor'
 import { afterEach, beforeEach } from 'vitest'
+import { createVaporApp, defineComponent } from 'vue/vapor'
 
-import type { App, ComponentInternalInstance, ObjectComponent, SetupFn } from '@vue-vapor/vapor'
+import type { App, ComponentInternalInstance, ObjectComponent, SetupFn } from 'vue/vapor'
 type RawProps = NonNullable<Parameters<typeof createVaporApp>[1]>
 
 // forked from `vuejs/core-vapor` test utils

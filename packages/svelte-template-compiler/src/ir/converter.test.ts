@@ -466,7 +466,14 @@ describe('convertProps', () => {
           type: NodeTypes.DIRECTIVE,
           name: 'on',
           rawName: 'v-on:submit.prevent',
-          modifiers: ['prevent'],
+          modifiers: [
+            {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              constType: ConstantTypes.CAN_STRINGIFY,
+              content: 'prevent',
+              isStatic: true
+            }
+          ],
           loc: {
             // TODO: we want to map for svelte code correctly...
             // source: 'on:submit|preventDefault={handleSubmit}'
@@ -573,7 +580,14 @@ describe('convertProps', () => {
           type: NodeTypes.DIRECTIVE,
           name: 'model',
           rawName: 'v-model:value.number',
-          modifiers: ['number'],
+          modifiers: [
+            {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              constType: ConstantTypes.CAN_STRINGIFY,
+              content: 'number',
+              isStatic: true
+            }
+          ],
           loc: {
             // TODO: we want to map for svelte code correctly...
             source: `v-model:value.number="name"`

@@ -149,11 +149,11 @@ export interface SetModelValueIRNode extends BaseIRNode {
   isComponent: boolean
 }
 
-// export interface SetInheritAttrsIRNode extends BaseIRNode {
-//   type: IRNodeTypes.SET_INHERIT_ATTRS
-//   staticProps: boolean
-//   dynamicProps: true | string[]
-// }
+export interface SetInheritAttrsIRNode extends BaseIRNode {
+  type: IRNodeTypes.SET_INHERIT_ATTRS
+  staticProps: boolean
+  dynamicProps: true | string[]
+}
 
 export interface CreateTextNodeIRNode extends BaseIRNode {
   type: IRNodeTypes.CREATE_TEXT_NODE
@@ -219,7 +219,7 @@ export type OperationNode =
   | SetHtmlIRNode
   | SetTemplateRefIRNode
   | SetModelValueIRNode
-  //  | SetInheritAttrsIRNode
+  | SetInheritAttrsIRNode
   | CreateTextNodeIRNode
   | InsertNodeIRNode
   | PrependNodeIRNode

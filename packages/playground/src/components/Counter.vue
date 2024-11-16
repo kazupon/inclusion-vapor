@@ -1,6 +1,7 @@
-<script setup lang="ts">
-import { ref } from 'vue/vapor'
+<script vapor setup lang="ts">
+import { ref } from 'vue'
 
+const { msg = 'hello' } = defineProps<{ msg: string }>()
 const emits = defineEmits<{ (e: 'increment', value: number): void }>()
 
 const count = ref(0)
@@ -14,6 +15,8 @@ function increment(e: Event) {
 <template>
   <div id="vue" class="box">
     <button class="vue" type="button" @click="increment">Vue Vapor count is {{ count }}</button>
+    <br>
+    <span>Props msg: {{ msg }}</span>
     <br>
     <slot />
   </div>

@@ -37,37 +37,40 @@ export function render(_ctx) {
 `;
 
 exports[`Binding <select> value > multiple > svelte 1`] = `
-"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option> <option value=\\"Beans\\">Beans</option> <option value=\\"Cheese\\">Cheese</option> <option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelSelect, () => fillings]])
   _delegate(n0, "update:modelValue", () => $event => (fillings = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`Binding <select> value > multiple > vue 1`] = `
-"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option value=\\"Rice\\">Rice</option><option value=\\"Beans\\">Beans</option><option value=\\"Cheese\\">Cheese</option><option value=\\"Guac (extra)\\">Guac (extra)</option></select>")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelSelect, () => fillings]])
   _delegate(n0, "update:modelValue", () => $event => (fillings = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`Binding <select> value > omit value > svelte 1`] = `
-"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelSelect as _vModelSelect, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<select multiple><option>Rice</option> <option>Beans</option> <option>Cheese</option> <option>Guac (extra)</option></select>")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelSelect, () => fillings]])
   _delegate(n0, "update:modelValue", () => $event => (fillings = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
@@ -219,49 +222,53 @@ export function render(_ctx) {
 `;
 
 exports[`bind:property > input number > svelte 1`] = `
-"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"number\\">")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])
   _delegate(n0, "update:modelValue", () => $event => (num = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`bind:property > input number > vue 1`] = `
-"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"number\\">")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])
   _delegate(n0, "update:modelValue", () => $event => (num = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`bind:property > input range > svelte 1`] = `
-"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"range\\">")
 
 export function render(_ctx) {
   const n0 = t0()
-  _withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])
+  _withDirectives(n0, [[_vModelText, () => num, void 0, { range: true }]])
   _delegate(n0, "update:modelValue", () => $event => (num = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`bind:property > input range > vue 1`] = `
-"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelText as _vModelText, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"range\\">")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])
   _delegate(n0, "update:modelValue", () => $event => (num = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
@@ -279,25 +286,27 @@ export function render(_ctx) {
 `;
 
 exports[`bind:property > simple binding > checkbox > svelte 1`] = `
-"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\">")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelCheckbox, () => yes]])
   _delegate(n0, "update:modelValue", () => $event => (yes = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`bind:property > simple binding > checkbox > vue 1`] = `
-"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, template as _template } from 'vue/vapor';
+"import { vModelCheckbox as _vModelCheckbox, withDirectives as _withDirectives, delegate as _delegate, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<input type=\\"checkbox\\">")
 
 export function render(_ctx) {
   const n0 = t0()
   _withDirectives(n0, [[_vModelCheckbox, () => yes]])
   _delegate(n0, "update:modelValue", () => $event => (yes = $event))
+  _setInheritAttrs(false)
   return n0
 }"
 `;

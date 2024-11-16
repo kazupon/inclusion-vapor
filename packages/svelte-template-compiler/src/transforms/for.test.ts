@@ -376,9 +376,7 @@ test('prefixIdentifiers: true', () => {
 {/each}`
   const source2 = `<div v-for="item of items" :key="item.id" @click="remove(item)">{{item.name}}</div>`
 
-  const { code } = compileWithVFor(source1, {
-    prefixIdentifiers: true
-  })
+  const { code } = compileWithVFor(source1, { prefixIdentifiers: true })
   const expectedResult = vaporCompile(source2, { prefixIdentifiers: true })
 
   expect(code).toMatchSnapshot('svelte')

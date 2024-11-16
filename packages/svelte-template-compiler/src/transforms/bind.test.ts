@@ -23,7 +23,7 @@ test('mustache basic', () => {
   expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
-  expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
+  expect(code).contains('_setDynamicProp(n0, "id", _ctx.id, true)')
 
   expect(ir.block.dynamic.children[0]).toMatchObject({
     id: 0,
@@ -92,7 +92,7 @@ test('mustache shorthand', () => {
   expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
-  expect(code).contains('_setDynamicProp(n0, "id", _ctx.id)')
+  expect(code).contains('_setDynamicProp(n0, "id", _ctx.id, true)')
   expect(ir.block.effect[0].operations[0]).toMatchObject({
     type: IRNodeTypes.SET_PROP,
     prop: {
@@ -120,7 +120,7 @@ test('attribute camel case', () => {
   expect(expectedResult.code).toMatchSnapshot('vue')
   expect(vaporHelpers).toEqual(expectedResult.vaporHelpers)
 
-  expect(code).contains('_setDynamicProp(n0, "camel-case", _ctx.value1)')
+  expect(code).contains('_setDynamicProp(n0, "camel-case", _ctx.value1, true)')
 })
 
 test('class expression binding', () => {
@@ -132,7 +132,7 @@ test('class expression binding', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`_renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : ''))`)
+  expect(code).contains(`_renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : '', true))`)
   expect(ir.block.effect[0]).toMatchObject({
     expressions: [
       {
@@ -185,7 +185,7 @@ test('class dynamic binding', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.isActive }))`)
+  expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.isActive }, true))`)
   expect(ir.block.effect[0]).toMatchObject({
     expressions: [
       {
@@ -239,7 +239,7 @@ test('class shorthand binding', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.active }))`)
+  expect(code).contains(`_renderEffect(() => _setClass(n0, { active: _ctx.active }, true))`)
   expect(ir.block.effect[0]).toMatchObject({
     expressions: [
       {
@@ -315,7 +315,7 @@ test('style expression binding', () => {
 
   expect(ir.template).toEqual(['<div>color</div>'])
 
-  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.myColor }))`)
+  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.myColor }, true))`)
 })
 
 test('style shorthand binding', () => {
@@ -330,7 +330,7 @@ test('style shorthand binding', () => {
 
   expect(ir.template).toEqual(['<div>color</div>'])
 
-  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.color }))`)
+  expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.color }, true))`)
 })
 
 test.todo('style `imporant` modifier', () => {

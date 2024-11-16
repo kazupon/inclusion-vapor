@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`component > basic > svelte 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"></div>")
 
 export function render(_ctx) {
@@ -11,12 +11,13 @@ export function render(_ctx) {
     { class: () => ("foo") }
   ])
   _insert(n0, n1)
+  _setInheritAttrs(false)
   return n1
 }"
 `;
 
 exports[`component > basic > vue 1`] = `
-"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, template as _template } from 'vue/vapor';
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, insert as _insert, setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"></div>")
 
 export function render(_ctx) {
@@ -26,6 +27,7 @@ export function render(_ctx) {
     { class: () => ("foo") }
   ])
   _insert(n0, n1)
+  _setInheritAttrs(false)
   return n1
 }"
 `;
@@ -33,7 +35,7 @@ export function render(_ctx) {
 exports[`component > do not resolve component from non-script-setup bindings 1`] = `
 "import { resolveComponent as _resolveComponent, createComponent as _createComponent } from 'vue/vapor';
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const _component_Example = _resolveComponent("Example")
   const n0 = _createComponent(_component_Example, null, null, true)
   return n0
@@ -44,7 +46,7 @@ exports[`component > generate multi root component 1`] = `
 "import { createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("123")
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const n1 = t0()
   const n0 = _createComponent(_ctx.Comp)
   return [n0, n1]
@@ -54,7 +56,7 @@ export function render(_ctx) {
 exports[`component > generate single root component 1`] = `
 "import { createComponent as _createComponent } from 'vue/vapor';
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const n0 = _createComponent(_ctx.Comp, null, null, true)
   return n0
 }"
@@ -71,14 +73,14 @@ export function render(_ctx) {
 `;
 
 exports[`component > resolve component from setup bindings (inline const) 1`] = `
-"(() => {
+"((_ctx) => {
   const n0 = _createComponent(Example, null, null, true)
   return n0
 })()"
 `;
 
 exports[`component > resolve component from setup bindings (inline) 1`] = `
-"(() => {
+"((_ctx) => {
   const n0 = _createComponent(_unref(Example), null, null, true)
   return n0
 })()"
@@ -87,14 +89,14 @@ exports[`component > resolve component from setup bindings (inline) 1`] = `
 exports[`component > resolve component from setup bindings 1`] = `
 "import { createComponent as _createComponent } from 'vue/vapor';
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const n0 = _createComponent(_ctx.Example, null, null, true)
   return n0
 }"
 `;
 
 exports[`component > resolve namespaced component from props bindings (inline) 1`] = `
-"(() => {
+"((_ctx) => {
   const n0 = _createComponent(Foo.Example, null, null, true)
   return n0
 })()"
@@ -103,14 +105,14 @@ exports[`component > resolve namespaced component from props bindings (inline) 1
 exports[`component > resolve namespaced component from props bindings (non-inline) 1`] = `
 "import { createComponent as _createComponent } from 'vue/vapor';
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
   return n0
 }"
 `;
 
 exports[`component > resolve namespaced component from setup bindings (inline const) 1`] = `
-"(() => {
+"((_ctx) => {
   const n0 = _createComponent(Foo.Example, null, null, true)
   return n0
 })()"
@@ -119,7 +121,7 @@ exports[`component > resolve namespaced component from setup bindings (inline co
 exports[`component > resolve namespaced component from setup bindings 1`] = `
 "import { createComponent as _createComponent } from 'vue/vapor';
 
-export function render(_ctx) {
+export function render(_ctx, $props, $emit, $attrs, $slots) {
   const n0 = _createComponent(_ctx.Foo.Example, null, null, true)
   return n0
 }"
@@ -163,101 +165,111 @@ export function render(_ctx) {
 `;
 
 exports[`native elements > attributes + children > svelte 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"><span></span></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > attributes + children > vue 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"><span></span></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > basic > svelte 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p> <img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"> <input type=\\"submit\\"></form></div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > basic > vue 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"container\\"><div class=\\"header\\"><p style=\\"color: red;\\">Hello</p><img src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"><form action=\\"/submit\\" method=\\"post\\"><input type=\\"text\\"><input type=\\"submit\\"></form></div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static attributes > svelte 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static attributes > vue 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div id=\\"foo\\"></div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static class > svelte 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"foo\\">hello</div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static class > vue 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div class=\\"foo\\">hello</div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static style > svelte 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div style=\\"color: red;\\">hello</div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;
 
 exports[`native elements > static style > vue 1`] = `
-"import { template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
 const t0 = _template("<div style=\\"color: red;\\">hello</div>")
 
 export function render(_ctx) {
   const n0 = t0()
+  _setInheritAttrs(false)
   return n0
 }"
 `;

@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import { describe, expect, test, vi } from 'vitest'
 import {
   createComponent,
   createIf,
@@ -11,8 +12,7 @@ import {
   renderEffect,
   setText,
   template
-} from '@vue-vapor/vapor'
-import { describe, expect, test, vi } from 'vitest'
+} from 'vue/vapor'
 import { makeRender, triggerEvent } from './_helper.ts'
 import {
   afterUpdate,

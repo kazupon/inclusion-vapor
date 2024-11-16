@@ -10,11 +10,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      one: () => {
+      "one": () => {
         const n0 = t0()
         return n0
       }, 
-      default: () => {
+      "default": () => {
         const n2 = t1()
         const n3 = t2()
         return [n2, n3]
@@ -35,11 +35,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      one: () => {
+      "one": () => {
         const n0 = t0()
         return n0
       }, 
-      default: () => {
+      "default": () => {
         const n2 = t1()
         const n3 = t2()
         return [n2, n3]
@@ -62,15 +62,15 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n9 = _createComponent(_component_Comp, null, [
     {
-      header: () => {
+      "header": () => {
         const n2 = t2()
         return n2
       }, 
-      footer: () => {
+      "footer": () => {
         const n7 = _createComponent(_component_Footer)
         return n7
       }, 
-      default: () => {
+      "default": () => {
         const n0 = t0()
         const n1 = t1()
         const n4 = t1()
@@ -95,15 +95,15 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n6 = _createComponent(_component_Comp, null, [
     {
-      header: () => {
+      "header": () => {
         const n1 = t1()
         return n1
       }, 
-      footer: () => {
+      "footer": () => {
         const n4 = _createComponent(_component_Footer)
         return n4
       }, 
-      default: () => {
+      "default": () => {
         const n0 = t0()
         const n3 = t2()
         return [n0, n3]
@@ -234,7 +234,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = t0()
         return n0
       }
@@ -252,7 +252,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = t0()
         return n0
       }
@@ -270,7 +270,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = t0()
         return n0
       }
@@ -288,7 +288,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = t0()
         return n0
       }
@@ -305,7 +305,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ bar: foo }) => {
+      "named": ({ bar: foo }) => {
         const n0 = _createTextNode(() => [foo])
         return n0
       }
@@ -322,7 +322,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ bar: foo }) => {
+      "named": ({ bar: foo }) => {
         const n0 = _createTextNode(() => [foo])
         return n0
       }
@@ -339,7 +339,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ item: [ a, b ] }) => {
+      "named": ({ item: [ a, b ] }) => {
         const n0 = _createTextNode(() => [a + b])
         return n0
       }
@@ -356,7 +356,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ item: { id } }) => {
+      "named": ({ item: { id } }) => {
         const n0 = _createTextNode(() => [id])
         return n0
       }
@@ -376,11 +376,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      one: ({ foo }) => {
+      "one": ({ foo }) => {
         const n0 = t0()
         return n0
       }, 
-      default: () => {
+      "default": () => {
         const n2 = t1()
         const n3 = t2()
         return [n2, n3]
@@ -398,7 +398,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ bar }) => {
+      "named": ({ bar }) => {
         const n0 = _createTextNode(() => [foo + bar])
         return n0
       }
@@ -415,7 +415,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n1 = _createComponent(_component_Comp, null, [
     {
-      named: ({ bar }) => {
+      "named": ({ bar }) => {
         const n0 = _createTextNode(() => [foo + bar])
         return n0
       }
@@ -433,7 +433,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n2 = _createComponent(_component_Comp, null, [
     {
-      greeting: () => {
+      "greeting": () => {
         const n0 = t0()
         return n0
       }
@@ -451,7 +451,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n2 = _createComponent(_component_Comp, null, [
     {
-      greeting: () => {
+      "greeting": () => {
         const n0 = t0()
         return n0
       }
@@ -471,11 +471,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n5 = _createComponent(_component_Comp, null, [
     {
-      foo: () => {
+      "foo": () => {
         const n0 = _createComponent(_component_Hello)
         return n0
       }, 
-      bar: () => {
+      "bar": () => {
         const n3 = _createComponent(_component_World)
         return n3
       }
@@ -494,11 +494,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      foo: () => {
+      "foo": () => {
         const n0 = _createComponent(_component_Hello)
         return n0
       }, 
-      bar: () => {
+      "bar": () => {
         const n2 = _createComponent(_component_World)
         return n2
       }
@@ -518,11 +518,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n5 = _createComponent(_component_Comp, null, [
     {
-      header: () => {
+      "header": () => {
         const n0 = t0()
         return n0
       }, 
-      footer: () => {
+      "footer": () => {
         const n3 = t2()
         return n3
       }
@@ -541,11 +541,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      header: () => {
+      "header": () => {
         const n0 = t0()
         return n0
       }, 
-      footer: () => {
+      "footer": () => {
         const n2 = t1()
         return n2
       }
@@ -565,11 +565,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      one: () => {
+      "one": () => {
         const n0 = t0()
         return n0
       }, 
-      default: () => {
+      "default": () => {
         const n2 = t1()
         const n3 = t2()
         return [n2, n3]
@@ -590,11 +590,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      one: () => {
+      "one": () => {
         const n0 = t0()
         return n0
       }, 
-      default: () => {
+      "default": () => {
         const n2 = t1()
         const n3 = t2()
         return [n2, n3]
@@ -613,7 +613,7 @@ export function render(_ctx) {
   const _component_A = _resolveComponent("A")
   const n1 = _createComponent(_component_A, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = _createComponent(_component_B)
         return n0
       }
@@ -632,11 +632,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n4 = _createComponent(_component_Comp, null, [
     {
-      default: ({ foo }) => {
+      "default": ({ foo }) => {
         const n2 = t0()
         const n1 = _createComponent(_component_Inner, null, [
           {
-            default: ({ bar }) => {
+            "default": ({ bar }) => {
               const n0 = _createTextNode(() => [foo + bar + baz])
               return n0
             }
@@ -660,11 +660,11 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n5 = _createComponent(_component_Comp, null, [
     {
-      default: ({ foo }) => {
+      "default": ({ foo }) => {
         const n2 = t0()
         const n1 = _createComponent(_component_Inner, null, [
           {
-            default: ({ bar }) => {
+            "default": ({ bar }) => {
               const n0 = _createTextNode(() => [foo + bar + baz])
               return n0
             }
@@ -679,6 +679,24 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`quote slot name > svelte 1`] = `
+"import { resolveComponent as _resolveComponent, createComponent as _createComponent, template as _template } from 'vue/vapor';
+const t0 = _template("<h1></h1>")
+
+export function render(_ctx) {
+  const _component_Comp = _resolveComponent("Comp")
+  const n2 = _createComponent(_component_Comp, null, [
+    {
+      "nav-bar-title-before": () => {
+        const n0 = t0()
+        return n0
+      }
+    }
+  ], true)
+  return n2
+}"
+`;
+
 exports[`slot outlets chain > svelte 1`] = `
 "import { resolveComponent as _resolveComponent, createSlot as _createSlot, createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("outlets")
@@ -687,7 +705,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n3 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = _createSlot("default", null, () => {
           const n2 = t0()
           return n2
@@ -708,7 +726,7 @@ export function render(_ctx) {
   const _component_Comp = _resolveComponent("Comp")
   const n3 = _createComponent(_component_Comp, null, [
     {
-      default: () => {
+      "default": () => {
         const n0 = _createSlot("default", null, () => {
           const n2 = t0()
           return n2

@@ -67,6 +67,9 @@ describe('bind:property', () => {
               isStatic: false
             }
           }
+        },
+        {
+          type: IRNodeTypes.SET_INHERIT_ATTRS
         }
       ])
     })
@@ -139,7 +142,7 @@ describe('bind:property', () => {
     expect(expectedResult.code).toMatchSnapshot('vue')
 
     expect(code).contains(
-      `_withDirectives(n0, [[_vModelText, () => num, void 0, { number: true }]])`
+      `_withDirectives(n0, [[_vModelText, () => num, void 0, { range: true }]])`
     )
     expect(code).contains(`"update:modelValue", () => $event => (num = $event))`)
   })

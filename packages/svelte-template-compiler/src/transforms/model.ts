@@ -12,7 +12,6 @@ import {
   isMemberExpression
 } from '@vue-vapor/compiler-dom'
 import { findAttrs, IRNodeTypes } from '../ir/index.ts'
-import { getExpSource } from './utils.ts'
 
 import type { VaporHelper } from '@vue-vapor/compiler-vapor'
 import type { DirectiveTransform } from './types.ts'
@@ -30,7 +29,7 @@ export const transformVModel: DirectiveTransform = (dir, node, context) => {
   }
 
   const expString = exp.content
-  if (!expString.trim() || !isMemberExpression(getExpSource(exp), context.options)) {
+  if (!expString.trim() || !isMemberExpression(exp, context.options)) {
     // TODO: should throw error on `onError`
     return
   }
@@ -42,8 +41,7 @@ export const transformVModel: DirectiveTransform = (dir, node, context) => {
       key: arg ? arg : createSimpleExpression('modelValue', true),
       value: exp,
       model: true,
-      // @ts-expect-error -- FIXME should resolve `modifiers` type
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
       modelModifiers: dir.modifiers.map(m => m.content)
     }
   }

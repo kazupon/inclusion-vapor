@@ -218,10 +218,10 @@ test('complex named slots (mixed element, components and text)', () => {
     '<div>contents: <span>content</span></div>'
   ])
 
-  expect(code).contains(`header: () => {`)
-  expect(code).contains(`footer: () => {`)
+  expect(code).contains(`"header": () => {`)
+  expect(code).contains(`"footer": () => {`)
   expect(code).contains(`_createComponent(_component_Footer)`)
-  expect(code).contains(`default: () => {`)
+  expect(code).contains(`"default": () => {`)
 
   expect(ir.block.operation).toMatchObject([
     {
@@ -257,7 +257,7 @@ test('named slot on component', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`named: ({ bar }) => {`)
+  expect(code).contains(`"named": ({ bar }) => {`)
   expect(code).contains(`const n0 = _createTextNode(() => [foo + bar])`)
 
   expect(ir.block.operation).toMatchObject([
@@ -298,8 +298,8 @@ test('named slot on multiple components', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`foo: () => {`)
-  expect(code).contains(`bar: () => {`)
+  expect(code).contains(`"foo": () => {`)
+  expect(code).contains(`"bar": () => {`)
 
   // TOOD: white space
   // expect(ir.template).toEqual([])
@@ -542,8 +542,8 @@ test('nested slots scoping', () => {
   expect(expectedResult.code).toMatchSnapshot('vue')
 
   // expect(vaporHelpers).contains('withDestructure')
-  expect(code).contains(`default: ({ foo }) => {`)
-  expect(code).contains(`default: ({ bar }) => {`)
+  expect(code).contains(`"default": ({ foo }) => {`)
+  expect(code).contains(`"default": ({ bar }) => {`)
   expect(code).contains(`const n0 = _createTextNode(() => [foo + bar + baz])`)
 
   expect(ir.block.operation).toMatchObject([
@@ -631,7 +631,7 @@ test('let alias', () => {
   expect(code).toMatchSnapshot('svelte')
   expect(expectedResult.code).toMatchSnapshot('vue')
 
-  expect(code).contains(`named: ({ bar: foo }) => {`)
+  expect(code).contains(`"named": ({ bar: foo }) => {`)
 })
 
 test('let object destructuring', () => {
@@ -640,7 +640,7 @@ test('let object destructuring', () => {
   const { code } = compileWithSlot(source)
 
   expect(code).toMatchSnapshot('svelte')
-  expect(code).contains(`named: ({ item: { id } }) => {`)
+  expect(code).contains(`"named": ({ item: { id } }) => {`)
 })
 
 test('let array destructuring', () => {
@@ -649,7 +649,7 @@ test('let array destructuring', () => {
   const { code } = compileWithSlot(source)
 
   expect(code).toMatchSnapshot('svelte')
-  expect(code).contains(`named: ({ item: [ a, b ] }) => {`)
+  expect(code).contains(`"named": ({ item: [ a, b ] }) => {`)
 })
 
 test.todo('let multiple', () => {
@@ -667,7 +667,7 @@ test('let on <svelte:fragment>', () => {
   const { code } = compileWithSlot(source)
 
   expect(code).toMatchSnapshot('svelte')
-  expect(code).contains(`one: ({ foo }) => {`)
+  expect(code).contains(`"one": ({ foo }) => {`)
 })
 
 test.todo('dynamic slots name with #each', () => {
@@ -727,8 +727,7 @@ test.todo('dynamic slots name with #if, #else-if, #else', () => {
   expect(source).toBe('todo')
 })
 
-// NOTE: if we can update vue-vapor deps latest version, we should enable this test
-test.todo('quote slot name', () => {
+test('quote slot name', () => {
   const source1 = `<Comp><h1 slot="nav-bar-title-before"></h1></Comp>`
   const source2 = `<Comp><template #nav-bar-title-before></template></Comp>`
 

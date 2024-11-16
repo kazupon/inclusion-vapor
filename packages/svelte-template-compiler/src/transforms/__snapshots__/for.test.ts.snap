@@ -112,7 +112,7 @@ export function render(_ctx) {
 `;
 
 exports[`multi effect > vue 1`] = `
-"import { delegate as _delegate, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
+"import { delegate as _delegate, setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, createFor as _createFor, delegateEvents as _delegateEvents, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 _delegateEvents("click")
 
@@ -120,8 +120,9 @@ export function render(_ctx) {
   const n0 = _createFor(() => (items), ([item, index]) => {
     const n2 = t0()
     _delegate(n2, "click", () => $event => (remove(item)))
-    _renderEffect(() => _setDynamicProp(n2, "item", item))
-    _renderEffect(() => _setDynamicProp(n2, "index", index))
+    _setInheritAttrs(["item", "index"])
+    _renderEffect(() => _setDynamicProp(n2, "item", item, true))
+    _renderEffect(() => _setDynamicProp(n2, "index", index, true))
     return n2
   }, (item, index) => (item.id))
   return n0
@@ -142,7 +143,7 @@ export function render(_ctx) {
       _insert(n4, n5)
       _renderEffect(() => _setText(n5, j + i))
       return n5
-    })
+    }, null, null, n6)
     _insert(n2, n6)
     return n6
   })
@@ -162,7 +163,7 @@ export function render(_ctx) {
       const n4 = t0()
       _renderEffect(() => _setText(n4, j + i))
       return n4
-    })
+    }, null, null, n5)
     _insert(n2, n5)
     return n5
   })
@@ -256,8 +257,8 @@ _delegateEvents("click")
 export function render(_ctx) {
   const n0 = _createFor(() => (_ctx.items), (_ctx0) => {
     const n2 = t0()
-    _delegate(n2, "click", () => $event => (_ctx.remove(_ctx0[0])))
-    _renderEffect(() => _setText(n2, _ctx0[0].name))
+    _delegate(n2, "click", () => $event => (_ctx.remove(_ctx0[0].value)))
+    _renderEffect(() => _setText(n2, _ctx0[0].value.name))
     return n2
   }, (item) => (item.id))
   return n0

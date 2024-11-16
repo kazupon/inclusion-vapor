@@ -105,6 +105,13 @@ function processFor(
 
   exitFns.push(() => {
     onExit()
+
+    const { parent } = context
+    let container: number | undefined
+    if (parent && parent.block.node !== parent.node && (parent.node.children || []).length === 1) {
+      container = parent.reference()
+    }
+
     context.registerOperation({
       type: IRNodeTypes.FOR,
       id,
@@ -115,7 +122,8 @@ function processFor(
       keyProp,
       render,
       once: context.inVOnce,
-      memo
+      memo,
+      container
     })
   })
 

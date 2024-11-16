@@ -45,7 +45,7 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@vue-vapor/vapor": "latest"
+    "vue": "https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

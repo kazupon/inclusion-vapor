@@ -7,7 +7,7 @@ _delegateEvents("click");
 import { useState } from "react-vapor-hooks"
 export default App = /*#__PURE__*/ _defineComponent(() => {
   const [count, setCount] = useState(0)
-  return (() => {
+  return ((_ctx: any) => {
   const n0 = _00()
   _delegate(n0, "click", () => () => setCount(count + 1))
   _renderEffect(() => _setText(n0, "count is ", count))
@@ -25,7 +25,7 @@ _delegateEvents("click");
 import { useState } from "react-vapor-hooks"
 const App = /*#__PURE__*/ _defineComponent(() => {
   const [count, setCount] = useState(0)
-  return (() => {
+  return ((_ctx: any) => {
   const n0 = _00()
   _delegate(n0, "click", () => () => setCount(count + 1))
   _renderEffect(() => _setText(n0, "count is ", count))
@@ -44,7 +44,7 @@ _delegateEvents("click");
 import { useState } from "react-vapor-hooks"
 export default App = /*#__PURE__*/ _defineComponent(() => {
   const [count, setCount] = useState(0)
-  return (() => {
+  return ((_ctx: any) => {
   const n0 = _00()
   _delegate(n0, "click", () => () => setCount(count.value + 1))
   _renderEffect(() => _setText(n0, "count is ", count.value))

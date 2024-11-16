@@ -5,11 +5,11 @@
 // Repository url: https://github.com/sveltejs/svelte
 // Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/src/runtime/store/index.js
 
-import { computed, onScopeDispose, ref, readonly as vaporReadonly } from '@vue-vapor/vapor'
+import { computed, onScopeDispose, ref, readonly as vaporReadonly } from 'vue/vapor'
 import { isFunction } from './utils.ts'
 
 import type { DeepReadonly } from '@vue-vapor/reactivity'
-import type { Ref } from '@vue-vapor/vapor'
+import type { Ref } from 'vue/vapor'
 
 /**
  * NOTE:

@@ -48,9 +48,9 @@
   },
   "dependencies": {
     "@babel/parser": "catalog:",
-    "@vue-vapor/compiler-dom": "latest",
-    "@vue-vapor/compiler-sfc": "latest",
-    "@vue-vapor/shared": "latest",
+    "@vue-vapor/compiler-dom": "https://pkg.pr.new/vuejs/vue-vapor/@vue/compiler-dom@3f6ce96",
+    "@vue-vapor/compiler-sfc": "https://pkg.pr.new/vuejs/vue-vapor/@vue/compiler-sfc@3f6ce96",
+    "@vue-vapor/shared": "https://pkg.pr.new/vuejs/vue-vapor/@vue/shared@3f6ce96",
     "ast-kit": "^1.3.0",
     "hash-sum": "^2.0.0",
     "inclusion-vapor-shared": "workspace:*",

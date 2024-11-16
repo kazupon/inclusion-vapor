@@ -177,6 +177,7 @@ function convertVaporDirective(
     const directiveLocSource = exp
       ? `on:${node.name}${modifiersSource}="${exp.content}"`
       : node.name
+    // TODO: align loc for svlete compiler
     const directiveLoc = {
       start,
       end: exp ? start + directiveLocSource.length : start
@@ -186,8 +187,11 @@ function convertVaporDirective(
       type: NodeTypes.DIRECTIVE,
       name: 'on',
       rawName: `v-on:${node.name}${vaporModifiers}`,
-      // @ts-expect-error -- FIXME
-      modifiers,
+      // TODO: align loc for svlete compiler
+      modifiers: modifiers.map(m =>
+        createSimpleExpression(m, true, convertSvelteLocation(node, m))
+      ),
+      // TODO: align loc for svlete compiler
       loc: convertSvelteLocation(directiveLoc, directiveLocSource),
       arg,
       exp
@@ -220,7 +224,7 @@ function convertVaporDirective(
         v => v.type === 'Text'
       )
       if (value && (value.data === 'number' || value.data === 'range')) {
-        modifiers = [...modifiers, 'number']
+        modifiers = [...modifiers, value.data]
       }
     }
 
@@ -253,6 +257,7 @@ function convertVaporDirective(
     const vaporModifiers = `${modifiers.length > 0 ? '.' : ''}${modifiers.join('.')}`
     const rawName = `v-model:${node.name}${modifiers.length > 0 ? vaporModifiers : ''}`
     const directiveLocSource = node.name == content ? rawName : `${rawName}="${content}"`
+    // TODO: align loc for svlete compiler
     const directiveLoc = {
       start,
       end: start + directiveLocSource.length
@@ -261,8 +266,10 @@ function convertVaporDirective(
       type: NodeTypes.DIRECTIVE,
       name: 'model',
       rawName,
-      // @ts-expect-error -- FIXME
-      modifiers,
+      // TODO: align loc for svlete compiler
+      modifiers: modifiers.map(m =>
+        createSimpleExpression(m, true, convertSvelteLocation(node, m))
+      ),
       loc: convertSvelteLocation(directiveLoc, directiveLocSource),
       exp,
       arg
@@ -275,7 +282,7 @@ function convertVaporDirective(
       // TODO: align loc for svlete compiler
       convertSvelteLocation({ start, end: node.end }, 'class')
     )
-    const modifiers = [] as string[]
+    const modifiers: SimpleExpressionNode[] = []
     const exp = convertVaporDirectiveExpression(node)
     if (exp) {
       const ast = parseExpression(` ${exp.content}`, {
@@ -294,7 +301,7 @@ function convertVaporDirective(
       loc: convertSvelteLocation(node, `:class`),
       arg,
       exp
-    } as VaporDirectiveNode
+    }
   } else if (isSvelteStyleDirective(node)) {
     const start = node.start
     const arg = createSimpleExpression(
@@ -303,7 +310,7 @@ function convertVaporDirective(
       // TODO: align loc for svlete compiler
       convertSvelteLocation({ start, end: node.end }, 'style')
     )
-    const modifiers = [] as string[]
+    const modifiers: SimpleExpressionNode[] = []
     const exp = convertVaporDirectiveExpression(node)
     if (exp) {
       const ast = parseExpression(` ${exp.content}`, {
@@ -322,7 +329,7 @@ function convertVaporDirective(
       loc: convertSvelteLocation(node, `:style`),
       arg,
       exp
-    } as VaporDirectiveNode
+    }
   } else {
     // TODO: we should consider error strategy
     throw new Error('unexpected node type')

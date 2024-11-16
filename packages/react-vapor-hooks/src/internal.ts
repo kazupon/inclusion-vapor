@@ -1,9 +1,9 @@
-import type { ComponentInternalInstance, Ref } from '@vue-vapor/vapor'
+import type { ComponentInternalInstance, Ref } from 'vue/vapor'
 
 export const USI: unique symbol = Symbol() // index key for `useState` value
 export const USV: unique symbol = Symbol() // key for `useState` value
 
-declare module '@vue-vapor/vapor' {
+declare module 'vue/vapor' {
   export interface ComponentInternalInstance {
     // for `useState` hook
     [USI]?: number

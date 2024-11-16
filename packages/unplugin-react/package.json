@@ -94,7 +94,7 @@
   "dependencies": {
     "@babel/parser": "catalog:",
     "@rollup/pluginutils": "^5.1.0",
-    "@vue-vapor/shared": "latest",
+    "@vue-vapor/shared": "https://pkg.pr.new/vuejs/vue-vapor/@vue/shared@3f6ce96",
     "ast-kit": "^1.1.0",
     "debug": "^4.3.6",
     "jsx-vapor-compiler": "workspace:*",

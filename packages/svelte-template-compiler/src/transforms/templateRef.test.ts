@@ -42,6 +42,11 @@ test('native element', () => {
   expect(ir.template).toEqual(['<canvas></canvas>'])
   expect(ir.block.operation).toMatchObject([
     {
+      type: IRNodeTypes.SET_INHERIT_ATTRS,
+      staticProps: false,
+      dynamicProps: []
+    },
+    {
       type: IRNodeTypes.SET_TEMPLATE_REF,
       element: 0,
       effect: false,

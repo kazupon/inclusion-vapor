@@ -15,10 +15,10 @@ import {
   onUnmounted,
   onUpdated,
   provide
-} from '@vue-vapor/vapor'
+} from 'vue/vapor'
 import { isFunction } from './utils.ts'
 
-import type { ComponentInternalInstance, InjectionKey } from '@vue-vapor/vapor'
+import type { ComponentInternalInstance, InjectionKey } from 'vue'
 import type { DispatchOptions, EventDispatcher } from './types.ts'
 
 /**
@@ -275,7 +275,8 @@ function dispatch(
     return true
   }
 
-  const { rawProps } = instance
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  const rawProps = (instance as any).rawProps as NormalizedRawProps
   // eslint-disable-next-line unicorn/no-array-callback-reference
   const hasDynamicProps = rawProps.some(isFunction)
 

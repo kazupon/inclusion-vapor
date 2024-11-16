@@ -1,177 +1,193 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`attribute camel case > svelte 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1))
+  _setInheritAttrs(["camel-case"])
+  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1, true))
   return n0
 }"
 `;
 
 exports[`attribute camel case > vue 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1))
+  _setInheritAttrs(["camel-case"])
+  _renderEffect(() => _setDynamicProp(n0, "camel-case", _ctx.value1, true))
   return n0
 }"
 `;
 
 exports[`class dynamic binding > svelte 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, { active: _ctx.isActive }))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, { active: _ctx.isActive }, true))
   return n0
 }"
 `;
 
 exports[`class dynamic binding > vue 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, { active: _ctx.isActive }))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, { active: _ctx.isActive }, true))
   return n0
 }"
 `;
 
 exports[`class expression binding > svelte 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : ''))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : '', true))
   return n0
 }"
 `;
 
 exports[`class expression binding > vue 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : ''))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, _ctx.isActive ? 'active' : '', true))
   return n0
 }"
 `;
 
 exports[`class shorthand binding > svelte 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, { active: _ctx.active }))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, { active: _ctx.active }, true))
   return n0
 }"
 `;
 
 exports[`class shorthand binding > vue 1`] = `
-"import { renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setClass(n0, { active: _ctx.active }))
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, { active: _ctx.active }, true))
   return n0
 }"
 `;
 
 exports[`mustache basic > svelte 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  _setInheritAttrs(["id"])
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id, true))
   return n0
 }"
 `;
 
 exports[`mustache basic > vue 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  _setInheritAttrs(["id"])
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id, true))
   return n0
 }"
 `;
 
 exports[`mustache shorthand > svelte 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  _setInheritAttrs(["id"])
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id, true))
   return n0
 }"
 `;
 
 exports[`mustache shorthand > vue 1`] = `
-"import { renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id))
+  _setInheritAttrs(["id"])
+  _renderEffect(() => _setDynamicProp(n0, "id", _ctx.id, true))
   return n0
 }"
 `;
 
 exports[`style expression binding > svelte 1`] = `
-"import { renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
 const t0 = _template("<div>color</div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setStyle(n0, { color: _ctx.myColor }))
+  _setInheritAttrs(["style"])
+  _renderEffect(() => _setStyle(n0, { color: _ctx.myColor }, true))
   return n0
 }"
 `;
 
 exports[`style expression binding > vue 1`] = `
-"import { renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
 const t0 = _template("<div>color</div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setStyle(n0, { color: _ctx.myColor }))
+  _setInheritAttrs(["style"])
+  _renderEffect(() => _setStyle(n0, { color: _ctx.myColor }, true))
   return n0
 }"
 `;
 
 exports[`style shorthand binding > svelte 1`] = `
-"import { renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
 const t0 = _template("<div>color</div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setStyle(n0, { color: _ctx.color }))
+  _setInheritAttrs(["style"])
+  _renderEffect(() => _setStyle(n0, { color: _ctx.color }, true))
   return n0
 }"
 `;
 
 exports[`style shorthand binding > vue 1`] = `
-"import { renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setStyle as _setStyle, template as _template } from 'vue/vapor';
 const t0 = _template("<div>color</div>")
 
 export function render(_ctx) {
   const n0 = t0()
-  _renderEffect(() => _setStyle(n0, { color: _ctx.color }))
+  _setInheritAttrs(["style"])
+  _renderEffect(() => _setStyle(n0, { color: _ctx.color }, true))
   return n0
 }"
 `;

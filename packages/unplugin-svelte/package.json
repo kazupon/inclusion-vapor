@@ -92,7 +92,7 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
-    "@vue-vapor/shared": "latest",
+    "@vue-vapor/shared": "https://pkg.pr.new/vuejs/vue-vapor/@vue/shared@3f6ce96",
     "debug": "^4.3.6",
     "svelte": "catalog:",
     "svelte-vapor-runtime": "workspace:*",
