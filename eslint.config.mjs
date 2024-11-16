@@ -101,6 +101,7 @@ export default defineConfig(
     ignores: [
       // TODO:
       // sometimes, Resolving `parserOptions.project` is not working in `.svelte` files.
+      '.vscode/**',
       '**/*.svelte',
       '**/*.config.ts',
       '**/dist/*',

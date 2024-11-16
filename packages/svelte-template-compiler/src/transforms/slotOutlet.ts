@@ -33,7 +33,7 @@ import type { NodeTransform } from './types.ts'
 
 /**
  * NOTE: transform vapor slot from svelte slot
- * https://svelte.dev/docs/special-elements#slot
+ * https://v4.svelte.dev/docs/special-elements#slot
  */
 export const transformSlotOutlet: NodeTransform = (node, context) => {
   if (__DEV__) {
@@ -119,6 +119,7 @@ function createFallback(
     return []
   }
 
+  // TODO: do we need to support more complex wrap?
   context.node = node = extend({}, node)
 
   const fallback = newBlock(node)

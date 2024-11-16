@@ -20,6 +20,7 @@ import {
   DynamicFlag,
   IRDynamicPropsKind,
   IRNodeTypes,
+  isSvelteComment,
   isSvelteComponentTag,
   isSvelteElement
 } from '../ir/index.ts'
@@ -62,10 +63,32 @@ export const transformElement: NodeTransform = (_node, context) => {
       isDynamicComponent
     )
 
+    // TODO:
+    /*
+    let { parent } = context
+    while (
+      parent &&
+      parent.parent &&
+      parent.node.type === NodeTypes.ELEMENT &&
+      parent.node.tagType === ElementTypes.TEMPLATE
+    ) {
+      parent = parent.parent
+    }
+    const singleRoot =
+      context.root === parent &&
+      parent.node.children.filter(child => child.type !== NodeTypes.COMMENT)
+        .length === 1
+    */
+    const { parent } = context
+    const singleRoot =
+      context.root === parent &&
+      (parent.node.children || []).filter(child => !isSvelteComment(child)).length === 1
+
     ;(isComponent ? transformComponentElement : transformNativeElement)(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
       node as any,
       propsResult,
+      singleRoot,
       context as TransformContext<SvelteElement>,
       isDynamicComponent
     )
@@ -75,6 +98,7 @@ export const transformElement: NodeTransform = (_node, context) => {
 function transformComponentElement(
   node: SvelteComponentTag,
   propsResult: PropsResult,
+  singleRoot: boolean,
   context: TransformContext<SvelteElement>,
   isDynamicComponent: boolean
 ) {
@@ -105,7 +129,8 @@ function transformComponentElement(
   }
 
   context.dynamic.flags |= DynamicFlag.NON_TEMPLATE | DynamicFlag.INSERT
-  const root = context.root === context.parent && (context.parent.node.children || []).length === 1
+  // TODO:
+  // const root = context.root === context.parent && (context.parent.node.children || []).length === 1
 
   context.registerOperation({
     type: IRNodeTypes.CREATE_COMPONENT_NODE,
@@ -113,7 +138,7 @@ function transformComponentElement(
     tag,
     props: propsResult[0] ? propsResult[1] : [propsResult[1]],
     asset,
-    root,
+    root: singleRoot,
     slots: [...context.slots],
     once: context.inVOnce,
     // @ts-expect-error -- NOTE: if we will update vue-vapor, this error will be fixed
@@ -150,6 +175,7 @@ function resolveSetupReference(name: string, context: TransformContext): string 
 function transformNativeElement(
   node: SvelteElement,
   propsResult: PropsResult,
+  singleRoot: boolean,
   context: TransformContext<SvelteElement>
 ) {
   const { name: tag } = node
@@ -161,6 +187,7 @@ function transformNativeElement(
     template += ` ${scopeId}`
   }
 
+  let _staticProps = false
   if (propsResult[0] /* dynamic props */) {
     // TODO:
     // ...
@@ -168,6 +195,7 @@ function transformNativeElement(
     for (const prop of propsResult[1]) {
       const { key, values } = prop
       if (key.isStatic && values.length === 1 && values[0].isStatic) {
+        _staticProps = true
         template += ` ${key.content}`
         if (values[0].content) {
           template += `="${values[0].content}"`
@@ -176,11 +204,21 @@ function transformNativeElement(
         context.registerEffect(values, {
           type: IRNodeTypes.SET_PROP,
           element: context.reference(),
-          prop
+          prop,
+          root: singleRoot
         })
       }
     }
   }
+
+  // TOOD:
+  // if (singleRoot) {
+  //   context.registerOperation({
+  //     type: IRNodeTypes.SET_INHERIT_ATTRS,
+  //     staticProps: staticProps,
+  //     dynamicProps: propsResult[0] ? true : dynamicProps,
+  //   })
+  // }
 
   template += `>` + context.childrenTemplate.join('')
   // TODO remove unnecessary close tag, e.g. if it's the last element of the template
@@ -209,7 +247,7 @@ export function buildProps(
   node: SvelteElement,
   context: TransformContext<SvelteElement>,
   isComponent: boolean,
-  isDynamicComponent: boolean
+  isDynamicComponent?: boolean
 ): PropsResult {
   // convert from svelte props to vapor props
   const props = convertProps(node)

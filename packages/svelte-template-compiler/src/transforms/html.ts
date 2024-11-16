@@ -13,7 +13,7 @@ import type { TransformContext } from './context.ts'
 import type { NodeTransform } from './types.ts'
 
 // TODO: transform vapor v-html from svelte {@html}
-// https://svelte.dev/docs/special-tags#html
+// https://v4.svelte.dev/docs/special-tags#html
 export const transformVHtml: NodeTransform = (node, context) => {
   if (node.type === 'RawMustacheTag') {
     const exp = resolveSimpleExpression(

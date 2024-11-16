@@ -14,8 +14,9 @@ import type { TransformContext } from './context.ts'
 import type { NodeTransform } from './types.ts'
 
 /**
+ * NOTE:
  * transform vapor v-if for svelte {#if}
- * https://svelte.dev/docs/logic-blocks#if
+ * https://v4.svelte.dev/docs/logic-blocks#if
  */
 export const transformVIf: NodeTransform = (node, context) => {
   if (__DEV__) {

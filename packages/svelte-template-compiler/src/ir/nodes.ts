@@ -4,21 +4,16 @@
 // Author: Evan you (https://github.com/yyx990803) and Vapor team (https://github.com/orgs/vuejs/teams/vapor)
 // Repository url: https://github.com/vuejs/core-vapor
 
-import type { IRDynamicInfo, IRNodeTypes } from '@vue-vapor/compiler-vapor'
-
 import type {
   BindingTypes,
   CompoundExpressionNode,
   DirectiveNode,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
+import type { IRDynamicInfo, IRNodeTypes } from '@vue-vapor/compiler-vapor'
 import type { Overwrite } from '../types'
 import type { IRProp, IRProps, IRSlots } from './component'
 import type { SvelteTemplateNode } from './svelte'
-
-export interface BaseIRNode {
-  type: IRNodeTypes
-}
 
 export interface RootNode /* extends Node */ {
   type: IRNodeTypes.ROOT
@@ -36,14 +31,8 @@ export interface RootNode /* extends Node */ {
   transformed?: boolean
 }
 
-export interface RootIRNode {
-  type: IRNodeTypes.ROOT
-  node: RootNode
-  source: string
-  template: string[]
-  component: Set<string>
-  directive: Set<string>
-  block: BlockIRNode
+export interface BaseIRNode {
+  type: IRNodeTypes
 }
 
 export interface BlockIRNode extends BaseIRNode {
@@ -53,6 +42,16 @@ export interface BlockIRNode extends BaseIRNode {
   effect: IREffect[]
   operation: OperationNode[]
   returns: number[]
+}
+
+export interface RootIRNode {
+  type: IRNodeTypes.ROOT
+  node: RootNode
+  source: string
+  template: string[]
+  component: Set<string>
+  directive: Set<string>
+  block: BlockIRNode
 }
 
 export interface IfIRNode extends BaseIRNode {
@@ -69,6 +68,7 @@ export interface IRFor {
   value?: SimpleExpressionNode
   key?: SimpleExpressionNode
   index?: SimpleExpressionNode
+  memo?: SimpleExpressionNode
 }
 
 export interface ForIRNode extends BaseIRNode, IRFor {
@@ -77,18 +77,21 @@ export interface ForIRNode extends BaseIRNode, IRFor {
   keyProp?: SimpleExpressionNode
   render: BlockIRNode
   once: boolean
+  container?: number
 }
 
 export interface SetPropIRNode extends BaseIRNode {
   type: IRNodeTypes.SET_PROP
   element: number
   prop: IRProp
+  root: boolean
 }
 
 export interface SetDynamicPropsIRNode extends BaseIRNode {
   type: IRNodeTypes.SET_DYNAMIC_PROPS
   element: number
   props: IRProps[]
+  root: boolean
 }
 
 export interface SetDynamicEventsIRNode extends BaseIRNode {
@@ -145,6 +148,12 @@ export interface SetModelValueIRNode extends BaseIRNode {
   bindingType?: BindingTypes
   isComponent: boolean
 }
+
+// export interface SetInheritAttrsIRNode extends BaseIRNode {
+//   type: IRNodeTypes.SET_INHERIT_ATTRS
+//   staticProps: boolean
+//   dynamicProps: true | string[]
+// }
 
 export interface CreateTextNodeIRNode extends BaseIRNode {
   type: IRNodeTypes.CREATE_TEXT_NODE
@@ -210,6 +219,7 @@ export type OperationNode =
   | SetHtmlIRNode
   | SetTemplateRefIRNode
   | SetModelValueIRNode
+  //  | SetInheritAttrsIRNode
   | CreateTextNodeIRNode
   | InsertNodeIRNode
   | PrependNodeIRNode

@@ -18,7 +18,7 @@ import type { NodeTransform } from './types.ts'
 
 // NOTE: transform vapor template ref for svelte `bind:this`
 // https://svelte.dev/docs/element-directives#bind-this
-// https://svelte.dev/docs/component-directives#bind-this
+// https://v4.svelte.dev/docs/component-directives#bind-this
 export const transformTemplateRef: NodeTransform = (node, context) => {
   if (!isSvelteElement(node)) {
     return

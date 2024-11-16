@@ -42,21 +42,20 @@ export const transformVBind: DirectiveTransform = (dir, _node, context) => {
   let { exp } = dir
   let arg = dir.arg!
 
-  if (!exp) exp = normalizeBindShorthand(arg, context)
+  if (!exp) {
+    exp = normalizeBindShorthand(arg, context)
+  }
   if (!exp.content.trim()) {
-    if (!__BROWSER__) {
-      // #10280 only error against empty expression in non-browser build
-      // because :foo in in-DOM templates will be parsed into :foo="" by the
-      // browser
-      context.options.onError(createCompilerError(ErrorCodes.X_V_BIND_NO_EXPRESSION, loc))
-    }
+    context.options.onError(createCompilerError(ErrorCodes.X_V_BIND_NO_EXPRESSION, loc))
     exp = createSimpleExpression('', true, loc)
   }
 
   exp = resolveExpression(exp)
   arg = resolveExpression(arg)
 
-  if (arg.isStatic && isReservedProp(arg.content)) return
+  if (arg.isStatic && isReservedProp(arg.content)) {
+    return
+  }
 
   let camel = false
   if (modifiers.includes('camel')) {

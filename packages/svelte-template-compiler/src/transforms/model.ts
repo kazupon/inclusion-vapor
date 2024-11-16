@@ -5,17 +5,23 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transforms/vModel.ts
 
-import { createSimpleExpression, isMemberExpression } from '@vue-vapor/compiler-dom'
-import { IRNodeTypes, findAttrs } from '../ir/index.ts'
+import {
+  createDOMCompilerError,
+  createSimpleExpression,
+  DOMErrorCodes,
+  isMemberExpression
+} from '@vue-vapor/compiler-dom'
+import { findAttrs, IRNodeTypes } from '../ir/index.ts'
 import { getExpSource } from './utils.ts'
 
 import type { VaporHelper } from '@vue-vapor/compiler-vapor'
 import type { DirectiveTransform } from './types.ts'
 
 // NOTE: transform vapor v-model from svelte some bindings
-// https://svelte.dev/docs/element-directives#bind-property
-// https://svelte.dev/docs/element-directives#binding-select-value
-// ... and more on https://svelte.dev/docs/element-directives
+// https://v4.svelte.dev/docs/element-directives#bind-property
+// https://v4.svelte.dev/docs/element-directives#binding-select-value
+// ... and more on https://v4.svelte.dev/docs/element-directives
+
 export const transformVModel: DirectiveTransform = (dir, node, context) => {
   const { exp, arg } = dir
   if (!exp) {
@@ -40,6 +46,12 @@ export const transformVModel: DirectiveTransform = (dir, node, context) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       modelModifiers: dir.modifiers.map(m => m.content)
     }
+  }
+
+  if (dir.arg) {
+    context.options.onError(
+      createDOMCompilerError(DOMErrorCodes.X_V_MODEL_ARG_ON_ELEMENT, dir.arg.loc)
+    )
   }
 
   const { name: tag } = node

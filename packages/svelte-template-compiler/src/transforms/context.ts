@@ -54,6 +54,7 @@ export type TransformOptions = HackOptions<BaseTransformOptions>
 export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
   ir: RootIRNode
   node: T
+
   // eslint-disable-next-line unicorn/no-null
   parent: TransformContext<RootNode | SvelteTemplateNode> | null = null
   root: TransformContext<RootNode>

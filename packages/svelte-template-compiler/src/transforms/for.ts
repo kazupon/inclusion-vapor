@@ -31,7 +31,7 @@ import type { NodeTransform } from './types.ts'
 
 /**
  * NOTE: transform vapor v-for from svelte {#each}
- * https://svelte.dev/docs/logic-blocks#each
+ * https://v4.svelte.dev/docs/logic-blocks#each
  */
 export const transformVFor: NodeTransform = (node, context) => {
   if (__DEV__) {
