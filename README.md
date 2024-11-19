@@ -150,7 +150,7 @@ Based on Svelte v4 (maybe v3 compatible)
     - [ ] `$$slots`
     - [x] `<slot key={value}>`
   - [ ] `<svelte:self>`
-  - [ ] `<svelte:component>`
+  - [x] `<svelte:component>`
   - [ ] `<svelte:element>`
   - [ ] `<svelte:window>`
   - [ ] `<svelte:document>`

@@ -400,6 +400,15 @@ export function convertVaporDirectiveComponentExpression(
   node: SvelteComponentTag
 ): VaporDirectiveNode {
   const content = generate(node.expression)
+  const exp = createSimpleExpression(content, false, convertSvelteLocation(node, content))
+  if (exp) {
+    const ast = parseExpression(` ${exp.content}`, {
+      sourceType: 'module'
+      // TODO: use babel plugins
+      // plugins: context.options.expressionPlugins
+    })
+    exp.ast = ast
+  }
   return {
     type: NodeTypes.DIRECTIVE,
     name: 'bind',
@@ -407,7 +416,7 @@ export function convertVaporDirectiveComponentExpression(
     modifiers: [],
     // TODO: align loc for svlete compiler
     loc: convertSvelteLocation(node, `this="${content}"`),
-    exp: createSimpleExpression(content, false, convertSvelteLocation(node, content)),
+    exp,
     arg: undefined
   }
 }

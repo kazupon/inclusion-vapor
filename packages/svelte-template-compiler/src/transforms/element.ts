@@ -107,7 +107,12 @@ function transformComponentElement(
   let { name: tag } = node
   let asset = true
 
-  if (!dynamicComponent) {
+  if (dynamicComponent) {
+    // rename tag name to vapor component tag
+    if (tag === 'svelte:component') {
+      tag = 'component'
+    }
+  } else {
     const fromSetup = resolveSetupReference(tag, context)
     if (fromSetup) {
       tag = fromSetup

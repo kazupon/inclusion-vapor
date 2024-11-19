@@ -9,7 +9,7 @@ const svelteCounter = ref(0)
 const vueCounter = ref(0)
 
 const svelteMsg = computed(() => `Svelte Counter value: ${svelteCounter.value}`)
-const vueMsg = computed(() => `Vue Counter value: ${vueCounter.value}`)
+const vueMsg = computed(() => `Vue counter value: ${vueCounter.value}`)
 
 function onSvelteIncrement(e: { detail: { count: number } }) {
   console.log('fire increment event from svelte component on vue component', e)

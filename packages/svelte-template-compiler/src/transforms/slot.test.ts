@@ -741,15 +741,14 @@ test('quote slot name', () => {
 
 test('nested component slot', () => {
   const source1 = `<A><B/></A>`
-  // const source2 = `<A><B/></A>`
+  const source2 = `<A><B/></A>`
 
   const { code, ir } = compileWithSlot(source1)
-  // const expectedResult = vaporCompile(source2)
+  const expectedResult = vaporCompile(source2)
 
   expect(code).toMatchSnapshot('svelte')
-  /*
-  expect(expectedResult).toMatchSnapshot('vue')
-  */
+  expect(expectedResult.code).toMatchSnapshot('vue')
+
   expect(ir.block.operation).toMatchObject([
     {
       type: IRNodeTypes.CREATE_COMPONENT_NODE,

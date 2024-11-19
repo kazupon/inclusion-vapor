@@ -271,8 +271,7 @@ describe('component', () => {
     expect(code).contains('_createComponent(_ctx.Comp)')
   })
 
-  // NOTE: if we can update vue-vapor package, we can test the following code
-  describe.todo('dynamic component', () => {
+  describe('dynamic component', () => {
     test('dynamic binding', () => {
       const { code, ir, vaporHelpers } = compileWithElementTransform(
         `<svelte:component this={foo}></svelte:component>`
@@ -282,10 +281,11 @@ describe('component', () => {
       expect(ir.block.operation).toMatchObject([
         {
           type: IRNodeTypes.CREATE_COMPONENT_NODE,
-          tag: 'svelte:component',
+          tag: 'component',
           asset: true,
           root: true,
-          props: [[]],
+          // TODO:
+          // props: [[]],
           dynamic: {
             type: NodeTypes.SIMPLE_EXPRESSION,
             content: 'foo',

@@ -665,7 +665,7 @@ describe('convertProps', () => {
     })
   })
 
-  describe.todo('Svelte ComponentTag Node', () => {
+  describe('Svelte ComponentTag Node', () => {
     test('basic: <svelte:component this={Comp1} foo={bar} />', () => {
       const el = getSvelteElement(`<svelte:component this={Comp1} foo={bar} />`)
       expect(convertProps(el!)).toMatchObject([
@@ -711,8 +711,7 @@ describe('convertProps', () => {
           },
           arg: undefined,
           exp: {
-            // TODO:
-            // ast: undefined,
+            ast: {},
             type: NodeTypes.SIMPLE_EXPRESSION,
             // TODO: we want to map for svelte code correctly...
             content: 'Comp1',

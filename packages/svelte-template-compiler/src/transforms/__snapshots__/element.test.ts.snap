@@ -42,6 +42,17 @@ export function render(_ctx, $props, $emit, $attrs, $slots) {
 }"
 `;
 
+exports[`component > dynamic component > dynamic binding 1`] = `
+"import { resolveDynamicComponent as _resolveDynamicComponent, createComponent as _createComponent } from 'vue/vapor';
+
+export function render(_ctx) {
+  const n0 = _createComponent(_resolveDynamicComponent(_ctx.foo), [
+    () => (_ctx.foo)
+  ], null, true)
+  return n0
+}"
+`;
+
 exports[`component > generate multi root component 1`] = `
 "import { createComponent as _createComponent, template as _template } from 'vue/vapor';
 const t0 = _template("123")
