@@ -1,5 +1,9 @@
 # 🫶 Inclusion Vapor
 
+Component Interoperability based on vapor
+
+## About this project
+
 This Research & Development project is for running various components in [vapor](https://github.com/vuejs/core-vapor).
 
 This project started with my day job project and was inspired by [vue-jsx, which was announced at VueConf China 2024](https://x.com/OikawaRizumu/status/1808860605560074476).
@@ -195,7 +199,7 @@ Based on Svelte v4 (maybe v3 compatible)
 
 ## 🛣️ Roadmap
 
-This is the roadmap for inclusion-vapor. Currently, we are focusing on our day jobs, so the roadmap only includes svelte-vapor. If needed, we will continue implementing react-vapor, but we want to go with it in a community.
+This is the roadmap for inclusion-vapor. Currently, we are focusing on day job project, so the roadmap only includes svelte-vapor. If needed, we will continue implementing react-vapor, but We hope to develop through contribution of the community.
 
 **This roadmap depends on [vapor project](https://github.com/vuejs/core-vapor) so that the milestones may change.**
 
