@@ -74,7 +74,7 @@
     "jsdom": "^24.1.1",
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
-    "pkg-pr-new": "^0.0.20",
+    "pkg-pr-new": "^0.0.34",
     "prettier": "^3.3.2",
     "prettier-plugin-svelte": "^3.2.6",
     "prettier-plugin-toml": "^2.0.1",
