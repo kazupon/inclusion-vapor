@@ -19,6 +19,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [18]
+    needs:
+      - build
 
     runs-on: ${{ matrix.os }}
 
@@ -34,6 +36,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
+
+      - name: Restore dist cache
+        uses: actions/cache@v4
+        with:
+          path: packages/*/dist
+          key: build-inclusion-vapor-os-${{ matrix.os }}-${{ github.sha }}
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -65,6 +73,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      - name: Build
+        run: pnpm build
 
       - name: Cache dist
         uses: actions/cache@v4
@@ -107,7 +118,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [18]
-
     needs:
       - build
 
