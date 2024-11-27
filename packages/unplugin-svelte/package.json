@@ -1,7 +1,7 @@
 {
   "name": "unplugin-svelte-vapor",
   "description": "unplugin for svelte-vapor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "funding": "https://github.com/sponsors/kazupon",
   "bugs": {
