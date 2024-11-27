@@ -2,9 +2,9 @@ packages:
   - 'packages/*'
 
 catalog:
-  '@babel/parser': ^7.24.8
-  '@babel/types': ^7.24.9
-  'vite': ^5.3.4
+  '@babel/parser': ^7.26.2
+  '@babel/types': ^7.26.0
+  'vite': ^6.0.1
   'source-map-js': 1.2.0
   'svelte': 4.2.18
-  'tsdown': ^0.2.15
+  'tsdown': ^0.3.1
