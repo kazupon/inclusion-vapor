@@ -25,6 +25,7 @@ function onVueIncrement(e: number) {
 <template>
   <VueCounter :msg="svelteMsg" @increment="onVueIncrement">
     <span>slot content</span>
+    <!-- prettier-ignore -->
     <br>
     <span>Svelte counter value via event: {{ svelteCounter }}</span>
   </VueCounter>
@@ -33,6 +34,7 @@ function onVueIncrement(e: number) {
 
   <SvelteCounter :msg="vueMsg" @increment="onSvelteIncrement">
     <span>slot content</span>
+    <!-- prettier-ignore -->
     <br>
     <span>Vue counter value via event: {{ vueCounter }}</span>
   </SvelteCounter>

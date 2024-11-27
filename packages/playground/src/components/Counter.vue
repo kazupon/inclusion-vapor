@@ -15,8 +15,10 @@ function increment(e: Event) {
 <template>
   <div id="vue" class="box">
     <button class="vue" type="button" @click="increment">Vue Vapor count is {{ count }}</button>
+    <!-- prettier-ignore -->
     <br>
     <span>Props msg: {{ msg }}</span>
+    <!-- prettier-ignore -->
     <br>
     <slot />
   </div>
