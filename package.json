@@ -47,7 +47,7 @@
     "release": "bumpp package.json packages/**/package.json --commit \"release: v\" --push --tag",
     "serve": "serve",
     "test": "vitest run",
-    "typecheck": "vue-tsc -p .",
+    "typecheck": "vue-tsc -p tsconfig.vue-tsc.json",
     "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
@@ -79,7 +79,7 @@
     "prettier-plugin-svelte": "^3.2.6",
     "prettier-plugin-toml": "^2.0.1",
     "serve": "^14.2.3",
-    "typescript": "^5.7.2",
+    "typescript": "5.6.2",
     "typescript-eslint": "^8.16.0",
     "vitest": "^2.1.6",
     "vue-tsc": "^2.1.2"

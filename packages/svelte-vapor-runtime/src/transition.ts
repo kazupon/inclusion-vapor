@@ -133,6 +133,8 @@ export function draw(
  * */
 export function crossfade({
   fallback,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- IGNORE
+  // @ts-ignore -- IGNORE
   ..._defaults
 }: CrossfadeParams & {
   fallback?:

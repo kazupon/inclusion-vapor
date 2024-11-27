@@ -13,7 +13,7 @@ import {
   setText,
   template
 } from 'vue/vapor'
-import { makeRender, triggerEvent } from './_helper.ts'
+import { makeRender, triggerEvent } from './_helper/index.ts'
 import {
   afterUpdate,
   beforeUpdate,

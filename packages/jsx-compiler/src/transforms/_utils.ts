@@ -8,7 +8,7 @@ import type {
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
 import type { CompilerOptions } from '../compile.ts'
-import type { JSXElement, JSXFragment, RootNode } from '../ir/index.ts'
+import type { JSXElement, JSXFragment, RootIRNode, RootNode } from '../ir/index.ts'
 
 export const DEFAULT_OPTIONS: CompilerOptions = {
   prefixIdentifiers: true
@@ -16,7 +16,16 @@ export const DEFAULT_OPTIONS: CompilerOptions = {
 export const DEFAULT_VAPOR_COMPILER_OPTIONS = DEFAULT_OPTIONS as VaporCompilerOptions
 
 export function makeCompile(options: CompilerOptions = {}) {
-  return (source: string, overrideOptions: CompilerOptions = {}) => {
+  return (
+    source: string,
+    overrideOptions: CompilerOptions = {}
+  ): {
+    ast: RootNode
+    ir: RootIRNode
+    code: string
+    helpers: Set<string>
+    vaporHelpers: Set<string>
+  } => {
     const {
       body: [statement]
     } = parse(source, {

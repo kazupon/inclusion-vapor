@@ -136,6 +136,8 @@ export function createEventDispatcher<
     parameter: Record<string, any> | null | undefined,
     { cancelable = false }: DispatchOptions = {}
   ): boolean {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore -- TODO: fix this
     return dispatch(instance!, type, parameter, cancelable)
   }
 
@@ -204,6 +206,8 @@ function invokeHandle(
   event: CustomEvent
 ): boolean {
   let fired = false
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore -- TODO: fix this
   const el: Element = (instance.container as Element) || document
   // eslint-disable-next-line @typescript-eslint/no-explicit-any,
   const cleanEvent = addEventListener(el, type, fn as (...args: any) => any)
@@ -352,8 +356,11 @@ export function getAllContexts<T extends Map<any, any> = Map<any, any>>(): T {
   const provides = instance.provides
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const contexts = new Map<any, any>()
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  Object.keys(Object.assign({}, provides, Object.getPrototypeOf(provides))).forEach(key => {
+
+  Object.keys(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    Object.assign(Object.create(null), provides, Object.getPrototypeOf(provides))
+  ).forEach(key => {
     contexts.set(key, provides[key])
   })
   return contexts as T

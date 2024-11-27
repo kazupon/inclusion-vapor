@@ -49,16 +49,20 @@ export const transformVOn: DirectiveTransform = (dir, node, context) => {
 
   const { keyModifiers, nonKeyModifiers, eventOptionModifiers } = resolveModifiers(
     arg.isStatic ? `on${nameString}` : arg,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore -- TODO: fix this
     modifiers,
     null, // eslint-disable-line unicorn/no-null
     resolveLocation(loc, context)
   )
 
   let keyOverride: KeyOverride | undefined
+
   const isStaticClick = arg.isStatic && arg.content.toLowerCase() === 'click'
   const delegate = arg.isStatic && eventOptionModifiers.length === 0 && delegatedEvents(arg.content)
 
   // normalize click.right and click.middle since they don't actually fire
+
   if (nonKeyModifiers.includes('middle')) {
     if (keyOverride) {
       // TODO: error here

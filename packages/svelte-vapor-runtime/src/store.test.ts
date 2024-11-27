@@ -2,7 +2,7 @@
 
 import { describe, expect, test, vi } from 'vitest'
 import { delegate, delegateEvents, nextTick, renderEffect, setText, template } from 'vue/vapor'
-import { makeRender, triggerEvent } from './_helper.ts'
+import { makeRender, triggerEvent } from './_helper/index.ts'
 import {
   derived,
   get,

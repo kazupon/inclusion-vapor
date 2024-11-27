@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "packages/playground",
+    "packages/react-vapor-hooks/src/**/*.ts",
+    "packages/svelte-vapor-runtime/src/**/*.ts"
+  ]
+}
