@@ -425,7 +425,7 @@ export function analyze(ast: Node): Readonly<ReturnAnalyzedScope> {
   })
 
   /**
-   * anaylze references
+   * analyze references
    */
 
   for (let i = references.length - 1; i >= 0; --i) {

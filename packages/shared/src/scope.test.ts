@@ -9,7 +9,7 @@ function pojo(obj: any): any {
   return JSON.parse(JSON.stringify(obj)) // eslint-disable-line unicorn/prefer-structured-clone
 }
 
-describe('anaylze', () => {
+describe('analyze', () => {
   test('simple variable decralation', () => {
     const program = babelParse(`
       const a = b
@@ -366,7 +366,7 @@ describe('anaylze', () => {
       }
     }
     try {
-      lableInTry: {
+      labelInTry: {
         // BlockStatement
       }
     } catch (e) {
@@ -400,18 +400,18 @@ describe('anaylze', () => {
 
     const tryBlockScope = scope.children[3]
     expect(tryBlockScope.labels.length).toBe(1)
-    expect(tryBlockScope.labels[0].label.name).toBe('lableInTry')
+    expect(tryBlockScope.labels[0].label.name).toBe('labelInTry')
 
     const catchBlockScope = scope.children[4]
     expect(catchBlockScope.labels.length).toBe(1)
     expect(catchBlockScope.labels[0].label.name).toBe('labelInCatch')
 
-    const swtichBlockScope = scope.children[5].children[0]
-    expect(swtichBlockScope.labels.length).toBe(1)
-    expect(swtichBlockScope.labels[0].label.name).toBe('labelInSwitchCase')
+    const switchBlockScope = scope.children[5].children[0]
+    expect(switchBlockScope.labels.length).toBe(1)
+    expect(switchBlockScope.labels[0].label.name).toBe('labelInSwitchCase')
   })
 
-  test('definintion kind', () => {
+  test('definition kind', () => {
     const program = babelParse(`
     const a = 1
     let b = 2
@@ -471,8 +471,8 @@ describe('anaylze', () => {
     expect(f?.declaration?.type).toBe('VariableDeclaration')
 
     // FIXME: should scope switch and switch case
-    // const swtichBlock = scope.children[5]
-    // console.log(swtichBlock)
+    // const switchBlock = scope.children[5]
+    // console.log(switchBlock)
   })
 
   test('escope example case', () => {

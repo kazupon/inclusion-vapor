@@ -333,7 +333,7 @@ test('style shorthand binding', () => {
   expect(code).contains(`_renderEffect(() => _setStyle(n0, { color: _ctx.color }, true))`)
 })
 
-test.todo('style `imporant` modifier', () => {
+test.todo('style `important` modifier', () => {
   const source1 = `<div style:color|important="red">modifier</div>`
   const source2 = `<div :style="{ color: 'red !important' }">modifier</div>`
 

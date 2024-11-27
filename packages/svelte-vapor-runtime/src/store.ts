@@ -14,7 +14,7 @@ import type { Ref } from 'vue/vapor'
 /**
  * NOTE:
  * This implementation is a ported from `svelte/store`.
- * Because `svelte/store` cannot tree-shake fully, if we use `svelte/store` directly. it will be bundled SvelteCompoment implemntation code...
+ * Because `svelte/store` cannot tree-shake fully, if we use `svelte/store` directly. it will be bundled SvelteComponent implementation code...
  */
 
 /** Callback to inform of a value updates. */
@@ -285,7 +285,7 @@ function subscribe<T>(store: Readable<T> | undefined, ...callbacks: Subscriber<T
  *
  * @description
  * This composable is a wrapper for svelte writable store.
- * This composable will be injected by unplugin-svelte on transform phase, after analisys for prefixed with `$`
+ * This composable will be injected by unplugin-svelte on transform phase, after analysis for prefixed with `$`
  * see about: https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
  *
  * usecase
@@ -325,7 +325,7 @@ export function useWritableStore<T>(store: Writable<T>): Ref<T> {
  *
  * @description
  * This composable is a wrapper for svelte readable store.
- * This composable will be injected by unplugin-svelte on transform phase, after analisys for prefixed with `$`
+ * This composable will be injected by unplugin-svelte on transform phase, after analysis for prefixed with `$`
  * see about: https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
  *
  * usecase

@@ -1,10 +1,9 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
   import { writable } from 'svelte/store'
-  import ReactCounter from './Counter.tsx'
 
   export const msg = 'counter value from vue'
-  let count = 1
+  let count = 0
   const store = writable(count)
   const dispatch = createEventDispatcher()
 
@@ -30,7 +29,6 @@
   <button on:click={increment}>
     Svelte Vapor count is {count}
   </button>
-  <svelte:component this={ReactCounter} />
   <br />
   <span>Prop msg: {msg}</span>
   <br />

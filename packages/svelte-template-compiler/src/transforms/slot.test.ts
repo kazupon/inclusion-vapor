@@ -301,7 +301,7 @@ test('named slot on multiple components', () => {
   expect(code).contains(`"foo": () => {`)
   expect(code).contains(`"bar": () => {`)
 
-  // TOOD: white space
+  // TODO: white space
   // expect(ir.template).toEqual([])
   expect(ir.block.operation).toMatchObject([
     {

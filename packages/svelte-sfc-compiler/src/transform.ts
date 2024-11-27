@@ -135,7 +135,7 @@ function analyze(ast: BabelProgram) {
     return false
   }
 
-  function collectRecusiveEffectables(node: BabelNode): BabelIdentifier | undefined {
+  function collectRecursiveEffectables(node: BabelNode): BabelIdentifier | undefined {
     switch (node.type) {
       case 'Identifier': {
         if (!hasReactivityVariable(node.name)) {
@@ -149,7 +149,7 @@ function analyze(ast: BabelProgram) {
       // case 'ObjectPattern': {
       //   for (const property of node.properties) {
       //     if (property.type === 'ObjectProperty') {
-      //       collectRecusiveEffectables(property.value)
+      //       collectRecursiveEffectables(property.value)
       //     }
       //   }
       //   break
@@ -157,7 +157,7 @@ function analyze(ast: BabelProgram) {
       // case 'ArrayPattern': {
       //   for (const element of node.elements) {
       //     if (element) {
-      //       collectRecusiveEffectables(element)
+      //       collectRecursiveEffectables(element)
       //     }
       //   }
       //   break
@@ -190,7 +190,7 @@ function analyze(ast: BabelProgram) {
         }
         case 'AssignmentExpression': {
           if (expression.operator === '=') {
-            const id = collectRecusiveEffectables(expression.left)
+            const id = collectRecursiveEffectables(expression.left)
             walkAST(expression.right, {
               enter(node) {
                 if (node.type === 'Identifier' && hasReactivityVariable(node.name)) {
@@ -235,7 +235,7 @@ function analyze(ast: BabelProgram) {
     }
   }
   const storeVariables = getVaporStoreVariables(scope, Object.fromEntries(storeImportBindings))
-  const storeReferences = getVaporStoreConvertableVariables(scope, storeVariables)
+  const storeReferences = getVaporStoreConvertibleVariables(scope, storeVariables)
 
   return {
     scope,
@@ -469,7 +469,7 @@ function getVaporStoreVariables(scope: Scope, imports: Record<string, ImportBind
   return variables
 }
 
-function getVaporStoreConvertableVariables(scope: Scope, variables: Variable[]): BabelIdentifier[] {
+function getVaporStoreConvertibleVariables(scope: Scope, variables: Variable[]): BabelIdentifier[] {
   // eslint-disable-next-line unicorn/no-array-reduce
   return variables.reduce((acc, variable) => {
     return [...acc, ...collectReferences(scope, `$${variable.name}`)]
