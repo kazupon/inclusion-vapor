@@ -42,7 +42,7 @@ importers:
         version: 6.2.1
       '@kazupon/eslint-config':
         specifier: ^0.18.0
-        version: 0.18.0(n4rhzwahy6ql36d7ctfcjqodk4)
+        version: 0.18.0(puvxd3gk6zdw35fp64ruvxur6q)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -68,8 +68,8 @@ importers:
         specifier: ^7.35.0
         version: 7.37.2(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-hooks:
-        specifier: ^4.6.2
-        version: 4.6.2(eslint@9.11.0(jiti@2.4.0))
+        specifier: ^5.0.0
+        version: 5.0.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-refresh:
         specifier: ^0.4.9
         version: 0.4.14(eslint@9.11.0(jiti@2.4.0))
@@ -2893,11 +2893,11 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-plugin-react-hooks@4.6.2:
-    resolution: {integrity: sha512-QzliNJq4GinDBcD8gPB5v0wh6g8q3SUi6EFF0x8N/BL9PoVs0atuGc47ozMRyOWAKdwaZ5OnbOEa3WR+dSGKuQ==}
+  eslint-plugin-react-hooks@5.0.0:
+    resolution: {integrity: sha512-hIOwI+5hYGpJEc4uPRmz2ulCjAGD/N13Lukkh8cLV0i2IRk/bdZDYjgLVHj+U9Z704kLIdIO6iueGvxNur0sgw==}
     engines: {node: '>=10'}
     peerDependencies:
-      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
   eslint-plugin-react-refresh@0.4.14:
     resolution: {integrity: sha512-aXvzCTK7ZBv1e7fahFuR3Z/fyQQSIQ711yPgYRj+Oj64tyTgO4iQIDmYXDBqvSWQ/FA4OSCsXOStlF+noU0/NA==}
@@ -6191,7 +6191,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.18.0(n4rhzwahy6ql36d7ctfcjqodk4)':
+  '@kazupon/eslint-config@0.18.0(puvxd3gk6zdw35fp64ruvxur6q)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.4.1(eslint@9.11.0(jiti@2.4.0))
       '@eslint/js': 9.15.0
@@ -6205,7 +6205,7 @@ snapshots:
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.11.0(jiti@2.4.0))(typescript@5.6.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-jsonc: 2.18.1(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react: 7.37.2(eslint@9.11.0(jiti@2.4.0))
-      eslint-plugin-react-hooks: 4.6.2(eslint@9.11.0(jiti@2.4.0))
+      eslint-plugin-react-hooks: 5.0.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-refresh: 0.4.14(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-regexp: 2.7.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-svelte: 2.46.0(eslint@9.11.0(jiti@2.4.0))(svelte@4.2.18(patch_hash=c5c6vdjhqpc47quhpp6vmkfhii))
@@ -8031,7 +8031,7 @@ snapshots:
     transitivePeerDependencies:
       - '@eslint/json'
 
-  eslint-plugin-react-hooks@4.6.2(eslint@9.11.0(jiti@2.4.0)):
+  eslint-plugin-react-hooks@5.0.0(eslint@9.11.0(jiti@2.4.0)):
     dependencies:
       eslint: 9.11.0(jiti@2.4.0)
 
