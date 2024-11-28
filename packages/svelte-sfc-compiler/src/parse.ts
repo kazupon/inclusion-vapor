@@ -58,6 +58,7 @@ export function parse(source: string, options: SvelteParseOptions = {}): SvelteS
     template: null, // eslint-disable-line unicorn/no-null
     script: null, // eslint-disable-line unicorn/no-null
     scriptSetup: null, // eslint-disable-line unicorn/no-null
+    module: null, // eslint-disable-line unicorn/no-null
     styles: [],
     customBlocks: [],
     cssVars: [],
@@ -83,7 +84,9 @@ export function parse(source: string, options: SvelteParseOptions = {}): SvelteS
   }
 
   // module
-  // TODO:
+  if (ast.module) {
+    descriptor.module = createSvelteScriptBlock(ast.module, source, pad)
+  }
 
   // style
   if (ast.css) {

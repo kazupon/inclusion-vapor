@@ -88,4 +88,6 @@ export type SvelteSFCDescriptor = Overwrite<
     template?: SvelteSFCTemplateBlock | null
     scriptSetup?: SvelteSFCScriptBlock | null
   }
->
+> & {
+  module?: SvelteSFCScriptBlock | null
+}

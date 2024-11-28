@@ -9,6 +9,13 @@ exports[`parse > script 1`] = `
 "
 `;
 
+exports[`parse > script-module 1`] = `
+"
+  export const foo = 'bar'
+  export function bar() {}
+"
+`;
+
 exports[`parse > style 1`] = `
 "
 button {
@@ -18,7 +25,14 @@ button {
 `;
 
 exports[`parse > template 1`] = `
-"<button on:click={increment}>
+"<script lang="js">
+  let count = 0
+  const increment = () => {
+    count += 1
+  }
+</script>
+
+<button on:click={increment}>
   count is {count}
 </button>"
 `;
