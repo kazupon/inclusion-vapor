@@ -3,10 +3,10 @@
 
 // import generate from '@babel/generator'
 // import { print as _generate } from 'code-red'
-import { parse as parseBabel } from '@babel/parser'
 import { walkAST, walkImportDeclaration } from 'ast-kit'
 import { analyze as analyzeAst, getExportVariables, getReferences } from 'inclusion-vapor-shared'
 import { generateTransform, MagicStringAST } from 'magic-string-ast'
+import { parseSvelteScript } from './parse.ts'
 
 import type {
   Identifier as BabelIdentifier,
@@ -44,6 +44,14 @@ export interface TransformSvelteScriptOptions {
    */
   id?: string
   /**
+   * Svelte script context code
+   */
+  moduleCode?: string
+  /**
+   * Svelte script context AST, which is parsed by `parseSvelteScript`
+   */
+  moduleAst?: ReturnType<typeof parseSvelteScript>
+  /**
    * Enable source map
    * @default false
    */
@@ -62,20 +70,41 @@ export function transformSvelteScript(
   code: string,
   options: TransformSvelteScriptOptions = {}
 ): string | { code: string; map: GenerateMap } {
-  const babelFileNode = options.ast
-    ? options.ast.content
-    : parseBabel(code, { sourceType: 'module' })
+  const babelFileNode = options.ast ? options.ast.content : parseSvelteScript(code)
   const ast = babelFileNode.program
   const s = new MagicStringAST(code, { offset: -babelFileNode.start! })
 
-  const analyzed = analyze(ast)
-  transform({ ...analyzed, code, ast, s })
+  // if (options.moduleAst) {
+  //   console.log('offset', babelFileNode.start!, options.moduleAst.start)
+  // }
+
+  const analyzed = analyze(ast, options)
+  const sModule =
+    analyzed.analyzedScriptModule && options.moduleAst
+      ? new MagicStringAST(options.moduleCode!, { offset: -options.moduleAst.start! })
+      : undefined
+  transform({
+    ...analyzed,
+    code,
+    ast,
+    s,
+    moduleAst: options.moduleAst?.program,
+    moduleCode: options.moduleCode,
+    sModule
+  })
 
   return generate(s, options)
 }
 
-function analyze(ast: BabelProgram) {
+function analyze(ast: BabelProgram, options: TransformSvelteScriptOptions = {}) {
+  // analyze svelte script instance
   const { scope, firstNodeAfterImportDeclaration } = analyzeAst(ast)
+
+  // analyze svelte script context module
+  let modAnalyzed: ReturnType<typeof analyzeAst> | undefined
+  if (options.moduleAst) {
+    modAnalyzed = analyzeAst(options.moduleAst.program)
+  }
 
   // keep vapor imports (`import { ... } from 'vue/vapor'`) to generate
   const vaporImports = new Set<string>()
@@ -94,6 +123,23 @@ function analyze(ast: BabelProgram) {
   })
 
   if (refVariables.length > 0) {
+    vaporImports.add('ref')
+  }
+
+  /**
+   * collect script module variables
+   */
+  const refModuleVariables = modAnalyzed
+    ? [...modAnalyzed.scope.variables.values()].filter(variable => {
+        return (
+          variable.definition.node.type === 'VariableDeclarator' &&
+          variable.declaration.type === 'VariableDeclaration' &&
+          variable.declaration.kind === 'let'
+        )
+      })
+    : []
+
+  if (refModuleVariables.length > 0) {
     vaporImports.add('ref')
   }
 
@@ -242,13 +288,15 @@ function analyze(ast: BabelProgram) {
     firstNodeAfterImportDeclaration,
     vaporImports,
     refVariables,
+    refModuleVariables,
     removableExportDeclarations,
     exportVariables,
     effectables,
     transformableEffectLabels,
     storeImports,
     storeVariables,
-    storeReferences
+    storeReferences,
+    analyzedScriptModule: modAnalyzed
   }
 }
 
@@ -256,6 +304,9 @@ type TransformContext = ReturnType<typeof analyze> & {
   code: string
   ast: BabelProgram
   s: MagicStringAST
+  moduleCode?: string
+  moduleAst?: BabelProgram
+  sModule?: MagicStringAST
 }
 
 function transform(context: TransformContext): void {
@@ -263,10 +314,19 @@ function transform(context: TransformContext): void {
   transformProps(context)
   transformStore(context)
   transformEffect(context)
-  prependVaporImports(context)
+  const exports = prependCodes(context)
+  appendCodes(context, exports)
 }
 
-function transformReactivity({ s, refVariables, code }: TransformContext): void {
+function transformReactivity({
+  s,
+  refVariables,
+  scope,
+  code,
+  sModule,
+  refModuleVariables,
+  moduleCode
+}: TransformContext): void {
   /**
    * transform `let` define variables and reference variables
    */
@@ -290,6 +350,47 @@ function transformReactivity({ s, refVariables, code }: TransformContext): void 
     const refs = getReferences(variable)
     for (const ref of refs) {
       s.overwriteNode(ref, `${ref.name}.value`)
+    }
+  }
+
+  /**
+   * transform `let` define variables and reference variables in script module
+   */
+  if (sModule && moduleCode) {
+    // transform instance with script module variables
+    const transformInstance = (sc: Scope, v: Variable) => {
+      for (const r of sc.references) {
+        if (r.name === v.name) {
+          s.overwriteNode(r, `${v.name}.value`)
+        }
+      }
+      for (const child of sc.children) {
+        transformInstance(child, v)
+      }
+    }
+
+    for (const variable of refModuleVariables) {
+      // transform to `ref()`
+      if (
+        variable.definition.node.type === 'VariableDeclarator' &&
+        variable.definition.node.init != undefined &&
+        validateNodeTypeForVaporRef(variable.definition.node.init)
+      ) {
+        const target = variable.export || variable.declaration
+        sModule.overwriteNode(
+          target,
+          `const ${variable.name} = ref(${sliceCode(moduleCode, variable.definition.node.init, sModule.offset)})`
+        )
+      } else {
+        continue
+      }
+
+      // transform to `.value`
+      const refs = getReferences(variable)
+      for (const ref of refs) {
+        sModule.overwriteNode(ref, `${ref.name}.value`)
+      }
+      transformInstance(scope, variable)
     }
   }
 }
@@ -426,9 +527,67 @@ function transformStore(context: TransformContext): void {
   }
 }
 
-function prependVaporImports({ s, vaporImports: imports }: TransformContext): void {
+function prependCodes({
+  s,
+  vaporImports: imports,
+  sModule,
+  moduleCode,
+  moduleAst
+}: TransformContext): string[] {
+  const codes: string[] = []
+  const exports: string[] = []
+
+  // prepend imports
   if (imports.size > 0) {
-    s.prepend(`import { ${[...imports].join(', ')} } from 'vue/vapor'\n`)
+    codes.push(`import { ${[...imports].join(', ')} } from 'vue/vapor'\n`)
+  }
+
+  // prepend script context module
+  if (moduleCode && moduleAst) {
+    // const contextStr = new MagicStringAST(moduleCode)
+    for (const node of moduleAst.body) {
+      if (node.type === 'ExportNamedDeclaration') {
+        if (node.specifiers.length > 0) {
+          // TODO:
+        } else {
+          if (node.declaration!.type === 'VariableDeclaration') {
+            for (const declaration of node.declaration.declarations) {
+              if (declaration.id.type === 'Identifier') {
+                exports.push(declaration.id.name)
+              }
+            }
+          } else if (node.declaration!.type === 'FunctionDeclaration') {
+            if (sModule) {
+              sModule.overwriteNode(node, sModule.sliceNode(node.declaration))
+            }
+            exports.push(node.declaration.id!.name)
+          }
+        }
+      } else if (node.type === 'ExportDefaultDeclaration') {
+        // TODO:
+      } else {
+        // TODO:
+        // codes.push(sliceCode(moduleCode, node))
+      }
+    }
+
+    if (sModule && sModule.hasChanged()) {
+      codes.push(sModule.toString())
+    }
+
+    codes.push(`\n`)
+  }
+
+  if (codes.length > 0) {
+    s.prepend(codes.join('\n'))
+  }
+
+  return exports
+}
+
+function appendCodes({ s }: TransformContext, exports: string[]): void {
+  if (exports.length > 0) {
+    s.append(`\ndefineExpose({ ${exports.join(', ')} })`)
   }
 }
 

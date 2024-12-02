@@ -1,5 +1,5 @@
 <script vapor setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue/vapor'
 
 const { msg = 'hello' } = defineProps<{ msg: string }>()
 const emits = defineEmits<{ (e: 'increment', value: number): void }>()

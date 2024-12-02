@@ -1,3 +1,14 @@
+<script context="module">
+  export let c = 0
+  export let foo = `foo${c}`
+  console.log('script context', foo.toString())
+
+  export function counter() {
+    foo = `foo${c++}`
+    console.log('script content : foo', foo)
+  }
+</script>
+
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
   import { writable } from 'svelte/store'
@@ -29,6 +40,8 @@
   <button on:click={increment}>
     Svelte Vapor count is {count}
   </button>
+  <br />
+  <span>script module value: {foo}</span>
   <br />
   <span>Prop msg: {msg}</span>
   <br />

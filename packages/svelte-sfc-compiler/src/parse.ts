@@ -5,10 +5,12 @@
 // Repository url: https://github.com/vuejs/core-vapor
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-sfc/src/parse.ts
 
+import { parse as parseBabel } from '@babel/parser'
 import { isSvelteAttribute, isSvelteText } from 'svelte-vapor-template-compiler'
 import { compile as compileSvelte, parse as parseSvelte } from 'svelte/compiler'
 // import { SourceMapGenerator } from 'source-map-js'
 
+import type { File as BabelFile } from '@babel/types'
 import type {
   CompilerError
   // RawSourceMap,
@@ -144,6 +146,18 @@ export function parse(source: string, options: SvelteParseOptions = {}): SvelteS
   }
   // parseCache.set(sourceKey, result)
   return result
+}
+
+/**
+ * Parse a svelte script
+ *
+ * @param {string} code - a string of svelte script code
+ * @returns {BabelFile} {@link BabelFile}
+ */
+export function parseSvelteScript(code: string): BabelFile {
+  return parseBabel(code, {
+    sourceType: 'module'
+  })
 }
 
 // TODO: more refactoring

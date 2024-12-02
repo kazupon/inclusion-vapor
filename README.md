@@ -112,7 +112,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `$$props`
   - [ ] `$$restProps`
   - [x] `$`
-  - [ ] `context="module"`
+  - [x] `context="module"`
 - [ ] Logic blocks
   - [x] `{#if}` / `{:else}` / `{:else if}`
   - [x] `{#each}`

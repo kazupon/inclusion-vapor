@@ -1,3 +1,4 @@
+import { parse as parseBabel } from '@babel/parser'
 import { MagicStringAST } from 'magic-string-ast'
 import { parse } from 'svelte/compiler'
 import { describe, expect, test } from 'vitest'
@@ -159,6 +160,37 @@ console.log(b, c, bar(1))
       expect(code).contains(`console.log(b.value, c.value, bar(1))`)
       expect(code).not.contains(`let`)
       expect(code).not.contains(`$: `)
+    })
+  })
+
+  describe('script context module', () => {
+    test('basic', () => {
+      const moduleCode = `export let foo = 'hello'
+let bar = 1
+bar.toString()
+const buz = () => {}
+export function fn1() {
+  console.log('fn1', foo)
+}`
+      const moduleAst = parseBabel(moduleCode, { sourceType: 'module' })
+      const code = transformSvelteScript(
+        `let a = 1
+function setFoo() {
+  a = foo
+}`,
+        { moduleAst, moduleCode }
+      )
+      expect(code).toMatchSnapshot()
+      expect(code).contains(`import { ref } from 'vue/vapor'`)
+      expect(code).contains(`const foo = ref('hello')`)
+      expect(code).contains(`const bar = ref(1)`)
+      expect(code).contains(`bar.value.toString()`)
+      expect(code).contains(`const buz = () => {}`)
+      expect(code).contains(`function fn1() {`)
+      expect(code).contains(`console.log('fn1', foo.value)`)
+      expect(code).contains(`const a = ref(1)`)
+      expect(code).contains(`function setFoo() {`)
+      expect(code).contains(`a.value = foo.value`)
     })
   })
 })

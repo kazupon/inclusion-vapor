@@ -6,7 +6,7 @@
 
 import { isObject, isString } from '@vue-vapor/shared'
 import createDebug from 'debug'
-import { transformSvelteScript } from 'svelte-vapor-sfc-compiler'
+import { parseSvelteScript, transformSvelteScript } from 'svelte-vapor-sfc-compiler'
 import { preprocess } from 'svelte/compiler'
 import { createDescriptor } from './descriptor.ts'
 import { EXPORT_HELPER_ID } from './helper.ts'
@@ -218,11 +218,23 @@ export async function transformMain(
 async function preprocessSvelte(
   code: string,
   filename: string,
-  { sourcemap }: ResolvedOptions
+  options: ResolvedOptions
 ): Promise<string> {
+  const { sourcemap } = options
+  debug('preprocessSvelte  ...', filename)
+
+  // converts the required `<script contex="module">` to AST in advance for `transformSvelteScript`
+  const [moduleAst, moduleCode] = await preprocessSvelteScriptContext(code, filename, options)
+  debug('preprocessSvelte moduleAst', moduleAst)
+
+  // transform svelte script with use svelte preprocess
   const preprocessed = await preprocess(code, {
-    script: ({ content }) => {
-      const ret = transformSvelteScript(content, { sourcemap, id: filename })
+    script: ({ content, attributes }) => {
+      if (attributes.context === 'module') {
+        // if it's `<script contex="module">`, keep it as is.
+        return { code: content }
+      }
+      const ret = transformSvelteScript(content, { sourcemap, id: filename, moduleAst, moduleCode })
       return {
         code: isString(ret) ? ret : ret.code,
         map: isObject(ret) ? ret.map : undefined
@@ -230,7 +242,31 @@ async function preprocessSvelte(
     }
   })
 
+  debug('... preprocessSvelte', filename)
   // debug('preprocessSvelte preprocessed', preprocessed)
   // TODO: we might need to return `preprocessed` directly
   return preprocessed.code
+}
+
+// TODO: do we need filename and options in this function?
+async function preprocessSvelteScriptContext(
+  code: string,
+  _filename: string,
+  _options: ResolvedOptions
+): Promise<[ReturnType<typeof parseSvelteScript> | undefined, string | undefined]> {
+  let moduleAst: ReturnType<typeof parseSvelteScript> | undefined
+  let moduleCode: string | undefined
+  await preprocess(code, {
+    script: params => {
+      if (
+        params.attributes.context === 'module' &&
+        moduleAst == undefined &&
+        moduleCode == undefined
+      ) {
+        moduleAst = parseSvelteScript(params.content)
+        moduleCode = params.content
+      }
+    }
+  })
+  return [moduleAst, moduleCode]
 }

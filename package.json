@@ -48,7 +48,8 @@
     "serve": "serve",
     "test": "vitest run",
     "typecheck": "vue-tsc -p tsconfig.vue-tsc.json",
-    "watch:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
+    "watch:svelte:sfc": "pnpm run --filter=./packages/svelte-sfc-compiler watch",
+    "watch:svelte:unplugin": "pnpm run --filter=./packages/unplugin-svelte watch"
   },
   "devDependencies": {
     "@eslint/markdown": "^6.2.0",

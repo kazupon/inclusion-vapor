@@ -107,3 +107,21 @@ console.log(foo, bar, baz)
 
 "
 `;
+
+exports[`transformSvelteScript > script context module > basic 1`] = `
+"import { ref } from 'vue/vapor'
+
+const foo = ref('hello')
+const bar = ref(1)
+bar.value.toString()
+const buz = () => {}
+function fn1() {
+  console.log('fn1', foo.value)
+}
+
+const a = ref(1)
+function setFoo() {
+  a.value = foo.value
+}
+defineExpose({ foo, fn1 })"
+`;
