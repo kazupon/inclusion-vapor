@@ -8,3 +8,5 @@ catalog:
   'source-map-js': 1.2.0
   'svelte': 4.2.18
   'tsdown': ^0.3.1
+  'unbuild': ^2.0.0
+  'monaco-editor': ^0.52.0

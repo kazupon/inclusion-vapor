@@ -6,13 +6,13 @@
     "build": "unbuild"
   },
   "dependencies": {
-    "monaco-editor": "^0.49.0"
+    "monaco-editor": "catalog:"
   },
   "devDependencies": {
     "source-map-js": "catalog:",
     "svelte": "catalog:",
     "svelte-vapor-template-compiler": "workspace:*",
-    "unbuild": "^2.0.0",
+    "unbuild": "catalog:",
     "vue": "^3.4.37"
   }
 }
