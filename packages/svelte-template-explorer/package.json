@@ -5,10 +5,10 @@
   "scripts": {
     "build": "unbuild"
   },
-  "dependencies": {
-    "monaco-editor": "catalog:"
-  },
   "devDependencies": {
+    "@shikijs/monaco": "^1.24.0",
+    "monaco-editor": "^0.52.0",
+    "shiki": "^1.24.0",
     "source-map-js": "catalog:",
     "svelte": "catalog:",
     "svelte-vapor-template-compiler": "workspace:*",

@@ -5,11 +5,9 @@
   "scripts": {
     "build": "unbuild"
   },
-  "dependencies": {
-    "monaco-editor": "catalog:"
-  },
   "devDependencies": {
     "jsx-vapor-compiler": "workspace:*",
+    "monaco-editor": "^0.52.0",
     "source-map-js": "catalog:",
     "unbuild": "catalog:",
     "vue": "^3.4.37"

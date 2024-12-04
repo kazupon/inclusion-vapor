@@ -10,7 +10,6 @@ import type * as m from 'monaco-editor'
 declare global {
   interface Window {
     monaco: typeof m
-    _deps: any // eslint-disable-line @typescript-eslint/no-explicit-any
     init: () => void
   }
 }

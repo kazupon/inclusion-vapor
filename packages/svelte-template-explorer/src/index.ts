@@ -1,8 +1,19 @@
+import { shikiToMonaco } from '@shikijs/monaco'
+import { createHighlighterCoreSync } from 'shiki/bundle/web'
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import { SourceMapConsumer } from 'source-map-js'
 import { compile } from 'svelte-vapor-template-compiler'
 import { toRaw, watchEffect } from 'vue'
 import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options.ts'
-import theme from './theme.ts'
+
+import langCss from 'shiki/langs/css.mjs'
+import langHtml from 'shiki/langs/html.mjs'
+import langJs from 'shiki/langs/javascript.mjs'
+import langSvelte from 'shiki/langs/svelte.mjs'
+import langTs from 'shiki/langs/typescript.mjs'
+import tokyoNight from 'shiki/themes/tokyo-night.mjs'
+// import vitesseDark from 'shiki/themes/vitesse-dark.mjs'
+// import vitesseLight from 'shiki/themes/vitesse-light.mjs'
 
 import type * as m from 'monaco-editor'
 import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-template-compiler'
@@ -10,7 +21,6 @@ import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-template-
 declare global {
   interface Window {
     monaco: typeof m
-    _deps: any // eslint-disable-line @typescript-eslint/no-explicit-any
     init: () => void
   }
 }
@@ -25,6 +35,7 @@ const sharedEditorOptions: m.editor.IStandaloneEditorConstructionOptions = {
   fontSize: 14,
   scrollBeyondLastLine: false,
   renderWhitespace: 'selection',
+  theme: 'tokyo-night',
   minimap: {
     enabled: false
   }
@@ -34,8 +45,22 @@ window.init = () => {
   const monaco = window.monaco
 
   // @ts-expect-error -- IGNORE
-  monaco.editor.defineTheme('my-theme', theme)
-  monaco.editor.setTheme('my-theme')
+  // monaco.editor.defineTheme('my-theme', theme)
+  // monaco.editor.setTheme('my-theme')
+
+  monaco.languages.register({ id: 'svelte' })
+  monaco.languages.register({ id: 'html' })
+  monaco.languages.register({ id: 'css' })
+  monaco.languages.register({ id: 'typescript' })
+  monaco.languages.register({ id: 'javascript' })
+
+  const highlighter = createHighlighterCoreSync({
+    themes: [tokyoNight],
+    langs: [langJs, langTs, langHtml, langCss, langSvelte],
+    engine: createJavaScriptRegexEngine()
+  })
+
+  shikiToMonaco(highlighter, monaco)
 
   let persistedState: PersistedState | undefined
 
