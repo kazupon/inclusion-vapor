@@ -6,8 +6,10 @@
     "build": "unbuild"
   },
   "devDependencies": {
+    "@shikijs/monaco": "catalog:",
     "jsx-vapor-compiler": "workspace:*",
-    "monaco-editor": "^0.52.0",
+    "monaco-editor": "catalog:",
+    "shiki": "catalog:",
     "source-map-js": "catalog:",
     "unbuild": "catalog:",
     "vue": "^3.4.37"

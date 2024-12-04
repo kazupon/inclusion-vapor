@@ -1,8 +1,15 @@
+import { shikiToMonaco } from '@shikijs/monaco'
 import { compile } from 'jsx-vapor-compiler'
+import { createHighlighterCoreSync } from 'shiki/bundle/web'
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import { SourceMapConsumer } from 'source-map-js'
 import { toRaw, watchEffect } from 'vue'
 import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options.ts'
-import theme from './theme.ts'
+
+import langHtml from 'shiki/langs/html.mjs'
+import langJs from 'shiki/langs/javascript.mjs'
+import langJsx from 'shiki/langs/jsx.mjs'
+import tokyoNight from 'shiki/themes/tokyo-night.mjs'
 
 import type { CompilerOptions, VaporCompilerError } from 'jsx-vapor-compiler'
 import type * as m from 'monaco-editor'
@@ -32,9 +39,17 @@ const sharedEditorOptions: m.editor.IStandaloneEditorConstructionOptions = {
 window.init = () => {
   const monaco = window.monaco
 
-  // @ts-expect-error -- IGNORE
-  monaco.editor.defineTheme('my-theme', theme)
-  monaco.editor.setTheme('my-theme')
+  monaco.languages.register({ id: 'jsx' })
+  monaco.languages.register({ id: 'html' })
+  monaco.languages.register({ id: 'javascript' })
+
+  const highlighter = createHighlighterCoreSync({
+    themes: [tokyoNight],
+    langs: [langJs, langHtml, langJsx],
+    engine: createJavaScriptRegexEngine()
+  })
+
+  shikiToMonaco(highlighter, monaco)
 
   let persistedState: PersistedState | undefined
 
@@ -147,7 +162,7 @@ window.init = () => {
 
   const editor = monaco.editor.create(document.querySelector('#source')!, {
     value: persistedState?.src || `<div>Hello World</div>`,
-    language: 'html',
+    language: 'jsx',
     ...sharedEditorOptions,
     wordWrap: 'bounded'
   })

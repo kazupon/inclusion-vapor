@@ -6,14 +6,9 @@ import { compile } from 'svelte-vapor-template-compiler'
 import { toRaw, watchEffect } from 'vue'
 import { compilerOptions, defaultOptions, initOptions, ssrMode } from './options.ts'
 
-import langCss from 'shiki/langs/css.mjs'
-import langHtml from 'shiki/langs/html.mjs'
 import langJs from 'shiki/langs/javascript.mjs'
 import langSvelte from 'shiki/langs/svelte.mjs'
-import langTs from 'shiki/langs/typescript.mjs'
 import tokyoNight from 'shiki/themes/tokyo-night.mjs'
-// import vitesseDark from 'shiki/themes/vitesse-dark.mjs'
-// import vitesseLight from 'shiki/themes/vitesse-light.mjs'
 
 import type * as m from 'monaco-editor'
 import type { CompilerOptions, VaporCompilerError } from 'svelte-vapor-template-compiler'
@@ -44,19 +39,12 @@ const sharedEditorOptions: m.editor.IStandaloneEditorConstructionOptions = {
 window.init = () => {
   const monaco = window.monaco
 
-  // @ts-expect-error -- IGNORE
-  // monaco.editor.defineTheme('my-theme', theme)
-  // monaco.editor.setTheme('my-theme')
-
   monaco.languages.register({ id: 'svelte' })
-  monaco.languages.register({ id: 'html' })
-  monaco.languages.register({ id: 'css' })
-  monaco.languages.register({ id: 'typescript' })
   monaco.languages.register({ id: 'javascript' })
 
   const highlighter = createHighlighterCoreSync({
     themes: [tokyoNight],
-    langs: [langJs, langTs, langHtml, langCss, langSvelte],
+    langs: [langJs, langSvelte],
     engine: createJavaScriptRegexEngine()
   })
 
@@ -173,7 +161,7 @@ window.init = () => {
 
   const editor = monaco.editor.create(document.querySelector('#source')!, {
     value: persistedState?.src || `<div>Hello World</div>`,
-    language: 'html',
+    language: 'svelte',
     ...sharedEditorOptions,
     wordWrap: 'bounded'
   })

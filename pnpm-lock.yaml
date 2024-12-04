@@ -12,6 +12,15 @@ catalogs:
     '@babel/types':
       specifier: ^7.26.0
       version: 7.26.0
+    '@shikijs/monaco':
+      specifier: ^1.24.0
+      version: 1.24.0
+    monaco-editor:
+      specifier: ^0.52.0
+      version: 0.52.0
+    shiki:
+      specifier: ^1.24.0
+      version: 1.24.0
     source-map-js:
       specifier: 1.2.0
       version: 1.2.0
@@ -167,12 +176,18 @@ importers:
 
   packages/jsx-explorer:
     devDependencies:
+      '@shikijs/monaco':
+        specifier: 'catalog:'
+        version: 1.24.0
       jsx-vapor-compiler:
         specifier: workspace:*
         version: link:../jsx-compiler
       monaco-editor:
-        specifier: ^0.52.0
+        specifier: 'catalog:'
         version: 0.52.0
+      shiki:
+        specifier: 'catalog:'
+        version: 1.24.0
       source-map-js:
         specifier: 'catalog:'
         version: 1.2.0
@@ -380,13 +395,13 @@ importers:
   packages/svelte-template-explorer:
     devDependencies:
       '@shikijs/monaco':
-        specifier: ^1.24.0
+        specifier: 'catalog:'
         version: 1.24.0
       monaco-editor:
-        specifier: ^0.52.0
+        specifier: 'catalog:'
         version: 0.52.0
       shiki:
-        specifier: ^1.24.0
+        specifier: 'catalog:'
         version: 1.24.0
       source-map-js:
         specifier: 'catalog:'
