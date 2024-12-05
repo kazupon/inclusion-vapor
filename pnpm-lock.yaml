@@ -54,7 +54,7 @@ importers:
         version: 6.2.1
       '@kazupon/eslint-config':
         specifier: ^0.18.0
-        version: 0.18.0(n4rhzwahy6ql36d7ctfcjqodk4)
+        version: 0.18.0(xejhzyjxfz3qqufla47skdu2te)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -80,8 +80,8 @@ importers:
         specifier: ^7.35.0
         version: 7.37.2(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-hooks:
-        specifier: ^4.6.2
-        version: 4.6.2(eslint@9.11.0(jiti@2.4.0))
+        specifier: ^5.0.0
+        version: 5.1.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-refresh:
         specifier: ^0.4.9
         version: 0.4.14(eslint@9.11.0(jiti@2.4.0))
@@ -211,11 +211,11 @@ importers:
         version: https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96(typescript@5.7.2)
     devDependencies:
       '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.12
+        specifier: ^19.0.0
+        version: 19.0.0
       '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.1
+        specifier: ^19.0.0
+        version: 19.0.0
       '@vitejs/plugin-vue':
         specifier: https://pkg.pr.new/@vitejs/plugin-vue@481bcd4
         version: https://pkg.pr.new/@vitejs/plugin-vue@481bcd4(vite@6.0.1(@types/node@22.10.0)(jiti@2.4.0)(terser@5.36.0)(tsx@4.19.2)(yaml@2.6.0))(vue@https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96(typescript@5.7.2))
@@ -256,11 +256,11 @@ importers:
         specifier: https://pkg.pr.new/vuejs/vue-vapor/@vue/vapor@3f6ce96
         version: https://pkg.pr.new/vuejs/vue-vapor/@vue/vapor@3f6ce96
       react:
-        specifier: ^18.3.1
-        version: 18.3.1
+        specifier: ^19.0.0
+        version: 19.0.0
       react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
       unplugin-react-vapor:
         specifier: workspace:*
         version: link:../unplugin-react
@@ -281,11 +281,11 @@ importers:
         version: https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96(typescript@5.7.2)
     devDependencies:
       '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.12
+        specifier: ^19.0.0
+        version: 19.0.0
       '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.1
+        specifier: ^19.0.0
+        version: 19.0.0
       tsdown:
         specifier: 'catalog:'
         version: 0.3.1(rollup@4.27.2)(typescript@5.7.2)
@@ -1589,63 +1589,63 @@ packages:
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
 
-  '@rolldown/binding-darwin-arm64@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-TtXZma/pebrmWw8hAun/PhMHPOI44dKlMdHsur5di+Dw8UIEI90Uy0MlgRd9a0PVwFsIyqouZdZ9r779PLJLzA==}
+  '@rolldown/binding-darwin-arm64@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-xAJyXoYzixpENqmBJvVxb+eiAYXd0Q6DC7KIl0jMh/IX8WZZdcwGxpguvfEQzWVEwom38+eau+TsfP62Cezwcg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-3vHUQksVJeVkzwvqmu/+MbNCIqN00YYW3d7+DTslFdnyGahEz6K9lHpjSvdJZiq2JgBmdrsGGPJH2DyfPj6u6g==}
+  '@rolldown/binding-darwin-x64@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-CwM3AMnroguRVU528A5HReK/pPulvxZmfATvAYSIMOHj5bT3PvHzXrOQ3S5oKEnsOFz1F2D6SWOQuTI2eIOSKw==}
     cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-freebsd-x64@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-ZC0BADnvDtIUESp5ehLDmI1nBMqT5W7sHp08mlB+EM4i5hvJ5B/zVFgl4DRTKKGaYt4FWQNkwGNKwxJsEHiG1Q==}
+  '@rolldown/binding-freebsd-x64@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-fNXWfb0ikzSuHCTPzXgHiFumCxjKXBDzgXdD00lLaaNP7Dn9HuNSf4QzL7qhMjVbpZOUww2s2t7LTVxUrGW24Q==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-UPat1Q/pwg5QsR8xmHz/xnGFtxGZFo2OUWMjjXUm2vjk809/pO09GBrYjS6+OEzdLM2ksv8t8XrtWY+CBzRhOA==}
+  '@rolldown/binding-linux-arm-gnueabihf@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-t4EVALo3MMP3VhUSthlh4mN3bPo46qbJmU62iaaj/RspMud9oTpICe5wSUACyO7Q6K20qBCVhqe278lgJkj3YQ==}
     cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-JR0C0mfM7fEEMmvZepVky5hAF+RuhzSIsla+2x+RBShYzFnpZkclepBHqjWdjSUO/uGW6k3yiqIWdf6RzRY6GQ==}
+  '@rolldown/binding-linux-arm64-gnu@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-55Bs7dfZAqA4csIprJt+2OavoXVqjmAFhSi9g93bKGcxsfjIe/hR1gfUkZlieWYqwefyuxs/ADs6fLFxY6nuRQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-musl@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-wQ9IWjpRYDvEq0NiHAQ8TJe/B8qYziSaWWUQASX/jXPTL00T7waszZvc/CNEDg2F40I4zaXK2X/HepAjTg6t4g==}
+  '@rolldown/binding-linux-arm64-musl@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-2Qjs0cdX9wDug0nJJfK37vwSdp3pTtSUKm8O8xpuHyDng1DC78+Bxb4y0uZ0LnOyVKC6lye9aDd6yi+Brf64xA==}
     cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-gnu@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-2LVNWTeRWBXLAy3nvMOj2/c7wQMuA9R/qmB+ZXTsoJ+OA1cL33FeaJxHk+k7UYusmSAT80MrAGlCBUJrb0L8FQ==}
+  '@rolldown/binding-linux-x64-gnu@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-vQn4RqAikFRSLCtifSZrlEf6JU81w316vC/QMqKGmeRFb7Qp+Sdhr1zUnTprcqLs4v0Ef82euUfm+2Qr/5JN1A==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-musl@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-NzXYCoESuOFHebE03ze5/cSiyL3eR8ajEh2a43Pi1POB3tkHuQhnueOt7wtqZQJ3iObVHrCDdaRIbSPE8NKMUw==}
+  '@rolldown/binding-linux-x64-musl@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-ufrqIBARjGnEywQiUe7vLOyPfULOsJ6FAFkRHkMrL8rgsK0LmXhVL0e3G1mog+g2DieiERmGQpT4nEgu7egOOQ==}
     cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-wasm32-wasi@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-P/EAw5uzvO6P2+zFb8XlUAvfW5ZX41SFSSYQqWc6F/kQQC/s4mDeyI7S4bmYR0YJzhtX91+nq8W9bhNEtxmiyg==}
+  '@rolldown/binding-wasm32-wasi@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-xcCkq3nFgymeanM9yWZRPU1kvnzlVwxyWkTOv8x9kRXD8yTTeYosKjVR3CN7M/aGVKy4VSj+wVHlNLn9C/ZMUA==}
     engines: {node: '>=14.21.3'}
     cpu: [wasm32]
 
-  '@rolldown/binding-win32-arm64-msvc@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-ewcpKoju/FwJ7xlIb6MSyBwWI5EEAOGQZ9FVM/yBY8964fBVfzQal2RvyYUQ1MrzAloulY1PBj7k4YGmuD1Zwg==}
+  '@rolldown/binding-win32-arm64-msvc@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-3GqlA/pgzp6pfXjrVezssBH1dmRbEjy7wcHjL7qz4ah9vGfX+SDIGyiI3l7y2vASzb+v4ByYL5hyvueCa31T+A==}
     cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-ia32-msvc@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-tePSn+Kbzzcwj0Yo7wNJ+hcd2Uzj/caEyHpTSpoD1Do5L9NOIH5Zfgqdon7aYwTIWA34V4XWKhJZtpp6DmnqvA==}
+  '@rolldown/binding-win32-ia32-msvc@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-kqdTj2Xj3mG7um671I7TY/mwtxyrjiz4hWb3IcFQIcFyLqegtTSJeld0Iic3NvLM4Cj8K8clVaqCUKuQJ7gjtA==}
     cpu: [ia32]
     os: [win32]
 
-  '@rolldown/binding-win32-x64-msvc@0.15.0-snapshot-b2570e7-20241204003545':
-    resolution: {integrity: sha512-mkH/tF7eW+KWS81iNwbn5zmCfvLXa2bpbeqe4Id0RsBRu6GOS8KPgTsifd3eLmxG1SlGae/lgcP15WeZNN2qvw==}
+  '@rolldown/binding-win32-x64-msvc@0.15.0-snapshot-993c4a1-20241205003858':
+    resolution: {integrity: sha512-l+rqbWBPgPulkrQpM4EPK6YEAF5sRywDPQyYcG4EoPQKR6Aknya5WTIbJfEdYkEPebfgNSE5u+remdktuO6PDw==}
     cpu: [x64]
     os: [win32]
 
@@ -1867,14 +1867,11 @@ packages:
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
 
-  '@types/prop-types@15.7.13':
-    resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
+  '@types/react-dom@19.0.0':
+    resolution: {integrity: sha512-1KfiQKsH1o00p9m5ag12axHQSb3FOU9H20UTrujVSkNhuCrRHiQWFqgEnTNK5ZNfnzZv8UWrnXVqCmCF9fgY3w==}
 
-  '@types/react-dom@18.3.1':
-    resolution: {integrity: sha512-qW1Mfv8taImTthu4KoXgDfLuk4bydU6Q/TkADnDWWHwi4NX4BR+LWfTp2sVmTqRrsHvyDDTelgelxJ+SsejKKQ==}
-
-  '@types/react@18.3.12':
-    resolution: {integrity: sha512-D2wOSq/d6Agt28q7rSI3jhU7G6aiuzljDGZ2hTZHIkrTLUI+AF3WMeKkEZ9nN2fkBAlcktT6vcZjDFiIhMYEQw==}
+  '@types/react@19.0.0':
+    resolution: {integrity: sha512-MY3oPudxvMYyesqs/kW1Bh8y9VqSmf+tzqw3ae8a9DZW68pUe3zAdHeI1jc6iAysuRdACnVknHP8AhwD4/dxtg==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -2951,11 +2948,11 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-plugin-react-hooks@4.6.2:
-    resolution: {integrity: sha512-QzliNJq4GinDBcD8gPB5v0wh6g8q3SUi6EFF0x8N/BL9PoVs0atuGc47ozMRyOWAKdwaZ5OnbOEa3WR+dSGKuQ==}
+  eslint-plugin-react-hooks@5.1.0:
+    resolution: {integrity: sha512-mpJRtPgHN2tNAvZ35AMfqeB3Xqeo273QxrHJsbBEPWODRM4r0yB6jfoROqKEYrOn27UtRPpcpHc2UqyBSuUNTw==}
     engines: {node: '>=10'}
     peerDependencies:
-      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
   eslint-plugin-react-refresh@0.4.14:
     resolution: {integrity: sha512-aXvzCTK7ZBv1e7fahFuR3Z/fyQQSIQ711yPgYRj+Oj64tyTgO4iQIDmYXDBqvSWQ/FA4OSCsXOStlF+noU0/NA==}
@@ -4606,16 +4603,16 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  react-dom@18.3.1:
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+  react-dom@19.0.0:
+    resolution: {integrity: sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==}
     peerDependencies:
-      react: ^18.3.1
+      react: ^19.0.0
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react@18.3.1:
-    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
+  react@19.0.0:
+    resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
     engines: {node: '>=0.10.0'}
 
   read-package-json-fast@4.0.0:
@@ -4715,8 +4712,8 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rolldown@0.15.0-snapshot-b2570e7-20241204003545:
-    resolution: {integrity: sha512-AE5D6oED4Sx4AQnPs0cmSVczwxi5QRu6PZFh2t7xzICgHYPs9OTpdcZjn15bR9yOwggjtbrv27iDLEe0eBf/bg==}
+  rolldown@0.15.0-snapshot-993c4a1-20241205003858:
+    resolution: {integrity: sha512-FtazrqcdTe6I1skiX3Q8o93ystte5LDfvpvFvvHrOXNtT6gurWfluPqWfrryzDwB87o7YwbnFmsig+QnoKvLMw==}
     hasBin: true
     peerDependencies:
       '@babel/runtime': '>=7'
@@ -4772,8 +4769,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  scheduler@0.23.2:
-    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
+  scheduler@0.25.0:
+    resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
 
   schema-utils@3.3.0:
     resolution: {integrity: sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg==}
@@ -6302,7 +6299,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.18.0(n4rhzwahy6ql36d7ctfcjqodk4)':
+  '@kazupon/eslint-config@0.18.0(xejhzyjxfz3qqufla47skdu2te)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.4.1(eslint@9.11.0(jiti@2.4.0))
       '@eslint/js': 9.15.0
@@ -6316,7 +6313,7 @@ snapshots:
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.11.0(jiti@2.4.0))(typescript@5.6.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-jsonc: 2.18.1(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react: 7.37.2(eslint@9.11.0(jiti@2.4.0))
-      eslint-plugin-react-hooks: 4.6.2(eslint@9.11.0(jiti@2.4.0))
+      eslint-plugin-react-hooks: 5.1.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-react-refresh: 0.4.14(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-regexp: 2.7.0(eslint@9.11.0(jiti@2.4.0))
       eslint-plugin-svelte: 2.46.0(eslint@9.11.0(jiti@2.4.0))(svelte@4.2.18(patch_hash=c5c6vdjhqpc47quhpp6vmkfhii))
@@ -6507,42 +6504,42 @@ snapshots:
 
   '@polka/url@1.0.0-next.28': {}
 
-  '@rolldown/binding-darwin-arm64@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-darwin-arm64@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-darwin-x64@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-darwin-x64@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-freebsd-x64@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-linux-arm-gnueabihf@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-linux-arm64-gnu@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-linux-arm64-musl@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-linux-arm64-musl@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-linux-x64-gnu@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-linux-x64-gnu@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-linux-x64-musl@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-linux-x64-musl@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-wasm32-wasi@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-wasm32-wasi@0.15.0-snapshot-993c4a1-20241205003858':
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.5
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-win32-arm64-msvc@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-win32-ia32-msvc@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-win32-ia32-msvc@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@0.15.0-snapshot-b2570e7-20241204003545':
+  '@rolldown/binding-win32-x64-msvc@0.15.0-snapshot-993c4a1-20241205003858':
     optional: true
 
   '@rollup/plugin-alias@5.1.1(rollup@3.29.5)':
@@ -6748,15 +6745,12 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
-  '@types/prop-types@15.7.13': {}
-
-  '@types/react-dom@18.3.1':
+  '@types/react-dom@19.0.0':
     dependencies:
-      '@types/react': 18.3.12
+      '@types/react': 19.0.0
 
-  '@types/react@18.3.12':
+  '@types/react@19.0.0':
     dependencies:
-      '@types/prop-types': 15.7.13
       csstype: 3.1.3
 
   '@types/resolve@1.20.2': {}
@@ -8189,7 +8183,7 @@ snapshots:
     transitivePeerDependencies:
       - '@eslint/json'
 
-  eslint-plugin-react-hooks@4.6.2(eslint@9.11.0(jiti@2.4.0)):
+  eslint-plugin-react-hooks@5.1.0(eslint@9.11.0(jiti@2.4.0)):
     dependencies:
       eslint: 9.11.0(jiti@2.4.0)
 
@@ -10076,17 +10070,14 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-dom@18.3.1(react@18.3.1):
+  react-dom@19.0.0(react@19.0.0):
     dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.1
-      scheduler: 0.23.2
+      react: 19.0.0
+      scheduler: 0.25.0
 
   react-is@16.13.1: {}
 
-  react@18.3.1:
-    dependencies:
-      loose-envify: 1.4.0
+  react@19.0.0: {}
 
   read-package-json-fast@4.0.0:
     dependencies:
@@ -10194,22 +10185,22 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown@0.15.0-snapshot-b2570e7-20241204003545:
+  rolldown@0.15.0-snapshot-993c4a1-20241205003858:
     dependencies:
       zod: 3.23.8
     optionalDependencies:
-      '@rolldown/binding-darwin-arm64': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-darwin-x64': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-freebsd-x64': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-linux-arm-gnueabihf': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-linux-arm64-gnu': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-linux-arm64-musl': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-linux-x64-gnu': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-linux-x64-musl': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-wasm32-wasi': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-win32-arm64-msvc': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-win32-ia32-msvc': 0.15.0-snapshot-b2570e7-20241204003545
-      '@rolldown/binding-win32-x64-msvc': 0.15.0-snapshot-b2570e7-20241204003545
+      '@rolldown/binding-darwin-arm64': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-darwin-x64': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-freebsd-x64': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-linux-arm-gnueabihf': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-linux-arm64-gnu': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-linux-arm64-musl': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-linux-x64-gnu': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-linux-x64-musl': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-wasm32-wasi': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-win32-arm64-msvc': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-win32-ia32-msvc': 0.15.0-snapshot-993c4a1-20241205003858
+      '@rolldown/binding-win32-x64-msvc': 0.15.0-snapshot-993c4a1-20241205003858
 
   rollup-plugin-dts@6.1.1(rollup@3.29.5)(typescript@5.7.2):
     dependencies:
@@ -10278,9 +10269,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  scheduler@0.23.2:
-    dependencies:
-      loose-envify: 1.4.0
+  scheduler@0.25.0: {}
 
   schema-utils@3.3.0:
     dependencies:
@@ -10714,7 +10703,7 @@ snapshots:
       debug: 4.3.7
       picocolors: 1.1.1
       pkg-types: 1.2.1
-      rolldown: 0.15.0-snapshot-b2570e7-20241204003545
+      rolldown: 0.15.0-snapshot-993c4a1-20241205003858
       tinyglobby: 0.2.10
       unconfig: 0.6.0
       unplugin-isolated-decl: 0.7.2(rollup@4.27.2)(typescript@5.7.2)
