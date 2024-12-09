@@ -304,6 +304,7 @@ function createSvelteStyleBlock(
   }
 
   block.ast = node
+  block.scoped = true // svelte style is always scoped
 
   return block
 }

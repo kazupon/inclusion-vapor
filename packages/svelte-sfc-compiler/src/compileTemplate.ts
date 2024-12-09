@@ -23,7 +23,6 @@ export function compileTemplate(
   // TODO:
   // svelve has preprocessors (`import { preprocessor } from 'svelte/compiler'`) for template
   // so we need to decide how to handle it.
-
   return doCompileTemplate(options)
 }
 

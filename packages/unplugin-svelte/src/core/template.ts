@@ -24,12 +24,13 @@ export function genTemplateCode(
   descriptor: SvelteSFCDescriptor,
   options: ResolvedOptions,
   ssr: boolean,
-  customElement: boolean
+  customElement: boolean,
+  hasScoped: boolean
 ): Promise<{ code: string; map: RawSourceMap | undefined }> {
   // debug('genTemplateCode', context, descriptor, options, ssr, customElement)
 
   const template = descriptor.template!
-  // const _hasScoped = descriptor.styles.some(style => style.scoped)
+  // const hasScoped = descriptor.styles.some(style => style.scoped)
 
   // If the template is not using pre-processor AND is not using external src,
   // compile and inline it directly in the main module. When served in vite this
@@ -43,7 +44,8 @@ export function genTemplateCode(
         descriptor,
         options,
         ssr,
-        customElement
+        customElement,
+        hasScoped
       ) as { code: string; map: RawSourceMap | undefined }
     )
   } else {
@@ -64,9 +66,10 @@ export function transformTemplateInMain(
   descriptor: SvelteSFCDescriptor,
   options: ResolvedOptions,
   ssr: boolean,
-  customElement: boolean
+  customElement: boolean,
+  hasScoped: boolean
 ): SvelteSFCTemplateCompileResults {
-  const result = compile(context, code, descriptor, options, ssr, customElement)
+  const result = compile(context, code, descriptor, options, ssr, customElement, hasScoped)
   return {
     ...result,
     code: result.code.replace(/\nexport (function|const) (render|ssrRender)/, '\n$1 _sfc_$2')
@@ -79,14 +82,15 @@ export function compile(
   descriptor: SvelteSFCDescriptor,
   options: ResolvedOptions,
   ssr: boolean,
-  _customElement: boolean
+  _customElement: boolean,
+  hasScoped: boolean
 ): SvelteSFCTemplateCompileResults {
   // NOTE: Do we need to process `resolveScript`?
   // resolveScript(descriptor, options, ssr, customElement)
 
   const filename = descriptor.filename
   const result = compileTemplate({
-    ...resolveTemplateCompilerOptions(descriptor, options, ssr)!,
+    ...resolveTemplateCompilerOptions(descriptor, options, ssr, hasScoped)!,
     source: code
   })
 
@@ -115,7 +119,8 @@ export function compile(
 export function resolveTemplateCompilerOptions(
   descriptor: SvelteSFCDescriptor,
   options: ResolvedOptions,
-  ssr: boolean
+  ssr: boolean,
+  hasScoped: boolean
 ): Omit<SvelteSFCTemplateCompileOptions, 'source'> | undefined {
   const block = descriptor.template
   if (!block) {
@@ -124,7 +129,7 @@ export function resolveTemplateCompilerOptions(
 
   // NOTE: Do we need to process `getResolvedScript`?
   const resolvedScript = getResolvedScript(descriptor, ssr)
-  const hasScoped = descriptor.styles.some(s => s.scoped)
+  // const hasScoped = descriptor.styles.some(s => s.scoped)
 
   const { filename, cssVars } = descriptor
   const id = descriptor.id || descriptor.filename
@@ -132,35 +137,35 @@ export function resolveTemplateCompilerOptions(
   // TODO: let transformAssetUrls = options.template?.transformAssetUrls
   const transformAssetUrls: boolean | Record<string, unknown> = false
   // compiler-sfc should export `AssetURLOptions`
-  // let _assetUrlOptions //: AssetURLOptions | undefined
+  let _assetUrlOptions //: AssetURLOptions | undefined
 
   if (transformAssetUrls === false) {
     // if explicitly disabled, let assetUrlOptions be undefined
     debug('resolveTemplateCompilerOptions: transformAssetUrls is disabled')
+  } else if (options.devServer) {
+    // during dev, inject vite base so that compiler-sfc can transform
+    // relative paths directly to absolute paths without incurring an extra import
+    // request
     // TODO:
-    // } else if (options.devServer) {
-    //   // during dev, inject vite base so that compiler-sfc can transform
-    //   // relative paths directly to absolute paths without incurring an extra import
-    //   // request
-    //   if (filename.startsWith(options.root)) {
-    //     const devBase = options.devServer.config.base
-    //     assetUrlOptions = {
-    //       base:
-    //         (options.devServer.config.server?.origin ?? '') +
-    //         devBase +
-    //         slash(path.relative(options.root, path.dirname(filename))),
-    //       includeAbsolute: !!devBase,
-    //     }
+    // if (filename.startsWith(options.root)) {
+    //   const devBase = options.devServer.config.base
+    //   assetUrlOptions = {
+    //     base:
+    //       (options.devServer.config.server?.origin ?? '') +
+    //       devBase +
+    //       slash(path.relative(options.root, path.dirname(filename))),
+    //     includeAbsolute: !!devBase,
     //   }
+    // }
   } else {
     // build: force all asset urls into import requests so that they go through
     // the assets plugin for asset registration
-    // _assetUrlOptions = {
+    // TODO:
+    // assetUrlOptions = {
     //   includeAbsolute: true
     // }
   }
 
-  // TODO:
   // if (transformAssetUrls && typeof transformAssetUrls === 'object') {
   //   // presence of array fields means this is raw tags config
   //   transformAssetUrls = Object.values(transformAssetUrls).some((val) => Array.isArray(val)) ? {

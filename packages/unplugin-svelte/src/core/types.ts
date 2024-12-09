@@ -3,6 +3,7 @@
 
 import type { createFilter as _createFilter } from '@rollup/pluginutils'
 import type { UnpluginBuildContext, UnpluginContext as _UnpluginContext } from 'unplugin'
+import type { ViteDevServer } from 'vite'
 import type { Options } from '../types.ts'
 
 export interface ResolvedOptions extends Options {
@@ -10,6 +11,8 @@ export interface ResolvedOptions extends Options {
   root: string
   isProduction: boolean
   sourcemap: boolean
+  devServer?: ViteDevServer
+  devToolsEnabled?: boolean
 }
 
 export type UnpluginContext = UnpluginBuildContext & _UnpluginContext

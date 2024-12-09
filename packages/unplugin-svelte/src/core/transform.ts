@@ -6,6 +6,7 @@
 
 import { isObject, isString } from '@vue-vapor/shared'
 import createDebug from 'debug'
+import path from 'node:path'
 import { parseSvelteScript, transformSvelteScript } from 'svelte-vapor-sfc-compiler'
 import { preprocess } from 'svelte/compiler'
 import { createDescriptor } from './descriptor.ts'
@@ -29,7 +30,7 @@ export async function transformMain(
   ssr: boolean,
   customElement: boolean
 ): Promise<ReturnType<Required<UnpluginOptions>['transform']> | null> {
-  // const { root, isProduction } = options
+  const { isProduction, devServer, devToolsEnabled } = options
   debug('transformMain', code, filename)
 
   // preprocess svelte component
@@ -48,7 +49,7 @@ export async function transformMain(
 
   // feature information
   const attachedProps: [string, string][] = []
-  // const hasScoped = descriptor.styles.some((s) => s.scoped)
+  const hasScoped = descriptor.styles.some(s => s.scoped)
 
   // generate script code
   const { code: scriptCode, map: _scriptMap } = await genScriptCode(
@@ -73,7 +74,8 @@ export async function transformMain(
       descriptor,
       options,
       ssr,
-      customElement
+      customElement,
+      hasScoped
     ))
   }
   debug('transformMain: templateCode', templateCode, templateMap)
@@ -91,7 +93,7 @@ export async function transformMain(
   }
 
   // styles
-  const stylesCode = await genStyleCode(context, descriptor, customElement, attachedProps)
+  const stylesCode = genStyleCode(context, descriptor, customElement, attachedProps)
   debug('transformMain: stylesCode', stylesCode)
 
   const output: string[] = [
@@ -101,16 +103,17 @@ export async function transformMain(
     // customBlocksCode,
   ]
 
-  // if (hasScoped) {
-  //   attachedProps.push([`__scopeId`, JSON.stringify(`data-v-${descriptor.id}`)])
-  // }
-  // if (devToolsEnabled || (devServer && !isProduction)) {
-  //   // expose filename during serve for devtools to pickup
-  //   attachedProps.push([
-  //     `__file`,
-  //     JSON.stringify(isProduction ? path.basename(filename) : filename),
-  //   ])
-  // }
+  if (hasScoped) {
+    attachedProps.push([`__scopeId`, JSON.stringify(`data-v-${descriptor.id}`)])
+  }
+
+  if (devToolsEnabled || (devServer && !isProduction)) {
+    // expose filename during serve for devtools to pickup
+    attachedProps.push([
+      `__file`,
+      JSON.stringify(isProduction ? path.basename(filename) : filename)
+    ])
+  }
 
   // HMR
   // TODO:

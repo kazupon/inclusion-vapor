@@ -135,6 +135,7 @@
     "esno": "^4.0.0",
     "fast-glob": "^3.3.2",
     "rollup": "^4.6.1",
+    "slash": "^5.1.0",
     "tsup": "^8.0.1",
     "vite": "catalog:",
     "webpack": "^5.89.0"
