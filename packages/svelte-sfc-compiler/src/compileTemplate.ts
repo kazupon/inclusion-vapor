@@ -93,7 +93,7 @@ function doCompileTemplate({
     scopeId: scoped ? longId : undefined,
     slotted,
     sourceMap: true,
-    parser: (source: string) => templateCompiler.parse(source).html,
+    parser: (source: string) => templateCompiler.parse(source),
     ...compilerOptions,
     hmr: !isProd,
     // eslint-disable-next-line unicorn/prefer-spread -- FIXME: spread operator

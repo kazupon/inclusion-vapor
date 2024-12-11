@@ -2,6 +2,8 @@ import { parse } from 'svelte/compiler'
 import { describe, expect, test, vi } from 'vitest'
 import { compile } from './compile.ts'
 
+import type { SvelteCompilerResult } from './compile.ts'
+
 const svelteCode = `
 <script>
   let count = 0
@@ -19,7 +21,7 @@ describe('compile', () => {
   test('source code', () => {
     const { code } = compile(svelteCode, {
       sourceMap: true,
-      parser: (source: string) => parse(source).html
+      parser: (source: string) => parse(source) as SvelteCompilerResult
     })
     expect(code).toMatchSnapshot('code')
     expect(code).contains(`_renderEffect(() => _setText(n1, "\\n  count is ", count, "\\n"))`)
@@ -37,7 +39,7 @@ describe('compile', () => {
   test('error', () => {
     const onError = vi.fn()
     const { code: _ } = compile('<p>{@html}</p>', {
-      parser: (source: string) => parse(source).html,
+      parser: (source: string) => parse(source) as SvelteCompilerResult,
       onError
     })
     expect(onError).toHaveBeenCalled()

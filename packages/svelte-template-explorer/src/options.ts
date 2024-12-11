@@ -18,7 +18,7 @@ export const defaultOptions: CompilerOptions = {
   ssrCssVars: `{ color }`,
   whitespace: 'condense',
   parser(source) {
-    return parse(source).html
+    return parse(source)
   }
 }
 

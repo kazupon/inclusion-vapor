@@ -22,6 +22,7 @@ import type {
   RootIRNode,
   RootNode,
   SvelteComment,
+  SvelteStyle,
   SvelteTemplateNode
 } from '../ir'
 import type { HackOptions } from './types'
@@ -46,10 +47,11 @@ const defaultOptions = {
   inline: false,
   isTS: false,
   onError: defaultOnError,
-  onWarn: defaultOnWarn
+  onWarn: defaultOnWarn,
+  css: null // eslint-disable-line unicorn/no-null
 }
 
-export type TransformOptions = HackOptions<BaseTransformOptions>
+export type TransformOptions = HackOptions<BaseTransformOptions> & { css?: SvelteStyle }
 
 export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
   ir: RootIRNode

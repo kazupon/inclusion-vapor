@@ -32,7 +32,7 @@ import type {
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { RootNode, SvelteCompileError, SvelteTemplateNode } from './ir/index.ts'
+import type { RootNode, SvelteCompileError, SvelteStyle, SvelteTemplateNode } from './ir/index.ts'
 import type { DirectiveTransform, HackOptions, NodeTransform } from './transforms/index.ts'
 
 // Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
@@ -61,9 +61,12 @@ export function compile(
     prefixIdentifiers
   })
 
-  let svelteAst = {} as SvelteTemplateNode
+  let svelteTemplateAst = {} as SvelteTemplateNode
+  let svelteStyleAst: SvelteStyle | undefined
   try {
-    svelteAst = parse(source, resolvedOptions)
+    const ret = parse(source, resolvedOptions)
+    svelteTemplateAst = ret.html
+    svelteStyleAst = ret.css
   } catch (error: unknown) {
     if (isSvelteParseError(error) && isString(source)) {
       const vaporError = error as unknown as CompilerError
@@ -76,7 +79,7 @@ export function compile(
 
   const ast: RootNode = {
     type: IRNodeTypes.ROOT,
-    children: svelteAst.children || [],
+    children: svelteTemplateAst.children || [],
     source: isString(source) ? source : '', // TODO:
     components: [],
     directives: [],
@@ -97,15 +100,31 @@ export function compile(
         {},
         directiveTransforms,
         options.directiveTransforms || {} // user transforms
-      )
+      ),
+      css: svelteStyleAst
     })
   )
 
   return generate(ir as unknown as VaporRootIRNode, resolvedOptions)
 }
 
-function parse(source: string | SvelteTemplateNode, options: CompilerOptions): SvelteTemplateNode {
-  return isString(source) ? getSvelteTemplateNode(source, options) : source
+function parse(
+  source: string | SvelteTemplateNode,
+  { parser, css }: SvelteCompilerOptions
+): SvelteCompilerResult {
+  if (isString(source)) {
+    if (!parser) {
+      throw new Error('"parser" option is not given.')
+    }
+    const ret = parser(source)
+    ret.css ||= css
+    return ret
+  } else {
+    return {
+      html: source,
+      css
+    }
+  }
 }
 
 function convertToVaporCompileErrorSourceLocation(
@@ -127,23 +146,23 @@ function convertToVaporCompileErrorSourceLocation(
   }
 }
 
-function getSvelteTemplateNode(
-  source: string,
-  { parser }: SvelteCompilerOptions
-): SvelteTemplateNode {
-  if (!parser) {
-    throw new Error('svelte code parsing function option is not given.')
-  }
-  return parser(source)
-}
-
 interface SvelteCompilerOptions {
   /**
    * Svelte parser
    * @param source - Svelte code
-   * @returns Svelte template AST
+   * @returns Svelte AST, which has svelte template ast and svelte style ast optionally
    */
-  parser?: (source: string) => SvelteTemplateNode
+  parser?: (source: string) => SvelteCompilerResult
+  /**
+   * Svelte AST style
+   * @description if your parser does not return svelte style ast, this option will be used as svelte style ast
+   */
+  css?: SvelteStyle
+}
+
+export type SvelteCompilerResult = {
+  html: SvelteTemplateNode
+  css?: SvelteStyle
 }
 
 export type CompilerOptions = HackOptions<BaseCompilerOptions> & SvelteCompilerOptions
