@@ -25,6 +25,7 @@ import type { VaporDirectiveNode } from './nodes'
 import type {
   SvelteAttribute,
   SvelteBaseDirective,
+  SvelteBaseExpressionDirective,
   SvelteComponentTag,
   SvelteElement,
   SvelteSpreadAttribute,
@@ -367,7 +368,8 @@ export function convertVaporDirectiveExpression(
     const content =
       node.expression && node.expression.type === 'Identifier'
         ? `{ ${node.name}: ${node.expression.name} }`
-        : ''
+        : // TODO: more strict condition
+          `{ ${node.name}: ${generate(node.expression as unknown as SvelteBaseExpressionDirective)} }`
     // TODO: align loc for svlete compiler
     return createSimpleExpression(content, false, convertSvelteLocation(node, content))
   } else if (isSvelteStyleDirective(node)) {

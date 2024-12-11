@@ -45,6 +45,29 @@ describe('convertProps', () => {
       ])
     })
 
+    test('attrivute value (static class) : <div class="static" />', () => {
+      const el = getSvelteElement('<div class="static" />')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.ATTRIBUTE,
+          name: 'class',
+          loc: {
+            source: 'class="static"'
+          },
+          nameLoc: {
+            source: 'class'
+          },
+          value: {
+            type: NodeTypes.TEXT,
+            content: 'static',
+            loc: {
+              source: '"static"'
+            }
+          }
+        }
+      ])
+    })
+
     test('unquoted attribute value: <div id=app />', () => {
       const el = getSvelteElement('<div id=app />')
       expect(convertProps(el!)).toMatchObject([
@@ -330,6 +353,76 @@ describe('convertProps', () => {
           }
         }
       })
+    })
+  })
+
+  describe('Svelte Class Node', () => {
+    test(`expression value: <div class:inactive={!active} />`, () => {
+      const el = getSvelteElement(`<div class:inactive={!active} />`)
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'bind',
+          rawName: ':class',
+          modifiers: [],
+          loc: {
+            source: `:class`
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'class',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'class'
+            }
+          },
+          exp: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: `{ inactive: !active }`,
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              // TODO: we want to map for svelte code correctly...
+              // source: '...things',
+            }
+          }
+        }
+      ])
+    })
+
+    test('shorthand: <div class:active />', () => {
+      const el = getSvelteElement('<div class:active></div>')
+      expect(convertProps(el!)).toMatchObject([
+        {
+          type: NodeTypes.DIRECTIVE,
+          name: 'bind',
+          rawName: ':class',
+          modifiers: [],
+          loc: {
+            source: ':class'
+          },
+          arg: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: 'class',
+            constType: ConstantTypes.CAN_STRINGIFY,
+            isStatic: true,
+            loc: {
+              source: 'class'
+            }
+          },
+          exp: {
+            type: NodeTypes.SIMPLE_EXPRESSION,
+            content: '{ active: active }',
+            constType: ConstantTypes.NOT_CONSTANT,
+            isStatic: false,
+            loc: {
+              // TODO: we want to map for svelte code correctly...
+              // source: '...things',
+            }
+          }
+        }
+      ])
     })
   })
 

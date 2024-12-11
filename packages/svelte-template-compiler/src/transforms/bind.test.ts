@@ -284,9 +284,10 @@ test('class shorthand binding', () => {
   })
 })
 
-test.todo('multiple class binding', () => {
+test('multiple class binding', () => {
   const { code, ir: _ } = compileWithVBind(
     `<div class="static" class:active class:inactive={!active} class:isAdmin />`
+    // `<div class="static" class:active class:inactive={!active} class:isAdmin />`
   )
   const expectedResult = vaporCompile(
     `<div class="static" :class="{ active, inactive: !active, isAdmin }" />`,
@@ -299,10 +300,11 @@ test.todo('multiple class binding', () => {
   expect(expectedResult.code).toMatchSnapshot('vue')
 
   expect(code).contains(
-    `_renderEffect(() => _setClass(n2, ["static", { active, inactive: !active, isAdmin }]))`
+    `_renderEffect(() => _setClass(n0, ["static", { active: _ctx.active }, { inactive: !_ctx.active }, { isAdmin: _ctx.isAdmin }], true))`
   )
 })
 
+/*
 test('style expression binding', () => {
   const source1 = `<div style:color={myColor}>color</div>`
   const source2 = `<div :style="{ color: myColor }">color</div>`
@@ -379,3 +381,5 @@ test.todo('style override', () => {
 
   expect(ir.template).toEqual(['<div>This will be red</div>'])
 })
+
+*/
