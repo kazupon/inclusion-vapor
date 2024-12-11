@@ -137,7 +137,7 @@ export function resolveTemplateCompilerOptions(
   // TODO: let transformAssetUrls = options.template?.transformAssetUrls
   const transformAssetUrls: boolean | Record<string, unknown> = false
   // compiler-sfc should export `AssetURLOptions`
-  let _assetUrlOptions //: AssetURLOptions | undefined
+  // let _assetUrlOptions //: AssetURLOptions | undefined
 
   if (transformAssetUrls === false) {
     // if explicitly disabled, let assetUrlOptions be undefined
