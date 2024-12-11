@@ -3,12 +3,12 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test } from 'vitest'
 import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformVBind } from './bind.ts'
+import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
 import { transformComment } from './comment.ts'
 import { transformElement } from './element.ts'
-import { transformVModel } from './model.ts'
-import { transformVOn } from './on.ts'
+import { transformModel } from './model.ts'
+import { transformOn } from './on.ts'
 import { transformTemplateRef } from './templateRef.ts'
 import { transformText } from './text.ts'
 
@@ -22,9 +22,9 @@ const compileWithTransformRef = makeCompile({
     transformChildren
   ],
   directiveTransforms: {
-    bind: transformVBind,
-    on: transformVOn,
-    model: transformVModel
+    bind: transformBind,
+    on: transformOn,
+    model: transformModel
   }
 })
 

@@ -3,11 +3,11 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test } from 'vitest'
 import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformVBind } from './bind.ts'
+import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
 import { transformComment } from './comment.ts'
 import { transformElement } from './element.ts'
-import { transformVIf } from './if.ts'
+import { transformIf } from './if.ts'
 import { transformText } from './text.ts'
 
 import type { IfIRNode } from '../ir/index.ts'
@@ -19,10 +19,10 @@ const compileWithVIf = makeCompile({
     transformChildren,
     transformText,
     transformComment,
-    transformVIf
+    transformIf
   ],
   directiveTransforms: {
-    bind: transformVBind
+    bind: transformBind
   }
 })
 

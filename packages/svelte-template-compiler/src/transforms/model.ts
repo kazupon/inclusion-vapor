@@ -21,7 +21,7 @@ import type { DirectiveTransform } from './types.ts'
 // https://v4.svelte.dev/docs/element-directives#binding-select-value
 // ... and more on https://v4.svelte.dev/docs/element-directives
 
-export const transformVModel: DirectiveTransform = (dir, node, context) => {
+export const transformModel: DirectiveTransform = (dir, node, context) => {
   const { exp, arg } = dir
   if (!exp) {
     // TODO: should throw error on `onError`

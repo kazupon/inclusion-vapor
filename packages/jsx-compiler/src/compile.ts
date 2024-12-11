@@ -12,11 +12,11 @@ import { extend, isString } from '@vue-vapor/shared'
 import { IRNodeTypes } from './ir/index.ts'
 import { transform } from './transform.ts'
 import {
+  transformBind,
   transformChildren,
   transformElement,
-  transformText,
-  transformVBind,
-  transformVOn
+  transformOn,
+  transformText
 } from './transforms/index.ts'
 
 import type {
@@ -133,15 +133,15 @@ export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformP
     [
       transformText,
       transformElement,
-      // transformVSlot,
+      // transformSlot,
       transformChildren
     ],
     {
-      bind: transformVBind,
-      on: transformVOn
-      // model: transformVModel,
-      // show: transformVShow,
-      // html: transformVHtml,
+      bind: transformBind,
+      on: transformOn
+      // model: transformModel,
+      // show: transformShow,
+      // html: transformHtml,
     }
   ]
 }

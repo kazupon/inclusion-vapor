@@ -18,9 +18,9 @@ import type { NodeTransform } from './types.ts'
  * transform vapor v-if for svelte {#if}
  * https://v4.svelte.dev/docs/logic-blocks#if
  */
-export const transformVIf: NodeTransform = (node, context) => {
+export const transformIf: NodeTransform = (node, context) => {
   if (__DEV__) {
-    console.log('transformVIf', node.type)
+    console.log('transformIf', node.type)
   }
 
   if (node.type === 'IfBlock' && !node.elseif) {

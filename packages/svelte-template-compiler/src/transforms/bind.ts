@@ -37,10 +37,15 @@ export function normalizeBindShorthand(
   return exp
 }
 
-export const transformVBind: DirectiveTransform = (dir, _node, context) => {
+export const transformBind: DirectiveTransform = (dir, _node, context) => {
   const { loc, modifiers } = dir
   let { exp } = dir
   let arg = dir.arg!
+
+  if (__DEV__) {
+    console.log('transformBind', context.node.type, dir.name, exp?.content, arg.content)
+  }
+
   const modifiersString = new Set(modifiers.map(s => s.content))
 
   if (!exp) {

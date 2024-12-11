@@ -5,7 +5,7 @@ import { makeCompile } from './_utils.ts'
 import { transformChildren } from './children.ts'
 import { transformComment } from './comment.ts'
 import { transformElement } from './element.ts'
-import { transformVHtml } from './html.ts'
+import { transformHtml } from './html.ts'
 import { transformText } from './text.ts'
 
 const compileWithVHtml = makeCompile({
@@ -15,7 +15,7 @@ const compileWithVHtml = makeCompile({
     transformChildren,
     transformText,
     transformComment,
-    transformVHtml
+    transformHtml
   ]
 })
 

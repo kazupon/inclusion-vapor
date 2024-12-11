@@ -38,9 +38,9 @@ import type { NodeTransform } from './types.ts'
  * NOTE: transform vapor slot from svelte slot (`slot` attr and `let` directive)
  * https://svelte.dev/docs/special-elements#slot-slot-key-value
  */
-export const transformVSlot: NodeTransform = (node, context) => {
+export const transformSlot: NodeTransform = (node, context) => {
   if (__DEV__) {
-    console.log('transformVSlot', node.type)
+    console.log('transformSlot', node.type)
   }
 
   if (!isSvelteElement(node)) {
@@ -60,7 +60,7 @@ export const transformVSlot: NodeTransform = (node, context) => {
   //   hasParentComponent
   // )
   // console.log(
-  //   'transformVSlot => parent?.node.type, isSlotElement, isComponent, isSlotTemplate, isSlotAttrElement',
+  //   'transformSlot => parent?.node.type, isSlotElement, isComponent, isSlotTemplate, isSlotAttrElement',
   //   parent?.node.type,
   //   isSlotElement,
   //   isComponent,

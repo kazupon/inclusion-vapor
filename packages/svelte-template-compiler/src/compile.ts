@@ -11,19 +11,19 @@ import { extend, isString } from '@vue-vapor/shared'
 import { IRNodeTypes, isSvelteParseError } from './ir/index.ts'
 import { transform } from './transform.ts'
 import {
+  transformBind,
   transformChildren,
   transformComment,
   transformElement,
+  transformFor,
+  transformHtml,
+  transformIf,
+  transformModel,
+  transformOn,
+  transformSlot,
   transformSlotOutlet,
   transformTemplateRef,
-  transformText,
-  transformVBind,
-  transformVFor,
-  transformVHtml,
-  transformVIf,
-  transformVModel,
-  transformVOn,
-  transformVSlot
+  transformText
 } from './transforms/index.ts'
 
 import type { CompilerError, SourceLocation } from '@vue-vapor/compiler-dom'
@@ -154,24 +154,24 @@ export type { VaporCodegenResult } from '@vue-vapor/compiler-vapor'
 export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
   return [
     [
-      // transformVOnce,
-      transformVIf,
-      transformVFor,
+      // transformOnce,
+      transformIf,
+      transformFor,
       transformSlotOutlet,
       transformTemplateRef,
       transformText,
       transformElement,
-      transformVSlot,
+      transformSlot,
       transformComment,
-      transformVHtml,
+      transformHtml,
       transformChildren
     ],
     {
-      bind: transformVBind,
-      on: transformVOn,
-      // text: transformVText,
-      // show: transformVShow,
-      model: transformVModel
+      bind: transformBind,
+      on: transformOn,
+      // text: transformText,
+      // show: transformShow,
+      model: transformModel
     }
   ]
 }

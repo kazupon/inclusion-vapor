@@ -26,7 +26,7 @@ const delegatedEvents = /*#__PURE__*/ makeMap(
     'touchstart'
 )
 
-export const transformVOn: DirectiveTransform = (dir, node, context) => {
+export const transformOn: DirectiveTransform = (dir, node, context) => {
   const { name, loc, value } = dir
   if (name.type === 'JSXNamespacedName') {
     return

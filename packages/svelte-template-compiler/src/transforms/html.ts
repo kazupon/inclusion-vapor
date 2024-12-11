@@ -14,7 +14,7 @@ import type { NodeTransform } from './types.ts'
 
 // TODO: transform vapor v-html from svelte {@html}
 // https://v4.svelte.dev/docs/special-tags#html
-export const transformVHtml: NodeTransform = (node, context) => {
+export const transformHtml: NodeTransform = (node, context) => {
   if (node.type === 'RawMustacheTag') {
     const exp = resolveSimpleExpression(
       node as SvelteMustacheTag,

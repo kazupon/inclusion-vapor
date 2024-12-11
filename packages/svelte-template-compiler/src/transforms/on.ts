@@ -20,7 +20,7 @@ const delegatedEvents = /*#__PURE__*/ makeMap(
     'touchstart'
 )
 
-export const transformVOn: DirectiveTransform = (dir, node, context) => {
+export const transformOn: DirectiveTransform = (dir, node, context) => {
   const { exp, loc, modifiers } = dir
   const isComponent = isSvelteElement(node) && node.type === 'InlineComponent'
   // TODO:

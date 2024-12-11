@@ -11,7 +11,7 @@ import { resolveExpression, resolveSimpleExpression } from './utils.ts'
 
 import type { DirectiveTransform } from './types.ts'
 
-export const transformVBind: DirectiveTransform = (dir, _node, context) => {
+export const transformBind: DirectiveTransform = (dir, _node, context) => {
   const { name, value, loc } = dir
   if (!loc || name.type === 'JSXNamespacedName') {
     return

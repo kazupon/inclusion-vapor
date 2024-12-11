@@ -33,16 +33,16 @@ import type { NodeTransform } from './types.ts'
  * NOTE: transform vapor v-for from svelte {#each}
  * https://v4.svelte.dev/docs/logic-blocks#each
  */
-export const transformVFor: NodeTransform = (node, context) => {
+export const transformFor: NodeTransform = (node, context) => {
   if (__DEV__) {
-    console.log('transformVFor', node.type, context.parent?.node.type)
+    console.log('transformFor', node.type, context.parent?.node.type)
   }
 
   if (node.type === 'EachBlock') {
     // TODO:
     // check if the node has slot attribute or slot fallback contents.
     // if it has, skip the {#each} block transformation.
-    // because the slot attribute or slot fallback contents will be transformed by `transformVSlot`.
+    // because the slot attribute or slot fallback contents will be transformed by `transformSlot`.
     // const hasSlot = hasSlotAttrOrSlotFallbackContents(node as SvelteEachBlock)
     // if (hasSlot) {
     //   return

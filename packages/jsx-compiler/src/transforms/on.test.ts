@@ -5,13 +5,13 @@ import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
 import { transformChildren } from './children.ts'
 import { transformElement } from './element.ts'
-import { transformVOn } from './on.ts'
+import { transformOn } from './on.ts'
 import { transformText } from './text.ts'
 
 const compileWithVOn = makeCompile({
   nodeTransforms: [transformElement, transformChildren, transformText],
   directiveTransforms: {
-    on: transformVOn
+    on: transformOn
   }
 })
 

@@ -3,11 +3,11 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test } from 'vitest'
 import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformVBind } from './bind.ts'
+import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
 import { transformComment } from './comment.ts'
 import { transformElement } from './element.ts'
-import { transformVOn } from './on.ts'
+import { transformOn } from './on.ts'
 import { transformSlotOutlet } from './slotOutlet.ts'
 import { transformText } from './text.ts'
 
@@ -21,8 +21,8 @@ const compileWithSlotOutlet = makeCompile({
     transformChildren
   ],
   directiveTransforms: {
-    bind: transformVBind,
-    on: transformVOn
+    bind: transformBind,
+    on: transformOn
   }
 })
 

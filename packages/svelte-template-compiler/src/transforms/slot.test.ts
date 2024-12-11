@@ -3,30 +3,30 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { expect, test } from 'vitest'
 import { IRNodeTypes, IRSlotType } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformVBind } from './bind.ts'
+import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
 import { transformElement } from './element.ts'
-import { transformVFor } from './for.ts'
-import { transformVIf } from './if.ts'
-import { transformVOn } from './on.ts'
-import { transformVSlot } from './slot.ts'
+import { transformFor } from './for.ts'
+import { transformIf } from './if.ts'
+import { transformOn } from './on.ts'
+import { transformSlot } from './slot.ts'
 import { transformSlotOutlet } from './slotOutlet.ts'
 import { transformText } from './text.ts'
 
 const compileWithSlot = makeCompile({
   prefixIdentifiers: false,
   nodeTransforms: [
-    transformVIf,
-    transformVFor,
+    transformIf,
+    transformFor,
     transformSlotOutlet,
     transformText,
     transformElement,
-    transformVSlot,
+    transformSlot,
     transformChildren
   ],
   directiveTransforms: {
-    bind: transformVBind,
-    on: transformVOn
+    bind: transformBind,
+    on: transformOn
   }
 })
 

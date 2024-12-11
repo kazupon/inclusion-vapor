@@ -3,21 +3,21 @@ import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
 import { describe, expect, test } from 'vitest'
 import { IRNodeTypes } from '../ir/index.ts'
 import { makeCompile } from './_utils.ts'
-import { transformVBind } from './bind.ts'
+import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
 import { transformComment } from './comment.ts'
 import { transformElement } from './element.ts'
-import { transformVModel } from './model.ts'
-import { transformVOn } from './on.ts'
+import { transformModel } from './model.ts'
+import { transformOn } from './on.ts'
 import { transformText } from './text.ts'
 
 const compileWithVModel = makeCompile({
   prefixIdentifiers: false,
   nodeTransforms: [transformElement, transformChildren, transformText, transformComment],
   directiveTransforms: {
-    bind: transformVBind,
-    on: transformVOn,
-    model: transformVModel
+    bind: transformBind,
+    on: transformOn,
+    model: transformModel
   }
 })
 
