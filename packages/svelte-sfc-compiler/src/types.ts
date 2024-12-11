@@ -1,4 +1,5 @@
 import type {
+  SFCAsyncStyleCompileOptions,
   SFCBlock,
   SFCDescriptor,
   SFCParseOptions,
@@ -6,6 +7,8 @@ import type {
   SFCScriptBlock,
   SFCScriptCompileOptions,
   SFCStyleBlock,
+  SFCStyleCompileOptions,
+  SFCStyleCompileResults,
   SFCTemplateBlock,
   SFCTemplateCompileOptions,
   SFCTemplateCompileResults
@@ -58,6 +61,17 @@ export type SvelteSFCScriptCompileOptions = Overwrite<
     templateOptions?: Partial<SvelteSFCTemplateCompileOptions>
   }
 >
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SvelteSFCStyleCompileResults extends SFCStyleCompileResults {}
+
+export interface SvelteSFCStyleCompileOptions extends SFCStyleCompileOptions {
+  ast?: SvelteStyle
+}
+
+export interface SvelteSFCAsyncStyleCompileOptions extends SFCAsyncStyleCompileOptions {
+  ast?: SvelteStyle
+}
 
 export type SvelteSFCTemplateBlock = Overwrite<
   SFCTemplateBlock,

@@ -11,6 +11,7 @@ export interface ResolvedOptions extends Options {
   root: string
   isProduction: boolean
   sourcemap: boolean
+  cssDevSourcemap: boolean
   devServer?: ViteDevServer
   devToolsEnabled?: boolean
 }

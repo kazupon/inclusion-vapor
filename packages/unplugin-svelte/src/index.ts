@@ -6,7 +6,7 @@ import { createUnplugin } from 'unplugin'
 import { getDescriptor } from './core/descriptor.ts'
 import { EXPORT_HELPER_ID, helperCode } from './core/helper.ts'
 import { getResolvedScript } from './core/script.ts'
-import { transformMain } from './core/transform.ts'
+import { transformMain, transformStyle } from './core/transform.ts'
 import { parseRequestQuery, resolveOptions } from './core/utils.ts'
 
 import type { SvelteSFCBlock } from 'svelte-vapor-sfc-compiler'
@@ -100,24 +100,53 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options = 
       const { filename, query } = parseRequestQuery(id)
       debug('transform parsed id:', filename, query)
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference
+      if (!resolvedOptions.filter(filename)) {
+        return
+      }
+
       // eslint-disable-next-line unicorn/no-negated-condition
       if (!('svelte' in query)) {
         return transformMain(this, code, filename, resolvedOptions, ssr, false)
       } else {
         // sub block request
+
+        // const descriptor = query.src
+        //   ? getSrcDescriptor(filename, query) ||
+        //   getTempSrcDescriptor(filename, query)
+        //   : getDescriptor(filename, options.value)!
+        const descriptor = getDescriptor(filename, resolvedOptions)!
+
         if (query.type === 'template') {
           // TODO:
         } else if (query.type === 'style') {
-          // TODO:
+          return transformStyle(
+            code,
+            descriptor,
+            Number(query.index || 0),
+            resolvedOptions,
+            this,
+            filename
+          )
         }
       }
     },
 
     vite: {
       configResolved(config) {
-        resolvedOptions.sourcemap = !!config.build.sourcemap
+        resolvedOptions.root = config.root
+        resolvedOptions.sourcemap = config.command === 'build' ? !!config.build.sourcemap : true
         resolvedOptions.isProduction = config.isProduction
+        resolvedOptions.cssDevSourcemap = config.css?.devSourcemap ?? false
+        resolvedOptions.devToolsEnabled = !config.isProduction
+
+        debug('configResolved', resolvedOptions)
       },
+
+      configureServer(server) {
+        resolvedOptions.devServer = server
+      },
+
       handleHotUpdate(ctx) {
         debug('Handling hot update ...', ctx)
         // TODO:

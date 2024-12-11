@@ -17,8 +17,10 @@ export function resolveOptions(options: Options): ResolvedOptions {
   const root = process.cwd()
   const isProduction = process.env.NODE_ENV === 'production'
   const sourcemap = false
+  const cssDevSourcemap = false
+  const devToolsEnabled = false
 
-  return { ...options, filter, root, isProduction, sourcemap }
+  return { ...options, filter, root, isProduction, sourcemap, cssDevSourcemap, devToolsEnabled }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

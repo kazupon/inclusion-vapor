@@ -7,7 +7,11 @@
 import { isObject, isString } from '@vue-vapor/shared'
 import createDebug from 'debug'
 import path from 'node:path'
-import { parseSvelteScript, transformSvelteScript } from 'svelte-vapor-sfc-compiler'
+import {
+  compileStyleAsync,
+  parseSvelteScript,
+  transformSvelteScript
+} from 'svelte-vapor-sfc-compiler'
 import { preprocess } from 'svelte/compiler'
 import { createDescriptor } from './descriptor.ts'
 import { EXPORT_HELPER_ID } from './helper.ts'
@@ -17,6 +21,7 @@ import { genTemplateCode } from './template.ts'
 import { createRollupError } from './utils.ts'
 
 import type { RawSourceMap } from 'source-map-js'
+import type { SvelteSFCDescriptor, SvelteSFCStyleBlock } from 'svelte-vapor-sfc-compiler'
 import type { UnpluginOptions } from 'unplugin'
 import type { ResolvedOptions, UnpluginContext } from './types.ts'
 
@@ -272,4 +277,74 @@ async function preprocessSvelteScriptContext(
     }
   })
   return [moduleAst, moduleCode]
+}
+
+export async function transformStyle(
+  code: string,
+  descriptor: SvelteSFCDescriptor,
+  index: number,
+  options: ResolvedOptions,
+  context: UnpluginContext,
+  filename: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<{ code: string; map: any } | null> {
+  const block = descriptor.styles[index] as SvelteSFCStyleBlock
+
+  const result = await compileStyleAsync({
+    filename: descriptor.filename,
+    id: `data-v-${descriptor.id}`,
+    isProd: options.isProduction,
+    source: code,
+    scoped: block.scoped,
+    ast: block.ast!,
+    ...(options.cssDevSourcemap
+      ? {
+          postcssOptions: {
+            map: {
+              from: filename,
+              inline: false,
+              annotation: false
+            }
+          }
+        }
+      : {})
+  })
+  debug('transformStyle result', result)
+
+  if (result.errors.length > 0) {
+    type CompilerError = {
+      line: number
+      column: number
+      loc: { line: number; column: number; file: string }
+    }
+    ;(result.errors as unknown as CompilerError[]).forEach(error => {
+      if (error.line && error.column) {
+        error.loc = {
+          file: descriptor.filename,
+          line: error.line + block.loc.start.line,
+          column: error.column
+        }
+      }
+      context.error(error as unknown as string)
+    })
+
+    // eslint-disable-next-line unicorn/no-null
+    return null
+  }
+
+  // const map = result.map
+  //   ? await formatPostcssSourceMap(
+  //     // version property of result.map is declared as string
+  //     // but actually it is a number
+  //     result.map as Omit<RawSourceMap, 'version'> as ExistingRawSourceMap,
+  //     filename,
+  //   )
+  //   : ({ mappings: '' } as any)
+  const map = result.map
+
+  const resolvedCode = code
+  return {
+    code: resolvedCode,
+    map
+  }
 }
