@@ -5,7 +5,7 @@
 // Repository url: https://github.com/vitejs/vite-plugin-vue
 
 import createDebug from 'debug'
-import { compileTemplate } from 'svelte-vapor-sfc-compiler'
+import { compileTemplate, generate as generateId } from 'svelte-vapor-sfc-compiler'
 import { getResolvedScript } from './script.ts'
 import { createRollupError } from './utils.ts'
 
@@ -209,7 +209,7 @@ export function resolveTemplateCompilerOptions(
     // preprocessOptions,
     compilerOptions: {
       // ...options.template?.compilerOptions,
-      scopeId: hasScoped ? `data-v-${id}` : undefined,
+      scopeId: hasScoped ? generateId(id) : undefined,
       bindingMetadata: resolvedScript ? resolvedScript.bindings : undefined,
       // expressionPlugins,
       sourceMap: options.sourcemap

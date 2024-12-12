@@ -9,6 +9,7 @@ import createDebug from 'debug'
 import path from 'node:path'
 import {
   compileStyleAsync,
+  generate as generateId,
   parseSvelteScript,
   transformSvelteScript
 } from 'svelte-vapor-sfc-compiler'
@@ -109,7 +110,7 @@ export async function transformMain(
   ]
 
   if (hasScoped) {
-    attachedProps.push([`__scopeId`, JSON.stringify(`data-v-${descriptor.id}`)])
+    attachedProps.push([`__scopeId`, JSON.stringify(generateId(descriptor.id!))])
   }
 
   if (devToolsEnabled || (devServer && !isProduction)) {
@@ -292,7 +293,7 @@ export async function transformStyle(
 
   const result = await compileStyleAsync({
     filename: descriptor.filename,
-    id: `data-v-${descriptor.id}`,
+    id: generateId(descriptor.id!),
     isProd: options.isProduction,
     source: code,
     scoped: block.scoped,

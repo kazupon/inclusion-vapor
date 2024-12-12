@@ -83,7 +83,6 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
   constructor(ir: RootIRNode, node: T, options: TransformOptions = {}) {
     this.ir = ir
     this.node = node
-    // @ts-expect-error -- FIXME
     this.options = extend({}, defaultOptions, options)
     this.root = this as TransformContext<RootNode>
 

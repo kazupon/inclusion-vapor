@@ -6,6 +6,7 @@ import { SourceMapConsumer, SourceMapGenerator } from 'source-map-js'
 import { compile as compileSvelteVapor } from 'svelte-vapor-template-compiler'
 import { parse as parseSvelte } from 'svelte/compiler'
 // import { normalizeOptions, createAssetUrlTransformWithOptions } from './template/transformAssetUrl'
+import { generate as generateId, getShortId } from './id.ts'
 import { genCssVarsFromList } from './style/cssVars.ts'
 import { warnOnce } from './warn.ts'
 
@@ -67,8 +68,8 @@ function doCompileTemplate({
     id = ''
   }
 
-  const shortId = id.replace(/^data-v-/, '')
-  const longId = `data-v-${shortId}`
+  const shortId = getShortId(id)
+  const longId = generateId(shortId)
 
   // TODO: ssr
   const templateCompiler: SvelteTemplateCompiler = compiler ?? {
