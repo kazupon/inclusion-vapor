@@ -42,8 +42,8 @@ import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {
   if (__DEV__) {
-    // console.log('transformElement', context.node.type)
-    console.log('transformElement', context.node.type, context.node?.name)
+    console.log('transformElement', context.node.type)
+    // console.log('transformElement', context.node.type, context.node?.name)
   }
 
   return function postTransformElement() {
@@ -192,7 +192,7 @@ function transformNativeElement(
     template += ` ${scopeId}`
   }
 
-  console.log('transformElement building template ...', tag, JSON.stringify(propsResult))
+  // console.log('transformElement building template ...', tag, JSON.stringify(propsResult))
 
   let staticProps = false
   const dynamicProps: string[] = []
@@ -239,7 +239,7 @@ function transformNativeElement(
     template += `</${tag}>`
   }
 
-  console.log('transformElement exit', tag, template, context.childrenTemplate)
+  // console.log('transformElement exit', tag, template, context.childrenTemplate)
 
   if (
     context.parent &&
@@ -338,6 +338,8 @@ export function buildProps(
     }
 
     const result = transformProp(prop, node, context)
+    // console.log('transformProp', prop, result)
+
     if (result) {
       dynamicExpr.push(result.key, result.value)
       if (isComponent && !result.key.isStatic) {

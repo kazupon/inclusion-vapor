@@ -284,3 +284,14 @@ export function render(_ctx) {
   return n0
 }"
 `;
+
+exports[`scoped css 1`] = `
+"import { setInheritAttrs as _setInheritAttrs, template as _template } from 'vue/vapor';
+const t0 = _template("<div svelte-xxx class=\\"container\\"><div svelte-xxx class=\\"header\\"><p svelte-xxx style=\\"color: red;\\">Hello</p> <img svelte-xxx src=\\"foo.jpg\\" width=\\"500\\" height=\\"600\\"> <form svelte-xxx action=\\"/submit\\" method=\\"post\\"><input svelte-xxx type=\\"text\\"> <input svelte-xxx type=\\"submit\\"></form></div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _setInheritAttrs(false)
+  return n0
+}"
+`;

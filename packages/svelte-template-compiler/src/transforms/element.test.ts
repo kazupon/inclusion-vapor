@@ -358,3 +358,39 @@ test('empty template', () => {
   expect(code).toMatchSnapshot()
   expect(code).contain('return null')
 })
+
+test('scoped css', () => {
+  const source = `
+<div class="container">
+  <div class="header">
+    <p style="color: red;">Hello</p>
+    <img src="foo.jpg" width="500" height="600">
+    <form action="/submit" method="post">
+      <input type="text" />
+      <input type="submit">
+    </form>
+  </div>
+</div>
+<style>
+.container {
+  color: blue;
+}
+p {
+  color: green;
+}
+div.header {
+  color: yellow;
+}
+:global(from) {
+  color: purple;
+}
+</style>
+`
+  const {
+    ir: _,
+    code,
+    vaporHelpers: __
+  } = compileWithElementTransform(source, { scopeId: 'svelte-xxx' })
+
+  expect(code).toMatchSnapshot()
+})

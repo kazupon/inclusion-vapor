@@ -179,4 +179,12 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
       dynamic: newDynamic()
     } satisfies Partial<TransformContext<T>>)
   }
+
+  // TODO:
+  // getNodes(): SvelteElement[] {
+  //   return [
+  //     ...(this.parent?.getNodes() || []),
+  //     ...([this.node.type === 'Element' ? this.node : undefined] as SvelteElement[])
+  //   ].filter(Boolean)
+  // }
 }

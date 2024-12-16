@@ -41,7 +41,8 @@ export function makeCompile(options: CompilerOptions = {}) {
     const ir = transform(ast, {
       ...DEFAULT_OPTIONS,
       ...options,
-      ...overrideOptions
+      ...overrideOptions,
+      css: svelteAst.css
     })
     const { code, helpers, vaporHelpers } = generate(ir as unknown as VaporRootIRNode, {
       ...DEFAULT_OPTIONS,
