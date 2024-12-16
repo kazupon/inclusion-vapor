@@ -12,6 +12,7 @@ import { createRollupError } from './utils.ts'
 import type { RawSourceMap } from 'source-map-js'
 import type {
   SvelteSFCDescriptor,
+  SvelteSFCStyleBlock,
   SvelteSFCTemplateCompileOptions,
   SvelteSFCTemplateCompileResults
 } from 'svelte-vapor-sfc-compiler'
@@ -193,6 +194,11 @@ export function resolveTemplateCompilerOptions(
   //   expressionPlugins.push('typescript')
   // }
 
+  let css: SvelteSFCStyleBlock['ast'] | undefined = undefined
+  if (hasScoped && descriptor.styles[0]) {
+    css = structuredClone((descriptor.styles[0] as SvelteSFCStyleBlock).ast)
+  }
+
   return {
     // ...options.template,
     id,
@@ -210,6 +216,7 @@ export function resolveTemplateCompilerOptions(
     compilerOptions: {
       // ...options.template?.compilerOptions,
       scopeId: hasScoped ? generateId(id) : undefined,
+      css,
       bindingMetadata: resolvedScript ? resolvedScript.bindings : undefined,
       // expressionPlugins,
       sourceMap: options.sourcemap

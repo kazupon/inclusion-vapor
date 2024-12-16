@@ -55,7 +55,7 @@ export async function transformMain(
 
   // feature information
   const attachedProps: [string, string][] = []
-  const hasScoped = descriptor.styles.some(s => s.scoped)
+  const hasScoped = true // descriptor.styles.some(s => s.scoped) // default scoped on svelte
 
   // generate script code
   const { code: scriptCode, map: _scriptMap } = await genScriptCode(

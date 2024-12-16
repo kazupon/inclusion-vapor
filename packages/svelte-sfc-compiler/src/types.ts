@@ -87,7 +87,7 @@ export interface SvelteSFCBlock extends SFCBlock {}
 export interface SvelteSFCScriptBlock extends SFCScriptBlock {}
 
 export interface SvelteSFCStyleBlock extends SFCStyleBlock {
-  ast?: SvelteStyle | null
+  ast?: SvelteStyle
 }
 
 declare module '@vue-vapor/compiler-sfc' {
