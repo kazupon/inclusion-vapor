@@ -1,0 +1,13 @@
+diff --git a/index.d.ts b/index.d.ts
+index e5aa5ace3544213bfec99220521cd988765565bb..af287f0a705ef4fb7538484f38ddd536e515d1df 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -89,6 +89,8 @@ export class List<TData> {
+ export interface CssNodeCommon {
+     type: string;
+     loc?: CssLocation | undefined;
++    start?: number | undefined;
++    end?: number | undefined;
+ }
+ 
+ export interface AnPlusB extends CssNodeCommon {
