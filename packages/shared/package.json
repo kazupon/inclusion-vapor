@@ -64,7 +64,6 @@
     "ast-kit": "^1.3.0"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.7",
     "tsdown": "catalog:"
   }
 }
