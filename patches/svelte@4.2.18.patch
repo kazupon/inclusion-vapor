@@ -1,15 +1,23 @@
 diff --git a/src/compiler/interfaces.d.ts b/src/compiler/interfaces.d.ts
-index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..036a872dc2ff4f5c8ef63af73a93a5a85a734dc8 100644
+index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..f6295a32b236dbfa6d4c3a87fb3606ebc9456168 100644
 --- a/src/compiler/interfaces.d.ts
 +++ b/src/compiler/interfaces.d.ts
-@@ -1,5 +1,6 @@
+@@ -1,11 +1,14 @@
  import { AssignmentExpression, Node, Program } from 'estree';
  import { SourceMap } from 'magic-string';
 +import type { File } from '@babel/types'
  
  interface BaseNode {
  	start: number;
-@@ -35,11 +36,34 @@ export interface ConstTag extends BaseNode {
+ 	end: number;
+ 	type: string;
+ 	children?: TemplateNode[];
++  prev?: TemplateNode;
++  next?: TemplateNode;
+ 	[prop_name: string]: any;
+ }
+ 
+@@ -35,11 +38,34 @@ export interface ConstTag extends BaseNode {
  	expression: AssignmentExpression;
  }
  
@@ -45,7 +53,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..036a872dc2ff4f5c8ef63af73a93a5a8
  export type DirectiveType =
  	| 'Action'
  	| 'Animation'
-@@ -79,6 +103,10 @@ export interface Element extends BaseNode {
+@@ -79,6 +105,10 @@ export interface Element extends BaseNode {
  	name: string;
  }
  
@@ -56,7 +64,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..036a872dc2ff4f5c8ef63af73a93a5a8
  export interface Attribute extends BaseNode {
  	type: 'Attribute';
  	name: string;
-@@ -90,23 +118,37 @@ export interface SpreadAttribute extends BaseNode {
+@@ -90,23 +120,37 @@ export interface SpreadAttribute extends BaseNode {
  	expression: Node;
  }
  
@@ -95,7 +103,7 @@ index 4d72cd309a1c1877d89f4fc70dbf7e74a75f7da8..036a872dc2ff4f5c8ef63af73a93a5a8
  	| Directive
  	| Transition
  	| Comment;
-@@ -127,7 +169,8 @@ export interface Parser {
+@@ -127,7 +171,8 @@ export interface Parser {
  export interface Script extends BaseNode {
  	type: 'Script';
  	context: string;
@@ -139,7 +147,7 @@ index 3d4ab358df18d42b7af4288ff3b4718d1774ec44..fcdfbd2bcd078253c671da3d01e00278
  		content: ast
  	};
 diff --git a/types/index.d.ts b/types/index.d.ts
-index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b8e24fe6f 100644
+index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..5fbc184d684ddf975b13b9deebfbc76042678160 100644
 --- a/types/index.d.ts
 +++ b/types/index.d.ts
 @@ -90,7 +90,7 @@ declare module 'svelte' {
@@ -197,7 +205,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	 */
  	export class SvelteComponentTyped<Props extends Record<string, any> = any, Events extends Record<string, any> = any, Slots extends Record<string, any> = any> extends SvelteComponent<Props, Events, Slots> {
  	}
-@@ -275,6 +275,7 @@ declare module 'svelte' {
+@@ -275,18 +275,22 @@ declare module 'svelte' {
  declare module 'svelte/compiler' {
  	import type { AssignmentExpression, Node, Program } from 'estree';
  	import type { SourceMap } from 'magic-string';
@@ -205,7 +213,14 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	export { walk } from 'estree-walker';
  	interface BaseNode {
  		start: number;
-@@ -287,6 +288,7 @@ declare module 'svelte/compiler' {
+ 		end: number;
+ 		type: string;
+ 		children?: TemplateNode[];
++    prev?: TemplateNode;
++    next?: TemplateNode;
+ 		[prop_name: string]: any;
+ 	}
+ 
  	interface Text extends BaseNode {
  		type: 'Text';
  		data: string;
@@ -213,7 +228,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	}
  
  	interface MustacheTag extends BaseNode {
-@@ -310,6 +312,29 @@ declare module 'svelte/compiler' {
+@@ -310,6 +314,29 @@ declare module 'svelte/compiler' {
  		identifiers: Node[];
  	}
  
@@ -243,7 +258,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -349,6 +374,10 @@ declare module 'svelte/compiler' {
+@@ -349,6 +376,10 @@ declare module 'svelte/compiler' {
  		name: string;
  	}
  
@@ -254,7 +269,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	interface Attribute extends BaseNode {
  		type: 'Attribute';
  		name: string;
-@@ -360,23 +389,37 @@ declare module 'svelte/compiler' {
+@@ -360,23 +391,37 @@ declare module 'svelte/compiler' {
  		expression: Node;
  	}
  
@@ -293,7 +308,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  		| Directive
  		| Transition
  		| Comment;
-@@ -384,7 +427,8 @@ declare module 'svelte/compiler' {
+@@ -384,7 +429,8 @@ declare module 'svelte/compiler' {
  	interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
@@ -303,7 +318,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	}
  
  	interface Style extends BaseNode {
-@@ -866,6 +910,7 @@ declare module 'svelte/types/compiler/preprocess' {
+@@ -866,12 +912,15 @@ declare module 'svelte/types/compiler/preprocess' {
  
  declare module 'svelte/types/compiler/interfaces' {
  	import type { AssignmentExpression, Node, Program } from 'estree';
@@ -311,7 +326,15 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	import type { SourceMap } from 'magic-string';
  	interface BaseNode {
  		start: number;
-@@ -883,6 +928,7 @@ declare module 'svelte/types/compiler/interfaces' {
+ 		end: number;
+ 		type: string;
+ 		children?: TemplateNode[];
++    prev?: TemplateNode;
++    next?: TemplateNode;
+ 		[prop_name: string]: any;
+ 	}
+ 
+@@ -883,6 +932,7 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Text extends BaseNode {
  		type: 'Text';
  		data: string;
@@ -319,7 +342,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	}
  
  	export interface MustacheTag extends BaseNode {
-@@ -901,11 +947,34 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -901,11 +951,34 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: AssignmentExpression;
  	}
  
@@ -355,7 +378,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	export type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -945,6 +1014,10 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -945,6 +1018,10 @@ declare module 'svelte/types/compiler/interfaces' {
  		name: string;
  	}
  
@@ -366,7 +389,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  	export interface Attribute extends BaseNode {
  		type: 'Attribute';
  		name: string;
-@@ -956,23 +1029,37 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -956,23 +1033,37 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: Node;
  	}
  
@@ -405,7 +428,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..214202c575d3a5804e21bf279ce7559b
  		| Directive
  		| Transition
  		| Comment;
-@@ -993,7 +1080,8 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -993,7 +1084,8 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
