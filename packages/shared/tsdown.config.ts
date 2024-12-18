@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/compiler.ts', 'src/scope.ts'],
+  entry: ['src/index.ts', 'src/array.ts', 'src/compiler.ts', 'src/scope.ts'],
   format: ['esm', 'cjs'],
   platform: 'node',
   outDir: 'dist',

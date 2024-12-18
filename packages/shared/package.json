@@ -41,6 +41,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./array": {
+      "types": "./dist/array.d.ts",
+      "import": "./dist/array.js",
+      "require": "./dist/array.cjs"
+    },
     "./compiler": {
       "types": "./dist/compiler.d.ts",
       "import": "./dist/compiler.js",
