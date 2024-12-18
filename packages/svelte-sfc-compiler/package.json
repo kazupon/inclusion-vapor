@@ -55,7 +55,7 @@
     "ast-kit": "^1.3.0",
     "hash-sum": "^2.0.0",
     "inclusion-vapor-shared": "workspace:*",
-    "magic-string-ast": "^0.6.2",
+    "magic-string-ast": "catalog:",
     "source-map-js": "catalog:",
     "svelte": "catalog:",
     "svelte-vapor-template-compiler": "workspace:*"

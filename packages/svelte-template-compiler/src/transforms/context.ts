@@ -25,6 +25,7 @@ import type {
   SvelteStyle,
   SvelteTemplateNode
 } from '../ir'
+import { type ScopedStyleApplyer } from '../style/index.ts'
 import type { HackOptions } from './types'
 
 const defaultOptions = {
@@ -48,10 +49,14 @@ const defaultOptions = {
   isTS: false,
   onError: defaultOnError,
   onWarn: defaultOnWarn,
-  css: null // eslint-disable-line unicorn/no-null
+  css: null, // eslint-disable-line unicorn/no-null
+  scopedStyleApplyer: null // eslint-disable-line unicorn/no-null
 }
 
-export type TransformOptions = HackOptions<BaseTransformOptions> & { css?: SvelteStyle }
+export type TransformOptions = HackOptions<BaseTransformOptions> & {
+  css?: SvelteStyle
+  scopedStyleApplyer?: ScopedStyleApplyer
+}
 
 export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
   ir: RootIRNode

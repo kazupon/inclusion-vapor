@@ -7,6 +7,7 @@ import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   Comment as SveletComment,
   Attribute as SvelteAttribute,
+  BaseDirective as SvelteBaseDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
   ComponentTag as SvelteComponentTag,
@@ -18,9 +19,9 @@ import type {
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   StyleDirective as SvelteStyleDirective,
+  TemplateNode as SvelteTemplateNode,
   Text as SvelteText
 } from 'svelte/types/compiler/interfaces'
-import type { SvelteTemplateNode } from './svelte'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO: add svelte built-in directives
@@ -140,6 +141,23 @@ export function findAttrs(node: SvelteTemplateNode, name: string): SvelteAttribu
   return
 }
 
+export function createAttributeChunks(
+  attr: SvelteBaseDirective | SvelteAttribute | SvelteSpreadAttribute
+): (SvelteMustacheTag | SvelteText)[] {
+  const chunks: (SvelteText | SvelteMustacheTag)[] = Array.isArray(attr.value)
+    ? attr.value.map(n => {
+        if (isSvelteText(n)) {
+          return n
+        } else if (isSvelteMustacheTag(n)) {
+          return n
+        } else {
+          throw new Error('unexpected node')
+        }
+      })
+    : []
+  return chunks
+}
+
 export interface SvelteCompileError {
   code: string
   start: {
@@ -173,6 +191,30 @@ export type CompatLocationable = {
   start: number | { line: number; column: number; offset?: number }
   end: number | { line: number; column: number; offset?: number }
   source?: string
+}
+
+export function enableStructures(node: SvelteTemplateNode): void {
+  let last: SvelteTemplateNode | undefined
+  const children = node.children || []
+  children.forEach(child => {
+    // ignores
+    if (isSvelteText(child) || isSvelteComponentTag(child)) {
+      return
+    }
+
+    child.parent = node
+
+    if (last) {
+      last.next = child
+    }
+
+    child.prev = last
+    last = child
+
+    if (child.children) {
+      enableStructures(child)
+    }
+  })
 }
 
 // TODO: We need to extend svelte AST for location

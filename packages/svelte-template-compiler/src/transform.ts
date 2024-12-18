@@ -6,11 +6,27 @@
 // Code url: https://github.com/vuejs/core-vapor/blob/6608bb31973d35973428cae4fbd62026db068365/packages/compiler-vapor/src/transform.ts
 
 import { isArray } from '@vue-vapor/shared'
-import { IRNodeTypes, isSvelteComponentTag, isSvelteText } from './ir/index.ts'
-import { TransformContext, newBlock } from './transforms/index.ts'
+import { IRNodeTypes } from './ir/index.ts'
+import {
+  TransformContext,
+  newBlock,
+  transformBind,
+  transformChildren,
+  transformComment,
+  transformElement,
+  transformFor,
+  transformHtml,
+  transformIf,
+  transformModel,
+  transformOn,
+  transformSlot,
+  transformSlotOutlet,
+  transformTemplateRef,
+  transformText
+} from './transforms/index.ts'
 
-import type { RootIRNode, RootNode, SvelteTemplateNode } from './ir/index.ts'
-import type { NodeTransform, TransformOptions } from './transforms/index.ts'
+import type { RootIRNode, RootNode } from './ir/index.ts'
+import type { DirectiveTransform, NodeTransform, TransformOptions } from './transforms/index.ts'
 
 // Svelte AST -> IR
 export function transform(node: RootNode, options: TransformOptions = {}): RootIRNode {
@@ -22,10 +38,6 @@ export function transform(node: RootNode, options: TransformOptions = {}): RootI
     component: new Set(),
     directive: new Set(),
     block: newBlock(node)
-  }
-
-  if (options.scopeId) {
-    enablePrevAndNext(ir)
   }
 
   const context = new TransformContext(ir, node, options)
@@ -71,29 +83,29 @@ export function transformNode(context: TransformContext): void {
   }
 }
 
-function enablePrevAndNext(ir: RootIRNode): void {
-  ir.node.children = mapChildrenWithPrevAndNext(ir.node as unknown as SvelteTemplateNode)
-}
+export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
-function mapChildrenWithPrevAndNext(node: SvelteTemplateNode): SvelteTemplateNode[] {
-  let last: SvelteTemplateNode | undefined
-  return (node.children || []).map(child => {
-    // ignores
-    if (isSvelteText(child) || isSvelteComponentTag(child)) {
-      return child
+export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
+  return [
+    [
+      // transformOnce,
+      transformIf,
+      transformFor,
+      transformSlotOutlet,
+      transformTemplateRef,
+      transformText,
+      transformElement,
+      transformSlot,
+      transformComment,
+      transformHtml,
+      transformChildren
+    ],
+    {
+      bind: transformBind,
+      on: transformOn,
+      // text: transformText,
+      // show: transformShow,
+      model: transformModel
     }
-
-    if (last) {
-      last.next = child
-    }
-
-    child.prev = last
-    last = child
-
-    if (child.children) {
-      child.children = mapChildrenWithPrevAndNext(child)
-    }
-
-    return child
-  })
+  ]
 }
