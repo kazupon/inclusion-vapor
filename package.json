@@ -86,7 +86,8 @@
   },
   "pnpm": {
     "overrides": {
-      "estree-walker": "^2.0.2"
+      "estree-walker": "^2.0.2",
+      "magic-string": "0.30.15"
     },
     "patchedDependencies": {
       "svelte@4.2.18": "patches/svelte@4.2.18.patch",
