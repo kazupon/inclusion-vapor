@@ -194,11 +194,6 @@ export function resolveTemplateCompilerOptions(
   //   expressionPlugins.push('typescript')
   // }
 
-  let css: SvelteSFCStyleBlock['ast'] | undefined = undefined
-  if (hasScoped && descriptor.styles[0]) {
-    css = structuredClone((descriptor.styles[0] as SvelteSFCStyleBlock).ast)
-  }
-
   return {
     // ...options.template,
     id,
@@ -216,7 +211,7 @@ export function resolveTemplateCompilerOptions(
     compilerOptions: {
       // ...options.template?.compilerOptions,
       scopeId: hasScoped ? generateId(id) : undefined,
-      css,
+      css: (descriptor.styles[0] as SvelteSFCStyleBlock).ast,
       bindingMetadata: resolvedScript ? resolvedScript.bindings : undefined,
       // expressionPlugins,
       sourceMap: options.sourcemap

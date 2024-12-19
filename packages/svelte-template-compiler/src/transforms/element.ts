@@ -192,13 +192,15 @@ function transformNativeElement(
   context: TransformContext<SvelteElement>
 ) {
   const { name: tag } = node
-  const { scopeId } = context.options
+  // TODO: remove
+  // const { scopeId } = context.options
 
   let template = ''
   template += `<${tag}`
-  if (scopeId) {
-    template += ` ${scopeId}`
-  }
+  // TODO: remove
+  // if (scopeId) {
+  //   template += ` ${scopeId}`
+  // }
 
   // console.log('transformElement building template ...', tag, JSON.stringify(propsResult))
 

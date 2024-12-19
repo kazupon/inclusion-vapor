@@ -3,7 +3,12 @@
 
 import { /*isObject, */ generateCodeFrame } from '@vue-vapor/shared'
 import { SourceMapConsumer, SourceMapGenerator } from 'source-map-js'
-import { compile as compileSvelteVapor } from 'svelte-vapor-template-compiler'
+import {
+  compile as compileSvelteVapor,
+  createScopedCssApplyer
+} from 'svelte-vapor-template-compiler'
+// NOTE: we need to import use exports path..., but vitest cannot handle it.
+// import { createScopedCssApplyer } from 'svelte-vapor-template-compiler/style'
 import { parse as parseSvelte } from 'svelte/compiler'
 // import { normalizeOptions, createAssetUrlTransformWithOptions } from './template/transformAssetUrl'
 import { generate as generateId, getShortId } from './id.ts'
@@ -11,7 +16,7 @@ import { genCssVarsFromList } from './style/cssVars.ts'
 import { warnOnce } from './warn.ts'
 
 import type { CompilerError, RawSourceMap } from '@vue-vapor/compiler-dom'
-import type { NodeTransform } from 'svelte-vapor-template-compiler'
+import type { NodeTransform, ScopedCssApplyer } from 'svelte-vapor-template-compiler'
 import type {
   SvelteSFCTemplateCompileOptions,
   SvelteSFCTemplateCompileResults,
@@ -82,6 +87,15 @@ function doCompileTemplate({
   //   inAST = undefined
   // }
 
+  let scopedCssApplyer: ScopedCssApplyer | undefined = compilerOptions.scopedCssApplyer
+  if (!scopedCssApplyer && compilerOptions.css) {
+    scopedCssApplyer = createScopedCssApplyer({
+      ast: compilerOptions.css,
+      source,
+      dev: !isProd
+    })
+  }
+
   const ret = templateCompiler.compile(inAST || source, {
     mode: 'module',
     prefixIdentifiers: true,
@@ -96,6 +110,7 @@ function doCompileTemplate({
     sourceMap: true,
     parser: (source: string) => templateCompiler.parse(source),
     ...compilerOptions,
+    scopedCssApplyer,
     hmr: !isProd,
     // eslint-disable-next-line unicorn/prefer-spread -- FIXME: spread operator
     nodeTransforms: nodeTransforms.concat(compilerOptions.nodeTransforms || []),

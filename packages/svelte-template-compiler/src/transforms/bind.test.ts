@@ -306,7 +306,7 @@ test('multiple class binding', () => {
   )
 })
 
-test('mutliple class binding with scoped css', () => {
+test('multiple class binding with scoped css', () => {
   const source = `
 <div class="static" class:active class:inactive={!active} class:isAdmin />
 <style>

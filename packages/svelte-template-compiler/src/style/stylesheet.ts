@@ -462,7 +462,7 @@ function encapsulateBlock(code: MagicStringAST, block: Block, attr: string): voi
 }
 
 const RE_WHITESPACE = /\s/
-const RE_ONLLY_WHITESPACES = /^[\t\n\f\r ]+$/
+const RE_ONLY_WHITESPACES = /^[\t\n\f\r ]+$/
 
 function minify(
   css: Rule | Atrule | Selector | Declaration,
@@ -568,7 +568,7 @@ function minify(
       : css.node.value
     // Don't minify whitespace in custom properties, since some browsers (Chromium < 99)
     // treat --foo: ; and --foo:; differently
-    if (first.type === 'Raw' && RE_ONLLY_WHITESPACES.test(first.value)) {
+    if (first.type === 'Raw' && RE_ONLY_WHITESPACES.test(first.value)) {
       return
     }
     let start = first.start!
