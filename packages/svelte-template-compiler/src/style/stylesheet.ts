@@ -17,12 +17,14 @@ import type {
   Declaration as CssDeclaration,
   CssNode,
   Rule as CssRule
-} from '@types/css-tree'
+} from 'css-tree'
 import type { SvelteAttribute, SvelteElement, SvelteStyle } from '../ir/index.ts'
 import type { CssNodeWithChildren } from './csstree.ts'
 import type { Block } from './selector.ts'
 
 export interface SvelteStylesheetOptions {
+  ast: SvelteStyle
+  source: string
   dev?: boolean
   cssHash?: (css: string, hash: (str: string) => string) => string
 }
@@ -37,15 +39,14 @@ export class SvelteStylesheet {
   id: string = ''
   children: (Rule | Atrule)[] = []
   nodesWithCssClass: Set<SvelteElement> = new Set<SvelteElement>()
+  applyCssWithNode: Set<SvelteElement> = new Set<SvelteElement>()
   keyframes: Map<string, string> = new Map()
-
-  constructor(ast: SvelteStyle, options: SvelteStylesheetOptions = {}) {
-    const { dev = true, cssHash = getDefaultCssHash } = options
-    console.log(dev, cssHash(ast.content.styles, hash), ast.content.styles)
+  constructor(options: SvelteStylesheetOptions) {
+    const { ast, source, dev = true, cssHash = getDefaultCssHash } = options
 
     this.dev = dev
     this.ast = ast
-    this.source = ast.content.styles
+    this.source = source
     this.id = cssHash(ast.content.styles, hash)
 
     const stack: Atrule[] = []
@@ -114,11 +115,11 @@ export class SvelteStylesheet {
     })
   }
 
-  apply(node: SvelteElement, everytime = true): void {
+  apply(node: SvelteElement, incremental = false): void {
     for (const child of this.children) {
       apply(node, child, this)
     }
-    if (everytime) {
+    if (incremental) {
       this.reify()
     }
   }
@@ -129,8 +130,16 @@ export class SvelteStylesheet {
   }
 
   render(file: string): { code: string; map: ReturnType<MagicStringAST['generateMap']> } {
-    const max = Math.max(...this.children.map(css => getMaxAmountClassSpecificityIncreased(css)))
     const code = new MagicStringAST(this.source)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore -- css-tree types are not up-to-date
+    walkAST<CssNode>(this.ast, {
+      enter(node) {
+        code.addSourcemapLocation(node.start!)
+        code.addSourcemapLocation(node.end!)
+      }
+    })
+    const max = Math.max(...this.children.map(css => getMaxAmountClassSpecificityIncreased(css)))
 
     for (const child of this.children) {
       transform(child, code, this.id, this.keyframes, max)
@@ -138,7 +147,7 @@ export class SvelteStylesheet {
 
     let c = 0
     for (const child of this.children) {
-      if (!isUsed(child, this.dev)) {
+      if (isUsed(child, this.dev)) {
         code.remove(c, child.node.start!)
         minify(child, code, this.dev)
         c = child.node.end!
@@ -179,7 +188,6 @@ class Rule {
   selectors: Selector[]
   parent: Atrule | null
   declarations: Declaration[]
-
   constructor(node: CssRule, parent: Atrule | null) {
     this.node = node
     this.parent = parent
@@ -189,7 +197,6 @@ class Rule {
     // this.declarations = node.block.children.map(
     //   node => new Declaration(node)
     // ) as unknown as Declaration[]
-
     this.declarations = node.block.children
       .filter(hasProperty) // eslint-disable-line unicorn/no-array-callback-reference
       .map(node => new Declaration(node)) as unknown as Declaration[]
@@ -200,7 +207,6 @@ class Atrule {
   node: CssAtrule
   children: (Rule | Atrule)[] = []
   declarations: Declaration[] = []
-
   constructor(node: CssAtrule) {
     this.node = node
   }
@@ -208,7 +214,6 @@ class Atrule {
 
 class Declaration {
   node: CssDeclaration
-
   constructor(node: CssDeclaration) {
     this.node = node
   }
@@ -271,17 +276,24 @@ function apply(
 // Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/src/compiler/compile/nodes/Element.js#L1305-L1343
 
 function reify(stylesheet: SvelteStylesheet): void {
-  stylesheet.nodesWithCssClass.forEach(node => {
+  for (const node of stylesheet.nodesWithCssClass) {
+    // ignore if the node already has reified
+    if (stylesheet.applyCssWithNode.has(node)) {
+      continue
+    }
+
     if (node.attributes.some(attr => isSvelteSpreadAttribute(attr))) {
       // this.needs_manual_style_scoping = true
-      return
+      continue
     }
+
     const { id } = stylesheet
     const classAttribute = node.attributes.find(attr => attr.name === 'class')
     if (classAttribute && !(classAttribute.value === true)) {
       const chunks = createAttributeChunks(classAttribute)
       if (chunks.length === 1 && isSvelteText(chunks[0])) {
         chunks[0].data += ` ${id}`
+        stylesheet.applyCssWithNode.add(node)
       } else {
         if (Array.isArray(classAttribute.value)) {
           classAttribute.value.push({
@@ -289,6 +301,7 @@ function reify(stylesheet: SvelteStylesheet): void {
             raw: ` ${id}`,
             data: ` ${id}`
           })
+          stylesheet.applyCssWithNode.add(node)
         } else {
           console.warn('unexpected node')
         }
@@ -305,8 +318,9 @@ function reify(stylesheet: SvelteStylesheet): void {
           }
         ]
       } as SvelteAttribute)
+      stylesheet.applyCssWithNode.add(node)
     }
-  })
+  }
 }
 
 function getMaxAmountClassSpecificityIncreased(css: Rule | Atrule | Selector): number {
@@ -413,7 +427,7 @@ function transform(
 }
 
 function removeGlobalResudoClass(code: MagicStringAST, selector: CssNodeWithChildren): void {
-  if (selector.children == undefined) {
+  if (!hasChildren(selector)) {
     throw new TypeError('selector children is null')
   }
   const selectorChildren = selector.children as unknown as CssNode[]
@@ -447,22 +461,144 @@ function encapsulateBlock(code: MagicStringAST, block: Block, attr: string): voi
   }
 }
 
+const RE_WHITESPACE = /\s/
+const RE_ONLLY_WHITESPACES = /^[\t\n\f\r ]+$/
+
 function minify(
   css: Rule | Atrule | Selector | Declaration,
-  _code: MagicStringAST,
-  _dev: boolean
+  code: MagicStringAST,
+  dev: boolean
 ): void {
   if (css instanceof Rule) {
-    // TODO:
+    // for Rule
+    let c = css.node.start!
+    let started = false
+    for (const selector of css.selectors) {
+      if (selector.used) {
+        const separator = started ? ',' : ''
+        if (selector.node.start! - c > separator.length) {
+          code.update(c, selector.node.start!, separator)
+        }
+        minify(selector, code, dev)
+        c = selector.node.end!
+        started = true
+      }
+    }
+    code.remove(c, css.node.block.start!)
+    c = css.node.block.start! + 1
+    c = minifyDeclarations(code, c, css.declarations, dev)
+    code.remove(c, css.node.block.end! - 1)
   } else if (css instanceof Atrule) {
-    // TODO:
+    // for Atrule
+    if (css.node.name === 'media') {
+      if (css.node.prelude) {
+        const expressionChar = code.original[css.node.prelude.start!]
+        let c = css.node.start! + (expressionChar === '(' ? 6 : 7)
+        if (css.node.prelude.start! > c) {
+          code.remove(c, css.node.prelude.start!)
+        }
+        if (hasChildren(css.node.prelude)) {
+          // TODO: minify queries
+          css.node.prelude.children.forEach(query => (c = query.end!))
+        }
+        code.remove(c, css.node.block!.start!)
+      }
+    } else if (css.node.name === 'supports') {
+      let c = css.node.start! + 9
+      if (css.node.prelude) {
+        if (css.node.prelude.start! - c > 1) {
+          code.update(c, css.node.prelude.start!, ' ')
+        }
+        if (hasChildren(css.node.prelude)) {
+          // TODO: minify queries
+          css.node.prelude.children.forEach(query => (c = query.end!))
+        }
+      }
+      code.remove(c, css.node.block!.start!)
+    } else {
+      let c = css.node.start! + css.node.name.length + 1
+      if (css.node.prelude) {
+        if (css.node.prelude.start! - c > 1) {
+          code.update(c, css.node.prelude.start!, ' ')
+        }
+        c = css.node.prelude.end!
+      }
+      if (css.node.block && css.node.block.start! - c > 0) {
+        code.remove(c, css.node.block.start!)
+      }
+    }
+
+    if (css.node.block) {
+      let c = css.node.block.start! + 1
+      if (css.declarations.length > 0) {
+        c = minifyDeclarations(code, c, css.declarations, dev)
+        // if the atrule has children, leave the last declaration semicolon alone
+        if (css.children.length > 0) {
+          c++
+        }
+      }
+      for (const child of css.children) {
+        if (isUsed(child, dev)) {
+          code.remove(c, child.node.start!)
+          minify(child, code, dev)
+          c = child.node.end!
+        }
+        minify(child, code, dev)
+      }
+      code.remove(c, css.node.block.end! - 1)
+    }
   } else if (css instanceof Selector) {
-    // TODO:
+    // for Selector
+    let c: number | null = null // eslint-disable-line unicorn/no-null
+    css.blocks.forEach((block, i) => {
+      if (i > 0 && block.start! - c! > 1) {
+        code.update(c!, block.start!, ',')
+      }
+      c = block.end
+    })
   } else if (css instanceof Declaration) {
-    // TODO:
+    // for Declaration
+    if (!css.node.property) {
+      // @apply, and possibly other weird cases?
+      return
+    }
+    const c = css.node.start! + css.node.property.length
+    const first = hasChildren(css.node.value)
+      ? (css.node.value.children as unknown as CssNode[])[0]
+      : css.node.value
+    // Don't minify whitespace in custom properties, since some browsers (Chromium < 99)
+    // treat --foo: ; and --foo:; differently
+    if (first.type === 'Raw' && RE_ONLLY_WHITESPACES.test(first.value)) {
+      return
+    }
+    let start = first.start!
+    while (RE_WHITESPACE.test(code.original[start])) {
+      start += 1
+    }
+    if (start - c > 1) {
+      code.update(c, start, ':')
+    }
   } else {
     throw new TypeError('Invalid css type')
   }
+}
+
+function minifyDeclarations(
+  code: MagicStringAST,
+  start: number,
+  declarations: Declaration[],
+  dev: boolean
+): number {
+  let c = start
+  declarations.forEach((declaration, i) => {
+    const separator = i > 0 ? ';' : ''
+    if (declaration.node.start! - c > separator.length) {
+      code.update(c, declaration.node.start!, separator)
+    }
+    minify(declaration, code, dev)
+    c = declaration.node.end!
+  })
+  return c
 }
 
 function isUsed(css: Rule | Atrule | Selector, dev: boolean): boolean {

@@ -2,11 +2,13 @@
 // Author: kazuya kawaguchi (a.k.a. kazupon)
 
 import { SvelteStylesheet } from './stylesheet.ts'
-import type { ScopedStyleApplyer } from './types.ts'
 
-export const scopedStyleApplyer: ScopedStyleApplyer = (_node, context): void => {
-  if (context.options.css) {
-    const stylesheet = new SvelteStylesheet(context.options.css)
-    console.log('applyScopedStyle', stylesheet)
+import type { ScopedCssApplyer } from '../compile.ts'
+import type { SvelteStylesheetOptions } from './stylesheet.ts'
+
+export function createScopedCssApplyer(options: SvelteStylesheetOptions): ScopedCssApplyer {
+  const stylesheet = new SvelteStylesheet(options)
+  return node => {
+    stylesheet.apply(node, true)
   }
 }

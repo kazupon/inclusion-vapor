@@ -14,7 +14,7 @@ import {
 } from '../ir/svelte.ts'
 import { hasChildren, hasName } from './csstree.ts'
 
-import type { AttributeSelector as CssAttributeSelector, CssNode } from '@types/css-tree'
+import type { AttributeSelector as CssAttributeSelector, CssNode } from 'css-tree'
 import type { SvelteElement, SvelteMustacheTag } from '../ir/index.ts'
 
 const UNKNOWN = {}
@@ -172,7 +172,7 @@ function blockMightApplyToNode(block: Block, node: SvelteElement): BlockAppliesT
     const name =
       hasName(selector) &&
       typeof selector.name === 'string' &&
-      selector.name.replaceAll(RE_BACK_SLASH_AND_FOLLOWING_CHARACTER, '$1')
+      selector.name.replace(RE_BACK_SLASH_AND_FOLLOWING_CHARACTER, '$1') // eslint-disable-line unicorn/prefer-string-replace-all
 
     if (selector.type === 'PseudoClassSelector' && (name === 'host' || name === 'root')) {
       return BlockAppliesToNode.NotPossible

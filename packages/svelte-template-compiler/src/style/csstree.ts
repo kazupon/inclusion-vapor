@@ -26,7 +26,7 @@ import type {
   StyleSheet,
   TypeSelector,
   Value
-} from '@types/css-tree'
+} from 'css-tree'
 
 export function hasChildren(
   node: CssNode
