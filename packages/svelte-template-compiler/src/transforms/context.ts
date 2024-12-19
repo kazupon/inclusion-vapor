@@ -14,6 +14,7 @@ import type {
   CompilerCompatOptions,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
+import type { ScopedCssApplyer } from '../compile.ts'
 import type {
   BlockIRNode,
   IRDynamicInfo,
@@ -22,10 +23,9 @@ import type {
   RootIRNode,
   RootNode,
   SvelteComment,
-  SvelteStyle,
+  SvelteElement,
   SvelteTemplateNode
 } from '../ir'
-import { type ScopedStyleApplyer } from '../style/index.ts'
 import type { HackOptions } from './types'
 
 const defaultOptions = {
@@ -49,13 +49,11 @@ const defaultOptions = {
   isTS: false,
   onError: defaultOnError,
   onWarn: defaultOnWarn,
-  css: null, // eslint-disable-line unicorn/no-null
-  scopedStyleApplyer: null // eslint-disable-line unicorn/no-null
+  scopedCssApplyer: null // eslint-disable-line unicorn/no-null
 }
 
 export type TransformOptions = HackOptions<BaseTransformOptions> & {
-  css?: SvelteStyle
-  scopedStyleApplyer?: ScopedStyleApplyer
+  scopedCssApplyer?: ScopedCssApplyer
 }
 
 export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
@@ -171,6 +169,10 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
     this.block.operation.push(...node)
   }
 
+  applyScopedCss(node: SvelteElement): void {
+    this.options.scopedCssApplyer?.(node)
+  }
+
   create<T extends SvelteTemplateNode>(node: T, index: number): TransformContext<T> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return Object.assign(Object.create(TransformContext.prototype), this, {
@@ -184,12 +186,4 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
       dynamic: newDynamic()
     } satisfies Partial<TransformContext<T>>)
   }
-
-  // TODO:
-  // getNodes(): SvelteElement[] {
-  //   return [
-  //     ...(this.parent?.getNodes() || []),
-  //     ...([this.node.type === 'Element' ? this.node : undefined] as SvelteElement[])
-  //   ].filter(Boolean)
-  // }
 }

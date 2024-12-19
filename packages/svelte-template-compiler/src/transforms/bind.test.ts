@@ -1,7 +1,9 @@
 import { NodeTypes } from '@vue-vapor/compiler-dom'
 import { compile as vaporCompile } from '@vue-vapor/compiler-vapor'
+import { parse } from 'svelte/compiler'
 import { expect, test } from 'vitest'
 import { DynamicFlag, IRNodeTypes } from '../ir/index.ts'
+import { createScopedCssApplyer } from '../style/index.ts'
 import { makeCompile } from './_utils.ts'
 import { transformBind } from './bind.ts'
 import { transformChildren } from './children.ts'
@@ -301,6 +303,32 @@ test('multiple class binding', () => {
 
   expect(code).contains(
     `_renderEffect(() => _setClass(n0, ["static", { active: _ctx.active }, { inactive: !_ctx.active }, { isAdmin: _ctx.isAdmin }], true))`
+  )
+})
+
+test('mutliple class binding with scoped css', () => {
+  const source = `
+<div class="static" class:active class:inactive={!active} class:isAdmin />
+<style>
+.static {
+  color: red;
+}
+</style>
+`
+  const svelteAst = parse(source)
+  const scopedId = `_vapor_`
+  const scopedCssApplyer = createScopedCssApplyer({
+    ast: svelteAst.css!,
+    source,
+    cssHash(_css, _hash) {
+      return scopedId
+    }
+  })
+  const { code, ir: _ } = compileWithVBind(source, { scopedCssApplyer })
+
+  expect(code).toMatchSnapshot('svelte')
+  expect(code).contains(
+    `_renderEffect(() => _setClass(n0, ["static ${scopedId}", { active: _ctx.active }, { inactive: !_ctx.active }, { isAdmin: _ctx.isAdmin }], true))`
   )
 })
 

@@ -1,6 +1,7 @@
 import { generate } from '@vue-vapor/compiler-vapor'
 import { parse } from 'svelte/compiler'
-import { IRNodeTypes } from '../ir/index.ts'
+import { IRNodeTypes, enableStructures } from '../ir/index.ts'
+import { createScopedCssApplyer } from '../style/index.ts'
 import { transform } from '../transform.ts'
 
 import type {
@@ -28,6 +29,10 @@ export function makeCompile(options: CompilerOptions = {}) {
   } => {
     const svelteAst = parse(source)
 
+    if (svelteAst.css) {
+      enableStructures(svelteAst.html)
+    }
+
     const ast: RootNode = {
       type: IRNodeTypes.ROOT,
       children: svelteAst.html.children || [],
@@ -38,11 +43,18 @@ export function makeCompile(options: CompilerOptions = {}) {
       temps: 0
     }
 
+    const moreOptions: CompilerOptions = {}
+    if (!overrideOptions.scopedCssApplyer && svelteAst.css) {
+      moreOptions.scopedCssApplyer = createScopedCssApplyer({
+        ast: svelteAst.css,
+        source
+      })
+    }
     const ir = transform(ast, {
       ...DEFAULT_OPTIONS,
       ...options,
       ...overrideOptions,
-      css: svelteAst.css
+      ...moreOptions
     })
     const { code, helpers, vaporHelpers } = generate(ir as unknown as VaporRootIRNode, {
       ...DEFAULT_OPTIONS,

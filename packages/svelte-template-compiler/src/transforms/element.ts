@@ -42,8 +42,12 @@ import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {
   if (__DEV__) {
-    console.log('transformElement', context.node.type)
-    // console.log('transformElement', context.node.type, context.node?.name)
+    console.log(
+      'transformElement',
+      _node.type,
+      // @ts-expect-error -- IGNORE
+      _node?.name
+    )
   }
 
   return function postTransformElement() {
@@ -57,6 +61,10 @@ export const transformElement: NodeTransform = (_node, context) => {
 
     const isComponent = node.type === 'InlineComponent'
     const isDynamicComponent = isSvelteComponentTag(node)
+
+    // apply scoped style
+    context.applyScopedCss(node)
+
     const propsResult = buildProps(
       node,
       context as TransformContext<SvelteElement>,
@@ -264,6 +272,8 @@ export function buildProps(
   isComponent: boolean,
   isDynamicComponent?: boolean
 ): PropsResult {
+  // context.options.scopedStyleApplyer?.(node, context)
+
   // convert from svelte props to vapor props
   const props = convertProps(node)
   if (props.length === 0) {

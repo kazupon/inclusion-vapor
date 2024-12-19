@@ -17,8 +17,13 @@ import type {
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { RootNode, SvelteCompileError, SvelteStyle, SvelteTemplateNode } from './ir/index.ts'
-import type { ScopedStyleApplyer } from './style/types.ts'
+import type {
+  RootNode,
+  SvelteCompileError,
+  SvelteElement,
+  SvelteStyle,
+  SvelteTemplateNode
+} from './ir/index.ts'
 import type { HackOptions } from './transforms/index.ts'
 
 // Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
@@ -63,7 +68,7 @@ export function compile(
     }
   }
 
-  if (options.css && options.scopedStyleApplyer) {
+  if (options.scopedCssApplyer) {
     enableStructures(svelteTemplateAst)
   }
 
@@ -137,6 +142,8 @@ function convertToVaporCompileErrorSourceLocation(
   }
 }
 
+export type ScopedCssApplyer = (node: SvelteElement) => void
+
 interface SvelteCompilerOptions {
   /**
    * Svelte parser
@@ -150,10 +157,10 @@ interface SvelteCompilerOptions {
    */
   css?: SvelteStyle
   /**
-   * Apply scoped style
+   * scoped css applyer
    * @description if you want to apply scoped style, you can use this option
    */
-  scopedStyleApplyer?: ScopedStyleApplyer
+  scopedCssApplyer?: ScopedCssApplyer
 }
 
 export type SvelteCompilerResult = {

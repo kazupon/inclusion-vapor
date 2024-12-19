@@ -386,11 +386,8 @@ div.header {
 }
 </style>
 `
-  const {
-    ir: _,
-    code,
-    vaporHelpers: __
-  } = compileWithElementTransform(source, { scopeId: 'svelte-xxx' })
+
+  const { ir: _, code, vaporHelpers: __ } = compileWithElementTransform(source)
 
   expect(code).toMatchSnapshot()
 })
