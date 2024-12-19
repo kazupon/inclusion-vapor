@@ -36,11 +36,13 @@
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "paths": {
       "svelte-vapor-template-compiler": ["packages/svelte-template-compiler/src"],
+      "svelte-vapor-template-compiler/style": ["packages/svelte-template-compiler/src/style"],
       "svelte-vapor-sfc-compiler": ["packages/svelte-sfc-compiler/src"],
       "jsx-vapor-compiler": ["packages/jsx-compiler/src"],
       "react-vapor-hooks": ["packages/react-vapor-hooks/src"],
       "inclusion-vapor-shared": ["packages/inclusion-vapor-shared/src"],
       "inclusion-vapor-shared/scope": ["packages/inclusion-vapor-shared/src/scope"],
+      "inclusion-vapor-shared/array": ["packages/inclusion-vapor-shared/src/array"],
       "svelte-vapor-runtime": ["packages/svelte-vapor-runtime/src"],
       "vue/vapor": ["packages/playground/node_modules/vue/vapor"]
     },
