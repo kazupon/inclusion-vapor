@@ -45,7 +45,7 @@ describe('convertProps', () => {
       ])
     })
 
-    test('attrivute value (static class) : <div class="static" />', () => {
+    test('attribute value (static class) : <div class="static" />', () => {
       const el = getSvelteElement('<div class="static" />')
       expect(convertProps(el!)).toMatchObject([
         {

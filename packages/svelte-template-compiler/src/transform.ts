@@ -7,10 +7,26 @@
 
 import { isArray } from '@vue-vapor/shared'
 import { IRNodeTypes } from './ir/index.ts'
-import { TransformContext, newBlock } from './transforms/index.ts'
+import {
+  TransformContext,
+  newBlock,
+  transformBind,
+  transformChildren,
+  transformComment,
+  transformElement,
+  transformFor,
+  transformHtml,
+  transformIf,
+  transformModel,
+  transformOn,
+  transformSlot,
+  transformSlotOutlet,
+  transformTemplateRef,
+  transformText
+} from './transforms/index.ts'
 
 import type { RootIRNode, RootNode } from './ir/index.ts'
-import type { NodeTransform, TransformOptions } from './transforms/index.ts'
+import type { DirectiveTransform, NodeTransform, TransformOptions } from './transforms/index.ts'
 
 // Svelte AST -> IR
 export function transform(node: RootNode, options: TransformOptions = {}): RootIRNode {
@@ -65,4 +81,31 @@ export function transformNode(context: TransformContext): void {
   if (context.node.type === IRNodeTypes.ROOT) {
     context.registerTemplate()
   }
+}
+
+export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
+
+export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
+  return [
+    [
+      // transformOnce,
+      transformIf,
+      transformFor,
+      transformSlotOutlet,
+      transformTemplateRef,
+      transformText,
+      transformElement,
+      transformSlot,
+      transformComment,
+      transformHtml,
+      transformChildren
+    ],
+    {
+      bind: transformBind,
+      on: transformOn,
+      // text: transformText,
+      // show: transformShow,
+      model: transformModel
+    }
+  ]
 }

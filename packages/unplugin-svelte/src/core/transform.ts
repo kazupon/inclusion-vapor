@@ -55,7 +55,7 @@ export async function transformMain(
 
   // feature information
   const attachedProps: [string, string][] = []
-  const hasScoped = descriptor.styles.some(s => s.scoped)
+  const hasScoped = true // descriptor.styles.some(s => s.scoped) // default scoped on svelte
 
   // generate script code
   const { code: scriptCode, map: _scriptMap } = await genScriptCode(
@@ -232,7 +232,7 @@ async function preprocessSvelte(
   const { sourcemap } = options
   debug('preprocessSvelte  ...', filename)
 
-  // converts the required `<script contex="module">` to AST in advance for `transformSvelteScript`
+  // converts the required `<script context="module">` to AST in advance for `transformSvelteScript`
   const [moduleAst, moduleCode] = await preprocessSvelteScriptContext(code, filename, options)
   debug('preprocessSvelte moduleAst', moduleAst)
 
@@ -240,7 +240,7 @@ async function preprocessSvelte(
   const preprocessed = await preprocess(code, {
     script: ({ content, attributes }) => {
       if (attributes.context === 'module') {
-        // if it's `<script contex="module">`, keep it as is.
+        // if it's `<script context="module">`, keep it as is.
         return { code: content }
       }
       const ret = transformSvelteScript(content, { sourcemap, id: filename, moduleAst, moduleCode })
@@ -296,8 +296,10 @@ export async function transformStyle(
     id: generateId(descriptor.id!),
     isProd: options.isProduction,
     source: code,
+    sourceAll: block.source,
     scoped: block.scoped,
-    ast: block.ast!,
+    ast: block.ast,
+    templateAst: structuredClone(descriptor.template!.ast),
     ...(options.cssDevSourcemap
       ? {
           postcssOptions: {
@@ -341,11 +343,9 @@ export async function transformStyle(
   //     filename,
   //   )
   //   : ({ mappings: '' } as any)
-  const map = result.map
 
-  const resolvedCode = code
   return {
-    code: resolvedCode,
-    map
+    code: result.code,
+    map: result.map
   }
 }

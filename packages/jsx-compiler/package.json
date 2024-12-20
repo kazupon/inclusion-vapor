@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@babel/types": "catalog:",
-    "@rollup/plugin-replace": "^5.0.7",
     "@types/svg-tags": "^1.0.2",
     "tsdown": "catalog:"
   }

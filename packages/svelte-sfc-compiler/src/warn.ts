@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+
 const hasWarned: Record<string, boolean> = {}
 
 export function warnOnce(msg: string): void {
