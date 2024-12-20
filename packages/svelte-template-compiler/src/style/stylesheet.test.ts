@@ -149,8 +149,10 @@ describe('render', () => {
   })
 })
 
-const __filename = new URL(import.meta.url).pathname
-const __dirname = path.dirname(__filename)
+// const __filename = new URL(import.meta.url).pathname
+// const __filename = import.meta.filename;
+const __dirname = path.dirname(__filename) // eslint-disable-line unicorn/prefer-module
+// const __dirname = import.meta.dirname;
 const fixturesDir = path.resolve(__dirname, '../../test/fixtures')
 
 function replaceCssHash(str: string): string {
