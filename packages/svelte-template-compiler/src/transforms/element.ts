@@ -202,8 +202,6 @@ function transformNativeElement(
   //   template += ` ${scopeId}`
   // }
 
-  // console.log('transformElement building template ...', tag, JSON.stringify(propsResult))
-
   let staticProps = false
   const dynamicProps: string[] = []
   if (propsResult[0] /* dynamic props */) {
@@ -248,8 +246,6 @@ function transformNativeElement(
   if (!isVoidTag(tag)) {
     template += `</${tag}>`
   }
-
-  // console.log('transformElement exit', tag, template, context.childrenTemplate)
 
   if (
     context.parent &&
@@ -350,7 +346,6 @@ export function buildProps(
     }
 
     const result = transformProp(prop, node, context)
-    // console.log('transformProp', prop, result)
 
     if (result) {
       dynamicExpr.push(result.key, result.value)
