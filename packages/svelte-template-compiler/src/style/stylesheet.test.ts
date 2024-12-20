@@ -1,5 +1,7 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { parse } from 'svelte/compiler'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 import { enableStructures, findAttrs, isSvelteElement, isSvelteText } from '../ir/index.ts'
 import { SvelteStylesheet } from './stylesheet.ts'
 
@@ -145,4 +147,47 @@ describe('render', () => {
     const { code: c } = stylesheet.render('foo.css')
     expect(c).toEqual(`.count.${id}{color:red}span.${id}{color:blue}#footer.${id}{color:green}`)
   })
+})
+
+const __filename = new URL(import.meta.url).pathname
+const __dirname = path.dirname(__filename)
+const fixturesDir = path.join(__dirname, '../../test/fixtures')
+
+function replaceCssHash(str: string): string {
+  // eslint-disable-next-line unicorn/prefer-string-replace-all, unicorn/better-regex
+  return str.replace(/svelte-[a-z0-9]+/g, 'svelte-xyz')
+}
+
+describe('render with fixtures', async () => {
+  for (const dir of await fs.readdir(fixturesDir)) {
+    const skip = /\.skip/.test(dir)
+    const test = skip ? it.skip : it
+    test(dir, async () => {
+      const cwd = `${fixturesDir}/${dir}`
+
+      const filename = `${cwd}/input.svelte`
+      const _input = await fs.readFile(filename, 'utf8')
+      const input = _input.replace(/\s+$/, '').replace(/\r/g, '') // eslint-disable-line unicorn/prefer-string-replace-all
+      const _expected = await fs.readFile(`${cwd}/expected.css`, 'utf8')
+      const expected = _expected.replace(/\s+$/, '').replace(/\r/g, '') // eslint-disable-line unicorn/prefer-string-replace-all
+
+      const ast = parse(input)
+      enableStructures(ast.html)
+      const stylesheet = new SvelteStylesheet({ ast: ast.css!, source: input })
+      walk(ast.html, {
+        enter(node) {
+          if (isSvelteElement(node)) {
+            stylesheet.apply(node)
+          }
+        }
+      })
+      stylesheet.reify()
+
+      const rendered = stylesheet.render(filename)
+      const actual = replaceCssHash(rendered.code)
+      await fs.writeFile(`${cwd}/_actual.css`, actual)
+
+      expect(actual).toEqual(expected)
+    })
+  }
 })
