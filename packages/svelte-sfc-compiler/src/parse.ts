@@ -298,7 +298,7 @@ function createSvelteStyleBlock(
       source: content
     },
     ast: node,
-    source // set source that has svelte component source, becase stylesheet compiler needs it
+    source // set source that has svelte component source, because stylesheet compiler needs it
   }
 
   if (pad) {
