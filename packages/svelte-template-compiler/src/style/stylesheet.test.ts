@@ -151,7 +151,7 @@ describe('render', () => {
 
 const __filename = new URL(import.meta.url).pathname
 const __dirname = path.dirname(__filename)
-const fixturesDir = path.join(__dirname, '../../test/fixtures')
+const fixturesDir = path.resolve(__dirname, '../../test/fixtures')
 
 function replaceCssHash(str: string): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all, unicorn/better-regex
