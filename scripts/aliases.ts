@@ -16,6 +16,7 @@ const entries: Record<string, string> = {
     'svelte-template-compiler',
     'style/index'
   ),
+  'svelte-vapor-template-compiler/utils': resolveEntryForPkg('svelte-template-compiler', 'utils'),
   'svelte-vapor-runtime': resolveEntryForPkg('svelte-vapor-runtime'),
   'unplugin-react-vapor': resolveEntryForPkg('unplugin-react'),
   'unplugin-svelte-vapor': resolveEntryForPkg('unplugin-svelte')

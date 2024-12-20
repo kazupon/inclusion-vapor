@@ -7,8 +7,8 @@
 import createDebug from 'debug'
 import fs from 'node:fs'
 import path from 'node:path'
-import { parse as parseSvelteSFC } from 'svelte-vapor-sfc-compiler'
-import { getHash, normalizePath } from './utils.ts'
+import { hash, parse as parseSvelteSFC } from 'svelte-vapor-sfc-compiler'
+import { normalizePath } from './utils.ts'
 
 import type { SvelteSFCDescriptor, SvelteSFCParseResult } from 'svelte-vapor-sfc-compiler'
 import type { ResolvedOptions } from './types.ts'
@@ -38,7 +38,7 @@ export function createDescriptor(
   // ensure the path is normalized in a way that is consistent inside
   // project (relative to root) and on different systems.
   const normalizedPath = normalizePath(path.relative(root, filename))
-  descriptor.id = getHash(normalizedPath + (isProduction ? source : ''))
+  descriptor.id = hash(normalizedPath + (isProduction ? source : ''))
   ;(hmr ? hmrCache : cache).set(filename, descriptor)
 
   debug('createDescriptor', filename, descriptor.id)

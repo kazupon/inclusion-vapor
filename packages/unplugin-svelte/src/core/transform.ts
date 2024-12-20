@@ -296,8 +296,10 @@ export async function transformStyle(
     id: generateId(descriptor.id!),
     isProd: options.isProduction,
     source: code,
+    sourceAll: block.source,
     scoped: block.scoped,
-    ast: block.ast!,
+    ast: block.ast,
+    templateAst: structuredClone(descriptor.template!.ast),
     ...(options.cssDevSourcemap
       ? {
           postcssOptions: {
@@ -341,11 +343,9 @@ export async function transformStyle(
   //     filename,
   //   )
   //   : ({ mappings: '' } as any)
-  const map = result.map
 
-  const resolvedCode = code
   return {
-    code: resolvedCode,
-    map
+    code: result.code,
+    map: result.map
   }
 }

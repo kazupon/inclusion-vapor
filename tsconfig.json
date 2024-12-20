@@ -36,6 +36,7 @@
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "paths": {
       "svelte-vapor-template-compiler": ["packages/svelte-template-compiler/src"],
+      "svelte-vapor-template-compiler/utils": ["packages/svelte-template-compiler/src/utils"],
       "svelte-vapor-template-compiler/style": ["packages/svelte-template-compiler/src/style"],
       "svelte-vapor-sfc-compiler": ["packages/svelte-sfc-compiler/src"],
       "jsx-vapor-compiler": ["packages/jsx-compiler/src"],

@@ -31,7 +31,7 @@ describe('compileScript', () => {
       source: svelteCode,
       filename: 'test.svelte',
       id: descriptor.id!,
-      ast: descriptor.template!.ast!
+      ast: descriptor.template!.ast
     })
     expect(template.code).toMatchSnapshot('code')
     expect(template.code).contains(`_delegateEvents("click")`)

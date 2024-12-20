@@ -9,6 +9,7 @@ import { walkAST } from 'ast-kit'
 import { pushArray } from 'inclusion-vapor-shared'
 import { MagicStringAST } from 'magic-string-ast'
 import { createAttributeChunks, isSvelteSpreadAttribute, isSvelteText } from '../ir/index.ts'
+import { hash } from '../utils.ts'
 import { hasChildren, hasProperty } from './csstree.ts'
 import { Selector, applySelector } from './selector.ts'
 
@@ -25,8 +26,9 @@ import type { Block } from './selector.ts'
 export interface SvelteStylesheetOptions {
   ast: SvelteStyle
   source: string
+  filename?: string
   dev?: boolean
-  cssHash?: (css: string, hash: (str: string) => string) => string
+  cssHash?: ((css: string, hash: (str: string) => string) => string) | string
 }
 
 const getDefaultCssHash = (css: string, hash: (str: string) => string): string =>
@@ -36,18 +38,20 @@ export class SvelteStylesheet {
   ast: SvelteStyle
   dev: boolean = true
   source: string = ''
+  filename: string = ''
   id: string = ''
   children: (Rule | Atrule)[] = []
   nodesWithCssClass: Set<SvelteElement> = new Set<SvelteElement>()
   applyCssWithNode: Set<SvelteElement> = new Set<SvelteElement>()
   keyframes: Map<string, string> = new Map()
   constructor(options: SvelteStylesheetOptions) {
-    const { ast, source, dev = true, cssHash = getDefaultCssHash } = options
+    const { ast, source, filename, dev = true, cssHash = getDefaultCssHash } = options
 
     this.dev = dev
     this.ast = ast
     this.source = source
-    this.id = cssHash(ast.content.styles, hash)
+    this.filename = filename || ''
+    this.id = typeof cssHash === 'string' ? cssHash : cssHash(source, hash)
 
     const stack: Atrule[] = []
     let depth: number = 0
@@ -159,7 +163,7 @@ export class SvelteStylesheet {
       code: code.toString(),
       map: code.generateMap({
         includeContent: true,
-        source: '', // TODO: this.filename
+        source: this.filename,
         file
       })
     }
@@ -620,26 +624,4 @@ function isUsed(css: Rule | Atrule | Selector, dev: boolean): boolean {
   } else {
     throw new TypeError('Invalid css type')
   }
-}
-
-// SPDX-License-Identifier: MIT
-// Forked and Modified from `svelte`
-// Author: Rich Harris (https://github.com/Rich-Harris), svelte team and svelte community
-// Repository url: https://github.com/sveltejs/svelte/tree/svelte-4
-// Code url: https://github.com/sveltejs/svelte/blob/svelte-4/packages/svelte/src/compiler/compile/utils/hash.js
-
-const RE_RETURN_CHARACTERS = /\r/g
-
-function hash(str: string): string {
-  // eslint-disable-next-line unicorn/prefer-string-replace-all
-  const s = str.replace(RE_RETURN_CHARACTERS, '')
-  let hash = 5381
-  let i = s.length
-
-  while (i--) {
-    // eslint-disable-next-line unicorn/prefer-code-point
-    hash = ((hash << 5) - hash) ^ s.charCodeAt(i)
-  }
-
-  return (hash >>> 0).toString(36)
 }

@@ -5,7 +5,7 @@ import { defineConfig } from 'tsdown'
 // we will configure for flag (`__DEV__`, `__BROWSER__`, etc.) to make it more flexible building.
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/style/index.ts'],
+  entry: ['src/index.ts', 'src/utils.ts', 'src/style/index.ts'],
   format: ['esm', 'cjs'],
   platform: 'node',
   outDir: 'dist',

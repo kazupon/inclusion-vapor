@@ -186,14 +186,14 @@ function createSvelteTemplateBlock(
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
       source: content
-    }
+    },
+    ast: node
   }
 
   if (pad) {
     block.content = padContent(source, block, pad) + block.content
   }
 
-  block.ast = node
   // TODO:
   // templateBlock.ast = createRoot(node.children, source)
 
@@ -296,14 +296,15 @@ function createSvelteStyleBlock(
         column: -1 // NOTE: we can't get the column info from svelte ast ...
       },
       source: content
-    }
+    },
+    ast: node,
+    source // set source that has svelte component source, becase stylesheet compiler needs it
   }
 
   if (pad) {
     block.content = padContent(source, block, pad) + block.content
   }
 
-  block.ast = node
   block.scoped = true // svelte style is always scoped
 
   return block

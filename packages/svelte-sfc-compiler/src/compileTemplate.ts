@@ -92,7 +92,8 @@ function doCompileTemplate({
     scopedCssApplyer = createScopedCssApplyer({
       ast: compilerOptions.css,
       source,
-      dev: !isProd
+      dev: !isProd,
+      cssHash: longId
     })
   }
 

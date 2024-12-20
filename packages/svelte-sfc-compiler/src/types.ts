@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Modifier: kazuya kawaguchi (a.k.a. kazupon)
+
 import type {
   SFCAsyncStyleCompileOptions,
   SFCBlock,
@@ -66,17 +69,21 @@ export type SvelteSFCScriptCompileOptions = Overwrite<
 export interface SvelteSFCStyleCompileResults extends SFCStyleCompileResults {}
 
 export interface SvelteSFCStyleCompileOptions extends SFCStyleCompileOptions {
-  ast?: SvelteStyle
+  ast: SvelteStyle
+  sourceAll: string
+  templateAst: SvelteTemplateNode
 }
 
 export interface SvelteSFCAsyncStyleCompileOptions extends SFCAsyncStyleCompileOptions {
-  ast?: SvelteStyle
+  ast: SvelteStyle
+  sourceAll: string
+  templateAst: SvelteTemplateNode
 }
 
 export type SvelteSFCTemplateBlock = Overwrite<
   SFCTemplateBlock,
   {
-    ast?: SvelteTemplateNode
+    ast: SvelteTemplateNode
   }
 >
 
@@ -87,7 +94,8 @@ export interface SvelteSFCBlock extends SFCBlock {}
 export interface SvelteSFCScriptBlock extends SFCScriptBlock {}
 
 export interface SvelteSFCStyleBlock extends SFCStyleBlock {
-  ast?: SvelteStyle
+  ast: SvelteStyle
+  source: string
 }
 
 declare module '@vue-vapor/compiler-sfc' {
@@ -99,9 +107,9 @@ declare module '@vue-vapor/compiler-sfc' {
 export type SvelteSFCDescriptor = Overwrite<
   SFCDescriptor,
   {
-    template?: SvelteSFCTemplateBlock | null
+    template: SvelteSFCTemplateBlock | null
     scriptSetup?: SvelteSFCScriptBlock | null
   }
 > & {
-  module?: SvelteSFCScriptBlock | null
+  module: SvelteSFCScriptBlock | null
 }

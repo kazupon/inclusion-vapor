@@ -35,7 +35,6 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
@@ -45,7 +44,13 @@
       "types": "./dist/style/index.d.ts",
       "import": "./dist/style/index.js",
       "require": "./dist/style/index.cjs"
-    }
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
