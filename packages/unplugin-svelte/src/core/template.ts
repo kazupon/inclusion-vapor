@@ -212,7 +212,7 @@ export function resolveTemplateCompilerOptions(
       // ...options.template?.compilerOptions,
       // NOTE: just remove, if not needed
       // scopeId: hasScoped ? generateId(id) : undefined,
-      css: (descriptor.styles[0] as SvelteSFCStyleBlock).ast,
+      css: (descriptor.styles[0] as SvelteSFCStyleBlock)?.ast,
       bindingMetadata: resolvedScript ? resolvedScript.bindings : undefined,
       // expressionPlugins,
       sourceMap: options.sourcemap
