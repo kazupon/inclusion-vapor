@@ -9,7 +9,7 @@ bar
   .foo {
     color: red;
   }
-  [class~='bar'] {
+  [class~="bar"] {
     background: blue;
   }
 </style>

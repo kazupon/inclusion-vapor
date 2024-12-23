@@ -216,10 +216,12 @@ function blockMightApplyToNode(block: Block, node: SvelteElement): BlockAppliesT
               selector.name.name.toLowerCase()
             )
           ) &&
+          selector.value &&
           !attributeMatches(
             node,
             selector.name.name,
             unquote(selector.value),
+            // selector.value && unquote(selector.value),
             selector.matcher!, // FIXME:
             selector.flags as unknown as boolean // FIXME:
           )

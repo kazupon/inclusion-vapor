@@ -163,7 +163,8 @@ function replaceCssHash(str: string): string {
 describe('render with fixtures', async () => {
   for (const dir of await fs.readdir(fixturesDir)) {
     const skip = /\.skip/.test(dir)
-    const test = skip ? it.skip : it
+    const only = /\.only/.test(dir)
+    const test = only ? it.only : skip ? it.skip : it
     test(dir, async () => {
       const cwd = `${fixturesDir}/${dir}`
 
