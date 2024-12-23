@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises'
+import { promises as fs, constants as FS_CONSTANTS } from 'node:fs'
 import path from 'node:path'
 import { parse } from 'svelte/compiler'
 import { describe, expect, it, test } from 'vitest'
@@ -160,6 +160,25 @@ function replaceCssHash(str: string): string {
   return str.replace(/svelte-[a-z0-9]+/g, 'svelte-xyz')
 }
 
+export async function isExist(filepath: string): Promise<boolean> {
+  try {
+    await fs.access(filepath, FS_CONSTANTS.F_OK)
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function tryLoadConfig(path: string): Promise<Record<string, unknown>> {
+  if (!(await isExist(path))) {
+    return {}
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const resolved = await import(path)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+  return resolved.default || resolved
+}
+
 describe('render with fixtures', async () => {
   for (const dir of await fs.readdir(fixturesDir)) {
     const skip = /\.skip/.test(dir)
@@ -167,6 +186,7 @@ describe('render with fixtures', async () => {
     const test = only ? it.only : skip ? it.skip : it
     test(dir, async () => {
       const cwd = `${fixturesDir}/${dir}`
+      const config = await tryLoadConfig(`${cwd}/config.js`)
 
       const filename = `${cwd}/input.svelte`
       const _input = await fs.readFile(filename, 'utf8')
@@ -176,7 +196,9 @@ describe('render with fixtures', async () => {
 
       const ast = parse(input)
       enableStructures(ast.html)
-      const stylesheet = new SvelteStylesheet({ ast: ast.css!, source: input })
+      const stylesheet = new SvelteStylesheet(
+        Object.assign({}, { ast: ast.css!, source: input }, config.compilerOptions || {})
+      )
       walk(ast.html, {
         enter(node) {
           if (isSvelteElement(node)) {
@@ -185,6 +207,7 @@ describe('render with fixtures', async () => {
         }
       })
       stylesheet.reify()
+      // stylesheet.warnOnUnusedSelectors()
 
       const rendered = stylesheet.render(filename)
       const actual = replaceCssHash(rendered.code)

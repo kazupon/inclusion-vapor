@@ -168,6 +168,40 @@ export class SvelteStylesheet {
       })
     }
   }
+
+  warnOnUnusedSelectors(): void {
+    for (const child of this.children) {
+      warnOnUnusedSelectors(child, selector => {
+        console.warn(`Unused CSS selector "${JSON.stringify(selector.node)}"`)
+      })
+    }
+  }
+}
+
+function warnOnUnusedSelectors(
+  css: Rule | Atrule | Selector,
+  cb: (selector: Selector) => void
+): void {
+  if (css instanceof Rule) {
+    // for Rule
+    for (const selector of css.selectors) {
+      if (!selector.used) {
+        cb(selector)
+      }
+    }
+  } else if (css instanceof Atrule) {
+    // for Atrule
+    if (css.node.name !== 'media') {
+      return
+    }
+    for (const child of css.children) {
+      warnOnUnusedSelectors(child, cb)
+    }
+  } else if (css instanceof Selector) {
+    throw new TypeError('Invalid css type')
+  } else {
+    throw new TypeError('Invalid css type')
+  }
 }
 
 // eslint-disable-next-line regexp/no-unused-capturing-group
@@ -547,7 +581,6 @@ function minify(
           minify(child, code, dev)
           c = child.node.end!
         }
-        minify(child, code, dev)
       }
       code.remove(c, css.node.block.end! - 1)
     }

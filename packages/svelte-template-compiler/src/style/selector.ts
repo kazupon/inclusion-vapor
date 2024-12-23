@@ -541,7 +541,6 @@ function getPossibleElementSiblings(
   node: SvelteTemplateNode,
   adjacentOnly: boolean
 ): [Map<SvelteTemplateNode, NodeExist>, boolean] {
-  // TODO:
   const result = new Map<SvelteTemplateNode, NodeExist>()
 
   let prev: SvelteTemplateNode | undefined = node
@@ -641,7 +640,7 @@ function getPossibleLastChild(
       const elseResult = isSvelteElseBlock(block.else)
         ? loopChild(block.else.children, adjacentOnly)
         : new Map<SvelteTemplateNode, NodeExist>()
-      const notExhaustive = !hasDefiniteElements(eachResult)
+      const notExhaustive = !hasDefiniteElements(elseResult)
       if (notExhaustive) {
         markAsProbably(eachResult)
         markAsProbably(elseResult)
