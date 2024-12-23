@@ -209,12 +209,11 @@ function blockMightApplyToNode(block: Block, node: SvelteElement): BlockAppliesT
         break
       }
       case 'AttributeSelector': {
+        const nodeName = node.name.toLowerCase()
         if (
           !(
-            WHITELIST_ATTRIBUTE_SELECTOR.has(node.name.toLowerCase()) &&
-            WHITELIST_ATTRIBUTE_SELECTOR.get(node.name.toLowerCase())?.has(
-              selector.name.name.toLowerCase()
-            )
+            WHITELIST_ATTRIBUTE_SELECTOR.has(nodeName) &&
+            WHITELIST_ATTRIBUTE_SELECTOR.get(nodeName)?.has(selector.name.name.toLowerCase())
           ) &&
           selector.value &&
           !attributeMatches(
