@@ -10,7 +10,7 @@ import { pushArray } from 'inclusion-vapor-shared'
 import { MagicStringAST } from 'magic-string-ast'
 import { createAttributeChunks, isSvelteSpreadAttribute, isSvelteText } from '../ir/index.ts'
 import { hash } from '../utils.ts'
-import { hasChildren, hasProperty } from './csstree.ts'
+import { hasChildren, hasProperty, isCombinator, isWhiteSpace } from './csstree.ts'
 import { Selector, applySelector } from './selector.ts'
 
 import type {
@@ -556,7 +556,15 @@ function minify(
     let c: number | null = null // eslint-disable-line unicorn/no-null
     css.blocks.forEach((block, i) => {
       if (i > 0 && block.start! - c! > 1) {
-        code.update(c!, block.start!, ',')
+        // prettier-ignore
+        const v = block.combinator == null // eslint-disable-line unicorn/no-null
+          ? ' '
+          : isCombinator(block.combinator)
+            ? block.combinator.name
+            : isWhiteSpace(block.combinator)
+              ? block.combinator.value
+              : ' '
+        code.update(c!, block.start!, v)
       }
       c = block.end
     })

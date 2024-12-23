@@ -25,7 +25,8 @@ import type {
   SelectorList,
   StyleSheet,
   TypeSelector,
-  Value
+  Value,
+  WhiteSpace
 } from 'css-tree'
 
 export function hasChildren(
@@ -83,4 +84,12 @@ export function hasName(
 
 export function hasProperty(node: CssNode): node is Declaration {
   return node.type === 'Declaration' && 'property' in node
+}
+
+export function isWhiteSpace(node: CssNode): node is WhiteSpace {
+  return node.type === 'WhiteSpace'
+}
+
+export function isCombinator(node: CssNode): node is Combinator {
+  return node.type === 'Combinator'
 }

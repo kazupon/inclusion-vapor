@@ -7,15 +7,19 @@
 
 import {
   createAttributeChunks,
+  isSvelteAttribute,
   isSvelteBindingDirective,
   isSvelteClassDirective,
+  isSvelteElement,
+  isSvelteElseBlock,
+  isSvelteSlot,
   isSvelteSpreadAttribute,
   isSvelteText
 } from '../ir/svelte.ts'
-import { hasChildren, hasName } from './csstree.ts'
+import { hasChildren, hasName, isCombinator, isWhiteSpace } from './csstree.ts'
 
 import type { AttributeSelector as CssAttributeSelector, CssNode } from 'css-tree'
-import type { SvelteElement, SvelteMustacheTag } from '../ir/index.ts'
+import type { SvelteElement, SvelteMustacheTag, SvelteTemplateNode } from '../ir/index.ts'
 
 const UNKNOWN = {}
 const RE_STARTS_WITH_WHITESPACE = /^\s/
@@ -92,7 +96,7 @@ function groupSelectors(selector: CssNode): Block[] {
 
   if (hasChildren(selector)) {
     selector.children?.forEach(child => {
-      if (child.type === 'WhiteSpace' || child.type === 'Combinator') {
+      if (isWhiteSpace(child) || isCombinator(child)) {
         block = new Block(child)
         blocks.push(block)
       } else {
@@ -132,15 +136,79 @@ export function applySelector(
   }
 
   if (block.combinator) {
-    if (block.combinator.type === 'Combinator' && block.combinator.name === ' ') {
-      // TODO:
-    } else if (block.combinator.type === 'Combinator' && block.combinator.name === '>') {
-      // TODO:
+    if (isCombinator(block.combinator) && block.combinator.name === ' ') {
+      for (const ancestorBlock of blocks) {
+        if (ancestorBlock.global) {
+          continue
+        }
+
+        if (ancestorBlock.host) {
+          toEncapsulate.push({ node, block })
+          return true
+        }
+
+        let parent: SvelteElement | undefined = node
+        while ((parent = getElementParent(parent))) {
+          if (blockMightApplyToNode(ancestorBlock, parent) !== BlockAppliesToNode.NotPossible) {
+            toEncapsulate.push({ node: parent, block: ancestorBlock })
+          }
+        }
+
+        if (toEncapsulate.length > 0) {
+          toEncapsulate.push({ node, block })
+          return true
+        }
+      }
+
+      if (blocks.every(block => block.global)) {
+        toEncapsulate.push({ node, block })
+        return true
+      }
+    } else if (isCombinator(block.combinator) && block.combinator.name === '>') {
+      const hasGlobalParent = blocks.every(block => block.global)
+
+      if (hasGlobalParent) {
+        toEncapsulate.push({ node, block })
+        return true
+      }
+
+      const parent = getElementParent(node)
+      if (parent && applySelector(blocks, parent, toEncapsulate)) {
+        toEncapsulate.push({ node, block })
+        return true
+      }
+
+      return false
     } else if (
-      block.combinator.type === 'Combinator' &&
+      isCombinator(block.combinator) &&
       (block.combinator.name === '+' || block.combinator.name === '~')
     ) {
-      // TODO:
+      const [siblings, hasSlotSibling] = getPossibleElementSiblings(
+        node,
+        block.combinator.name === '+'
+      )
+      let hasMatch = false
+      // NOTE: if we have :global(), we couldn't figure out what is selected within `:global` due to the
+      // css-tree limitation that does not parse the inner selector of :global
+      // so unless we are sure there will be no sibling to match, we will consider it as matched
+      const hasGlobal = blocks.some(block => block.global)
+      if (hasGlobal) {
+        if (siblings.size === 0 && getElementParent(node) !== null && !hasSlotSibling) {
+          return false
+        }
+        toEncapsulate.push({ node, block })
+        return true
+      }
+
+      for (const possibleSibling of siblings.keys()) {
+        // eslint-disable-next-line unicorn/prefer-spread
+        if (applySelector(blocks.slice(), possibleSibling as SvelteElement, toEncapsulate)) {
+          toEncapsulate.push({ node, block })
+          hasMatch = true
+        }
+      }
+
+      return hasMatch
     }
 
     // TODO: other combinators
@@ -456,4 +524,240 @@ function unquote(value: CssAttributeSelector['value']): string {
 
 function isDynamicElement(node: SvelteElement): boolean {
   return node.name === 'svelte:element'
+}
+
+function getElementParent(node: SvelteTemplateNode): SvelteElement | undefined {
+  let parent: SvelteTemplateNode | undefined = node
+  while ((parent = parent.parent) && !isSvelteElement(parent));
+  return parent
+}
+
+enum NodeExist {
+  Probably = 0,
+  Definitely = 1
+}
+
+function getPossibleElementSiblings(
+  node: SvelteTemplateNode,
+  adjacentOnly: boolean
+): [Map<SvelteTemplateNode, NodeExist>, boolean] {
+  // TODO:
+  const result = new Map<SvelteTemplateNode, NodeExist>()
+
+  let prev: SvelteTemplateNode | undefined = node
+  let hasSlotSibling = false
+  let slotSiblingFound = false
+
+  while (([prev, slotSiblingFound] = findPreviousSibling(prev)) && prev) {
+    if (isSvelteElement(prev)) {
+      hasSlotSibling = hasSlotSibling || slotSiblingFound
+
+      if (
+        // eslint-disable-next-line unicorn/prefer-array-some
+        !prev.attributes.find(attr => isSvelteAttribute(attr) && attr.name.toLowerCase() === 'slot')
+      ) {
+        result.set(prev, NodeExist.Definitely)
+      }
+
+      if (adjacentOnly) {
+        break
+      }
+    } else if (prev.type === 'EachBlock' || prev.type === 'IfBlock' || prev.type === 'AwaitBlock') {
+      const possibleLastChild = getPossibleLastChild(prev, adjacentOnly)
+      addToMap(possibleLastChild, result)
+      if (adjacentOnly && hasDefiniteElements(possibleLastChild)) {
+        return [result, hasSlotSibling]
+      }
+    }
+  }
+
+  if (!prev || !adjacentOnly) {
+    let parent: SvelteTemplateNode | undefined = node
+    let skipEachForLastChild = node.type === 'ElseBlock'
+    while (
+      (parent = parent.parent) &&
+      (parent.type === 'EachBlock' ||
+        parent.type === 'IfBlock' ||
+        parent.type === 'ElseBlock' ||
+        parent.type === 'AwaitBlock')
+    ) {
+      const [possibleSiblings, slotSiblingFound] = getPossibleElementSiblings(parent, adjacentOnly)
+      hasSlotSibling = hasSlotSibling || slotSiblingFound
+      addToMap(possibleSiblings, result)
+
+      if (parent.type === 'EachBlock') {
+        if (skipEachForLastChild) {
+          skipEachForLastChild = false
+        } else {
+          addToMap(getPossibleLastChild(parent, adjacentOnly), result)
+        }
+      } else if (parent.type === 'ElseBlock') {
+        skipEachForLastChild = true
+        parent = parent.parent
+      }
+
+      if (adjacentOnly && hasDefiniteElements(possibleSiblings)) {
+        break
+      }
+    }
+  }
+
+  return [result, hasSlotSibling]
+}
+
+function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode, boolean] {
+  let currentNode: SvelteTemplateNode | undefined = node
+  let hasSlotSibling = false
+
+  do {
+    if (isSvelteSlot(currentNode)) {
+      hasSlotSibling = true
+      const slotChildren: SvelteTemplateNode[] = currentNode.children || []
+      if (slotChildren.length > 0) {
+        // eslint-disable-next-line unicorn/prefer-at
+        currentNode = slotChildren.slice(-1)[0] // go to its last child first
+        continue
+      }
+    }
+    while (!currentNode.prev && currentNode.parent && isSvelteSlot(currentNode.parent)) {
+      currentNode = currentNode.parent
+    }
+    currentNode = currentNode.prev
+  } while (currentNode != null && isSvelteSlot(currentNode)) // eslint-disable-line unicorn/no-null
+
+  return [currentNode!, hasSlotSibling]
+}
+
+function getPossibleLastChild(
+  block: SvelteTemplateNode,
+  adjacentOnly: boolean
+): Map<SvelteTemplateNode, NodeExist> {
+  const result = new Map<SvelteTemplateNode, NodeExist>()
+  const blockChildren = block.children || []
+
+  switch (block.type) {
+    case 'EachBlock': {
+      const eachResult = loopChild(blockChildren, adjacentOnly)
+      const elseResult = isSvelteElseBlock(block.else)
+        ? loopChild(block.else.children, adjacentOnly)
+        : new Map<SvelteTemplateNode, NodeExist>()
+      const notExhaustive = !hasDefiniteElements(eachResult)
+      if (notExhaustive) {
+        markAsProbably(eachResult)
+        markAsProbably(elseResult)
+      }
+      addToMap(eachResult, result)
+      addToMap(elseResult, result)
+      break
+    }
+    case 'IfBlock': {
+      const ifResult = loopChild(blockChildren, adjacentOnly)
+      const elseResult = isSvelteElseBlock(block.else)
+        ? loopChild(block.else.children, adjacentOnly)
+        : new Map<SvelteTemplateNode, NodeExist>()
+      const notExhaustive = !hasDefiniteElements(ifResult) || !hasDefiniteElements(elseResult)
+      if (notExhaustive) {
+        markAsProbably(ifResult)
+        markAsProbably(elseResult)
+      }
+      addToMap(ifResult, result)
+      addToMap(elseResult, result)
+      break
+    }
+    case 'AwaitBlock': {
+      // FIXME: extend AwaitBlock for svelte template node
+      const pendingResult = block.pending
+        ? loopChild((block.pending as SvelteTemplateNode).children || [], adjacentOnly)
+        : new Map<SvelteTemplateNode, NodeExist>()
+      const thenResult = block.then
+        ? loopChild((block.then as SvelteTemplateNode).children || [], adjacentOnly)
+        : new Map<SvelteTemplateNode, NodeExist>()
+      const catchResult = block.catch
+        ? loopChild((block.catch as SvelteTemplateNode).children || [], adjacentOnly)
+        : new Map<SvelteTemplateNode, NodeExist>()
+      const notExhaustive =
+        !hasDefiniteElements(pendingResult) ||
+        !hasDefiniteElements(thenResult) ||
+        !hasDefiniteElements(catchResult)
+      if (notExhaustive) {
+        markAsProbably(pendingResult)
+        markAsProbably(thenResult)
+        markAsProbably(catchResult)
+      }
+      addToMap(pendingResult, result)
+      addToMap(thenResult, result)
+      addToMap(catchResult, result)
+      break
+    }
+    // No default
+  }
+
+  return result
+}
+
+function hasDefiniteElements(result: Map<SvelteTemplateNode, NodeExist>): boolean {
+  if (result.size === 0) {
+    return false
+  }
+
+  for (const exist of result.values()) {
+    if (exist === NodeExist.Definitely) {
+      return true
+    }
+  }
+
+  return false
+}
+
+function addToMap(
+  from: Map<SvelteTemplateNode, NodeExist>,
+  to: Map<SvelteTemplateNode, NodeExist>
+) {
+  from.forEach((exist, element) => {
+    to.set(element, higherExistence(exist, to.get(element)))
+  })
+}
+
+function higherExistence(exist1: NodeExist | undefined, exist2: NodeExist | undefined): NodeExist {
+  if (exist1 == undefined || exist2 == undefined) {
+    // @ts-expect-error -- FIXME:
+    return exist1 || exist2
+  }
+  return exist1 > exist2 ? exist1 : exist2
+}
+
+function markAsProbably(result: Map<SvelteTemplateNode, NodeExist>): void {
+  for (const key of result.keys()) {
+    result.set(key, NodeExist.Probably)
+  }
+}
+
+function loopChild(
+  children: SvelteTemplateNode[],
+  adjacentOnly: boolean
+): Map<SvelteTemplateNode, NodeExist> {
+  const result = new Map<SvelteTemplateNode, NodeExist>()
+
+  for (let i = children.length - 1; i >= 0; i--) {
+    const child = children[i]
+
+    if (isSvelteElement(child)) {
+      result.set(child, NodeExist.Definitely)
+      if (adjacentOnly) {
+        break
+      }
+    } else if (
+      child.type === 'EachBlock' ||
+      child.type === 'IfBlock' ||
+      child.type === 'AwaitBlock'
+    ) {
+      const childResult = getPossibleLastChild(child, adjacentOnly)
+      addToMap(childResult, result)
+      if (adjacentOnly && hasDefiniteElements(childResult)) {
+        break
+      }
+    }
+  }
+
+  return result
 }
