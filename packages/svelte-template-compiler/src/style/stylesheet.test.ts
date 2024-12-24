@@ -2,7 +2,15 @@ import { promises as fs, constants as FS_CONSTANTS } from 'node:fs'
 import path from 'node:path'
 import { parse } from 'svelte/compiler'
 import { describe, expect, it, test } from 'vitest'
-import { enableStructures, findAttrs, isSvelteElement, isSvelteText } from '../ir/index.ts'
+import {
+  enableStructures,
+  findAttrs,
+  isSvelteEachBlock,
+  isSvelteElement,
+  isSvelteElseBlock,
+  isSvelteIfBlock,
+  isSvelteText
+} from '../ir/index.ts'
 import { SvelteStylesheet } from './stylesheet.ts'
 
 import type { SvelteAttribute, SvelteElement, SvelteTemplateNode, SvelteText } from '../ir/index.ts'
@@ -50,6 +58,9 @@ function walk(
     for (const child of node.children) {
       walk(child, { enter, leave })
     }
+  }
+  if ((isSvelteIfBlock(node) || isSvelteEachBlock(node)) && isSvelteElseBlock(node.else)) {
+    walk(node.else, { enter, leave })
   }
   leave?.(node)
 }

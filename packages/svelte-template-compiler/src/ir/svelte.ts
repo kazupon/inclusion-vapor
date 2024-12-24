@@ -12,6 +12,7 @@ import type {
   BaseNode as SvelteBaseNode,
   ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
+  EachBlock as SvelteEachBlock,
   Element as SvelteElement,
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
@@ -102,8 +103,16 @@ export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressio
   return isObject(node) && 'type' in node && node.type === 'EventHandler'
 }
 
+export function isSvelteIfBlock(node: unknown): node is SvelteIfBlock {
+  return isObject(node) && 'type' in node && node.type === 'IfBlock'
+}
+
 export function isSvelteElseBlock(node: unknown): node is SvelteElseBlock {
   return isObject(node) && 'type' in node && node.type === 'ElseBlock'
+}
+
+export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
+  return isObject(node) && 'type' in node && node.type === 'EachBlock'
 }
 
 export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
@@ -200,7 +209,15 @@ export type CompatLocationable = {
 export function enableStructures(node: SvelteTemplateNode): void {
   let last: SvelteTemplateNode | undefined
   const children = node.children || []
+  if (__DEV__) {
+    console.log('enableStructures type:', node.type, node.parent?.type)
+  }
+
   children.forEach(child => {
+    if (__DEV__) {
+      console.log('enableStructures child type:', child.type)
+    }
+
     // ignores
     if (isSvelteText(child) || isSvelteComponentTag(child)) {
       return
@@ -217,6 +234,11 @@ export function enableStructures(node: SvelteTemplateNode): void {
 
     if (child.children) {
       enableStructures(child)
+    }
+
+    if ((isSvelteIfBlock(child) || isSvelteEachBlock(child)) && isSvelteElseBlock(child.else)) {
+      child.else.parent = child
+      enableStructures(child.else)
     }
   })
 }

@@ -291,6 +291,7 @@ function apply(
     // for Selector
     const toEncapsulate: { node: SvelteElement; block: Block }[] = []
 
+    // console.log('css.localBlocks', JSON.stringify(css.localBlocks), css.localBlocks.length)
     // eslint-disable-next-line unicorn/prefer-spread
     applySelector(css.localBlocks.slice(), node, toEncapsulate)
 

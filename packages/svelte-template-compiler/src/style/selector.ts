@@ -95,7 +95,8 @@ function groupSelectors(selector: CssNode): Block[] {
   const blocks: Block[] = [block]
 
   if (hasChildren(selector)) {
-    selector.children?.forEach(child => {
+    selector.children?.forEach((child, _index) => {
+      // console.log('groupSelectors', child.type, JSON.stringify(child), index)
       if (isWhiteSpace(child) || isCombinator(child)) {
         block = new Block(child)
         blocks.push(block)
@@ -110,9 +111,10 @@ function groupSelectors(selector: CssNode): Block[] {
 
 export function applySelector(
   blocks: Block[],
-  node: SvelteElement | null,
+  node: SvelteElement | undefined,
   toEncapsulate: { node: SvelteElement; block: Block }[]
 ): boolean {
+  // console.log('applySelector', '-', node?.type, node?.name, JSON.stringify(node?.attributes), blocks.length, '-')
   const block = blocks.pop()
 
   if (!block) {
@@ -172,8 +174,7 @@ export function applySelector(
         return true
       }
 
-      const parent = getElementParent(node)
-      if (parent && applySelector(blocks, parent, toEncapsulate)) {
+      if (applySelector(blocks, getElementParent(node), toEncapsulate)) {
         toEncapsulate.push({ node, block })
         return true
       }
@@ -183,6 +184,7 @@ export function applySelector(
       isCombinator(block.combinator) &&
       (block.combinator.name === '+' || block.combinator.name === '~')
     ) {
+      // console.log('applySelector', 'type', node.type, 'combinator', block.combinator.name, JSON.stringify(block))
       const [siblings, hasSlotSibling] = getPossibleElementSiblings(
         node,
         block.combinator.name === '+'
@@ -201,6 +203,7 @@ export function applySelector(
       }
 
       for (const possibleSibling of siblings.keys()) {
+        // console.log('applySelector possibleSibling', possibleSibling.type, possibleSibling.name)
         // eslint-disable-next-line unicorn/prefer-spread
         if (applySelector(blocks.slice(), possibleSibling as SvelteElement, toEncapsulate)) {
           toEncapsulate.push({ node, block })
@@ -541,6 +544,7 @@ function getPossibleElementSiblings(
   node: SvelteTemplateNode,
   adjacentOnly: boolean
 ): [Map<SvelteTemplateNode, NodeExist>, boolean] {
+  // console.log('getPossibleElementSiblings', node.type, JSON.stringify(node.attributes), adjacentOnly)
   const result = new Map<SvelteTemplateNode, NodeExist>()
 
   let prev: SvelteTemplateNode | undefined = node
@@ -548,6 +552,7 @@ function getPossibleElementSiblings(
   let slotSiblingFound = false
 
   while (([prev, slotSiblingFound] = findPreviousSibling(prev)) && prev) {
+    // console.log('getPossibleElementSiblings loop', prev?.type)
     if (isSvelteElement(prev)) {
       hasSlotSibling = hasSlotSibling || slotSiblingFound
 
@@ -573,6 +578,7 @@ function getPossibleElementSiblings(
   if (!prev || !adjacentOnly) {
     let parent: SvelteTemplateNode | undefined = node
     let skipEachForLastChild = node.type === 'ElseBlock'
+    // console.log('getPossibleElementSiblings deep', parent?.type, skipEachForLastChild)
     while (
       (parent = parent.parent) &&
       (parent.type === 'EachBlock' ||
@@ -580,6 +586,7 @@ function getPossibleElementSiblings(
         parent.type === 'ElseBlock' ||
         parent.type === 'AwaitBlock')
     ) {
+      // console.log('getPossibleElementSiblings deep in', parent?.type)
       const [possibleSiblings, slotSiblingFound] = getPossibleElementSiblings(parent, adjacentOnly)
       hasSlotSibling = hasSlotSibling || slotSiblingFound
       addToMap(possibleSiblings, result)
@@ -604,7 +611,8 @@ function getPossibleElementSiblings(
   return [result, hasSlotSibling]
 }
 
-function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode, boolean] {
+function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode | undefined, boolean] {
+  // console.log('findPreviousSibling', node.type)
   let currentNode: SvelteTemplateNode | undefined = node
   let hasSlotSibling = false
 
@@ -621,16 +629,19 @@ function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode, boo
     while (!currentNode.prev && currentNode.parent && isSvelteSlot(currentNode.parent)) {
       currentNode = currentNode.parent
     }
+    // console.log('findPreviousSibling loop prev', currentNode?.type, currentNode?.prev?.type)
     currentNode = currentNode.prev
   } while (currentNode != null && isSvelteSlot(currentNode)) // eslint-disable-line unicorn/no-null
 
-  return [currentNode!, hasSlotSibling]
+  // console.log('findPreviousSibling return', currentNode?.type, hasSlotSibling)
+  return [currentNode, hasSlotSibling]
 }
 
 function getPossibleLastChild(
   block: SvelteTemplateNode,
   adjacentOnly: boolean
 ): Map<SvelteTemplateNode, NodeExist> {
+  // console.log('getPossibleLastChild', block.type, adjacentOnly)
   const result = new Map<SvelteTemplateNode, NodeExist>()
   const blockChildren = block.children || []
 
@@ -739,6 +750,7 @@ function loopChild(
 
   for (let i = children.length - 1; i >= 0; i--) {
     const child = children[i]
+    // console.log('loopChild child.type', child.type)
 
     if (isSvelteElement(child)) {
       result.set(child, NodeExist.Definitely)
