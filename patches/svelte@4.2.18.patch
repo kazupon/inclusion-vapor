@@ -156,7 +156,7 @@ index 3d4ab358df18d42b7af4288ff3b4718d1774ec44..fcdfbd2bcd078253c671da3d01e00278
  		content: ast
  	};
 diff --git a/types/index.d.ts b/types/index.d.ts
-index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442ea48055fd 100644
+index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..3c21d81665f71e2104d02b4d9d5f105ad07da313 100644
 --- a/types/index.d.ts
 +++ b/types/index.d.ts
 @@ -90,7 +90,7 @@ declare module 'svelte' {
@@ -239,7 +239,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  	}
  
  	interface MustacheTag extends BaseNode {
-@@ -310,6 +316,29 @@ declare module 'svelte/compiler' {
+@@ -310,6 +316,56 @@ declare module 'svelte/compiler' {
  		identifiers: Node[];
  	}
  
@@ -266,10 +266,37 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
 +    else?: ElseBlock;
 +  }
 +
++  interface AwaitBlock extends BaseNode {
++    type: 'AwaitBlock';
++    expression: Node;
++    value: Node;
++    error: Node;
++    pending: PendingBlock;
++    then: ThenBlock;
++    catch: CatchBlock;
++  }
++
++  interface AwaitableBlock extends BaseNode {
++    children: TemplateNode[];
++    skip: boolean;
++  }
++
++  interface PendingBlock extends AwaitableBlock {
++    type: 'PendingBlock';
++  }
++
++  interface ThenBlock extends AwaitableBlock {
++    type: 'PendingBlock';
++  }
++
++  interface CatchBlock extends AwaitableBlock {
++    type: 'CatchBlock';
++  }
++
  	type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -349,6 +378,10 @@ declare module 'svelte/compiler' {
+@@ -349,6 +405,10 @@ declare module 'svelte/compiler' {
  		name: string;
  	}
  
@@ -280,7 +307,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  	interface Attribute extends BaseNode {
  		type: 'Attribute';
  		name: string;
-@@ -360,23 +393,37 @@ declare module 'svelte/compiler' {
+@@ -360,23 +420,41 @@ declare module 'svelte/compiler' {
  		expression: Node;
  	}
  
@@ -311,6 +338,10 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
 +    | ElseBlock
 +    | EachBlock
  		| BaseNode
++    | AwaitBlock
++    | PendingBlock
++    | ThenBlock
++    | CatchBlock
  		| Element
 +    | ComponentTag
  		| Attribute
@@ -319,7 +350,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  		| Directive
  		| Transition
  		| Comment;
-@@ -384,13 +431,14 @@ declare module 'svelte/compiler' {
+@@ -384,13 +462,14 @@ declare module 'svelte/compiler' {
  	interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
@@ -336,7 +367,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  		content: {
  			start: number;
  			end: number;
-@@ -866,12 +914,17 @@ declare module 'svelte/types/compiler/preprocess' {
+@@ -866,12 +945,17 @@ declare module 'svelte/types/compiler/preprocess' {
  
  declare module 'svelte/types/compiler/interfaces' {
  	import type { AssignmentExpression, Node, Program } from 'estree';
@@ -354,7 +385,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  		[prop_name: string]: any;
  	}
  
-@@ -883,6 +936,7 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -883,6 +967,7 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Text extends BaseNode {
  		type: 'Text';
  		data: string;
@@ -362,7 +393,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  	}
  
  	export interface MustacheTag extends BaseNode {
-@@ -901,11 +955,34 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -901,11 +986,61 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: AssignmentExpression;
  	}
  
@@ -395,10 +426,37 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
 +    else?: ElseBlock;
 +  }
 +
++  export interface AwaitBlock extends BaseNode {
++    type: 'AwaitBlock';
++    expression: Node;
++    value: Node;
++    error: Node;
++    pending: PendingBlock;
++    then: ThenBlock;
++    catch: CatchBlock;
++  }
++
++  export interface AwaitableBlock extends BaseNode {
++    children: TemplateNode[];
++    skip: boolean;
++  }
++
++  export interface PendingBlock extends AwaitableBlock {
++    type: 'PendingBlock';
++  }
++
++  export interface ThenBlock extends AwaitableBlock {
++    type: 'PendingBlock';
++  }
++
++  export interface CatchBlock extends AwaitableBlock {
++    type: 'CatchBlock';
++  }
++
  	export type DirectiveType =
  		| 'Action'
  		| 'Animation'
-@@ -945,6 +1022,10 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -945,6 +1080,10 @@ declare module 'svelte/types/compiler/interfaces' {
  		name: string;
  	}
  
@@ -409,7 +467,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  	export interface Attribute extends BaseNode {
  		type: 'Attribute';
  		name: string;
-@@ -956,23 +1037,37 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -956,23 +1095,41 @@ declare module 'svelte/types/compiler/interfaces' {
  		expression: Node;
  	}
  
@@ -439,6 +497,10 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
 +    | IfBlock
 +    | ElseBlock
 +    | EachBlock
++    | AwaitBlock
++    | PendingBlock
++    | ThenBlock
++    | CatchBlock
  		| BaseNode
  		| Element
 +    | ComponentTag
@@ -448,7 +510,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..7d72c9e877a02ecd9ed189db94c0442e
  		| Directive
  		| Transition
  		| Comment;
-@@ -993,13 +1088,14 @@ declare module 'svelte/types/compiler/interfaces' {
+@@ -993,13 +1150,14 @@ declare module 'svelte/types/compiler/interfaces' {
  	export interface Script extends BaseNode {
  		type: 'Script';
  		context: string;
