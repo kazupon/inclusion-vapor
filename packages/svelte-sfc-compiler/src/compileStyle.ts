@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: MIT
 // Modifier: kazuya kawaguchi (a.k.a. kazupon)
 
-import { enableStructures, isSvelteElement, SvelteStylesheet } from 'svelte-vapor-template-compiler'
+import {
+  enableStructures,
+  isSvelteElement,
+  SvelteStylesheet,
+  walk
+} from 'svelte-vapor-template-compiler'
 // NOTE: we need to import use exports path..., but vitest cannot handle it.
 // import { SvelteStylesheet } from 'svelte-vapor-template-compiler/style'
 import { generate as generateId, getShortId } from './id.ts'
 
-import type { SvelteTemplateNode } from 'svelte-vapor-template-compiler'
 import type {
   SvelteSFCAsyncStyleCompileOptions,
   SvelteSFCStyleCompileOptions,
@@ -62,20 +66,4 @@ export function doCompileStyle(
     map,
     errors: []
   } as unknown as SvelteSFCStyleCompileResults
-}
-
-function walk(
-  node: SvelteTemplateNode,
-  {
-    enter,
-    leave
-  }: { enter?: (node: SvelteTemplateNode) => void; leave?: (node: SvelteTemplateNode) => void }
-) {
-  enter?.(node)
-  if (node.children) {
-    for (const child of node.children) {
-      walk(child, { enter, leave })
-    }
-  }
-  leave?.(node)
 }

@@ -245,4 +245,3 @@ export type VaporDirectiveNode = Overwrite<
 
 export { DynamicFlag, IRDynamicPropsKind, IRNodeTypes, IRSlotType } from '@vue-vapor/compiler-vapor'
 export type { IRDynamicInfo } from '@vue-vapor/compiler-vapor'
-export * from './svelte.ts'

@@ -243,6 +243,25 @@ export function enableStructures(node: SvelteTemplateNode): void {
   })
 }
 
+export function walk(
+  node: SvelteTemplateNode,
+  {
+    enter,
+    leave
+  }: { enter?: (node: SvelteTemplateNode) => void; leave?: (node: SvelteTemplateNode) => void }
+): void {
+  enter?.(node)
+  if (node.children) {
+    for (const child of node.children) {
+      walk(child, { enter, leave })
+    }
+  }
+  if ((isSvelteIfBlock(node) || isSvelteEachBlock(node)) && isSvelteElseBlock(node.else)) {
+    walk(node.else, { enter, leave })
+  }
+  leave?.(node)
+}
+
 // TODO: We need to extend svelte AST for location
 export function convertToSourceLocation(node: CompatLocationable, source: string): SourceLocation {
   const loc = {

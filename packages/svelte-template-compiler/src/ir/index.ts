@@ -4,3 +4,4 @@
 export * from './component.ts'
 export * from './converter.ts'
 export * from './nodes.ts'
+export * from './svelte.ts'
