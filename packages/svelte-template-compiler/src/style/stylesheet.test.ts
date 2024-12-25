@@ -2,18 +2,10 @@ import { promises as fs, constants as FS_CONSTANTS } from 'node:fs'
 import path from 'node:path'
 import { parse } from 'svelte/compiler'
 import { describe, expect, it, test } from 'vitest'
-import {
-  enableStructures,
-  findAttrs,
-  isSvelteEachBlock,
-  isSvelteElement,
-  isSvelteElseBlock,
-  isSvelteIfBlock,
-  isSvelteText
-} from '../ir/index.ts'
+import { enableStructures, findAttrs, isSvelteElement, isSvelteText, walk } from '../ir/index.ts'
 import { SvelteStylesheet } from './stylesheet.ts'
 
-import type { SvelteAttribute, SvelteElement, SvelteTemplateNode, SvelteText } from '../ir/index.ts'
+import type { SvelteAttribute, SvelteElement, SvelteText } from '../ir/index.ts'
 
 // TODO: add more tests from svelte4 test cases (`packages/svelte/test/css/samples`)
 
@@ -45,25 +37,6 @@ const code = `
   }
 </style>
 `
-
-function walk(
-  node: SvelteTemplateNode,
-  {
-    enter,
-    leave
-  }: { enter?: (node: SvelteTemplateNode) => void; leave?: (node: SvelteTemplateNode) => void }
-) {
-  enter?.(node)
-  if (node.children) {
-    for (const child of node.children) {
-      walk(child, { enter, leave })
-    }
-  }
-  if ((isSvelteIfBlock(node) || isSvelteEachBlock(node)) && isSvelteElseBlock(node.else)) {
-    walk(node.else, { enter, leave })
-  }
-  leave?.(node)
-}
 
 function findTexts(attr: SvelteAttribute): SvelteText[] {
   // eslint-disable-next-line unicorn/no-array-callback-reference
@@ -213,6 +186,7 @@ describe('render with fixtures', async () => {
       walk(ast.html, {
         enter(node) {
           if (isSvelteElement(node)) {
+            // console.log('applying ...', node.type, node.name, JSON.stringify(node.attributes))
             stylesheet.apply(node)
           }
         }

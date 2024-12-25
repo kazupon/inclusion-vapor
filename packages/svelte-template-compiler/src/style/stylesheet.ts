@@ -120,8 +120,11 @@ export class SvelteStylesheet {
   }
 
   apply(node: SvelteElement, incremental = false): void {
-    for (const child of this.children) {
-      apply(node, child, this)
+    // for (const child of this.children) {
+    //   apply(node, child, this)
+    // }
+    for (let i = 0; i < this.children.length; i += 1) {
+      apply(node, this.children[i], this)
     }
     if (incremental) {
       this.reify()
@@ -264,9 +267,12 @@ function apply(
 ): void {
   if (css instanceof Rule) {
     // for Rule
-    for (const selector of css.selectors) {
+    // for (const selector of css.selectors) {
+    //   apply(node, selector, stylesheet)
+    // }
+    css.selectors.forEach(selector => {
       apply(node, selector, stylesheet)
-    }
+    })
   } else if (css instanceof Atrule) {
     // for Atrule
     if (
@@ -275,17 +281,27 @@ function apply(
       css.node.name === 'supports' ||
       css.node.name === 'layer'
     ) {
-      for (const child of css.children) {
+      // for (const child of css.children) {
+      //   apply(node, child, stylesheet)
+      // }
+      css.children.forEach(child => {
         apply(node, child, stylesheet)
-      }
+      })
     } else if (isKeyFramesNode(css.node)) {
-      for (const rule of css.children) {
+      // for (const rule of css.children) {
+      //   if (rule instanceof Rule) {
+      //     for (const selector of rule.selectors) {
+      //       selector.used = true
+      //     }
+      //   }
+      // }
+      css.children.forEach(rule => {
         if (rule instanceof Rule) {
-          for (const selector of rule.selectors) {
+          rule.selectors.forEach(selector => {
             selector.used = true
-          }
+          })
         }
-      }
+      })
     }
   } else if (css instanceof Selector) {
     // for Selector
@@ -296,10 +312,14 @@ function apply(
     applySelector(css.localBlocks.slice(), node, toEncapsulate)
 
     if (toEncapsulate.length > 0) {
-      for (const { node: templateNode, block } of toEncapsulate) {
+      // for (const { node: templateNode, block } of toEncapsulate) {
+      //   stylesheet.nodesWithCssClass.add(templateNode)
+      //   block.shouldEncapsulate = true
+      // }
+      toEncapsulate.forEach(({ node: templateNode, block }) => {
         stylesheet.nodesWithCssClass.add(templateNode)
         block.shouldEncapsulate = true
-      }
+      })
       css.used = true
     }
   } else {

@@ -9,12 +9,16 @@ import {
   createAttributeChunks,
   isSvelteAttribute,
   isSvelteBindingDirective,
+  isSvelteCatchBlock,
   isSvelteClassDirective,
+  isSvelteComponentTag,
   isSvelteElement,
   isSvelteElseBlock,
+  isSveltePendingBlock,
   isSvelteSlot,
   isSvelteSpreadAttribute,
-  isSvelteText
+  isSvelteText,
+  isSvelteThenBlock
 } from '../ir/svelte.ts'
 import { hasChildren, hasName, isCombinator, isWhiteSpace } from './csstree.ts'
 
@@ -236,9 +240,11 @@ const WHITELIST_ATTRIBUTE_SELECTOR = new Map([
 ])
 
 function blockMightApplyToNode(block: Block, node: SvelteElement): BlockAppliesToNode {
+  // console.log('blockMightApplyToNode', node.type, node.name, JSON.stringify(node.attributes), block.selectors.length)
   let i = block.selectors.length
   while (i--) {
     const selector = block.selectors[i]
+    // console.log('blockMightApplyToNode selector', selector.type, JSON.stringify(selector), i)
 
     const name =
       hasName(selector) &&
@@ -327,6 +333,7 @@ function attributeMatches(
   operator: string,
   caseInsensitive: boolean
 ): boolean {
+  // console.log('attributeMatches', name, expectedValue, operator, caseInsensitive)
   // const spread = node.attributes.find((attr) => attr.type === 'Spread');
   const spread = node.attributes.find(attr => isSvelteSpreadAttribute(attr))
   if (spread) {
@@ -568,6 +575,7 @@ function getPossibleElementSiblings(
       }
     } else if (prev.type === 'EachBlock' || prev.type === 'IfBlock' || prev.type === 'AwaitBlock') {
       const possibleLastChild = getPossibleLastChild(prev, adjacentOnly)
+      // console.log('getPossibleElementSiblings possibleLastChild', possibleLastChild)
       addToMap(possibleLastChild, result)
       if (adjacentOnly && hasDefiniteElements(possibleLastChild)) {
         return [result, hasSlotSibling]
@@ -612,14 +620,16 @@ function getPossibleElementSiblings(
 }
 
 function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode | undefined, boolean] {
-  // console.log('findPreviousSibling', node.type)
   let currentNode: SvelteTemplateNode | undefined = node
   let hasSlotSibling = false
 
   do {
     if (isSvelteSlot(currentNode)) {
       hasSlotSibling = true
-      const slotChildren: SvelteTemplateNode[] = currentNode.children || []
+      const slotChildren: SvelteTemplateNode[] =
+        currentNode.children
+          ?.slice()
+          .filter(child => !(isSvelteText(child) || isSvelteComponentTag(child))) || []
       if (slotChildren.length > 0) {
         // eslint-disable-next-line unicorn/prefer-at
         currentNode = slotChildren.slice(-1)[0] // go to its last child first
@@ -629,11 +639,9 @@ function findPreviousSibling(node: SvelteTemplateNode): [SvelteTemplateNode | un
     while (!currentNode.prev && currentNode.parent && isSvelteSlot(currentNode.parent)) {
       currentNode = currentNode.parent
     }
-    // console.log('findPreviousSibling loop prev', currentNode?.type, currentNode?.prev?.type)
     currentNode = currentNode.prev
   } while (currentNode != null && isSvelteSlot(currentNode)) // eslint-disable-line unicorn/no-null
 
-  // console.log('findPreviousSibling return', currentNode?.type, hasSlotSibling)
   return [currentNode, hasSlotSibling]
 }
 
@@ -675,15 +683,14 @@ function getPossibleLastChild(
       break
     }
     case 'AwaitBlock': {
-      // FIXME: extend AwaitBlock for svelte template node
-      const pendingResult = block.pending
-        ? loopChild((block.pending as SvelteTemplateNode).children || [], adjacentOnly)
+      const pendingResult = isSveltePendingBlock(block.pending)
+        ? loopChild(block.pending.children, adjacentOnly)
         : new Map<SvelteTemplateNode, NodeExist>()
-      const thenResult = block.then
-        ? loopChild((block.then as SvelteTemplateNode).children || [], adjacentOnly)
+      const thenResult = isSvelteThenBlock(block.then)
+        ? loopChild(block.then.children, adjacentOnly)
         : new Map<SvelteTemplateNode, NodeExist>()
-      const catchResult = block.catch
-        ? loopChild((block.catch as SvelteTemplateNode).children || [], adjacentOnly)
+      const catchResult = isSvelteCatchBlock(block.catch)
+        ? loopChild(block.catch.children, adjacentOnly)
         : new Map<SvelteTemplateNode, NodeExist>()
       const notExhaustive =
         !hasDefiniteElements(pendingResult) ||
