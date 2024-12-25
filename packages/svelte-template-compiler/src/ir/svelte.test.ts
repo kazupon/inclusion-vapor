@@ -2,7 +2,7 @@ import { parse } from 'svelte/compiler'
 import { describe, expect, test } from 'vitest'
 import { enableStructures } from './svelte.ts'
 
-import type { SvelteElseBlock } from './svelte.ts'
+import type { SvelteElseBlock, SveltePendingBlock, SvelteThenBlock } from './svelte.ts'
 
 describe('enableStructures', () => {
   test('basic', () => {
@@ -271,8 +271,199 @@ describe('enableStructures', () => {
     expect(pInsideIf.prev).toBeUndefined()
   })
 
-  test('{#await expression}...{:then name}...{:catch name}...{/await}', () => {})
-  test('{#await expression}...{:then name}...{/await}', () => {})
-  test('{#await expression then name}...{/await}', () => {})
-  test('{#await expression catch name}...{/await}', () => {})
+  test('{#await expression}...{:then name}...{:catch name}...{/await}', () => {
+    const code = `
+<script>
+	let promise = Promise.resolve(1)
+</script>
+
+<div>
+	<h1>Await block</h1>
+  {#await promise}
+    <p>waiting for the promise to resolve...</p>
+  {:then value}
+    <p>The value is {value}</p>
+  {:catch error}
+    <p>Something went wrong: {error.message}</p>
+  {/await}
+</div>
+`
+    const { html } = parse(code)
+    enableStructures(html)
+
+    // div
+    const div = (html.children || [])[2]
+    // h
+    const h = div.children![1]
+
+    // {#await}
+    const awaitBlock = div.children![3]
+    expect(awaitBlock.parent).toEqual(div)
+    expect(awaitBlock.prev).toEqual(h)
+    expect(awaitBlock.next).toBeUndefined()
+    // {:pending}
+    const pendingBlock = awaitBlock.pending as SveltePendingBlock
+    expect(pendingBlock.parent).toEqual(awaitBlock)
+    expect(pendingBlock.prev).toBeUndefined()
+    expect(pendingBlock.next).toBeUndefined()
+    // p inside {:pending}
+    const pInsidePending = pendingBlock.children[1]
+    expect(pInsidePending.parent).toEqual(pendingBlock)
+    expect(pInsidePending.prev).toBeUndefined()
+    // {:then}
+    const thenBlock = awaitBlock.then as SvelteThenBlock
+    expect(thenBlock.parent).toEqual(awaitBlock)
+    expect(thenBlock.prev).toBeUndefined()
+    expect(thenBlock.next).toBeUndefined()
+    // p inside {:then}
+    const pInsideThen = thenBlock.children[1]
+    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.prev).toBeUndefined()
+    // {:catch}
+    const catchBlock = awaitBlock.catch as SvelteElseBlock
+    expect(catchBlock.parent).toEqual(awaitBlock)
+    expect(catchBlock.prev).toBeUndefined()
+    expect(catchBlock.next).toBeUndefined()
+    // p inside {:catch}
+    const pInsideCatch = catchBlock.children[1]
+    expect(pInsideCatch.parent).toEqual(catchBlock)
+    expect(pInsideCatch.prev).toBeUndefined()
+  })
+
+  test('{#await expression}...{:then name}...{/await}', () => {
+    const code = `
+<script>
+	let promise = Promise.resolve(1)
+</script>
+
+<div>
+	<h1>Await block</h1>
+  {#await promise}
+    <p>waiting for the promise to resolve...</p>
+  {:then value}
+    <p>The value is {value}</p>
+  {/await}
+</div>
+`
+    const { html } = parse(code)
+    enableStructures(html)
+
+    // div
+    const div = (html.children || [])[2]
+    // h
+    const h = div.children![1]
+
+    // {#await}
+    const awaitBlock = div.children![3]
+    expect(awaitBlock.parent).toEqual(div)
+    expect(awaitBlock.prev).toEqual(h)
+    expect(awaitBlock.next).toBeUndefined()
+    // {:pending}
+    const pendingBlock = awaitBlock.pending as SveltePendingBlock
+    expect(pendingBlock.parent).toEqual(awaitBlock)
+    expect(pendingBlock.prev).toBeUndefined()
+    expect(pendingBlock.next).toBeUndefined()
+    // p inside {:pending}
+    const pInsidePending = pendingBlock.children[1]
+    expect(pInsidePending.parent).toEqual(pendingBlock)
+    expect(pInsidePending.prev).toBeUndefined()
+    // {:then}
+    const thenBlock = awaitBlock.then as SvelteThenBlock
+    expect(thenBlock.parent).toEqual(awaitBlock)
+    expect(thenBlock.prev).toBeUndefined()
+    expect(thenBlock.next).toBeUndefined()
+    // p inside {:then}
+    const pInsideThen = thenBlock.children[1]
+    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.prev).toBeUndefined()
+  })
+
+  test('{#await expression then name}...{/await}', () => {
+    const code = `
+<script>
+	let promise = Promise.resolve(1)
+</script>
+
+<div>
+	<h1>Await block</h1>
+  {#await promise then value}
+    <p>The value is {value}</p>
+  {/await}
+</div>
+`
+    const { html } = parse(code)
+    enableStructures(html)
+
+    // div
+    const div = (html.children || [])[2]
+    // h
+    const h = div.children![1]
+
+    // {#await}
+    const awaitBlock = div.children![3]
+    expect(awaitBlock.parent).toEqual(div)
+    expect(awaitBlock.prev).toEqual(h)
+    expect(awaitBlock.next).toBeUndefined()
+    // {:pending}
+    const pendingBlock = awaitBlock.pending as SveltePendingBlock
+    expect(pendingBlock.parent).toEqual(awaitBlock)
+    expect(pendingBlock.prev).toBeUndefined()
+    expect(pendingBlock.next).toBeUndefined()
+    // {:then}
+    const thenBlock = awaitBlock.then as SvelteThenBlock
+    expect(thenBlock.parent).toEqual(awaitBlock)
+    expect(thenBlock.prev).toBeUndefined()
+    expect(thenBlock.next).toBeUndefined()
+    // p inside {:then}
+    const pInsideThen = thenBlock.children[1]
+    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.prev).toBeUndefined()
+  })
+
+  test('{#await expression catch name}...{/await}', () => {
+    const code = `
+<script>
+	let promise = Promise.resolve(1)
+</script>
+
+<div>
+	<h1>Await block</h1>
+  {#await promise catch error}
+    <p>Something went wrong: {error.message}</p>
+  {/await}
+</div>
+`
+    const { html } = parse(code)
+    enableStructures(html)
+
+    // div
+    const div = (html.children || [])[2]
+    // h
+    const h = div.children![1]
+
+    // {#await}
+    const awaitBlock = div.children![3]
+    expect(awaitBlock.parent).toEqual(div)
+    expect(awaitBlock.prev).toEqual(h)
+    expect(awaitBlock.next).toBeUndefined()
+    // {:pending}
+    const pendingBlock = awaitBlock.pending as SveltePendingBlock
+    expect(pendingBlock.parent).toEqual(awaitBlock)
+    expect(pendingBlock.prev).toBeUndefined()
+    expect(pendingBlock.next).toBeUndefined()
+    // {:then}
+    const thenBlock = awaitBlock.then as SvelteThenBlock
+    expect(thenBlock.parent).toEqual(awaitBlock)
+    expect(thenBlock.prev).toBeUndefined()
+    expect(thenBlock.next).toBeUndefined()
+    // {:catch}
+    const catchBlock = awaitBlock.catch as SvelteElseBlock
+    expect(catchBlock.parent).toEqual(awaitBlock)
+    expect(catchBlock.prev).toBeUndefined()
+    expect(catchBlock.next).toBeUndefined()
+    // p inside {:catch}
+    const pInsideCatch = catchBlock.children[1]
+    expect(pInsideCatch.parent).toEqual(catchBlock)
+    expect(pInsideCatch.prev).toBeUndefined()
+  })
 })

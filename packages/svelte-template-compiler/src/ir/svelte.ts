@@ -7,9 +7,11 @@ import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   Comment as SveletComment,
   Attribute as SvelteAttribute,
+  AwaitBlock as SvelteAwaitBlock,
   BaseDirective as SvelteBaseDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
+  CatchBlock as SvelteCatchBlock,
   ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
   EachBlock as SvelteEachBlock,
@@ -17,11 +19,13 @@ import type {
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
+  PendingBlock as SveltePendingBlock,
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   StyleDirective as SvelteStyleDirective,
   TemplateNode as SvelteTemplateNode,
-  Text as SvelteText
+  Text as SvelteText,
+  ThenBlock as SvelteThenBlock
 } from 'svelte/types/compiler/interfaces'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
@@ -113,6 +117,22 @@ export function isSvelteElseBlock(node: unknown): node is SvelteElseBlock {
 
 export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
   return isObject(node) && 'type' in node && node.type === 'EachBlock'
+}
+
+export function isSvelteAwaitBlock(node: unknown): node is SvelteAwaitBlock {
+  return isObject(node) && 'type' in node && node.type === 'AwaitBlock'
+}
+
+export function isSveltePendingBlock(node: unknown): node is SveltePendingBlock {
+  return isObject(node) && 'type' in node && node.type === 'PendingBlock'
+}
+
+export function isSvelteThenBlock(node: unknown): node is SvelteThenBlock {
+  return isObject(node) && 'type' in node && node.type === 'ThenBlock'
+}
+
+export function isSvelteCatchBlock(node: unknown): node is SvelteCatchBlock {
+  return isObject(node) && 'type' in node && node.type === 'CatchBlock'
 }
 
 export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
@@ -210,7 +230,7 @@ export function enableStructures(node: SvelteTemplateNode): void {
   let last: SvelteTemplateNode | undefined
   const children = node.children || []
   if (__DEV__) {
-    console.log('enableStructures type:', node.type, node.parent?.type)
+    console.log('enableStructures type:', node.type, node.parent?.type, children.length)
   }
 
   children.forEach(child => {
@@ -240,6 +260,15 @@ export function enableStructures(node: SvelteTemplateNode): void {
       child.else.parent = child
       enableStructures(child.else)
     }
+
+    if (isSvelteAwaitBlock(child)) {
+      child.pending.parent = child
+      enableStructures(child.pending)
+      child.then.parent = child
+      enableStructures(child.then)
+      child.catch.parent = child
+      enableStructures(child.catch)
+    }
   })
 }
 
@@ -252,12 +281,18 @@ export function walk(
 ): void {
   enter?.(node)
   if (node.children) {
+    // if (!isSvelteSlot(node) && node.children) {
     for (const child of node.children) {
       walk(child, { enter, leave })
     }
   }
   if ((isSvelteIfBlock(node) || isSvelteEachBlock(node)) && isSvelteElseBlock(node.else)) {
     walk(node.else, { enter, leave })
+  }
+  if (isSvelteAwaitBlock(node)) {
+    walk(node.pending, { enter, leave })
+    walk(node.then, { enter, leave })
+    walk(node.catch, { enter, leave })
   }
   leave?.(node)
 }
@@ -303,9 +338,11 @@ export function convertToSourceLocation(node: CompatLocationable, source: string
 export type {
   Ast as SvelteAst,
   Attribute as SvelteAttribute,
+  AwaitBlock as SvelteAwaitBlock,
   BaseDirective as SvelteBaseDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
+  CatchBlock as SvelteCatchBlock,
   Comment as SvelteComment,
   ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
@@ -314,13 +351,15 @@ export type {
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
+  PendingBlock as SveltePendingBlock,
   Script as SvelteScript,
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   Style as SvelteStyle,
   StyleDirective as SvelteStyleDirective,
   TemplateNode as SvelteTemplateNode,
-  Text as SvelteText
+  Text as SvelteText,
+  ThenBlock as SvelteThenBlock
 } from 'svelte/types/compiler/interfaces'
 
 export { type SourceLocation } from '@vue-vapor/compiler-dom'
