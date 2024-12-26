@@ -23,3 +23,9 @@ function increment(e: Event) {
     <slot />
   </div>
 </template>
+
+<style scoped>
+span {
+  color: #35eb9a;
+}
+</style>

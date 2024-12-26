@@ -106,6 +106,7 @@ export default defineConfig(
       '**/*.config.ts',
       '**/dist/*',
       '**/tsconfig.json',
+      '**/fixtures/**',
       '**/*.d.ts',
       'pnpm-lock.yaml',
       'pnpm-workspace.yaml'

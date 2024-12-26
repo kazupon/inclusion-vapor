@@ -120,6 +120,18 @@ export function render(_ctx) {
 }"
 `;
 
+exports[`multiple class binding with scoped css > svelte 1`] = `
+"import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setClass as _setClass, template as _template } from 'vue/vapor';
+const t0 = _template("<div></div>")
+
+export function render(_ctx) {
+  const n0 = t0()
+  _setInheritAttrs(["class"])
+  _renderEffect(() => _setClass(n0, ["static _vapor_", { active: _ctx.active }, { inactive: !_ctx.active }, { isAdmin: _ctx.isAdmin }], true))
+  return n0
+}"
+`;
+
 exports[`mustache basic > svelte 1`] = `
 "import { setInheritAttrs as _setInheritAttrs, renderEffect as _renderEffect, setDynamicProp as _setDynamicProp, template as _template } from 'vue/vapor';
 const t0 = _template("<div></div>")

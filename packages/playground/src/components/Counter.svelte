@@ -51,3 +51,9 @@
   <br />
   <slot></slot>
 </div>
+
+<style>
+  span {
+    color: #ff3e00;
+  }
+</style>

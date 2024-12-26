@@ -8,23 +8,8 @@
 import { ErrorCodes, createCompilerError, defaultOnError } from '@vue-vapor/compiler-dom'
 import { generate } from '@vue-vapor/compiler-vapor'
 import { extend, isString } from '@vue-vapor/shared'
-import { IRNodeTypes, isSvelteParseError } from './ir/index.ts'
-import { transform } from './transform.ts'
-import {
-  transformBind,
-  transformChildren,
-  transformComment,
-  transformElement,
-  transformFor,
-  transformHtml,
-  transformIf,
-  transformModel,
-  transformOn,
-  transformSlot,
-  transformSlotOutlet,
-  transformTemplateRef,
-  transformText
-} from './transforms/index.ts'
+import { IRNodeTypes, enableStructures, isSvelteParseError } from './ir/index.ts'
+import { getBaseTransformPreset, transform } from './transform.ts'
 
 import type { CompilerError, SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
@@ -32,8 +17,14 @@ import type {
   VaporCodegenResult,
   RootIRNode as VaporRootIRNode
 } from '@vue-vapor/compiler-vapor'
-import type { RootNode, SvelteCompileError, SvelteStyle, SvelteTemplateNode } from './ir/index.ts'
-import type { DirectiveTransform, HackOptions, NodeTransform } from './transforms/index.ts'
+import type {
+  RootNode,
+  SvelteCompileError,
+  SvelteElement,
+  SvelteStyle,
+  SvelteTemplateNode
+} from './ir/index.ts'
+import type { HackOptions } from './transforms/index.ts'
 
 // Svelte Template Code / Svelte Template AST -> IR (transform) -> JS (generate)
 export function compile(
@@ -77,7 +68,12 @@ export function compile(
     }
   }
 
+  if (options.scopedCssApplyer) {
+    enableStructures(svelteTemplateAst)
+  }
+
   const ast: RootNode = {
+    ...svelteTemplateAst,
     type: IRNodeTypes.ROOT,
     children: svelteTemplateAst.children || [],
     source: isString(source) ? source : '', // TODO:
@@ -146,6 +142,8 @@ function convertToVaporCompileErrorSourceLocation(
   }
 }
 
+export type ScopedCssApplyer = (node: SvelteElement) => void
+
 interface SvelteCompilerOptions {
   /**
    * Svelte parser
@@ -158,6 +156,11 @@ interface SvelteCompilerOptions {
    * @description if your parser does not return svelte style ast, this option will be used as svelte style ast
    */
   css?: SvelteStyle
+  /**
+   * scoped css applyer
+   * @description if you want to apply scoped style, you can use this option
+   */
+  scopedCssApplyer?: ScopedCssApplyer
 }
 
 export type SvelteCompilerResult = {
@@ -166,31 +169,5 @@ export type SvelteCompilerResult = {
 }
 
 export type CompilerOptions = HackOptions<BaseCompilerOptions> & SvelteCompilerOptions
-export type TransformPreset = [NodeTransform[], Record<string, DirectiveTransform>]
 
 export type { VaporCodegenResult } from '@vue-vapor/compiler-vapor'
-
-export function getBaseTransformPreset(_prefixIdentifiers?: boolean): TransformPreset {
-  return [
-    [
-      // transformOnce,
-      transformIf,
-      transformFor,
-      transformSlotOutlet,
-      transformTemplateRef,
-      transformText,
-      transformElement,
-      transformSlot,
-      transformComment,
-      transformHtml,
-      transformChildren
-    ],
-    {
-      bind: transformBind,
-      on: transformOn,
-      // text: transformText,
-      // show: transformShow,
-      model: transformModel
-    }
-  ]
-}

@@ -7,20 +7,26 @@ import type { SourceLocation } from '@vue-vapor/compiler-dom'
 import type {
   Comment as SveletComment,
   Attribute as SvelteAttribute,
+  AwaitBlock as SvelteAwaitBlock,
+  BaseDirective as SvelteBaseDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
+  CatchBlock as SvelteCatchBlock,
   ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
+  EachBlock as SvelteEachBlock,
   Element as SvelteElement,
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
+  PendingBlock as SveltePendingBlock,
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   StyleDirective as SvelteStyleDirective,
-  Text as SvelteText
+  TemplateNode as SvelteTemplateNode,
+  Text as SvelteText,
+  ThenBlock as SvelteThenBlock
 } from 'svelte/types/compiler/interfaces'
-import type { SvelteTemplateNode } from './svelte'
 
 export const isBuiltInDirective: ReturnType<typeof makeMap> = /*#__PURE__*/ makeMap(
   // TODO: add svelte built-in directives
@@ -101,8 +107,32 @@ export function isSvelteEventHandler(node: unknown): node is SvelteBaseExpressio
   return isObject(node) && 'type' in node && node.type === 'EventHandler'
 }
 
+export function isSvelteIfBlock(node: unknown): node is SvelteIfBlock {
+  return isObject(node) && 'type' in node && node.type === 'IfBlock'
+}
+
 export function isSvelteElseBlock(node: unknown): node is SvelteElseBlock {
   return isObject(node) && 'type' in node && node.type === 'ElseBlock'
+}
+
+export function isSvelteEachBlock(node: unknown): node is SvelteEachBlock {
+  return isObject(node) && 'type' in node && node.type === 'EachBlock'
+}
+
+export function isSvelteAwaitBlock(node: unknown): node is SvelteAwaitBlock {
+  return isObject(node) && 'type' in node && node.type === 'AwaitBlock'
+}
+
+export function isSveltePendingBlock(node: unknown): node is SveltePendingBlock {
+  return isObject(node) && 'type' in node && node.type === 'PendingBlock'
+}
+
+export function isSvelteThenBlock(node: unknown): node is SvelteThenBlock {
+  return isObject(node) && 'type' in node && node.type === 'ThenBlock'
+}
+
+export function isSvelteCatchBlock(node: unknown): node is SvelteCatchBlock {
+  return isObject(node) && 'type' in node && node.type === 'CatchBlock'
 }
 
 export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
@@ -111,6 +141,10 @@ export function isIfBlockOnTop(node: SvelteIfBlock): boolean {
 
 export function isIfBlockOnElseBlock(node: SvelteIfBlock): boolean {
   return node.type === 'IfBlock' && !!node.elseif
+}
+
+export function isSvelteSlot(node: unknown): boolean {
+  return isObject(node) && 'type' in node && node.type === 'Slot'
 }
 
 export function isSvelteBindingDirective(node: unknown): node is SvelteBaseExpressionDirective {
@@ -138,6 +172,23 @@ export function findAttrs(node: SvelteTemplateNode, name: string): SvelteAttribu
     }
   }
   return
+}
+
+export function createAttributeChunks(
+  attr: SvelteBaseDirective | SvelteAttribute | SvelteSpreadAttribute
+): (SvelteMustacheTag | SvelteText)[] {
+  const chunks: (SvelteText | SvelteMustacheTag)[] = Array.isArray(attr.value)
+    ? attr.value.map(n => {
+        if (isSvelteText(n)) {
+          return n
+        } else if (isSvelteMustacheTag(n)) {
+          return n
+        } else {
+          throw new Error('unexpected node')
+        }
+      })
+    : []
+  return chunks
 }
 
 export interface SvelteCompileError {
@@ -173,6 +224,79 @@ export type CompatLocationable = {
   start: number | { line: number; column: number; offset?: number }
   end: number | { line: number; column: number; offset?: number }
   source?: string
+}
+
+export function enableStructures(node: SvelteTemplateNode): void {
+  let last: SvelteTemplateNode | undefined
+  const children = node.children || []
+
+  if (node.type === 'Fragment') {
+    node.parent = null // eslint-disable-line unicorn/no-null
+  }
+
+  const parent =
+    isSveltePendingBlock(node) || isSvelteThenBlock(node) || isSvelteCatchBlock(node)
+      ? node.parent
+      : node
+
+  children.forEach(child => {
+    // ignores
+    if (isSvelteText(child) || isSvelteComponentTag(child)) {
+      return
+    }
+
+    child.parent = parent
+
+    if (last) {
+      last.next = child
+    }
+
+    child.prev = last
+    last = child
+
+    if (child.children) {
+      enableStructures(child)
+    }
+
+    if ((isSvelteIfBlock(child) || isSvelteEachBlock(child)) && isSvelteElseBlock(child.else)) {
+      child.else.parent = child
+      enableStructures(child.else)
+    }
+
+    if (isSvelteAwaitBlock(child)) {
+      child.pending.parent = child
+      enableStructures(child.pending)
+      child.then.parent = child
+      enableStructures(child.then)
+      child.catch.parent = child
+      enableStructures(child.catch)
+    }
+  })
+}
+
+export function walk(
+  node: SvelteTemplateNode,
+  {
+    enter,
+    leave
+  }: { enter?: (node: SvelteTemplateNode) => void; leave?: (node: SvelteTemplateNode) => void }
+): void {
+  enter?.(node)
+  if (node.children) {
+    // if (!isSvelteSlot(node) && node.children) {
+    for (const child of node.children) {
+      walk(child, { enter, leave })
+    }
+  }
+  if ((isSvelteIfBlock(node) || isSvelteEachBlock(node)) && isSvelteElseBlock(node.else)) {
+    walk(node.else, { enter, leave })
+  }
+  if (isSvelteAwaitBlock(node)) {
+    walk(node.pending, { enter, leave })
+    walk(node.then, { enter, leave })
+    walk(node.catch, { enter, leave })
+  }
+  leave?.(node)
 }
 
 // TODO: We need to extend svelte AST for location
@@ -216,9 +340,11 @@ export function convertToSourceLocation(node: CompatLocationable, source: string
 export type {
   Ast as SvelteAst,
   Attribute as SvelteAttribute,
+  AwaitBlock as SvelteAwaitBlock,
   BaseDirective as SvelteBaseDirective,
   BaseExpressionDirective as SvelteBaseExpressionDirective,
   BaseNode as SvelteBaseNode,
+  CatchBlock as SvelteCatchBlock,
   Comment as SvelteComment,
   ComponentTag as SvelteComponentTag,
   Directive as SvelteDirective,
@@ -227,13 +353,15 @@ export type {
   ElseBlock as SvelteElseBlock,
   IfBlock as SvelteIfBlock,
   MustacheTag as SvelteMustacheTag,
+  PendingBlock as SveltePendingBlock,
   Script as SvelteScript,
   ShorthandAttribute as SvelteShorthandAttribute,
   SpreadAttribute as SvelteSpreadAttribute,
   Style as SvelteStyle,
   StyleDirective as SvelteStyleDirective,
   TemplateNode as SvelteTemplateNode,
-  Text as SvelteText
+  Text as SvelteText,
+  ThenBlock as SvelteThenBlock
 } from 'svelte/types/compiler/interfaces'
 
 export { type SourceLocation } from '@vue-vapor/compiler-dom'

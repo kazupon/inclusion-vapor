@@ -18,7 +18,7 @@ const svelteCode = `
 </button>
 `
 
-test('transform', () => {
+test('basic', () => {
   const svelteAst = parse(svelteCode)
   const ast: RootNode = {
     type: IRNodeTypes.ROOT,

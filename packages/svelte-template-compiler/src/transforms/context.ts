@@ -14,6 +14,7 @@ import type {
   CompilerCompatOptions,
   SimpleExpressionNode
 } from '@vue-vapor/compiler-dom'
+import type { ScopedCssApplyer } from '../compile.ts'
 import type {
   BlockIRNode,
   IRDynamicInfo,
@@ -22,7 +23,7 @@ import type {
   RootIRNode,
   RootNode,
   SvelteComment,
-  SvelteStyle,
+  SvelteElement,
   SvelteTemplateNode
 } from '../ir'
 import type { HackOptions } from './types'
@@ -48,10 +49,12 @@ const defaultOptions = {
   isTS: false,
   onError: defaultOnError,
   onWarn: defaultOnWarn,
-  css: null // eslint-disable-line unicorn/no-null
+  scopedCssApplyer: null // eslint-disable-line unicorn/no-null
 }
 
-export type TransformOptions = HackOptions<BaseTransformOptions> & { css?: SvelteStyle }
+export type TransformOptions = HackOptions<BaseTransformOptions> & {
+  scopedCssApplyer?: ScopedCssApplyer
+}
 
 export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node']> {
   ir: RootIRNode
@@ -164,6 +167,10 @@ export class TransformContext<T extends BlockIRNode['node'] = BlockIRNode['node'
 
   registerOperation(...node: OperationNode[]): void {
     this.block.operation.push(...node)
+  }
+
+  applyScopedCss(node: SvelteElement): void {
+    this.options.scopedCssApplyer?.(node)
   }
 
   create<T extends SvelteTemplateNode>(node: T, index: number): TransformContext<T> {

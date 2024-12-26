@@ -42,8 +42,12 @@ import type { NodeTransform } from './types.ts'
 
 export const transformElement: NodeTransform = (_node, context) => {
   if (__DEV__) {
-    // console.log('transformElement', context.node.type)
-    console.log('transformElement', context.node.type, context.node?.name)
+    console.log(
+      'transformElement',
+      _node.type,
+      // @ts-expect-error -- IGNORE
+      _node?.name
+    )
   }
 
   return function postTransformElement() {
@@ -57,6 +61,10 @@ export const transformElement: NodeTransform = (_node, context) => {
 
     const isComponent = node.type === 'InlineComponent'
     const isDynamicComponent = isSvelteComponentTag(node)
+
+    // apply scoped style
+    context.applyScopedCss(node)
+
     const propsResult = buildProps(
       node,
       context as TransformContext<SvelteElement>,
@@ -184,15 +192,15 @@ function transformNativeElement(
   context: TransformContext<SvelteElement>
 ) {
   const { name: tag } = node
-  const { scopeId } = context.options
+  // TODO: remove
+  // const { scopeId } = context.options
 
   let template = ''
   template += `<${tag}`
-  if (scopeId) {
-    template += ` ${scopeId}`
-  }
-
-  console.log('transformElement building template ...', tag, JSON.stringify(propsResult))
+  // TODO: remove
+  // if (scopeId) {
+  //   template += ` ${scopeId}`
+  // }
 
   let staticProps = false
   const dynamicProps: string[] = []
@@ -239,8 +247,6 @@ function transformNativeElement(
     template += `</${tag}>`
   }
 
-  console.log('transformElement exit', tag, template, context.childrenTemplate)
-
   if (
     context.parent &&
     context.parent.node.type === 'Element' &&
@@ -264,6 +270,8 @@ export function buildProps(
   isComponent: boolean,
   isDynamicComponent?: boolean
 ): PropsResult {
+  // context.options.scopedStyleApplyer?.(node, context)
+
   // convert from svelte props to vapor props
   const props = convertProps(node)
   if (props.length === 0) {
@@ -338,6 +346,7 @@ export function buildProps(
     }
 
     const result = transformProp(prop, node, context)
+
     if (result) {
       dynamicExpr.push(result.key, result.value)
       if (isComponent && !result.key.isStatic) {

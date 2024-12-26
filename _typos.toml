@@ -1,2 +1,6 @@
 [files]
-extend-exclude = ["assets/inclusion-vapor-v0.excalidraw"]
+extend-exclude = [
+  "assets/inclusion-vapor-v0.excalidraw",
+  "notes/css.md",
+  "packages/svelte-template-compiler/test/fixtures"
+]
