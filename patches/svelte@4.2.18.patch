@@ -156,7 +156,7 @@ index 3d4ab358df18d42b7af4288ff3b4718d1774ec44..fcdfbd2bcd078253c671da3d01e00278
  		content: ast
  	};
 diff --git a/types/index.d.ts b/types/index.d.ts
-index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..3c21d81665f71e2104d02b4d9d5f105ad07da313 100644
+index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..9acfbfb6fb38807bbaa68fa36a84200766047f11 100644
 --- a/types/index.d.ts
 +++ b/types/index.d.ts
 @@ -90,7 +90,7 @@ declare module 'svelte' {
@@ -226,7 +226,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..3c21d81665f71e2104d02b4d9d5f105a
  		end: number;
  		type: string;
  		children?: TemplateNode[];
-+    parent?: TemplateNode;
++    parent?: TemplateNode | null;
 +    prev?: TemplateNode;
 +    next?: TemplateNode;
  		[prop_name: string]: any;
@@ -379,7 +379,7 @@ index 2055385b0a8af122d4cff8dcccdf456ef0b3c239..3c21d81665f71e2104d02b4d9d5f105a
  		end: number;
  		type: string;
  		children?: TemplateNode[];
-+    parent?: TemplateNode;
++    parent?: TemplateNode | null;
 +    prev?: TemplateNode;
 +    next?: TemplateNode;
  		[prop_name: string]: any;

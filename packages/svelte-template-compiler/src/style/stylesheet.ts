@@ -10,7 +10,7 @@ import { pushArray } from 'inclusion-vapor-shared'
 import { MagicStringAST } from 'magic-string-ast'
 import { createAttributeChunks, isSvelteSpreadAttribute, isSvelteText } from '../ir/index.ts'
 import { hash } from '../utils.ts'
-import { hasChildren, hasProperty, isCombinator, isWhiteSpace } from './csstree.ts'
+import { hasChildren, isCombinator, isWhiteSpace } from './csstree.ts'
 import { Selector, applySelector } from './selector.ts'
 
 import type {
@@ -36,7 +36,7 @@ const getDefaultCssHash = (css: string, hash: (str: string) => string): string =
 
 export class SvelteStylesheet {
   ast: SvelteStyle
-  dev: boolean = true
+  dev: boolean
   source: string = ''
   filename: string = ''
   id: string = ''
@@ -120,11 +120,8 @@ export class SvelteStylesheet {
   }
 
   apply(node: SvelteElement, incremental = false): void {
-    // for (const child of this.children) {
-    //   apply(node, child, this)
-    // }
-    for (let i = 0; i < this.children.length; i += 1) {
-      apply(node, this.children[i], this)
+    for (const child of this.children) {
+      apply(node, child, this)
     }
     if (incremental) {
       this.reify()
@@ -235,12 +232,9 @@ class Rule {
     this.selectors = hasChildren(node.prelude)
       ? (node.prelude.children.map(node => new Selector(node)) as unknown as Selector[])
       : []
-    // this.declarations = node.block.children.map(
-    //   node => new Declaration(node)
-    // ) as unknown as Declaration[]
-    this.declarations = node.block.children
-      .filter(hasProperty) // eslint-disable-line unicorn/no-array-callback-reference
-      .map(node => new Declaration(node)) as unknown as Declaration[]
+    this.declarations = node.block.children.map(
+      node => new Declaration(node)
+    ) as unknown as Declaration[]
   }
 }
 
@@ -254,8 +248,8 @@ class Atrule {
 }
 
 class Declaration {
-  node: CssDeclaration
-  constructor(node: CssDeclaration) {
+  node: CssNode
+  constructor(node: CssNode) {
     this.node = node
   }
 }
@@ -267,12 +261,9 @@ function apply(
 ): void {
   if (css instanceof Rule) {
     // for Rule
-    // for (const selector of css.selectors) {
-    //   apply(node, selector, stylesheet)
-    // }
-    css.selectors.forEach(selector => {
+    for (const selector of css.selectors) {
       apply(node, selector, stylesheet)
-    })
+    }
   } else if (css instanceof Atrule) {
     // for Atrule
     if (
@@ -281,45 +272,30 @@ function apply(
       css.node.name === 'supports' ||
       css.node.name === 'layer'
     ) {
-      // for (const child of css.children) {
-      //   apply(node, child, stylesheet)
-      // }
-      css.children.forEach(child => {
+      for (const child of css.children) {
         apply(node, child, stylesheet)
-      })
+      }
     } else if (isKeyFramesNode(css.node)) {
-      // for (const rule of css.children) {
-      //   if (rule instanceof Rule) {
-      //     for (const selector of rule.selectors) {
-      //       selector.used = true
-      //     }
-      //   }
-      // }
-      css.children.forEach(rule => {
+      for (const rule of css.children) {
         if (rule instanceof Rule) {
-          rule.selectors.forEach(selector => {
+          for (const selector of rule.selectors) {
             selector.used = true
-          })
+          }
         }
-      })
+      }
     }
   } else if (css instanceof Selector) {
     // for Selector
     const toEncapsulate: { node: SvelteElement; block: Block }[] = []
 
-    // console.log('css.localBlocks', JSON.stringify(css.localBlocks), css.localBlocks.length)
     // eslint-disable-next-line unicorn/prefer-spread
     applySelector(css.localBlocks.slice(), node, toEncapsulate)
 
     if (toEncapsulate.length > 0) {
-      // for (const { node: templateNode, block } of toEncapsulate) {
-      //   stylesheet.nodesWithCssClass.add(templateNode)
-      //   block.shouldEncapsulate = true
-      // }
-      toEncapsulate.forEach(({ node: templateNode, block }) => {
+      for (const { node: templateNode, block } of toEncapsulate) {
         stylesheet.nodesWithCssClass.add(templateNode)
         block.shouldEncapsulate = true
-      })
+      }
       css.used = true
     }
   } else {
@@ -454,7 +430,7 @@ function transform(
       max - css.blocks.filter(block => block.shouldEncapsulate).length
     css.blocks.forEach((block, index) => {
       if (block.global) {
-        removeGlobalResudoClass(code, block.selectors[0] as CssNodeWithChildren)
+        removeGlobalPesudoClass(code, block.selectors[0] as CssNodeWithChildren)
       }
       if (block.shouldEncapsulate) {
         encapsulateBlock(
@@ -466,16 +442,18 @@ function transform(
     })
   } else if (css instanceof Declaration) {
     // for Declaration
-    const property = removeCssPrefix(css.node.property.toLowerCase())
-    if (
-      (property === 'animation' || property === 'animation-name') &&
-      hasChildren(css.node.value)
-    ) {
-      for (const block of css.node.value.children) {
-        if (block.type === 'Identifier') {
-          const name = block.name
-          if (keyframes.has(name)) {
-            code.update(block.start!, block.end!, keyframes.get(name)!)
+    if (css.node.type === 'Declaration') {
+      const property = removeCssPrefix(css.node.property.toLowerCase())
+      if (
+        (property === 'animation' || property === 'animation-name') &&
+        hasChildren(css.node.value)
+      ) {
+        for (const block of css.node.value.children) {
+          if (block.type === 'Identifier') {
+            const name = block.name
+            if (keyframes.has(name)) {
+              code.update(block.start!, block.end!, keyframes.get(name)!)
+            }
           }
         }
       }
@@ -485,7 +463,7 @@ function transform(
   }
 }
 
-function removeGlobalResudoClass(code: MagicStringAST, selector: CssNodeWithChildren): void {
+function removeGlobalPesudoClass(code: MagicStringAST, selector: CssNodeWithChildren): void {
   if (!hasChildren(selector)) {
     throw new TypeError('selector children is null')
   }
@@ -499,7 +477,7 @@ function removeGlobalResudoClass(code: MagicStringAST, selector: CssNodeWithChil
 function encapsulateBlock(code: MagicStringAST, block: Block, attr: string): void {
   for (const selector of block.selectors) {
     if (selector.type === 'PseudoClassSelector' && selector.name === 'global') {
-      removeGlobalResudoClass(code, selector)
+      removeGlobalPesudoClass(code, selector)
     }
   }
   let i = block.selectors.length
@@ -609,7 +587,7 @@ function minify(
     // for Selector
     let c: number | null = null // eslint-disable-line unicorn/no-null
     css.blocks.forEach((block, i) => {
-      if (i > 0 && block.start! - c! > 1) {
+      if (i > 0 && block.start - c! > 1) {
         // prettier-ignore
         const v = block.combinator == null // eslint-disable-line unicorn/no-null
           ? ' '
@@ -618,13 +596,13 @@ function minify(
             : isWhiteSpace(block.combinator)
               ? block.combinator.value
               : ' '
-        code.update(c!, block.start!, v)
+        code.update(c!, block.start, v)
       }
       c = block.end
     })
   } else if (css instanceof Declaration) {
     // for Declaration
-    if (!css.node.property) {
+    if (!(css.node.type === 'Declaration' && css.node.property)) {
       // @apply, and possibly other weird cases?
       return
     }

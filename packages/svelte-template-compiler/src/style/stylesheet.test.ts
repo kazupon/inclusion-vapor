@@ -181,12 +181,11 @@ describe('render with fixtures', async () => {
       const ast = parse(input)
       enableStructures(ast.html)
       const stylesheet = new SvelteStylesheet(
-        Object.assign({}, { ast: ast.css!, source: input }, config.compilerOptions || {})
+        Object.assign({}, { ast: ast.css!, source: input }, config.compileOptions || {})
       )
       walk(ast.html, {
         enter(node) {
           if (isSvelteElement(node)) {
-            // console.log('applying ...', node.type, node.name, JSON.stringify(node.attributes))
             stylesheet.apply(node)
           }
         }

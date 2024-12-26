@@ -229,21 +229,23 @@ export type CompatLocationable = {
 export function enableStructures(node: SvelteTemplateNode): void {
   let last: SvelteTemplateNode | undefined
   const children = node.children || []
-  if (__DEV__) {
-    console.log('enableStructures type:', node.type, node.parent?.type, children.length)
+
+  if (node.type === 'Fragment') {
+    node.parent = null // eslint-disable-line unicorn/no-null
   }
 
-  children.forEach(child => {
-    if (__DEV__) {
-      console.log('enableStructures child type:', child.type)
-    }
+  const parent =
+    isSveltePendingBlock(node) || isSvelteThenBlock(node) || isSvelteCatchBlock(node)
+      ? node.parent
+      : node
 
+  children.forEach(child => {
     // ignores
     if (isSvelteText(child) || isSvelteComponentTag(child)) {
       return
     }
 
-    child.parent = node
+    child.parent = parent
 
     if (last) {
       last.next = child

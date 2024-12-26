@@ -301,14 +301,13 @@ describe('enableStructures', () => {
     expect(awaitBlock.parent).toEqual(div)
     expect(awaitBlock.prev).toEqual(h)
     expect(awaitBlock.next).toBeUndefined()
-    // {:pending}
     const pendingBlock = awaitBlock.pending as SveltePendingBlock
     expect(pendingBlock.parent).toEqual(awaitBlock)
     expect(pendingBlock.prev).toBeUndefined()
     expect(pendingBlock.next).toBeUndefined()
-    // p inside {:pending}
+    // p inside {#await}
     const pInsidePending = pendingBlock.children[1]
-    expect(pInsidePending.parent).toEqual(pendingBlock)
+    expect(pInsidePending.parent).toEqual(awaitBlock)
     expect(pInsidePending.prev).toBeUndefined()
     // {:then}
     const thenBlock = awaitBlock.then as SvelteThenBlock
@@ -317,7 +316,7 @@ describe('enableStructures', () => {
     expect(thenBlock.next).toBeUndefined()
     // p inside {:then}
     const pInsideThen = thenBlock.children[1]
-    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.parent).toEqual(awaitBlock)
     expect(pInsideThen.prev).toBeUndefined()
     // {:catch}
     const catchBlock = awaitBlock.catch as SvelteElseBlock
@@ -326,7 +325,7 @@ describe('enableStructures', () => {
     expect(catchBlock.next).toBeUndefined()
     // p inside {:catch}
     const pInsideCatch = catchBlock.children[1]
-    expect(pInsideCatch.parent).toEqual(catchBlock)
+    expect(pInsideCatch.parent).toEqual(awaitBlock)
     expect(pInsideCatch.prev).toBeUndefined()
   })
 
@@ -358,14 +357,13 @@ describe('enableStructures', () => {
     expect(awaitBlock.parent).toEqual(div)
     expect(awaitBlock.prev).toEqual(h)
     expect(awaitBlock.next).toBeUndefined()
-    // {:pending}
     const pendingBlock = awaitBlock.pending as SveltePendingBlock
     expect(pendingBlock.parent).toEqual(awaitBlock)
     expect(pendingBlock.prev).toBeUndefined()
     expect(pendingBlock.next).toBeUndefined()
-    // p inside {:pending}
+    // p inside {:await}
     const pInsidePending = pendingBlock.children[1]
-    expect(pInsidePending.parent).toEqual(pendingBlock)
+    expect(pInsidePending.parent).toEqual(awaitBlock)
     expect(pInsidePending.prev).toBeUndefined()
     // {:then}
     const thenBlock = awaitBlock.then as SvelteThenBlock
@@ -374,7 +372,7 @@ describe('enableStructures', () => {
     expect(thenBlock.next).toBeUndefined()
     // p inside {:then}
     const pInsideThen = thenBlock.children[1]
-    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.parent).toEqual(awaitBlock)
     expect(pInsideThen.prev).toBeUndefined()
   })
 
@@ -404,7 +402,6 @@ describe('enableStructures', () => {
     expect(awaitBlock.parent).toEqual(div)
     expect(awaitBlock.prev).toEqual(h)
     expect(awaitBlock.next).toBeUndefined()
-    // {:pending}
     const pendingBlock = awaitBlock.pending as SveltePendingBlock
     expect(pendingBlock.parent).toEqual(awaitBlock)
     expect(pendingBlock.prev).toBeUndefined()
@@ -416,7 +413,7 @@ describe('enableStructures', () => {
     expect(thenBlock.next).toBeUndefined()
     // p inside {:then}
     const pInsideThen = thenBlock.children[1]
-    expect(pInsideThen.parent).toEqual(thenBlock)
+    expect(pInsideThen.parent).toEqual(awaitBlock)
     expect(pInsideThen.prev).toBeUndefined()
   })
 
@@ -446,7 +443,6 @@ describe('enableStructures', () => {
     expect(awaitBlock.parent).toEqual(div)
     expect(awaitBlock.prev).toEqual(h)
     expect(awaitBlock.next).toBeUndefined()
-    // {:pending}
     const pendingBlock = awaitBlock.pending as SveltePendingBlock
     expect(pendingBlock.parent).toEqual(awaitBlock)
     expect(pendingBlock.prev).toBeUndefined()
@@ -463,7 +459,7 @@ describe('enableStructures', () => {
     expect(catchBlock.next).toBeUndefined()
     // p inside {:catch}
     const pInsideCatch = catchBlock.children[1]
-    expect(pInsideCatch.parent).toEqual(catchBlock)
+    expect(pInsideCatch.parent).toEqual(awaitBlock)
     expect(pInsideCatch.prev).toBeUndefined()
   })
 })
