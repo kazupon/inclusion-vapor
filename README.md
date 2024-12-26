@@ -113,6 +113,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] `$$restProps`
   - [x] `$`
   - [x] `context="module"`
+  - [x] style
 - [ ] Logic blocks
   - [x] `{#if}` / `{:else}` / `{:else if}`
   - [x] `{#each}`
@@ -186,6 +187,7 @@ Based on Svelte v4 (maybe v3 compatible)
   - [ ] script
   - [ ] styles
 - [ ] Vite plugin with unplugin (PoC Done)
+  - [ ] HMR
   - [ ] analysis dependencies
   - [ ] runtime transform
   - [ ] reactivity transform
