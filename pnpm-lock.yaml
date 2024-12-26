@@ -60,7 +60,7 @@ importers:
         version: 6.2.1
       '@kazupon/eslint-config':
         specifier: ^0.18.0
-        version: 0.18.0(vsqril6k5e26nywoq4chjytgcu)
+        version: 0.18.0(ah4pveqtjxjjwlkaypgbdl3kru)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -81,7 +81,7 @@ importers:
         version: 2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.11.0(jiti@2.4.2))(typescript@5.6.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-jsonc:
         specifier: ^2.16.0
-        version: 2.18.1(eslint@9.11.0(jiti@2.4.2))
+        version: 2.18.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react:
         specifier: ^7.35.0
         version: 7.37.2(eslint@9.11.0(jiti@2.4.2))
@@ -576,7 +576,7 @@ importers:
         version: 6.0.1(@types/node@22.10.0)(jiti@2.4.2)(terser@5.36.0)(tsx@4.19.2)(yaml@2.6.0)
       webpack:
         specifier: ^5.89.0
-        version: 5.96.1(esbuild@0.24.0)
+        version: 5.96.1
 
 packages:
 
@@ -2845,8 +2845,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-compat-utils@0.6.0:
-    resolution: {integrity: sha512-1vVBdI/HLS6HTHVQCJGlN+LOF0w1Rs/WB9se23mQr84cRM0iMM8PulMFFhQdQ1BvS0cGwjpis4xziI91Rk0l6g==}
+  eslint-compat-utils@0.6.4:
+    resolution: {integrity: sha512-/u+GQt8NMfXO8w17QendT4gvO5acfxQsAKirAt0LVxDnr2N8YLCVbregaNc/Yhp7NM128DwCaRvr8PLDfeNkQw==}
     engines: {node: '>=12'}
     peerDependencies:
       eslint: '>=6.0.0'
@@ -2912,8 +2912,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jsonc@2.18.1:
-    resolution: {integrity: sha512-6qY8zDpxOwPQNcr8eZ+RxwGX6IPHws5/Qef7aBEjER8rB9+UMB6zQWVIVcbP7xzFmEMHAesNFPe/sIlU4c78dg==}
+  eslint-plugin-jsonc@2.18.2:
+    resolution: {integrity: sha512-SDhJiSsWt3nItl/UuIv+ti4g3m4gpGkmnUJS9UWR3TrpyNsIcnJoBRD7Kof6cM4Rk3L0wrmY5Tm3z7ZPjR2uGg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
@@ -6187,7 +6187,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.18.0(vsqril6k5e26nywoq4chjytgcu)':
+  '@kazupon/eslint-config@0.18.0(ah4pveqtjxjjwlkaypgbdl3kru)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.4.1(eslint@9.11.0(jiti@2.4.2))
       '@eslint/js': 9.15.0
@@ -6199,7 +6199,7 @@ snapshots:
       '@eslint/markdown': 6.2.1
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@8.18.1(eslint@9.11.0(jiti@2.4.2))(typescript@5.6.2))(eslint-plugin-import@2.31.0)(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.11.0(jiti@2.4.2))(typescript@5.6.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.11.0(jiti@2.4.2))
-      eslint-plugin-jsonc: 2.18.1(eslint@9.11.0(jiti@2.4.2))
+      eslint-plugin-jsonc: 2.18.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react: 7.37.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react-hooks: 4.6.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react-refresh: 0.4.14(eslint@9.11.0(jiti@2.4.2))
@@ -8005,7 +8005,7 @@ snapshots:
       eslint: 9.11.0(jiti@2.4.2)
       semver: 7.6.3
 
-  eslint-compat-utils@0.6.0(eslint@9.11.0(jiti@2.4.2)):
+  eslint-compat-utils@0.6.4(eslint@9.11.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.11.0(jiti@2.4.2)
       semver: 7.6.3
@@ -8087,11 +8087,11 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsonc@2.18.1(eslint@9.11.0(jiti@2.4.2)):
+  eslint-plugin-jsonc@2.18.2(eslint@9.11.0(jiti@2.4.2)):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@9.11.0(jiti@2.4.2))
       eslint: 9.11.0(jiti@2.4.2)
-      eslint-compat-utils: 0.6.0(eslint@9.11.0(jiti@2.4.2))
+      eslint-compat-utils: 0.6.4(eslint@9.11.0(jiti@2.4.2))
       eslint-json-compat-utils: 0.2.1(eslint@9.11.0(jiti@2.4.2))(jsonc-eslint-parser@2.4.0)
       espree: 9.6.1
       graphemer: 1.4.0
@@ -10546,6 +10546,15 @@ snapshots:
     optionalDependencies:
       esbuild: 0.24.0
 
+  terser-webpack-plugin@5.3.10(webpack@5.96.1):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.36.0
+      webpack: 5.96.1
+
   terser@5.36.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
@@ -11139,6 +11148,36 @@ snapshots:
   webpack-sources@3.2.3: {}
 
   webpack-virtual-modules@0.6.2: {}
+
+  webpack@5.96.1:
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.6
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.14.0
+      browserslist: 4.24.2
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.17.1
+      es-module-lexer: 1.5.4
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 3.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.10(webpack@5.96.1)
+      watchpack: 2.4.2
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
 
   webpack@5.96.1(esbuild@0.24.0):
     dependencies:
