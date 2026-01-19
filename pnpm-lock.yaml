@@ -60,7 +60,7 @@ importers:
         version: 6.2.1
       '@kazupon/eslint-config':
         specifier: ^0.18.0
-        version: 0.18.0(vsqril6k5e26nywoq4chjytgcu)
+        version: 0.18.0(hic3j2urjpqghigwlgw735dgti)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -90,7 +90,7 @@ importers:
         version: 4.6.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react-refresh:
         specifier: ^0.4.9
-        version: 0.4.14(eslint@9.11.0(jiti@2.4.2))
+        version: 0.4.26(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-regexp:
         specifier: ^2.6.0
         version: 2.7.0(eslint@9.11.0(jiti@2.4.2))
@@ -576,7 +576,7 @@ importers:
         version: 6.0.1(@types/node@22.10.0)(jiti@2.4.2)(terser@5.36.0)(tsx@4.19.2)(yaml@2.6.0)
       webpack:
         specifier: ^5.89.0
-        version: 5.96.1(esbuild@0.24.0)
+        version: 5.96.1
 
 packages:
 
@@ -2924,10 +2924,10 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
 
-  eslint-plugin-react-refresh@0.4.14:
-    resolution: {integrity: sha512-aXvzCTK7ZBv1e7fahFuR3Z/fyQQSIQ711yPgYRj+Oj64tyTgO4iQIDmYXDBqvSWQ/FA4OSCsXOStlF+noU0/NA==}
+  eslint-plugin-react-refresh@0.4.26:
+    resolution: {integrity: sha512-1RETEylht2O6FM/MvgnyvT+8K21wLqDNg4qD51Zj3guhjt433XbnnkVttHMyaVyAFD03QSV4LPS5iE3VQmO7XQ==}
     peerDependencies:
-      eslint: '>=7'
+      eslint: '>=8.40'
 
   eslint-plugin-react@7.37.2:
     resolution: {integrity: sha512-EsTAnj9fLVr/GZleBLFbj/sSuXeWmp1eXIN60ceYnZveqEaUCyW4X+Vh4WTdUhCkW4xutXYqTXCUSyqD4rB75w==}
@@ -4844,6 +4844,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
@@ -5008,6 +5009,7 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   terser-webpack-plugin@5.3.10:
     resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
@@ -5529,6 +5531,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -6187,7 +6190,7 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@kazupon/eslint-config@0.18.0(vsqril6k5e26nywoq4chjytgcu)':
+  '@kazupon/eslint-config@0.18.0(hic3j2urjpqghigwlgw735dgti)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.4.1(eslint@9.11.0(jiti@2.4.2))
       '@eslint/js': 9.15.0
@@ -6202,7 +6205,7 @@ snapshots:
       eslint-plugin-jsonc: 2.18.1(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react: 7.37.2(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-react-hooks: 4.6.2(eslint@9.11.0(jiti@2.4.2))
-      eslint-plugin-react-refresh: 0.4.14(eslint@9.11.0(jiti@2.4.2))
+      eslint-plugin-react-refresh: 0.4.26(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-regexp: 2.7.0(eslint@9.11.0(jiti@2.4.2))
       eslint-plugin-svelte: 2.46.0(eslint@9.11.0(jiti@2.4.2))(svelte@4.2.18(patch_hash=zf3pkt63yjzxvp2jnynlxqax3a))
       eslint-plugin-toml: 0.11.1(eslint@9.11.0(jiti@2.4.2))
@@ -8105,7 +8108,7 @@ snapshots:
     dependencies:
       eslint: 9.11.0(jiti@2.4.2)
 
-  eslint-plugin-react-refresh@0.4.14(eslint@9.11.0(jiti@2.4.2)):
+  eslint-plugin-react-refresh@0.4.26(eslint@9.11.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.11.0(jiti@2.4.2)
 
@@ -10546,6 +10549,15 @@ snapshots:
     optionalDependencies:
       esbuild: 0.24.0
 
+  terser-webpack-plugin@5.3.10(webpack@5.96.1):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.36.0
+      webpack: 5.96.1
+
   terser@5.36.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
@@ -11139,6 +11151,36 @@ snapshots:
   webpack-sources@3.2.3: {}
 
   webpack-virtual-modules@0.6.2: {}
+
+  webpack@5.96.1:
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.6
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.14.0
+      browserslist: 4.24.2
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.17.1
+      es-module-lexer: 1.5.4
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 3.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.10(webpack@5.96.1)
+      watchpack: 2.4.2
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
 
   webpack@5.96.1(esbuild@0.24.0):
     dependencies:
