@@ -48,8 +48,8 @@
     "vue": "https://pkg.pr.new/vuejs/vue-vapor/vue@3f6ce96"
   },
   "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "tsdown": "catalog:"
   }
 }
